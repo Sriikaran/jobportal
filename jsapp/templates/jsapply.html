@@ -1,0 +1,84 @@
+{% extends "jsparent.html" %}
+{% block body %}
+
+<div class="row mt-5 w-75 mx-auto pb-5 fs-6">
+    <form method="post">
+      {% csrf_token %}
+        <h1 class="text-center">{{job.firmname}}</h1>
+        <div class="mb-3 pt-5">
+          <label for="empemailaddress" class="form-label" required>Enter Employer Email Address</label>
+          <input type="text" class="form-control  text-dark" name="empemailaddress" value="{{job.emailaddress}}" readonly/>
+        </div>
+        <div class="mb-3">
+          <label for="jobtitle" class="form-label" required>Job Title</label>
+          <input type="text" value="{{job.jobtitle}}" class="form-control text-dark" name="jobtitle" placeholder="Enter Job Title" readonly>
+        </div>
+        <div class="mb-3">
+          <label for="post" class="form-label" required>Post</label>
+          <input type="text" value="{{job.post}}" class="form-control text-dark" name="post" readonly>
+        </div>
+        <div class="mb-3">
+          <label for="name" class="form-label" required>Name</label>
+          <input type="text" class="form-control bg-light text-dark" name="name" value="{{jobs.name}}">
+        </div>
+        <div class="col-md-6 mb-3">
+            <h6 class="mb-2 pb-1">Gender: </h6>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="gender" value="female" checked />
+              <label class="form-check-label">Female</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="gender" 
+                value="male" />
+              <label class="form-check-label" >Male</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="other"
+                value="other" />
+              <label class="form-check-label" for="other">Other</label>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="address" class="form-label" required>Enter Address</label>
+            <div class="col-md-9 pe-5">
+                <textarea class="form-control bg-light text-dark" placeholder="Enter Address " name="address"></textarea>
+              </div>
+          </div>
+          <div class="mb-3">
+            <label for="phone" class="form-label" required>Enter Contact  Number</label>
+            <input type="number" class="form-control bg-light text-dark" name="contactno" value="{{jobseek.contactno}}">
+          </div>
+          <div class="mb-3 ">
+            <label for="emailaddress" class="form-label" required>Email Address</label>
+            <input type="email" class="form-control bg-light text-dark " name="emailaddress" value="{{jobseek.emailaddress}}">
+          </div>
+          <div class="mb-3">
+            <label for="dob" class="form-label" required>Date of Birth</label>
+            <input type="date" class="form-control bg-light text-dark" name="dob" placeholder="Enter Date Of Birth">
+          </div>
+          <div class="mb-3">
+            <label for="qualification" class="form-label" required>Enter Your Highest Qualification</label>
+            <input type="text" class="form-control bg-light text-dark" name="qualification">
+          </div>
+          <div class="mb-3">
+            <label for="we" class="form-label" required>Work Experience</label>
+            <input type="text" class="form-control bg-light text-dark" name="experience">         
+          </div>
+          <div class="mb-3">
+            <label for="skills" class="form-label" required>Skills</label>
+            <div class="col-md-9 pe-5">
+                <textarea class="form-control bg-light text-dark" name="keyskills" placeholder="Enter Your Skills"></textarea>
+              </div>
+          </div>
+        <div class="mb-3 form-check pt-3">
+            <div class="form-check d-flex mb-5">
+                <input class="form-check-input me-2" type="checkbox" value="Termsandconditions" required />
+                <label class="form-check-label" >
+                  I agree all statements in <a href="#">Terms of service</a>
+                </label>
+              </div>
+        </div>
+        <button type="submit" class="btn btn-primary w-100 " style="background-color: #093f75; color:white;">Submit</button>
+      </form>
+</div>
+{% endblock body %}

@@ -1,0 +1,29 @@
+{% extends 'adminparent.html' %}
+{% block body %}
+    <div class="row">
+        <div class="col-sm-12 text-dark">
+            <h1 style="text-align: center;">View All Complaints</h1>
+            <table class="table table-bordered text-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Contact No.</th>
+                    <th>Email address</th>
+                    <th>Subject</th>
+                    <th>Responsetext</th>
+                    <th>Posted Date</th>
+                </tr>
+                {% for c in comp %}
+                <tr>
+                    <td>{{c.name}}</td>
+                    <td>{{c.contactno}}</td>
+                    <td>{{c.emailaddress}}</td>
+                    <td>{{c.subject}}</td>
+                    <td>{{c.responsetext}}</td>
+                    <td>{{c.posteddate}}</td>
+                    
+                </tr>
+                    {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock body %}

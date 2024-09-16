@@ -1,0 +1,45 @@
+{% extends "employerparent.html" %}
+{% block body %}
+    <div class="row">
+        <div class="col-sm-12">
+            <h1 style="text-align:center;">Posted Jobs</h1>    
+            <div class="table-responsive">
+            <table class="table table-bordered text-dark" style="margin: auto;">
+                <tr>
+                <th>Firm Name</th>
+                <th>Job Title</th>
+                <th>Post</th>
+                <th>Job Description</th>
+                <th>Qualification</th>
+                <th>Experience</th>
+                <th>Location</th>
+                <th>Salary</th>
+                <th>Email</th>
+                <th>Update</th>
+                <th>Delete</th>
+                <th>View Applicants</th>
+            </tr>
+                {% for p in pjobs %}
+                <tr>
+                    <td>{{p.firmname}}</td>
+                    <td>{{p.jobtitle}}</td>
+                    <td>{{p.post}}</td>
+                    <td>{{p.jobdesc}}</td>
+                    <td>{{p.qualification}}</td>
+                    <td>{{p.experience}}</td>
+                    <td>{{p.location}}</td>
+                    <td>{{p.salarypa}}</td>
+                    <td>{{p.emailaddress}}</td>
+                    <td><button class="btn btn-success">Update</button></td>
+                    <td><a href="{% url 'employer:deljob' post=p.post %}">
+                        <button type="button" class="btn btn-danger">Delete</button>
+                    </a></td>
+                    <td><a href="{%url 'employer:viewapplicants' %}" class="btn btn-success">View Applicants</a></td>
+                    
+                    </tr>
+                {% endfor %}
+            </table> 
+        </div> 
+        </div>
+    </div>
+{% endblock body %}

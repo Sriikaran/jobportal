@@ -1,0 +1,54 @@
+{% extends "employerparent.html" %}
+{% block body %}
+
+    <div class="row w-75">
+        <div class="col-sm-12">
+            <h1 style="text-align:center;">View Your Profile</h1>
+            <form method="post" class="form-group">
+                {% csrf_token %}
+                <table class="table text-dark" style="width:60%;margin:auto; border: transparent;">
+                <tr>
+                    <td>Firm Name</td>
+                    <td>
+                        <input type="text" name="firmname" value="{{empreg.firmname}}" class="form-control text-light"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Firm Work</td>
+                    <td>
+                        <input type="text" name="firmwork" value="{{empreg.firmwork}}" class="form-control text-light"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Firm Address</td>
+                    <td><textarea name="firmaddress" class="form-control text-light">{{empreg.firmaddress}}</textarea></td>
+                </tr>
+                <tr>
+                    <td>Company Name</td>
+                    <td>
+                    <input type="text" name="cpname" value="{{empreg.cpname}}" class="form-control text-light"/>  
+                    </td>
+                </tr>
+                <tr>
+                    <td>Company contactno</td>
+                    <td>
+                    <input type="number" name="cpcontactno" value="{{empreg.cpcontactno}}" class="form-control text-light" />  
+                    </td>
+                </tr>
+                <tr>
+                    <td>Company email address</td>
+                    <td>
+                    <input type="email" name="cpemailaddress" value="{{empreg.cpemailaddress}}" class="form-control text-dark" readonly />  
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                   <button type="submit" class="btn" style="background-color: rgb(8, 8, 151); color: white; font-weight: 500;">Update</button> 
+                    </td>
+                </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+{% endblock body %}

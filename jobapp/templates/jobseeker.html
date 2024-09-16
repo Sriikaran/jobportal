@@ -1,0 +1,102 @@
+{% extends "index.html" %}
+{% block body %}
+<script>
+  const name=document.getElementById('name');
+  const email=document.getElementById('email');
+  const password=document.getElementById('password');
+  const form=document.getElementById('form');
+  const name_error=document.getElementById('name_error');
+
+form.addEventListener('submit',(e)=>{
+  if (name.value === '' || name.value == null)
+{
+  e.preventDefault();
+  name_error.innerHTML="Name is required";
+}
+})
+</script>
+<div class="contaiiner" style="background-color: #093f75;">
+<div class="row mt-5 w-75 mx-auto pb-5 fs-6" >
+    <h1 style="text-align: center; color: #ffffff; font-weight:600;" class="p-5"> Register as Job Seeker</h1>
+    {% if msg %}
+    <p style="text-align: center; color: blue;">{{msg}}</p>
+{% endif %}
+<form class="form-group p-5" method="post" id="form" style="background-color: rgb(231, 231, 231); border-radius: 40px;">
+  {% csrf_token %}
+    <div class=" mb-3"> 
+      <label for="profilepic" class="form-label" required>Upload Profile Pic</label><br>
+      <input type="file" name="profilepic" id="profilepic" class="form-control">
+    </div>
+    <div class="mb-3"> 
+      <label for="name" class="form-label" required>Name</label>
+      <input type="text" name="name" class="form-control" id="name" placeholder="Enter Your Full Name">
+      <span id="name_error"></span>
+    </div>
+    <div class="col-md-6 mb-3">
+      <h6 class="mb-2 pb-1">Gender: </h6>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="gender" id="femaleGender" value="female"
+          checked />
+        <label class="form-check-label" for="femaleGender">Female</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="gender" id="maleGender" value="male" />
+        <label class="form-check-label" for="maleGender">Male</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="gender" id="otherGender" value="other" />
+        <label class="form-check-label" for="otherGender">Other</label>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="address" class="form-label" required>Enter Address</label>
+      <div class="col-md-9 pe-5">
+        <textarea class="form-control" name="address" rows="3" placeholder="Enter Address "></textarea>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="phone" class="form-label" required>Enter Phone Number</label>
+      <input type="number" name="contactno" class="form-control" id="phoneno" placeholder="Enter Phone No. ">
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label" required>Email address</label>
+      <input type="email" name="emailaddress" class="form-control" id="email" placeholder="Enter Email">
+    </div>
+
+    <div class="mb-3">
+      <label for="password" class="form-label" required>Password</label>
+      <input type="password" name="password" class="form-control" id="password" placeholder="Enter Password">
+    </div>
+    <div class="mb-3">
+      <label for="dob" class="form-label" required>Date of Birth</label>
+      <input type="date" name="dob" class="form-control" id="dob" placeholder="Enter Date Of Birth">
+    </div>
+    <div class="mb-3">
+      <label for="qualification" class="form-label" required>Enter Your Highest Qualification</label>
+      <div class="col-md-9 pe-5">
+        <input type="text" class="form-control" name="qualification"  placeholder="Enter Qualifications "/>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="we" class="form-label" name="experience"  required>Work Experience</label>
+      <input type="text" class="form-control" id="company" placeholder="Experience"><br>
+    </div>
+    <div class="mb-3">
+      <label for="skills" name="keyskills" class="form-label" required> Key Skills</label>
+      <div class="col-md-9 pe-5">
+        <textarea class="form-control" rows="3" placeholder="Enter Your Skills"></textarea>
+      </div>
+    </div>
+    <div class="mb-3 form-check pt-3">
+      <div class="form-check d-flex mb-5">
+        <input class="form-check-input me-2" type="checkbox" value="" name="checkbox" required />
+        <label class="form-check-label">
+          I agree all statements in <a href="#">Terms of service</a>
+        </label>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary w-100 " style="background-color: #093f75; color:white;">Submit</button>
+  </form>
+</div>
+</div>
+{% endblock body %}

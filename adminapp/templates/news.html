@@ -1,0 +1,24 @@
+{% extends "adminparent.html" %}
+{% block body %}
+<div class="row mt-5 w-75 mx-auto pb-5 fs-6">
+    <h1 style="text-align: center; font-weight:600; color: black;"> Add News</h1>
+    {% if msg %}
+    <p style="text-align: center; color: blue;">{{msg}}</p>
+{% endif %}
+<form class="form-group text-dark" method="post">
+  {% csrf_token %}
+    <div class="col">
+        <label for="news" class="form-label">Add News</label>
+        <textarea class="form-control text-dark bg-light" rows="3" placeholder="Add News" name="newstext"></textarea>
+      </div>
+      <div class="submit pt-5 mx-auto w-50">
+    <button type="submit" class="btn btn-primary w-100 " style="background-color: #093f75; color:white;">Submit</button>
+  </div>
+  </form>
+  <div class="row mx-auto w-25">
+    <a class="btn btn-success mx-auto" href="{% url 'adminapp:viewnews' %}"> View News</a>
+ </div>
+    </table>
+  </div>
+</div>
+{% endblock body %}

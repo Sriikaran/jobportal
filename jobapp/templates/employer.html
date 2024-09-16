@@ -1,0 +1,74 @@
+{% extends "index.html" %}
+{% block body %}
+<div class="container" style="background-color:#093f75;">
+<div class="row mt-5 w-75 mx-auto pb-5">
+    
+        <h1 class="p-5 text-light" style="text-align: center; color: #313030; font-weight:600;"> Register as Employer </h1>
+        {% if msg %}
+        <p style="text-align: center; color: blue;">{{msg}}</p>
+    {% endif %}
+    <div class="main mx-auto" style="background-color: rgb(223, 221, 221); border-radius: 40px; ">
+    <form class="form-group p-5" method="post">
+      {% csrf_token %}
+      <div class=" mb-3"> 
+        <label for="empprofilepic" class="form-label" required>Upload Profile Pic</label><br>
+        <input type="file" name="empprofilepic" class="form-control">
+      </div>
+        <div class="mb-3">
+          <label for="FirmName" class="form-label" required>Firm Name</label>
+          <input type="text" pattern="[a-zA-Z\s]+" title="Please Enter a valid name" class="form-control" name="firmname" placeholder="Name of the firm">
+        </div>
+        <div class="mb-3 ">
+          <label for="Firmwork" class="form-label" required>Firm Work</label>
+          <input type="text" class="form-control" name="firmwork" placeholder="Work of the firm">
+        </div>
+        <div class="mb-3">
+          <label for="address" class="form-label" required>Firm Address</label>
+          <div class="col-md-9 pe-5">
+            <textarea class="form-control" name="firmaddress" rows="3" placeholder="Enter your firm's Address "></textarea>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="CompanyName" class="form-label" required>Name of the company</label>
+          <input type="text" class="form-control" name="cpname" placeholder="Enter your Company's Name">
+        </div>
+        <div class="mb-3">
+          <label for="contactno" class="form-label" required>Company's Contact No</label>
+          <input type="number" class="form-control" name="cpcontactno" placeholder="Enter Contact no.">
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label" required>Email address</label>
+          <input type="email" class="form-control" name="cpemailaddress" placeholder="Enter Email">
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label" required>Password</label>
+          <input type="password" class="form-control" name="password" placeholder="Enter Password">
+        </div>
+        <div class="mb-3">
+          <label for="aadhar" class="form-label" required>Aadhar No.</label>
+          <input type="text" class="form-control" name="aadharno" placeholder=" Enter Aadhar No.">
+        </div>
+        <div class="mb-3">
+          <label for="panno" class="form-label" required>PAN No.</label>
+          <input type="text" class="form-control" name="panno" placeholder=" Enter PAN No.">
+        </div>
+        <div class="mb-3">
+          <label for="gstno" class="form-label" required>GST No.</label>
+          <input type="text" class="form-control" name="gstno" placeholder=" Enter GST No.">
+        </div>
+        <div class="mb-3 form-check pt-3">
+            <div class="form-check d-flex mb-5">
+                <input class="form-check-input me-2" type="checkbox" value="" required/>
+                <label class="form-check-label">
+                  I agree all statements in <a href="#" >Terms of service</a>
+                </label>
+              </div>
+        </div>
+        <button type="submit" class="btn btn-primary w-100 " style="background-color: #093f75; color:white;">Submit</button>
+      </form>
+    </div>
+    
+  </body>
+</div>
+</div>
+{% endblock body %}

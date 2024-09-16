@@ -1,0 +1,27 @@
+{% extends "employerparent.html" %}
+{% block body %}
+<h1>Add Post</h1>
+  
+    <div class="row">
+        {% if msg %}
+        <p style="text-align: center;">{{msg}}</p>
+        {% endif %}
+          <form class="form-group" method="post" enctype="multipart/form-data">
+            {%csrf_token %}
+          <div class="mb-3 bg-light">
+            <label for="caption" class="form-label">Posted By</label>
+            <textarea class="form-control bg-light text-dark" name="cpname" rows="3" value="{{empreg.cpname}}" placeholder="enter company name"></textarea>
+          </div>
+          <div class="mb-3 bg-light">
+            <label for="caption" class="form-label">Add Content</label>
+            <textarea class="form-control bg-light text-dark" name="caption" rows="3" placeholder="Add Content"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="media" class="form-label">Add media</label>
+            <input type="file" name="media" class="form-control bg-light text-dark">
+        </div>
+          <div class="mb-3">
+            <button type="submit"  class="btn btn-success">Post</button>        </div>
+        </form>
+    </div>
+{% endblock body %}

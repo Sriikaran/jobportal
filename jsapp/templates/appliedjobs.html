@@ -1,0 +1,44 @@
+{% extends "jsparent.html" %}
+{% block body %}
+    <div class="row">
+        <div class="col-sm-12">
+            <h1 style="text-align:center;">Applied Jobs</h1>    
+            <div class="table-responsive">
+                <table class="table table-bordered text-dark " style="margin: auto; font-weight: 500;">
+                    <tr>
+                    <td>Emp Email Address</td>
+                    <td>Job Title</td>
+                    <td>Post</td>
+                    <td>Name</td>
+                    <td>Gender</td>
+                    <td>Address</td>
+                    <td>Contact No.</td>
+                    <td>Email Address</td>
+                    <td>DOB</td>
+                    <td>Qualification</td>
+                    <td>Experience</td>
+                    <td>Key Skills</td>
+                    <td>Applied Date</td>
+                </tr>
+                    {% for ap in appl %}
+                    <tr>
+                        <td>{{ap.empemailaddress}}</td>
+                        <td>{{ap.jobtitle}}</td>
+                        <td>{{ap.post}}</td>
+                        <td>{{ap.name}}</td>
+                        <td>{{ap.gender}}</td>
+                        <td>{{ap.address}}</td>
+                        <td>{{ap.contactno}}</td>
+                        <td>{{ap.emailaddress}}</td>
+                        <td>{{ap.dob}}</td>
+                        <td>{{ap.qualification}}</td>
+                        <td>{{ap.experience}}</td>
+                        <td>{{ap.keyskills}}</td>
+                        <td>{{ap.applieddate}}</td>
+                    </tr>
+                    {% endfor %}
+                </table> 
+            </div>
+        </div>
+    </div>
+{% endblock body %}

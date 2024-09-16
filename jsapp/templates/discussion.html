@@ -1,0 +1,19 @@
+{% extends "jsparent.html" %}
+{% block body %}
+<div class="row mt-5 w-75 mx-auto pb-5 fs-6">
+    <h1 style="text-align: center; color: #ffffff; font-weight:600;">Ask Questions</h1>
+    {% if msg %}
+    <p style="text-align: center; color: blue;">{{msg}}</p>
+{% endif %}
+<form class="form-group" method="post">
+  {% csrf_token %}
+    <div class="mb-3 pt-5"> 
+      <label for="heading" class="form-label" style="color: rgb(253, 253, 253);" >Ask Question</label>
+      <input type="text" class="form-control" name="newstitle" style="color: black;"/>
+    </div>
+    <div class="submit" style="align-items: center; justify-content: center; text-align: center;">
+    <button type="submit" class="btn btn-primary w-25 " style="background-color: #093f75; color:white; border: #ffffff; ">Submit</button>
+  </div>
+  </form>
+</div>
+{% endblock body %}

@@ -1,0 +1,25 @@
+{% extends "adminparent.html" %}
+{% block body %}
+    <div class="row">
+        <div class="col-sm-12">
+            <h1 style="text-align:center;">View News</h1>   
+            <table class="table table-bordered text-light" style="margin: auto;">
+                <tr>
+                    <th>Newstext</th>
+                    <th>Newsdate</th>
+                    <th>Delete</th>
+                    <th>Update</th>        
+                </tr>
+                {% for n in new %}
+                <tr>
+                    <td>{{n.newstext}}</td>
+                    <td>{{n.newsdate}}</td>
+                    <td><a href="{% url 'adminapp:delnews' newsdate=n.newsdate %}" class="btn btn-danger"> Delete
+                    </a></td>
+                    <td><a class="btn btn-success">Update</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock body %}

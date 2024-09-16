@@ -1,0 +1,26 @@
+{% extends 'adminparent.html' %}
+{% block body %}
+<div class="row" style="color: black;">
+    <h1 style="text-align: center;">View Feedbacks</h1>
+    <table class="table table-bordered ">
+        <tr>
+            <th>Name</th>
+            <th>Contactno</th>
+            <th>Email Address</th>
+            <th>Subject</th>
+            <th>Responsetext</th>
+            <th>Posted Date</th>
+        </tr>
+        {% for f in feed %}
+        <tr>
+            <td>{{f.name}}</td>
+            <td>{{f.contactno}}</td>
+            <td>{{f.emailaddress}}</td>
+            <td>{{f.subject}}</td>
+            <td>{{f.responsetext}}</td>
+            <td>{{f.posteddate}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock body %}

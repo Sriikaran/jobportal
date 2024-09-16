@@ -1,0 +1,56 @@
+{% extends "employerparent.html" %}
+{% block body %}
+    <div class="row">
+        <div class="col-sm-12">
+            <h1 style="text-align:center; cursor: pointer;">Post Jobs</h1>  
+            {% if msg %}
+            <p style="text-align: center;">{{msg}}</p>
+            {% endif %}
+              <form class="form-group" method="post" enctype="multipart/form-data">
+                {%csrf_token %}
+                <table class="table text-dark" style="width: 60%; margin:auto; border: transparent;">
+                <tr>
+                    <td>Enter Firm Name</td>
+                    <td><input type="text" name="firmname" class="form-control text-dark bg-light" value="{{empreg.cpname}}" readonly/></td>
+                </tr>
+                <tr>
+                    <td>Enter Job Title</td>
+                    <td><input type="text" name="jobtitle" class="form-control text-dark bg-light" placeholder="Remote / On-Site "/></td>
+                </tr>
+                <tr>
+                    <td>Enter Post</td>
+                    <td><input type="text" name="post" class="form-control text-dark bg-light" placeholder="Ex: Software Developer"/></td>
+                </tr>
+                <tr>
+                    <td>Enter Job Description</td>
+                    <td><input type="text" name="jobdesc" class="form-control text-dark bg-light" placeholder="Ex: Excellent Commands in Any One Language Java Or Python" required/></td>
+                </tr> 
+                <tr>
+                    <td>Qualification</td>
+                    <td><textarea name="qualification" class="form-control text-dark bg-light" placeholder="Ex: Graduate/Post-Graduate"></textarea></td>
+                </tr>
+                <tr>
+                  <td>Enter Experience</td>
+                  <td><input type="text" name="experience" class="form-control text-dark bg-light" placeholder="Ex: 0-5 Years " required/></td>
+              </tr>
+              <tr>
+                <td>Enter Location</td>
+                <td><input type="text" name="location" class="form-control text-dark bg-light" placeholder="Ex: Delhi" required/></td>
+            </tr>
+            <tr>
+              <td>Enter Salary Per Annum</td>
+              <td><input type="number" name="salarypa" class="form-control text-dark bg-light" placeholder="3" required/></td>
+          </tr>
+          <tr>
+            <td>Enter Email Address</td>
+            <td><input type="email" name="emailaddress" value="{{empreg.cpemailaddress}}" class="form-control text-dark" readonly/></td>
+        </tr>
+                <tr>
+                    <td></td>
+                    <td><button type="submit"  class="btn btn-success">Post Job</td>
+                </tr>
+                </table>
+              </form>
+        </div>
+    </div>
+{% endblock body %}

@@ -1,0 +1,20 @@
+{% extends 'adminparent.html' %}
+{% block body %}
+<div class="row text-dark">
+    <h1 class="text-center">
+        Jobseekers
+    </h1>
+    <table class="table table-bordered">
+        <tr>
+            <th> Name</th>
+            <th>Email address</th>
+        </tr>
+        {% for j in jobseek %}
+        <tr>
+            <td>{{j.name}}</td>
+            <td>{{j.emailaddress}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock body %}

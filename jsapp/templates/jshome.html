@@ -1,0 +1,82 @@
+{% extends 'jsparent.html' %}
+{% load static %}
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/brands.min.css"
+        integrity="sha512-EJp8vMVhYl7tBFE2rgNGb//drnr1+6XKMvTyamMS34YwOEFohhWkGq13tPWnK0FbjSS6D8YoA3n3bZmb3KiUYA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+{% block body %}
+<div class="row pt-4">
+    <div class="col-sm-6 mt-4">
+        <h4 class="pt-5  mx-5" style="font-size: 35px;">Hey {{jobseek.name}} !</h4>
+        <h4 class="pt-5  mx-5" style="font-size: 35px;">Great Jobs Here</h4>
+        <h1 class="pt-3 mx-5" style="font-size: 55px; color: navy;">Discover & Find Your
+            Dream Companies</h1>
+        <form class="d-flex mt-3" role="search">
+            <input class="form-control me-2 w-50 bg-light text-dark mx-5" type="search" placeholder="Search"
+                aria-label="Search" style="border: 1px solid rgba(128, 128, 128, 0.357);">
+            <button class="btn" style="background-color: navy;" type="submit">Search</button>
+        </form>
+        <p class="m-5" style="font-size: 15px;"><span style="font-weight: bold;">Popular Searches: </span> &nbsp;
+            Designer, Web, IOS, Developer, PHP, Senior, Engineer</p>
+    </div>
+    <div class="col-sm-6">
+        <img src="{%static 'rimage.webp' %}" alt="" width="90%">
+    </div>
+</div>
+<div class="row">
+    <h1 class="text-center p-5">Explore More Jobs</h1>
+    {% for j in job %}
+    <div class="col-sm-3 pt-3 bg-light text-dark">
+        <div class="card bg-light text-dark" data-aos="fade-up">
+            <div class="card-body mx-2 bg-light text-dark">
+                <h5 class="card-title pt-3 bg-light text-dark">{{j.post}}</h5>
+                <p style="font-size: 13px;color: grey; "><i class="fa-solid fa-location-dot"
+                        style="color: grey;"></i>&nbsp;&nbsp;{{j.location}} &nbsp;
+                    <i class="fa-regular fa-clock" style="color: grey;"></i>&nbsp; {{j.posteddate}}<br>
+                    <i class="fa-solid fa-briefcase" style="color: grey;"></i>&nbsp;&nbsp;{{j.jobtitle}}
+                </p>
+                <ul style="list-style: none;">
+                    <h6 style="color: rgba(9, 4, 95, 0.632);">{{j.firmname}}</h6>
+                    <li><span style="color:black; font-weight: 600;">Qualifications:</span> {{j.qualification}}</li>
+                    <li>{{j.jobdesc}}</li>
+                    <li><span style="color:black; font-weight: 600;">Salary:&nbsp;</span>{{j.salarypa}} LPA</li>
+                    <li><a href="https://mail.google.com/mail/u/0/#inbox">{{j.emailaddress}}</a></li>
+                </ul>
+                <a href="{% url 'jsapp:jsapply' id=j.id %}" class="btn" style="background-color: navy;">Apply Now</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<div class="row pt-5">
+    <div class="col-sm-6">
+        <img src="{%static 'left.png' %}" alt="" style="border-radius: 40px;">
+    </div>
+    <div class="col-sm-6  mx-auto text-bold">
+        <h2 style="font-size: 35px; color: grey;" class="pt-5 mt-5 ">Millions Of Jobs.</h2>
+        <h1 style="font-size: 60px; color: black;">Find The One That’s <span style="color: blue;">Right </span> For You
+        </h1>
+        <p style="font-size: 20px;">Search all the open positions on the web. Get your own personalized salary estimate.
+            Read reviews on over 600,000 companies worldwide. The right job is out there.</p>
+        <button class="btn p-3 w-50" style="font-size: 20px; background-color: navy;">Learn More</button>
+    </div>
+</div>
+<div class="row p-5 mb-3">
+    <h1 class="text-center mb-5">View Posts By Top Companies</h1>
+    {% for a in apost %}
+    <div class="card bg-light mb-3">
+        <div class="card-body bg-light text-dark">
+            <img class="img-xs rounded-circle " src="{{empreg.profilepic.url}}" alt=""><h5 class="card-title text-dark">{{a.cpname}}</h5>
+            <p class="card-text">{{a.caption}}</p>
+            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+        </div>
+        <img src="{{a.media.url}}" class="card-img-bottom" alt="..." height="400px">
+    </div>
+    {% endfor %}
+</div>
+{% endblock body %}

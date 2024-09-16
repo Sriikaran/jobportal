@@ -1,0 +1,37 @@
+{% extends "employerparent.html" %}
+{% block body %}
+    <div class="row">
+        <div class="col-sm-12">
+            <h1 style="text-align:center;">View Jobs</h1>   
+            <table class="table table-bordered" style="margin: auto;">
+            <div class="table-responsive">
+                <tr>
+                <th>Firm Name</th>
+                <th>Job Title</th>
+                <th>Job Description</th>
+                <th>Qualification</th>
+                <th>Experience</th>
+                <th>Location</th>
+                <th>Salary</th>
+                <th>Email</th>
+            
+            
+            </tr>
+        {% for v in vjobs %}
+        <tr>
+            <td>{{v.firmname}}</td>
+            <td>{{v.jobtitle}}</td>
+            <td>{{v.post}}</td>
+            <td>{{v.jobdesc}}</td>
+            <td>{{v.qualifications}}</td>
+            <td>{{v.experience}}</td>
+            <td>{{v.location}}</td>
+            <td>{{v.salary}}</td>
+            <td>{{v.email}}</td>
+        </tr>
+        {% endfor %}
+        </table>
+        </div>
+        </div>
+    </div>
+{% endblock body %}

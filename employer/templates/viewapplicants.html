@@ -1,0 +1,50 @@
+{% extends "employerparent.html" %}
+{% block body %}
+    <div class="row">
+        <div class="col-sm-12">
+            <h1 style="text-align:center;">View Applicants</h1>    
+            <div class="table-responsive">
+                <table class="table table-bordered text-dark" style="margin: auto;">
+                    <tr>
+                    <td>Job Title</td>
+                    <td>Post</td>  
+                    <td>Name</td>
+                    <td>Gender</td>
+                    <td>Address</td>
+                    <td>Contact No.</td>
+                    <td>Email Address</td>
+                    <td>DOB</td>
+                    <td>Qualification</td>
+                    <td>Experience</td>
+                    <td>Key Skills</td>
+                    <td>Applied Date</td>
+                    <td>Accept</td>
+                    <td>Reject</td>
+                </tr>
+                    {% for p in post %}
+                    <tr>
+                        <td>{{p.jobtitle}}</td>
+                        <td>{{p.post}}</td>
+                        <td>{{p.name}}</td>
+                        <td>{{p.gender}}</td>
+                        <td>{{p.address}}</td>
+                        <td>{{p.contactno}}</td>
+                        <td>{{p.emailaddress}}</td>
+                        <td>{{p.dob}}</td>
+                        <td>{{p.qualification}}</td>
+                        <td>{{p.experience}}</td>
+                        <td>{{p.keyskills}}</td>
+                        <td>{{p.applieddate}}</td>
+                        <td>
+                            <a class="btn btn-success">Accept</a>
+                        </td>
+                        <td><a href="{% url 'employer:reject' emailaddress=p.emailaddress %}">
+                            <button type="button" class="btn btn-danger">Reject</button>
+                        </a></td>
+                        </tr>
+                    {% endfor %}
+                </table> 
+            </div>
+        </div>
+    </div>
+{% endblock body %}

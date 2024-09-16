@@ -1,0 +1,40 @@
+{% extends "jsparent.html" %}
+{% block body %}
+<div class="row">
+    <div class="col-sm-12 w-75 mx auto">
+        <h1 class="text-center">Response</h1>
+        {% if msg %}
+         <div class="alert alert-dark" role="alert">{{msg}}</div>
+        {% endif %}
+      <div class="w-75 mx auto">
+        <form method="post" class="'form-group">
+            {% csrf_token %}
+        <table class="table text-dark">
+            <tr>
+                <td>Enter Select Response Type</td>
+                <td>
+                    <select name="responsetype" class="form-select">
+                    <option selected>--Select Response Type--</option>
+                    <option value="feedback">Feedback</option>
+                    <option value="complaint">Complaint</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Enter Subject</td>
+                <td><input type="text" name="subject" class="form-control" placeholder="ex. about portal" style="background-color: transparent;"></td>
+            </tr>
+            <tr>
+                <td>Enter Message</td>
+                <td><textarea name="responsetext" class="form-control" placeholder="Ex. What can we improve" rows="5" style="background-color: transparent;"></textarea></td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td><button type="submit" class="btn btn-success">Send</button></td></tr>
+        </table>
+        </form>
+    </div>
+</div>
+</div>
+{% endblock body %}

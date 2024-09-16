@@ -1,0 +1,83 @@
+{% extends "index.html" %}
+{% block body %}
+<style>
+        @media only screen and (max-width:600px){
+        #image{
+          display: none;
+        }
+        .row .col-sm-6{
+          margin: 0;
+          padding: 0;
+          
+        }
+      }
+</style>
+{% load static %}
+
+<div class="row mx-auto">
+<div class="col-sm-6 pt-5 mt-5 px-5">
+  <img src="{%static 'images/login.png' %}" alt="" class="px-5 pt-5" id="image">
+</div>
+<div class="col-sm-6">
+<div class="row mt-5 pt-5 mb-5 w-100 mx-auto pb-4 " style="background-color: rgb(236, 236, 240); border-radius: 40px;">
+        <h1 style="text-align: center; color: #313030; font-weight:600;">Login </h1>
+        {% if msg %}
+        <div class="alert alert-primary" role="alert">
+          {{msg}}
+      </div>
+      {% endif %}
+      <div class="row mx-auto" style="border-radius: 40px;">
+        <form method="post">
+        {% csrf_token %}
+        <div class="mb-3 pt-5">
+            <label for="loginas" class="form-label">Login as</label>
+            <select class="form-select " aria-label="select" required name="usertype">
+                <option selected>--Login as--</option>
+                <option value="Jobseeker">Jobseeker</option>
+                <option value="Employer">Employer</option>
+                <option value="Administrator">Administrator</option>
+              </select>
+        </div>
+        <label for="username" class="form-label" required>Username</label>
+        <div class="mb-3" style="display: flex;">
+          <input type="email" name="username" class="form-control" id="email" aria-describedby="email" placeholder="Enter Username">
+          <i class="fa-solid fa-user" style="position: absolute; right: 75px;  padding-top: 15px; cursor: pointer;"></i>
+        </div>
+        <label for="password" class="form-label" required>Password</label>
+        <div class=" input-box mb-3">
+          <div class="input" style="box-sizing: border-box;  align-items: center; display: flex;" >
+          <input type="password" name="password" class="form-control" id="password" placeholder="Enter Password">
+          <img src="{%static 'images/eye-close.svg' %}" alt="" style="width: 25px; cursor: pointer; background-color: transparent; position: absolute; right: 75px;" id="eyeicon">
+         </div>
+        </div>
+        <a href="#">Forgotten Password?</a> <br> <br>
+        <a href="{% url 'jobapp:jobseekerreg' %}">Not Registered Yet? Register Here !</a>
+        <script>
+          let eyeicon = document.getElementById("eyeicon");
+          let password = document.getElementById("password");
+          eyeicon.onclick=function(){
+            if(password.type=="password"){
+              password.type="text";
+              eyeicon.src="{%static 'images/eye-open.svg' %}";
+            }
+            else{
+              password.type="password";
+              eyeicon.src="{%static 'images/eye-close.svg' %}";
+            }
+          }
+        </script>
+        <div class="mb-3 form-check pt-3">
+            <div class="form-check d-flex mb-5">
+                <input class="form-check-input me-2" type="checkbox" style="background-color: #093f75; color: white;" required />
+                <label class="form-check-label" for="form-check" >
+                  I agree all statements in <a href="#">Terms of service</a>
+                </label>
+              </div>
+        </div>
+        <button type="submit" class="btn btn-primary w-100 " style="background-color: #093f75; color:white;">Login</button>
+      </form>
+</div>
+</div>
+</div>
+</div>
+{% endblock body %}

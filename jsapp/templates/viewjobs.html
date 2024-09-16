@@ -1,0 +1,38 @@
+{% extends "jsparent.html" %}
+{% block body %}
+    <div class="row">
+        <div class="col-sm-12">
+            <h1 style="text-align:center;">View Jobs</h1> 
+            <div class="table-responsive">  
+            <table class="table table-bordered" style="margin: auto; color: black;">
+            <tr>
+                <th>Firm Name</th>
+                <th>Job Title</th>
+                <th>Post</th>
+                <th>Job Description</th>
+                <th>Qualification</th>
+                <th>Experience</th>
+                <th>Location</th>
+                <th>Salary</th>
+                <th>Email</th>
+                <th>Apply Now</th>
+                </tr>
+        {% for p in pjobs %}
+        <tr>
+            <td>{{p.firmname}}</td>
+            <td>{{p.jobtitle}}</td>
+            <td>{{p.post}}</td>
+            <td>{{p.jobdesc}}</td>
+            <td>{{p.qualification}}</td>
+            <td>{{p.experience}}</td>
+            <td>{{p.location}}</td>
+            <td>{{p.salarypa}}</td>
+            <td>{{p.emailaddress}}</td>
+            <td><a href="{% url 'jsapp:jsapply' id=p.id %}" class="btn btn-success" >Apply Now</a></td>
+        </tr>
+        {% endfor %}
+        </table>
+    </div>
+        </div>
+    </div>
+{% endblock body %}

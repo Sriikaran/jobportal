@@ -1,0 +1,212 @@
+{% extends "index.html" %}
+{% block body %}
+<html>
+<head>
+  {% load static %}
+  <title>Job Portal</title>
+  <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" />
+  <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
+  <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    .container {
+      max-width: 100%;
+    }
+    @media only screen and (max-width:600px) {
+      #textabout {
+        padding-top: 20px;
+      }
+      .col img{
+        height: 80px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container pt-5 ">
+    <section>
+      <h1 style="text-align: center; color: #313030; font-weight:700; font-size: 45px;" class="about pb-3"> About Us</h1>
+      <marquee behaviour="alternate" direction="left" scrollamount="10"
+        style="background-color: #093f75; color: white; font-style: italic; height: 40px; padding: 5px;">The #1 Job
+        Board for
+        Hiring or Find Your Next Job. Each month, more than 3 million job seekers turn to website in their search for
+        work, making over 140,000 applications every single day.</marquee>
+      <div class="row pt-5" >
+        <div class="col-sm-6 ">
+          <img src="{% static 'images/img5.png' %}" class="w-100">
+        </div>
+        <div class="col-sm-6 px-4" id="textabout">
+          <h1
+            style="font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; color: #093f75;  font-weight: 800; font-size: 45px;">
+            We Help To Get The Best Job<br> And Find A Talent</h1>
+          <p class="pt-2" style="color: black; margin-left: 10px; cursor: pointer; ">At DreamJobs, we believe in
+            empowering job seekers with the tools and opportunities they need to succeed in today's competitive job
+            market.Our platform offers a comprehensive suite of services designed to cater to every stage of your career
+            journey, from internships and training programs to full-time job placements.<br>We offer a wide range of
+            services to support you at every stage of your professional journey.</p>
+          <a href="{% url 'jobapp:aboutus' %}"><button class="btn mx-auto"
+              style="background-color: #093f75; color: white; ">Read More</button></a>
+        </div>
+      </div>
+    </section>
+    <div class="row pt-5 ">
+      <div class="col-sm-3 text-center">
+        <h1 style="font-weight: 800; color: #093f75;">25K+</h1>
+        <h4>Completed Cases</h4>
+        <p>We always provide people a
+          complete solution upon focused of
+          any business</p>
+      </div>
+      <div class="col-sm-3  text-center">
+        <h1 style="font-weight: 800; color: #093f75;">17 +</h1>
+        <h4>Our Office</h4>
+        <p>We always provide people a
+          complete solution upon focused of
+          any business</p>
+      </div>
+      <div class="col-sm-3 text-center">
+        <h1 style="font-weight: 800; color: #093f75;">286 +</h1>
+        <h4>Skilled People</h4>
+        <p ">We always provide people a
+              complete solution upon focused of
+              any business</p>
+          </div>
+          <div class=" col-sm-3 text-center">
+        <h1 style="font-weight: 800; color: #093f75;">1000+</h1>
+        <h4>Job Opportunities</h4>
+        <p ">We always provide people a
+              complete solution upon focused of
+              any business</p>
+          </div>
+        </div>    
+        <section><br><br>
+        <div class="row pt-5 pb-5 text-center" style="
+          background-color: white;">
+          <h2 class="pb-5">Top Companies where Our Clients were Placed</h2>
+        <div class="col">
+              <img src="{% static 'images/goo.png' %}" alt="" height="150px" style="display: inline-block;">
+           
+              <img src="{% static 'images/tech.webp' %}" alt="" height="150px" style="display: inline;">
+           
+         
+              <img src="{% static 'images/ibm.jpg' %}" alt="" height="150px" style="display: inline;">
+              <img src="{% static 'images/micro.jpg' %}" alt="" height="100px" style="display: inline;">
+              <img src="{% static 'images/cp.png' %}" alt="" height="150px" style="display: inline;">
+              <img src="{% static 'images/lk.png' %}" alt="" height="150px" style="display: inline;">
+              <img src="{% static 'images/fb.jpg' %}" alt="" height="120px" style="display: inline;">
+            </div>
+        </div>
+      <div class=" row pt-5 pb-5" style= "background-color:rgba(142, 200, 248, 0.3);">
+        <div class="row d-flex justify-content-center">
+          <div class="col-md-10 col-xl-8 text-center">
+            <h3 class="mb-4" style="font-size: 35px;">Our Clients Say !!</h3>
+            <p class="mb-4 pb-2 mb-md-5 pb-md-0">
+              The experiences of our clients with us are truly commendable. DreamJobs helped them to get their<br> <span
+                style="color: #093f75; font-style:italic; font-weight: 800;"> Dream job.</span>
+            </p>
+          </div>
+        </div>
+        <div class="row text-center">
+          <div class="col-md-4 mb-5 mb-md-0">
+            <div class="d-flex justify-content-center mb-4">
+              <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(1).webp"
+                class="rounded-circle shadow-1-strong" width="150" height="150" />
+            </div>
+            <h5 class="mb-3">Maria Smantha</h5>
+            <h6 class="text-primary mb-3">Web Developer</h6>
+            <p class="px-xl-3">
+              <i class="fas fa-quote-left pe-2"></i>I've used several job portals in the past, but this one stands out
+              for its simplicity and ease of use. The interface is intuitive, and I was able to set up my profile and
+              start applying for jobs within minutes. Highly recommended!
+            </p>
+            <ul class="list-unstyled d-flex justify-content-center mb-0">
+              <li>
+                <i class="fas fa-star fa-sm text-warning"></i>
+              </li>
+              <li>
+                <i class="fas fa-star fa-sm text-warning"></i>
+              </li>
+              <li>
+                <i class="fas fa-star fa-sm text-warning"></i>
+              </li>
+              <li>
+                <i class="fas fa-star fa-sm text-warning"></i>
+              </li>
+              <li>
+                <i class="fas fa-star-half-alt fa-sm text-warning"></i>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-4 mb-5 mb-md-0">
+            <div class="d-flex justify-content-center mb-4">
+              <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(2).webp"
+                class="rounded-circle shadow-1-strong" width="150" height="150" />
+            </div>
+            <h5 class="mb-3">Lisa Cudrow</h5>
+            <h6 class="text-primary mb-3">Graphic Designer</h6>
+            <p class="px-xl-3">
+              <i class="fas fa-quote-left pe-2"></i>What really impressed me about this job portal is the exceptional
+              customer support. Whenever I had a question or ran into an issue, the support team was quick to respond
+              and incredibly helpful. It's clear they care about their users' success.
+            </p>
+            <ul class="list-unstyled d-flex justify-content-center mb-0">
+              <li>
+                <i class="fas fa-star fa-sm text-warning"></i>
+              </li>
+              <li>
+                <i class="fas fa-star fa-sm text-warning"></i>
+              </li>
+              <li>
+                <i class="fas fa-star fa-sm text-warning"></i>
+              </li>
+              <li>
+                <i class="fas fa-star fa-sm text-warning"></i>
+              </li>
+              <li>
+                <i class="fas fa-star fa-sm text-warning"></i>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-4 mb-0">
+            <div class="d-flex justify-content-center mb-4">
+              <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(9).webp"
+                class="rounded-circle shadow-1-strong" width="150" height="150" />
+            </div>
+            <h5 class="mb-3">John Smith</h5>
+            <h6 class="text-primary mb-3">Marketing Specialist</h6>
+            <p class="px-xl-3">
+              <i class="fas fa-quote-left pe-2"></i>This platform offers a wide range of job listings across various
+              industries. I was able to find opportunities that matched my skills and interests perfectly. It's the best
+              resource for job seekers I've come across.
+            </p>
+            <ul class="list-unstyled d-flex justify-content-center mb-0">
+              <li>
+                <i class="fas fa-star fa-sm text-warning"></i>
+              </li>
+              <li>
+                <i class="fas fa-star fa-sm text-warning"></i>
+              </li>
+              <li>
+                <i class="fas fa-star fa-sm text-warning"></i>
+              </li>
+              <li>
+                <i class="fas fa-star fa-sm text-warning"></i>
+              </li>
+              <li>
+                <i class="far fa-star fa-sm text-warning"></i>
+              </li>
+            </ul>
+          </div>
+        </div>
+        </section>
+      </div>
+      <br><br>
+    </div>
+  </div>
+</body>
+
+</html>
+{% endblock body %}
