@@ -12,7 +12,7 @@ def aboutus(request):
     return render(request,"aboutus.html")
 def jobseekerreg(request):
     if request.method=="POST":
-        profilepic=request.FILES["profilepic"]
+        profilepic=request.POST["profilepic"]
         name=request.POST["name"]
         gender=request.POST["gender"]
         address=request.POST["address"]
@@ -28,10 +28,10 @@ def jobseekerreg(request):
         return render(request,"jobseeker.html",{"msg":"Registration is done"})
     return render(request,"jobseeker.html")
 def login(request):
-    if request.method=="POST":
-        usertype=request.POST['usertype']
+    if request.method=="POST":  
         username=request.POST["username"]
         password=request.POST["password"]
+        usertype=request.POST['usertype']
         try:
             obj=Login.objects.get(username=username,password=password)
             if obj is not None:

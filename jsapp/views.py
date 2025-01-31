@@ -72,7 +72,7 @@ def jsapply(request,id):
             if request.method=="POST": 
                 empemailaddress=request.POST["empemailaddress"] 
                 jobtitle=request.POST["jobtitle"]
-                post=request.POST['post']
+                post=request.POST['post'] 
                 name=request.POST['name']
                 gender=request.POST['gender']
                 address=request.POST["address"]

@@ -1,7 +1,7 @@
 from django.db import models
 # Create your models here.
 class AppliedJobs(models.Model):
-    id=models.AutoField(primary_key=True,default=1)
+    id=models.AutoField(primary_key=True)
     empemailaddress=models.EmailField(max_length=50)
     jobtitle=models.CharField(max_length=100)
     post=models.CharField(max_length=50)

@@ -1,11 +1,22 @@
 {% extends "index.html" %}
 {% block body %}
 {% load static %}
+<style>
+    iframe {
+    flex: 1 1 auto; 
+    max-width: 100%; 
+    
+  }
+  .vid-container {
+    gap: 20px; /* Add spacing between videos, adjust as needed */
+  }
+</style>
 <script>
   function login(){
     alert("Please login to continue");
   }
   </script>
+
 <!-- Featured Jobs -->
 <div class="row">
     <h1 class="head text-center pt-5">Featured Jobs</h1>
@@ -267,6 +278,19 @@
             </div>
           </div>
     </div>
+</div>
+<div class="row mb-3 mx-auto">
+  <h2 class="text-center mb-2" style="font-size: 35px; color: #093f75;">Interview Preparation Guide</h2>
+  <h3 class="text-center mb-5">Here are some common interview questions you can go throughwith.</h3>
+  <div class="vid-container">
+    <iframe width="500"  height="300" src="https://www.youtube.com/embed/1mHjMNZZvFo?si=neuGdUZt4HtemNlT" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+    <iframe width="500" height="300" src="https://www.youtube.com/embed/WAvBxdNFimk?si=f9QhdAmmUynymNYm" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+<iframe width="500"  height="300" src="https://www.youtube.com/embed/eV_xfy_zRiA?si=TXixtJik7RlEAs1m" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="500" height="300" src="https://www.youtube.com/embed/SoyNG31EAUw?si=jY0Y3TUgrHoHCn7O" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="500" height="300" src="https://www.youtube.com/embed/gsvqdO-2v4g?si=gj_xwnbDEE-Sy_in" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="500" height="300" src="https://www.youtube.com/embed/uqU89z8DRDo?si=3PSnd12QTr6xpnIB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 </div>
 {% endblock body %}
