@@ -4,11 +4,11 @@
 This  Project is a dynamic web application designed to bridge the gap between job seekers and employers. It provides a user-friendly platform where candidates can search and apply for jobs, while recruiters can post job vacancies, manage applications, and find the right talent efficiently.
 
 ## ✨ Key Features:
-**User Authentication**: Secure login and registration for both job seekers and recruiters.
-**Job Listings**: Browse, filter, and search for jobs based on location, industry, and experience level.
-**Application Management**: Job seekers can submit applications and track their status, while recruiters can view, shortlist, and manage applicants.
-**Dashboard:** Personalized dashboards for candidates and recruiters to manage profiles, resumes, and job postings.
-**Responsive Design:** Fully optimized for both desktop and mobile devices.
+**User Authentication**: Secure login and registration for both job seekers and recruiters.  
+**Job Listings**: Browse, filter, and search for jobs based on location, industry, and experience level.  
+**Application Management**: Job seekers can submit applications and track their status, while recruiters can view, shortlist, and manage applicants.  
+**Dashboard:** Personalized dashboards for candidates and recruiters to manage profiles, resumes, and job postings.  
+**Responsive Design:** Fully optimized for both desktop and mobile devices.  
 
 ### 🚀 Technologies Used:
 **Frontend**: HTML, CSS, JavaScript,Bootstrap
