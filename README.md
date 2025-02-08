@@ -1,4 +1,19 @@
-The Deployment link currently have some bugs..that will be resolved soon
+### Live Deployment Link: (currently facing an issue, see below for details) 
+# DreamJobs- Where Dreams Meet Careers !
+This  Project is a dynamic web application designed to bridge the gap between job seekers and employers. It provides a user-friendly platform where candidates can search and apply for jobs, while recruiters can post job vacancies, manage applications, and find the right talent efficiently.
+
+## ✨ Key Features:
+### User Authentication: ** Secure login and registration for both job seekers and recruiters **
+### Job Listings: Browse, filter, and search for jobs based on location, industry, and experience level.
+Application Management: Job seekers can submit applications and track their status, while recruiters can view, shortlist, and manage applicants.
+Dashboard: Personalized dashboards for candidates and recruiters to manage profiles, resumes, and job postings.
+Responsive Design: Fully optimized for both desktop and mobile devices.
+🚀 Technologies Used:
+Frontend: HTML, CSS, JavaScript (React if applicable)
+Backend: Node.js, Express.js (if applicable)
+Database: MongoDB / MySQL (if applicable)
+Deployment: Render
+
 # Here are the snapshots of this project
 ![Screenshot 2025-02-08 235944](https://github.com/user-attachments/assets/6e3bbeb0-6db3-4cfc-ac6f-260a3bf36bbc)
 ![Screenshot 2025-02-08 235955](https://github.com/user-attachments/assets/e4d478cd-4c92-4003-9412-ec258bf7bb36)
