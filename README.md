@@ -37,3 +37,51 @@ This  Project is a dynamic web application designed to bridge the gap between jo
 ![Screenshot 2025-02-09 000251](https://github.com/user-attachments/assets/837a1424-7924-4059-9e29-01fe81e62608)
 
 
+##  🗂️ File Structure
+
+```
+jobportal/
+|
+├── adminapp/
+│   ├── migrations/
+│   ├── static/assets/
+│   ├── templates/
+│   └── __init__.py, admin.py, adminappurrls.py, apps.py, models.py, tests.py, views.py
+|
+├── employer/
+│   ├── migrations/
+│   ├── static/
+│   ├── templates/
+│   └── Procfile, __init__.py, admin.py,apps.py, employerurls.py,  models.py, tests.py, views.py
+|
+├── jobapp/
+│   ├── migrations/
+│   ├── static/
+│   ├── templates/
+│   └── __init__.py, admin.py, apps.py, jobappurls.py, models.py, tests.py, views.py
+|
+├── jsapp/
+│   ├── migrations/
+│   ├── static/
+│   ├── templates/
+│   └── __init__.py, admin.py, apps.py,jsappurls.py, models.py, tests.py, views.py
+|
+├── jobportal/  # root config
+│   └── settings.py, urls.py, ...
+|
+├── media/
+│   └── *avif / *.jpg / *.png / *.webp
+|
+├── staticfiles/
+|   ├── admin/
+│   ├── assets/
+│   ├── css/
+|   ├── images/
+│   ├── js/
+│   └── *.jpg / *mp4 / *.png / *.svg / *.webp
+|
+├── README.md
+├── db.sqlite3
+├── manage.py
+└── requirements.txt
+```
