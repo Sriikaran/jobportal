@@ -12,6 +12,16 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <style>
+header {
+  background: linear-gradient(to right, #0c3056, #1c5aa6);
+  color: white;
+  padding: 20px 0;
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+  border-bottom: 5px solid #56a8fa;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
 .nav-item li a{
   text-decoration: none;
@@ -19,16 +29,57 @@
 .container{
   max-width: 100%;
 }
-.footer{
-  max-width: 100%;
-  background-color: #e8f3f8;
+footer {
+  background-color: #0c3056;
+  color: white;
+  text-align: center;
+  padding: 40px 20px;
+  border-top: 4px solid #56a8fa;
+  box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.2);
+  font-size: 16px;
+  line-height: 1.6;
+  position: relative;
 }
-.footer a{
+
+footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: url('https://www.transparenttextures.com/patterns/diamond-upholstery.png');
+  opacity: 0.04;
+  z-index: 0;
+}
+
+footer .container {
+  position: relative;
+  z-index: 1;
+}
+
+footer a {
+  color: #56a8fa;
   text-decoration: none;
+  margin: 0 15px;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
 }
-.footer a:hover{
-  color: #0b447e;
+
+footer a:hover {
+  text-decoration: underline;
+  color: #a1d0ff;
+  text-shadow: 0 0 5px #56a8fa;
 }
+
+footer .footer-links {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+
 .collapse li a:hover{
   font-weight: 600;
   color: #0b447e;
