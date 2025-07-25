@@ -10,6 +10,9 @@ def jshome(request):
     try:
         if request.session["username"]!=None:
             username=request.session["username"]
+            user=JobSeeker.objects.get(emailaddress=request.session['username'])
+            selected_tags = user.seeker_tags.all()
+            recommended_posts = Jobs.objects.filter(job_tags__in=selected_tags)
             empreg=Employer.objects.all()
             jobseek=JobSeeker.objects.get(emailaddress=username)
             job=Jobs.objects.all()
@@ -118,3 +121,6 @@ def response(request):
         return render(request,"response.html")
     except KeyError:
         return redirect("jobapp:login")
+
+
+   
