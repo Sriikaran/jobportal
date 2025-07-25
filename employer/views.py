@@ -4,6 +4,7 @@ from . models import Jobs,Post
 from django.views.decorators.cache import cache_control
 import datetime
 from jsapp.models import AppliedJobs
+from jobapp.utils import send_notification_email
 # Create your views here.
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
 def employerhome(request):
@@ -41,10 +42,20 @@ def jobs(request):
                 emailaddress=request.POST['emailaddress']
                 pjobs=Jobs(firmname=firmname,jobtitle=jobtitle,post=post,jobdesc=jobdesc,qualification=qualification,experience=experience,location=location,salarypa=salarypa,posteddate=posteddate,emailaddress=emailaddress)
                 pjobs.save()
+<<<<<<< HEAD
                 for t in  clean_tags:
                       t=t.lower()
                       t_obj,created= Tags.objects.get_or_create(tag_name=t)
                       pjobs.job_tags.add(t_obj)
+=======
+                # Email notification to job seekers (simple match on qualification or skills)
+                matching_seekers = JobSeeker.objects.filter(qualification__icontains=qualification)
+                emails = [seeker.emailaddress for seeker in matching_seekers if seeker.emailaddress]
+                subject = "New Job Matching Your Profile"
+                message = f"Dear Job Seeker,\n\nA new job '{jobtitle}' matching your profile has been posted. Log in to apply!"
+                if emails:
+                    send_notification_email(subject, message, emails)
+>>>>>>> upstream/master
                 msg="Job Post is added"
                 return render(request,"jobs.html",locals())
             return render(request,"jobs.html",locals())
@@ -82,7 +93,17 @@ def viewapplicants(request):
     except KeyError:
         return redirect("jobapp:login")
 def reject(request,emailaddress):
-    AppliedJobs.objects.get(emailaddress=emailaddress).delete()
+    # Send rejection email before deleting
+    from jobapp.utils import send_notification_email
+    from jsapp.models import AppliedJobs
+    try:
+        application = AppliedJobs.objects.get(emailaddress=emailaddress)
+        subject = "Application Status Update"
+        message = f"Dear {application.name},\n\nWe regret to inform you that your application for {application.jobtitle} has been rejected."
+        send_notification_email(subject, message, [application.emailaddress])
+        application.delete()
+    except AppliedJobs.DoesNotExist:
+        pass
     return redirect("employer:viewapplicants")
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
 def viewmyprofile(request):
