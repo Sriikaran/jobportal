@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from django.shortcuts import render, redirect
 from employer.models import Jobs, Post
 from jsapp.models import Response, SavedJob
@@ -56,6 +57,20 @@ def viewprofile(request):
             user=JobSeeker.objects.get(emailaddress=request.session['username'])
             selected_tags = user.seeker_tags.all()
             recommended_posts = Jobs.objects.filter(job_tags__in=selected_tags)
+=======
+from django.shortcuts import render,redirect
+from jobapp.models import JobSeeker,Employer
+from django.views.decorators.cache import cache_control
+from employer.models import Jobs,Post
+import datetime
+from . models import AppliedJobs,Response
+# Create your views here.
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+def jshome(request):
+    try:
+        if request.session["username"]!=None:
+            username=request.session["username"]
+>>>>>>> d0a70a6 (responsive-issue#27)
             empreg=Employer.objects.all()
             jobseek=JobSeeker.objects.get(emailaddress=username)
             job=Jobs.objects.all()
@@ -63,6 +78,7 @@ def viewprofile(request):
             return render(request,"jshome.html",locals())
     except KeyError:
         return redirect("jobapp:login")
+<<<<<<< HEAD
 =======
         jobseeker = JobSeeker.objects.get(emailaddress=seeker_email)
     except JobSeeker.DoesNotExist:
@@ -138,6 +154,47 @@ def logout(request):
     return redirect("index")
 def changepassword(request):
 <<<<<<< HEAD
+=======
+def logout(request):
+    try:
+        del request.session["username"]
+    except KeyError:
+        return redirect("jobapp:login")
+    return redirect("jobapp:login")
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+def viewjobs(request):
+    try:
+        if request.session["username"]!=None:
+            username=request.session["username"]
+            jobseek=JobSeeker.objects.get(emailaddress=username)
+            pjobs=Jobs.objects.all()
+            return render(request,"viewjobs.html",locals())
+    except KeyError:
+        return redirect("jobapp:login")
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+def viewprofile(request):
+    #try:
+        if request.session["username"]!=None:
+            username=request.session["username"]
+            jobseek=JobSeeker.objects.get(emailaddress=username)
+            if request.method=="POST":
+                name=request.POST["name"]
+                gender=request.POST["gender"]
+                address=request.POST["address"]
+                contactno=request.POST["contactno"]
+                emailaddress=request.POST["emailaddress"]
+                qualification=request.POST["qualification"]
+                dob=request.POST["dob"]
+                experience=request.POST["experience"]
+                keyskills=request.POST["keyskills"]
+                JobSeeker.object.all()
+                return redirect("jsapp:jshome",locals())
+            return render(request,"viewprofile.html",locals())
+    #except KeyError:
+        #return redirect("jobapp:login")
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+def changepassword(request):
+>>>>>>> d0a70a6 (responsive-issue#27)
     try:
         if request.session["username"]!=None:
             username=request.session["username"]
@@ -200,6 +257,7 @@ def response(request):
         return render(request,"response.html")
     except KeyError:
         return redirect("jobapp:login")
+<<<<<<< HEAD
 
 
    
@@ -288,3 +346,5 @@ def viewjobs(request):
     # Just rendering a template for now
     return render(request, 'jsapp/viewjobs.html')
 >>>>>>> upstream/master
+=======
+>>>>>>> d0a70a6 (responsive-issue#27)

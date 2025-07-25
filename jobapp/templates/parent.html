@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% load static %}
 
 <html>
@@ -258,4 +259,387 @@ footer .footer-links {
     </div>
      </div>
 </body>
+=======
+<html>
+
+<head>
+  {% load static %}
+  <title>Dream Jobs</title>
+  <link rel="icon" href="{% static 'images/img2.png' %}">
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoH5d4lZ/xvFUm3z8iNf5M5QccjZoAS+NLPco+NC2Bz/jGm" crossorigin="anonymous">
+
+  <!-- Bootstrap Bundle JS (includes Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-QWc3zS7Z1WdkZkWovN1Xy4YuM1vQ2PIh/jtKwYby8xX9k+3xFLRHxUtY0dnMAb7H"
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+  <style>
+    /* Hamburger Button */
+
+    .hamburger {
+      display: none;
+      /* Hidden by default */
+      font-size: 30px;
+      background-color: transparent;
+      border: none;
+      color: #093f75;
+      cursor: pointer;
+    }
+
+    #menu-toggle {
+      font-size: 26px;
+      background-color: transparent;
+      border: none;
+      color: rgb(0, 0, 0);
+      cursor: pointer;
+      position: relative;
+      right: 1rem;
+      top: 1.1rem;
+      display: none;
+    }
+
+    /* Mobile Menu */
+    #mobileMenu {
+      display: none;
+      flex-direction: column;
+      background-color: #f2f2f2;
+      padding: 15px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Menu Items */
+    #mobileMenu a {
+      padding: 10px 0;
+      color: #000;
+      text-decoration: none;
+      border-bottom: 1px solid #ddd;
+      font-size: larger;
+    }
+
+    #mobileMenu li {
+      list-style: none;
+    }
+
+    /* Show hamburger on small screens */
+    @media (max-width: 768px) {
+      #menu-toggle {
+        font-size: 28px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        display: block;
+      }
+
+      .desktop-menu {
+        display: block;
+      }
+    }
+
+    .navbar-brand {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    @media (max-width: 991.98px) {
+      .navbar .container {
+        justify-content: start !important;
+      }
+
+      .navbar-brand {
+        margin-right: auto !important;
+      }
+    }
+
+    .nav-item li a {
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 100%;
+    }
+
+    .footer {
+      max-width: 100%;
+      background-color: #e8f3f8;
+    }
+
+    .footer a {
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      color: #0b447e;
+    }
+
+    .collapse li a:hover {
+      font-weight: 600;
+      color: #0b447e;
+    }
+
+    .footer a:hover {
+      color: #0b447e;
+    }
+
+    .collapse .nav-link:hover {
+      font-weight: 600;
+      color: #0b447e;
+    }
+
+    .footer {
+      background-color: #e8f3f8;
+    }
+
+
+    @media (max-width: 576px) {
+
+      .footer .col-md-3,
+      .footer .col-md-2,
+      .footer .col-md-4 {
+        margin-bottom: 1.5rem;
+        text-align: center;
+      }
+
+      .navbar .btn,
+      .dropdown .btn {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Top Contact Row: Email on top, Address below -->
+  <div class="container">
+    <div class="py-3 bg-light">
+      <div class="d-flex flex-column flex-lg-row justify-content-between align-items-center text-center text-md-start">
+
+        <!-- Email -->
+        <div class="mb-2 mb-md-0">
+          <i class="fa-solid fa-envelope text-primary me-2"></i>
+          <a href="mailto:info@dreamjobs.com" class="text-dark text-decoration-none">
+            Email: info@dreamjobs.com
+          </a>
+        </div>
+
+        <!-- Address -->
+        <div>
+          <i class="fa-solid fa-location-dot text-primary me-2"></i>
+          <span class="text-dark">Office Address: 501, Cyber Heights, Lucknow</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Navbar Section -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container d-flex justify-content-between align-items-center">
+
+      <!-- Left: Logo -->
+      <a class="navbar-brand d-flex align-items-center" href="{% url 'jobapp:index' %}">
+        <img src="{% static 'images/logo.png' %}" class="img-fluid"
+          style="max-height: 80px; border-radius: 20px 20px 0 20px;" alt="Dream Jobs Logo" />
+      </a>
+      <!-- Center: Navigation Links -->
+      <div class="mx-auto d-none d-lg-block">
+        <ul class="navbar-nav flex-row gap-3 justify-content-center">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'jobapp:index' %}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'jobapp:aboutus' %}">About Us</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'jobapp:services' %}">Services</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'jobapp:blog' %}">Blog</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'jobapp:contactus' %}">Contact</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Right: Login/Register -->
+      <div class="d-none d-lg-flex align-items-center gap-3 ms-auto">
+        <a href="{% url 'jobapp:login' %}" class="btn text-white" style="background-color: #093f75;">
+          Login
+        </a>
+        <div class="dropdown">
+          <button class="btn dropdown-toggle text-white" type="button" data-bs-toggle="dropdown" aria-expanded="false"
+            style="background-color: #093f75;">
+            Register
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'jobapp:employerreg' %}">Employer</a></li>
+            <li><a class="dropdown-item" href="{% url 'jobapp:jobseekerreg' %}">Job Seeker</a></li>
+          </ul>
+        </div>
+      </div>
+      <!-- Hamburger Button -->
+      <button class="hamburger" id="menu-toggle" aria-label="Toggle menu">☰</button>
+      <!-- Mobile Menu -->
+      <div class="mobile-menu" id="mobileMenu">
+        <ul>
+          <li><a href="{% url 'jobapp:index' %}">Home</a></li>
+          <li><a href="{% url 'jobapp:aboutus' %}">About Us</a></li>
+          <li><a href="{% url 'jobapp:services' %}">Services</a></li>
+          <li><a href="{% url 'jobapp:blog' %}">Blog</a></li>
+          <li><a href="{% url 'jobapp:contactus' %}">Contact</a></li>
+        </ul>
+      </div>
+  </nav>
+  <!-- nav end -->
+
+  {% block body %}
+
+  {% endblock body %}
+  <div class="footer">
+    <footer class="text-center text-lg-start bg-body-light " style="color: black;">
+      <!-- Section: Social media -->
+      <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+        <!-- Left -->
+        <div class="me-5 d-none d-lg-block">
+          <span style="color: #093f75;font-weight: 600; font-style: italic; font-size: 20px;">Get connected with us on
+            social networks:</span>
+        </div>
+        <!-- Left -->
+
+        <!-- Right -->
+        <div class="social">
+          <a href="https://www.facebook.com/" class="me-4 text-reset">
+            <i class="fab fa-facebook-f" style="color: #053a70;"></i>
+          </a>
+          <a href="https://twitter.com/" class="me-4 text-reset">
+            <i class="fab fa-twitter" style="color: #47bde4;"></i>
+          </a>
+          <a href="https://www.gmail.com/" class="me-4 text-reset">
+            <i class="fa-regular fa-envelope"></i> </a>
+          <a href="https://www.instagram.com/" class="me-4 text-reset">
+            <i class="fa-brands fa-instagram" style="color: #e5397b;"></i>
+          </a>
+          <a href="https://www.linkedin.com/" class="me-4 text-reset">
+            <i class="fab fa-linkedin" style="color: #364ade;"></i>
+          </a>
+          <a href="https://github.com/" class="me-4 text-reset">
+            <i class="fab fa-github"></i>
+          </a>
+        </div>
+        <!-- Right -->
+      </section>
+      <!-- Section: Social media -->
+
+      <!-- Section: Links  -->
+      <section class="">
+        <div class="container text-center text-md-start mt-5">
+          <!-- Grid row -->
+          <div class="row mt-3">
+            <!-- Grid column -->
+            <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+              <!-- Content -->
+              <h6 class="text-uppercase fw-bold mb-4">
+                <img src="{% static 'images/logo.png' %}" width="50%"></span>
+              </h6>
+              <p>
+                At Dream Jobs, we believe in the power of human potential. Our mission is to empower businesses like
+                yours to thrive by harnessing the full capabilities of your most valuable asset—your people.
+              </p>
+            </div>
+            <!-- Grid column -->
+            <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+              <!-- Links -->
+              <h6 class="text-uppercase fw-bold mb-4">
+                <span style="color:#093f75">COMPANY</span>
+              </h6>
+              <p>
+                <a href="{% url 'jobapp:aboutus' %}" class="text-reset" style="text-decoration: none;">About us</a>
+              </p>
+              <p>
+                <a href="{% url 'jobapp:index' %}" class="text-reset" style="text-decoration: none;">Privacy Policy</a>
+              </p>
+              <p>
+                <a href="{% url 'jobapp:index' %}" class="text-reset" style="text-decoration: none;">Terms and
+                  Conditions</a>
+              </p>
+              <p>
+                <a href="{% url 'jobapp:services' %}" class="text-reset" style="text-decoration: none;">Services</a>
+              </p>
+            </div>
+            <!-- Grid column -->
+            <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+              <!-- Links -->
+              <h6 class="text-uppercase fw-bold mb-4">
+                <span style="color:#093f75">SERVICES</span>
+              </h6>
+              <p>
+                <a href="{% url 'jobapp:services' %}" class="text-reset" style="text-decoration: none;">Internships and
+                  Trainings</a>
+              </p>
+              <p>
+                <a href="{% url 'jobapp:services' %}" class="text-reset"
+                  style="text-decoration: none;">Apprenticeship</a>
+              </p>
+              <p>
+                <a href="{% url 'jobapp:services' %}" class="text-reset" style="text-decoration: none;">Dream Jobs</a>
+              </p>
+              <p>
+                <a href="{% url 'jobapp:services' %}" class="text-reset" style="text-decoration: none;">Work from
+                  home</a>
+              </p>
+            </div>
+            <!-- Grid column -->
+
+            <!-- Grid column -->
+            <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+              <!-- Links -->
+              <h6 class="text-uppercase fw-bold mb-4"> <span style="color:#093f75">CONTACT</span></h6>
+              <p><i class="fas fa-home me-3"></i> 501, Cyber Heights, Lucknow</p>
+              <p>
+                <i class="fas fa-envelope me-3"></i>
+                info@dreamjobs.com
+              </p>
+              <p><i class="fas fa-phone me-3"></i> 9889106834</p>
+            </div>
+            <!-- Grid column -->
+          </div>
+          <!-- Grid row -->
+        </div>
+      </section>
+
+      <!-- Copyright -->
+      <div class="text-center p-4" style="background-color: rgb(4, 4, 108); color: white;">
+        Copyright © 2024 Dream Jobs. Developed By Khushi Nigam.
+      </div>
+      <!-- Copyright -->
+    </footer>
+    <!-- Footer -->
+  </div>
+  </div>
+
+  <script>
+    const toggleButton = document.getElementById("menu-toggle");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    toggleButton.addEventListener("click", () => {
+      // Toggle between block (visible) and none (hidden)
+      if (mobileMenu.style.display === "flex") {
+        mobileMenu.style.display = "none";
+      } else {
+        mobileMenu.style.display = "flex";
+      }
+    });
+  </script>
+
+</body>
+
+>>>>>>> d0a70a6 (responsive-issue#27)
 </html>

@@ -88,6 +88,7 @@ jobportal/
 ├── manage.py
 └── requirements.txt
 ```
+<<<<<<< HEAD
 
 ---
 
@@ -96,3 +97,5 @@ jobportal/
 This project is licensed under the [MIT License](LICENSE).
 
 ---
+=======
+>>>>>>> d0a70a6 (responsive-issue#27)

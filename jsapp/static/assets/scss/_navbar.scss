@@ -8,6 +8,10 @@
   -webkit-transition:left $action-transition-duration $action-transition-timing-function;
   -moz-transition:left $action-transition-duration $action-transition-timing-function;
   -ms-transition:left $action-transition-duration $action-transition-timing-function;
+<<<<<<< HEAD
+=======
+
+>>>>>>> d0a70a6 (responsive-issue#27)
   @media (max-width:992px) {
     left: 0;
   }
@@ -20,6 +24,12 @@
     width: $sidebar-width-lg;
     height: $navbar-height;
     @media (max-width: 991px) {
+<<<<<<< HEAD
+=======
+      width: $sidebar-width-icon;
+    }
+    @media (max-width: 991px) {
+>>>>>>> d0a70a6 (responsive-issue#27)
       width: 55px;
     }
     .navbar-brand {
@@ -88,7 +98,11 @@
       &:not(.navbar-toggler-right) {
         font-size: 0.875rem;
         @media (max-width: 991px) {
+<<<<<<< HEAD
           display: none;
+=======
+          display: block;
+>>>>>>> d0a70a6 (responsive-issue#27)
         }
       }
       &.navbar-toggler-right{
@@ -377,4 +391,22 @@
       background: $navbar-brand-wrapper-tinted-bg;
     }
   }
+<<<<<<< HEAD
 }
+=======
+}
+
+@media (max-width: 768px) {
+  .navbar-nav {
+    flex-direction: column !important;
+    align-items: flex-start;
+    padding-left: 0;
+    gap: 10px;
+  }
+}
+
+.navbar-nav .nav-item .nav-link {
+  padding: 10px 0;
+  font-size: 14px;
+}
+>>>>>>> d0a70a6 (responsive-issue#27)
