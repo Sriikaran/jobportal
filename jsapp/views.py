@@ -5,6 +5,7 @@ from django.contrib import messages
 from jobapp.models import JobSeeker
 from .models import AppliedJobs
 from datetime import datetime
+from jobapp.utils import send_notification_email
 
 def index(request):
     return render(request, "index.html")
@@ -191,6 +192,10 @@ def jsapply(request, id):
             keyskills=seeker.keyskills,
             applieddate=datetime.now().strftime("%Y-%m-%d"),
         )
+        # Send email notification to job seeker
+        subject = "Application Received"
+        message = f"Dear {seeker.name},\n\nYour application for {job.jobtitle} has been received."
+        send_notification_email(subject, message, [seeker.emailaddress])
         return render(request, "applied_success.html", {"job": job})
 
     return render(request, "applyjob.html", {"job": job, "seeker": seeker})
