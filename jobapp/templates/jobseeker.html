@@ -4,31 +4,111 @@
 <style>
     .error-message {
         color: gray;
-        display: none;
+        display: none; 
     }
     input:invalid ~ .error-message {
-        display: block;
+    display: block;
+  }
+    .inter-font {
+       font-family: 'Inter', sans-serif;
     }
-</style>
+    
+    .form-label {
+        display: block;
+        font-weight: 600;
+        color: #093f75;
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+    }
+    
+    .form-input, .form-select {
+        width: 100%;
+        padding: 12px 12px 12px 45px;
+        border: 2px solid #e8f2ff;
+        border-radius: 12px;
+        background: #f8fbff;
+        font-size: 0.95rem;
+        transition: box-shadow 0.25s, border-color 0.25s;
+        font-family: 'Inter', sans-serif;
+    }
+    
+    .form-select {
+        padding-left: 16px;
+        cursor: pointer;
+    }
+    
+    .form-input:focus, .form-select:focus {
+        outline: none;
+        border-color: #093f75;
+        background: #FFFFFF;
+        box-shadow:  0 4px 16px rgba(9, 63, 117, 0.10);
+    }
+    
+    .form-textarea {
+        padding-left: 16px;
+    }
+    
+    input[type="file"].form-input {
+  padding: 10px 16px;
+  background-color: #f8fbff;
+  border: 2px solid #e8f2ff;
+  border-radius: 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  color: #093f75;
+  cursor: pointer;
+}
 
-<div class="contaiiner" style="background-color: #093f75;">
-    <div class="row mt-5 w-75 mx-auto pb-5 fs-6">
-        <h1 style="text-align: center; color: #ffffff; font-weight:600;" class="p-5">Register as Job Seeker</h1>
+input[type="file"].form-input::file-selector-button {
+  background-color: #093f75;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+input[type="file"].form-input::file-selector-button:hover {
+  background-color: #072f5c;
+}
+
+</style>
+<div class="container inter-font" style="background: linear-gradient(135deg, #f6fafd 0%, #e8f2ff 100%);">
+    <div class="row w-75 mx-auto pb-5 fs-6">
         {% if msg %}
         <p style="text-align: center; color: rgb(253, 253, 255);">{{msg}}</p>
         {% endif %}
-        <form class="form-group p-5" method="post" id="form" enctype="multipart/form-data" style="background-color: rgb(231, 231, 231); border-radius: 40px;">
+        <form class="mb-3 mt-5 p-5 " method="post" id="form" style="
+        background-color: rgb(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        box-shadow: 0 8px 32px rgba(9, 63, 117, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        ">
             {% csrf_token %}
-            <div class="mb-3">
+            
+    <h2 style="color: #093f75; font-weight: 600; margin-bottom: 2rem;">
+        Registration for Job Seeker
+    </h2>
+            
+            <!-- Profile picture upload -->
+            <div class="mb-3"> 
                 <label for="profilepic" class="form-label" required>Upload Profile Pic</label><br>
-                <input type="file" name="profilepic" id="profilepic" class="form-control">
+                <input type="file" name="profilepic" id="profilepic" class="form-input">
             </div>
-            <div class="mb-3">
+            
+            <!-- Name --> 
+            <div class="mb-3"> 
                 <label for="name" class="form-label">Name</label>
-                <input type="text" name="name" class="form-control" id="name" pattern="[a-zA-Z\s]+" title="Enter name using alphabets(a-z)" placeholder="Enter Your Full Name" required>
+                <input type="text" name="name" class="form-input" id="name" pattern="[a-zA-Z\s]+" title="Enter name using alphabets(a-z)" placeholder="Enter Your Full Name" required>
                 <span class="error-message">Please enter a valid name(ex: Ravi)</span>
             </div>
-            <div class="col-md-6 mb-3">
+            
+            <!-- Gender -->
+            <div class="mb-3">
                 <h6 class="mb-2 pb-1">Gender: </h6>
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="gender" id="femaleGender" value="female" checked />
@@ -43,37 +123,46 @@
                     <label class="form-check-label" for="otherGender">Other</label>
                 </div>
             </div>
+            
+            <!-- Address --> 
             <div class="mb-3">
                 <label for="address" class="form-label">Enter Address</label>
-                <div class="col-md-9 pe-5">
-                    <textarea class="form-control" name="address" rows="3" placeholder="Enter Address" required></textarea>
+                    <textarea class="form-input form-textarea" name="address" rows="3" placeholder="Enter Address" required></textarea>
                     <span class="error-message">Address is required.</span>
                 </div>
-            </div>
+            
+            <!-- Phone number --> 
             <div class="mb-3">
                 <label for="phone" class="form-label">Enter Phone Number</label>
-                <input type="text" name="contactno" class="form-control" pattern="^[6-9]{1}[0-9]{9}" aria-label="Enter a valid phone no." id="phoneno" placeholder="Enter Phone No." required>
+                <input type="text" name="contactno" class="form-input" pattern="^[6-9]{1}[0-9]{9}" aria-label="Enter a valid phone no." id="phoneno" placeholder="Enter Phone No." required>
                 <span class="error-message">Please enter a valid 10-digit phone number.</span>
             </div>
+            
+            <!-- Email address --> 
             <div class="mb-3">
                 <label for="email" class="form-label">Email address</label>
-                <input type="email" name="emailaddress" class="form-control" id="email" placeholder="Enter Email" required>
+                <input type="email" name="emailaddress" class="form-input" id="email" placeholder="Enter Email" required>
                 <span class="error-message">Please enter a valid email address.</span>
             </div>
+            
+            <!-- Password --> 
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password" name="password" class="form-control" id="password" placeholder="Enter Password" required>
+                <input type="password" name="password" class="form-input" id="password" placeholder="Enter Password" required>
                 <span class="error-message">Password is required.</span>
             </div>
+            
+            <!-- Date of Birth --> 
             <div class="mb-3">
                 <label for="dob" class="form-label">Date of Birth</label>
-                <input type="date" name="dob" class="form-control" id="dob" required>
+                <input type="date" name="dob" class="form-input" id="dob" required>
                 <span class="error-message">Date of Birth is required.</span>
             </div>
+            
+            <!-- Highest Qualification --> 
             <div class="mb-3">
                 <label for="qualification" class="form-label">Enter Your Highest Qualification</label>
-                <div class="col-md-9 pe-5">
-                    <select name="qualification" id="qualification" class="form-control">
+                    <select name="qualification" id="qualification" class="form-select ">
                         <option value="null">--Select Qualification--</option>
                         <option value="BCA">BCA</option>
                         <option value="BBA">BBA</option>
@@ -82,11 +171,12 @@
                         <option value="Other">Other</option>
                     </select>
                     <span class="error-message">Qualification is required.</span>
-                </div>
             </div>
+            
+            <!-- Work Experience --> 
             <div class="mb-3">
                 <label for="we" class="form-label">Work Experience</label>
-                <select name="experience" id="experience" class="form-control">
+                <select name="experience" id="experience" class="form-select">
                     <option value="null">--Select Work Experience--</option>
                     <option value="1-2 Years">1-2 Years</option>
                     <option value="3-4 Years">3-4 Years</option>
@@ -95,10 +185,11 @@
                 </select>
                 <span class="error-message">Work experience is required.</span>
             </div>
+            
+            <!-- Key Skills --> 
             <div class="mb-3">
                 <label for="Skills" class="form-label">Key Skills</label>
-                <div class="col-md-9 pe-5">
-                    <select name="skills" id="skills" class="form-control">
+                    <select name="experience" id="experience" class="form-select">
                         <option value="null">--Select Skills--</option>
                         <option value="IT">IT</option>
                         <option value="Management">Management</option>
@@ -108,8 +199,9 @@
                         <option value="Other">Other</option>
                     </select>
                     <span class="error-message">Key skills are required.</span>
-                </div>
             </div>
+            
+            <!-- Form check --> 
             <div class="mb-3 form-check pt-3">
                 <div class="form-check d-flex mb-5">
                     <input class="form-check-input me-2" type="checkbox" value="" name="checkbox" required />
@@ -119,38 +211,11 @@
                 </div>
                 <span class="error-message">You must agree to the terms.</span>
             </div>
+            
+            <!-- Submit button --> 
             <button type="submit" class="btn btn-primary w-100" style="background-color: #093f75; color:white;">Submit</button>
         </form>
     </div>
 </div>
-
-<!-- Job Listings Section -->
-<div class="container my-5">
-    <h2 class="text-center mb-4">Latest Jobs</h2>
-    <div class="row">
-        {% for job in jobs %}
-        <div class="col-md-6 mb-4">
-            <div class="card shadow">
-                <div class="card-body">
-                    <h5 class="card-title">{{ job.jobtitle }}</h5>
-                    <p class="card-text">
-                        <strong>Company:</strong> {{ job.companyname }}<br>
-                        <strong>Location:</strong> {{ job.location }}<br>
-                        <strong>Type:</strong> {{ job.jobtype }}<br>
-                        <strong>Posted:</strong> {{ job.posteddate }}
-                    </p>
-                    <form method="post" action="{% url 'save_job' job.id %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-success">Save Job</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        {% empty %}
-        <p class="text-center">No jobs found.</p>
-        {% endfor %}
-    </div>
-</div>
-
-{% endblock body %}
     
+{% endblock body %}
