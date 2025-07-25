@@ -138,6 +138,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+<<<<<<< HEAD
 
 # Email settings (example for Gmail)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -147,3 +148,5 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'your_email@gmail.com'      # Replace with your email
 EMAIL_HOST_PASSWORD = 'your_app_password'     # Use App Password, not your main password
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+=======
+>>>>>>> d0a70a6 (responsive-issue#27)

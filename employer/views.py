@@ -1,10 +1,17 @@
 from django.shortcuts import render,redirect
+<<<<<<< HEAD
 from jobapp.models import Employer,JobSeeker,Tags
+=======
+from jobapp.models import Employer,JobSeeker
+>>>>>>> d0a70a6 (responsive-issue#27)
 from . models import Jobs,Post
 from django.views.decorators.cache import cache_control
 import datetime
 from jsapp.models import AppliedJobs
+<<<<<<< HEAD
 from jobapp.utils import send_notification_email
+=======
+>>>>>>> d0a70a6 (responsive-issue#27)
 # Create your views here.
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
 def employerhome(request):
@@ -36,12 +43,16 @@ def jobs(request):
                 experience=request.POST['experience']
                 location=request.POST['location']
                 salarypa=request.POST['salarypa']
+<<<<<<< HEAD
                 tags=request.POST['tagname']
                 clean_tags = tags.split(",")
+=======
+>>>>>>> d0a70a6 (responsive-issue#27)
                 posteddate=datetime.datetime.today()
                 emailaddress=request.POST['emailaddress']
                 pjobs=Jobs(firmname=firmname,jobtitle=jobtitle,post=post,jobdesc=jobdesc,qualification=qualification,experience=experience,location=location,salarypa=salarypa,posteddate=posteddate,emailaddress=emailaddress)
                 pjobs.save()
+<<<<<<< HEAD
 <<<<<<< HEAD
                 for t in  clean_tags:
                       t=t.lower()
@@ -56,6 +67,8 @@ def jobs(request):
                 if emails:
                     send_notification_email(subject, message, emails)
 >>>>>>> upstream/master
+=======
+>>>>>>> d0a70a6 (responsive-issue#27)
                 msg="Job Post is added"
                 return render(request,"jobs.html",locals())
             return render(request,"jobs.html",locals())
@@ -93,6 +106,7 @@ def viewapplicants(request):
     except KeyError:
         return redirect("jobapp:login")
 def reject(request,emailaddress):
+<<<<<<< HEAD
     # Send rejection email before deleting
     from jobapp.utils import send_notification_email
     from jsapp.models import AppliedJobs
@@ -104,6 +118,9 @@ def reject(request,emailaddress):
         application.delete()
     except AppliedJobs.DoesNotExist:
         pass
+=======
+    AppliedJobs.objects.get(emailaddress=emailaddress).delete()
+>>>>>>> d0a70a6 (responsive-issue#27)
     return redirect("employer:viewapplicants")
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
 def viewmyprofile(request):
