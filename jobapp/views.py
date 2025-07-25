@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from . models import Login,Employer,JobSeeker,Enquiry
+from . models import Login,Employer,JobSeeker,Enquiry,Tags
 from adminapp.models import News
 from employer.models import Jobs
 from django.core.exceptions import ObjectDoesNotExist
@@ -21,8 +21,14 @@ def jobseekerreg(request):
         password=request.POST["password"]
         dob=request.POST["dob"]
         regdate=datetime.datetime.today()
+        tags = request.POST["tags"]
+        clean_tags = tags.split(",")
         jobseek=JobSeeker(profilepic=profilepic,name=name,gender=gender,address=address,contactno=contactno,emailaddress=emailaddress,dob=dob,regdate=regdate)
         jobseek.save()
+        for t in  clean_tags:
+            t=t.lower()
+            t_obj,created= Tags.objects.get_or_create(tag_name=t)
+            jobseek.seeker_tags.add(t_obj)
         log=Login(username=emailaddress,password=password,usertype="jobseeker")
         log.save()
         return render(request,"jobseeker.html",{"msg":"Registration is done"})

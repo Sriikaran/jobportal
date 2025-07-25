@@ -133,6 +133,13 @@ input[type="file"].form-input::file-selector-button:hover {
             
             <!-- Phone number --> 
             <div class="mb-3">
+                <label for="address" class="form-label">Enter keywords or skills for Job recommendation</label>
+                <div class="col-md-9 pe-5">
+                    <textarea class="form-control" name="tags" rows="2" placeholder="Tags i.e. Python,AI,Consulting etc." required></textarea>
+                    <span class="error-message">This is required.</span>
+                </div>
+            </div>
+            <div class="mb-3">
                 <label for="phone" class="form-label">Enter Phone Number</label>
                 <input type="text" name="contactno" class="form-input" pattern="^[6-9]{1}[0-9]{9}" aria-label="Enter a valid phone no." id="phoneno" placeholder="Enter Phone No." required>
                 <span class="error-message">Please enter a valid 10-digit phone number.</span>

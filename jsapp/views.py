@@ -50,6 +50,20 @@ def viewprofile(request):
 
     seeker_email = request.session["username"]
     try:
+<<<<<<< HEAD
+        if request.session["username"]!=None:
+            username=request.session["username"]
+            user=JobSeeker.objects.get(emailaddress=request.session['username'])
+            selected_tags = user.seeker_tags.all()
+            recommended_posts = Jobs.objects.filter(job_tags__in=selected_tags)
+            empreg=Employer.objects.all()
+            jobseek=JobSeeker.objects.get(emailaddress=username)
+            job=Jobs.objects.all()
+            apost=Post.objects.all()
+            return render(request,"jshome.html",locals())
+    except KeyError:
+        return redirect("jobapp:login")
+=======
         jobseeker = JobSeeker.objects.get(emailaddress=seeker_email)
     except JobSeeker.DoesNotExist:
         jobseeker = None
@@ -115,6 +129,7 @@ def myapplications(request):
     applications = Response.objects.filter(emailaddress=email)
     return render(request, "myapplications.html", {"applications": applications})
 
+>>>>>>> upstream/master
 def logout(request):
     try:
         del request.session["username"]
@@ -122,6 +137,73 @@ def logout(request):
         pass
     return redirect("index")
 def changepassword(request):
+<<<<<<< HEAD
+    try:
+        if request.session["username"]!=None:
+            username=request.session["username"]
+            return render(request,"changepassword.html",locals())
+    except KeyError:
+        return redirect("jobapp:login")
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+def jsapply(request,id):
+    try:
+        if request.session["username"]!=None:
+            username=request.session["username"]
+            job=Jobs.objects.get(id=id)
+            jobseek=JobSeeker.objects.get(emailaddress=username)
+            if request.method=="POST": 
+                empemailaddress=request.POST["empemailaddress"] 
+                jobtitle=request.POST["jobtitle"]
+                post=request.POST['post'] 
+                name=request.POST['name']
+                gender=request.POST['gender']
+                address=request.POST["address"]
+                contactno=request.POST["contactno"]
+                emailaddress=request.POST["emailaddress"]
+                dob=request.POST["dob"]
+                qualification=request.POST["qualification"]
+                experience=request.POST["experience"]
+                keyskills=request.POST["keyskills"]
+                applieddate=datetime.datetime.today()
+                app=AppliedJobs(empemailaddress=empemailaddress,jobtitle=jobtitle,post=post,name=name,gender=gender,address=address,contactno=contactno,emailaddress=emailaddress,dob=dob,qualification=qualification,experience=experience,keyskills=keyskills,applieddate=applieddate)
+                app.save()
+                return render(request,"jsapply.html",{"msg":"Application is Submitted" , 'app':'app'})
+            return render(request,"jsapply.html",{'job':job})
+    except KeyError:
+        return redirect("jobapp:login")
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+def appliedjobs(request):
+    try:
+        if request.session["username"]!=None:
+            username=request.session["username"]
+            appl=AppliedJobs.objects.all()
+            return render(request,"appliedjobs.html",locals())
+    except KeyError:
+        return redirect("jobapp:login")
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+def response(request):
+    try:
+        if request.session['username']!=None:
+            jobseek=JobSeeker.objects.get(emailaddress=request.session["username"])
+            if request.method=="POST":
+                name = jobseek.name
+                contactno = jobseek.contactno
+                emailaddress = jobseek.emailaddress       
+                responsetype = request.POST['responsetype']
+                subject = request.POST['subject']
+                responsetext=request.POST['responsetext']
+                posteddate = datetime.datetime.today()
+                res=Response(name=name,contactno=contactno,emailaddress=emailaddress,responsetype=responsetype,subject=subject,responsetext=responsetext,posteddate=posteddate)
+                res.save()
+                msg="Your response has been send successfully"
+            return render(request,"response.html",locals())
+        return render(request,"response.html")
+    except KeyError:
+        return redirect("jobapp:login")
+
+
+   
+=======
     if "username" not in request.session:
         return redirect("login")
 
@@ -205,3 +287,4 @@ def jshome(request):
 def viewjobs(request):
     # Just rendering a template for now
     return render(request, 'jsapp/viewjobs.html')
+>>>>>>> upstream/master
