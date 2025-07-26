@@ -23,25 +23,25 @@
 }
 
 .job-card {
-  height: 100% !important;
-  display: flex !important;
-  flex-direction: column !important;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  border-radius: 16px !important;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08) !important;
-  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
-  background: #ffffff !important;
-  padding: 16px !important;
-  position: relative !important;
-  overflow: hidden !important;
-  border: 1px solid #e6e6e6 !important;
+  border-radius: 16px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: #ffffff;
+  padding: 16px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #e6e6e6;
 }
 
 .job-card img {
-  border-radius: 12px !important;
-  height: 150px !important;
-  object-fit: cover !important;
-  margin-bottom: 10px !important;
+  border-radius: 12px;
+  height: 150px;
+  object-fit: cover;
+  margin-bottom: 10px;
 }
 
 .job-card h5 {
@@ -58,36 +58,36 @@
 }
 
 .job-card:hover {
-  transform: translateY(-6px) scale(1.01) !important;
-  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12) !important;
-  z-index: 5 !important;
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+  z-index: 5;
 }
 
 .job-card::after {
-  content: "" !important;
-  position: absolute !important;
-  inset: 0 !important;
-  background: radial-gradient(circle at center, rgba(0, 136, 255, 0.1), transparent 70%) !important;
-  opacity: 0 !important;
-  transition: opacity 0.4s ease !important;
-  z-index: -1 !important;
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(0, 136, 255, 0.1), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: -1;
 }
 
 .job-card:hover::after {
-  opacity: 1 !important;
+  opacity: 1;
 }
 
 .job-card .btn {
-  background: linear-gradient(to right, #093f75, #56a8fa) !important;
-  border: none !important;
-  padding: 8px 16px !important;
-  border-radius: 8px !important;
-  font-weight: 500 !important;
-  font-size: 14px !important;
+  background: linear-gradient(to right, #093f75, #56a8fa);
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
 }
 
 .job-card .btn:hover {
-  background: #05488b !important;
+  background: #05488b;
 }
 
 @media only screen and (max-width: 600px) {
