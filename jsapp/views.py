@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from employer.models import Jobs, Post
-from jsapp.models import Response, SavedJob
+from jsapp.models import Response,SavedJob
 from django.contrib import messages
 from jobapp.models import JobSeeker
 from .models import AppliedJobs
@@ -309,7 +309,7 @@ def response(request):
             return redirect("login")
 
     return render(request, "changepassword.html")
-# ✅ NEW FEATURE: Save Job
+# NEW FEATURE: Save Job
 def savejob(request, jobid):
     if "username" not in request.session:
         return redirect("login")

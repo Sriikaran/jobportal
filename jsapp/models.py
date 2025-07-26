@@ -1,4 +1,5 @@
 from django.db import models
+from jobapp.models import JobSeeker, Jobs 
 # Create your models here.
 class AppliedJobs(models.Model):
     id=models.AutoField(primary_key=True)
