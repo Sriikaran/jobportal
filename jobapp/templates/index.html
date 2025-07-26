@@ -15,60 +15,45 @@
     integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
     crossorigin="anonymous"></script>
   <style>
-    /* Wrapper for job cards */
-.cards-wrapper {
+    .col {
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: space-between;
-  padding: 16px 0;
-}
-
-/* Individual Job Card */
-.col {
-  flex: 0 0 23%; /* ~4 cards per row with spacing */
-  display: flex;
-  flex-direction: column;
+  flex-direction: row; /* Change from column to row */
+  gap: 16px;
+  align-items: flex-start;
   justify-content: space-between;
   background-color: #fff;
   padding: 16px;
   border-radius: 16px;
   border: 1px solid #e0e0e0;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
   z-index: 1;
-  min-width: 220px;
+  width: 100%;
+  min-height: 150px;
+  margin: 8px;
 }
 
-.col:hover {
-  transform: translateY(-6px) scale(1.01);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
-  z-index: 10;
-}
-
-.col:hover::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at center, rgba(8, 132, 241, 0.08), transparent 70%);
-  background: radial-gradient(circle at end, rgba(215, 116, 35, 0.08), transparent 70%);
-  opacity: 1;
-  transition: opacity 0.4s ease;
-  z-index: -1;
-  border-radius: 16px;
-}
-
-/* Image Styling */
+/* Image left */
 .col img {
   border-radius: 12px;
   height: 150px;
+  width: 150px;
   object-fit: cover;
-  margin-bottom: 12px;
+  flex-shrink: 0;
+  margin: 0;
 }
 
-/* Job Title */
+/* Right-side content container */
+.col .card-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+/* Title */
 .col h5 {
   font-size: 18px;
   font-weight: 600;
@@ -76,7 +61,7 @@
   margin-bottom: 8px;
 }
 
-/* Description and List */
+/* Paragraph and list */
 .col p,
 .col li {
   font-size: 14px;
@@ -84,54 +69,54 @@
   line-height: 1.5;
 }
 
-/* Remove bullet points */
+/* No bullets */
 .col li {
   list-style: none;
-  padding-left: 0;
   margin-bottom: 6px;
 }
 
-/* Apply Button */
+/* Button at bottom of content */
 .col .btn {
-  background: linear-gradient(to right, white, #56a8fa);
+  background: linear-gradient(to right, white, #2e82d5);
   color: white;
   border: none;
   padding: 8px 16px;
   border-radius: 8px;
   font-weight: 500;
   font-size: 14px;
-  margin-top: auto;
   align-self: flex-start;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease-in;
+  margin-top: 12px;
 }
 
 .col .btn:hover {
   background: white;
-  color: #56a8fa;
-  border: 1px solid #56a8fa;
+  color: #2e82d5;
+  border: 1px solid #2e82d5;
+}
+  .col:hover {
+  transform: translateY(-6px) scale(1.05);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+  z-index: 10;
 }
 
-/* Responsive Tweaks */
-@media (max-width: 1024px) {
-  .col {
-    flex: 0 0 48%; /* 2 per row on tablets */
-  }
+.col::after {
+  content: "";
+  position: relative;
+  background: radial-gradient(circle at center, rgba(0, 136, 255, 0.08), transparent 70%);
+  background:
+    radial-gradient(circle at top left, rgba(16, 242, 136, 0.08), transparent 70%),
+    radial-gradient(circle at top right, rgba(16, 242, 136, 0.08), transparent 70%),
+    radial-gradient(circle at bottom left, rgba(16, 242, 136, 0.08), transparent 70%),
+    radial-gradient(circle at bottom right, rgba(16, 242, 136, 0.08), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  z-index: -1;
+  border-radius: 16px;
 }
 
-@media (max-width: 600px) {
-  .col {
-    flex: 0 0 100%; /* 1 per row on phones */
-    margin-bottom: 20px;
-  }
-
-  .col img,
-  #img2 {
-    display: none;
-  }
-
-  #search-input {
-    width: 100%;
-  }
+.col:hover::after {
+  opacity: 1;
 }
 
   </style>
@@ -159,21 +144,21 @@
         <div class="order-1 order-md-2 col-md-6 d-flex align-items-center justify-content-center mb-4 mb-md-0"
           data-aos="fade-left" data-aos-anchor="#example-anchor" data-aos-offset="500" data-aos-duration="500">
           <img src="{% static 'images/right3.jpg' %}" class="img-fluid"
-            style="border-radius: 20px 20px 20px 0px; max-width: 100%; border: 5px solid #093f75;">
+            style="border-radius: 20px 20px 20px 0px; max-width: 100%; border: 5px solid #0080ff;">
         </div>
 
         <!-- TEXT -->
         <div id="index-main-text" class="order-2 order-md-1 col-md-6 px-4 px-md-5 pt-2 pt-md-5" data-aos="fade-right"
           data-aos-offset="300" data-aos-easing="ease-in-sine">
           <h1
-            style="color: #093f75; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; cursor: pointer;">
+            style="color: #0080ff; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; cursor: pointer;">
             Get The
-            <span style="color: #56a8fa; text-shadow: 4px 4px #093f75;">
+            <span style="color: #56a8fa; text-shadow: 4px 4px #0080ff;">
               Right Job
             </span>
           </h1>
           <h1
-            style="color: #093f75; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; cursor: pointer;">
+            style="color: #0080ff; font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; cursor: pointer;">
             You Deserve
           </h1>
           <p style="cursor: pointer;">
@@ -191,7 +176,7 @@
     </section>
     <!--job card -->
     <section>
-      <div class="row-xxl pt-5 mb-5 mt-3 pb-5" style="background-color: #05488b;color: black" data-aos="fade-up"
+      <div class="row-xxl pt-5 mb-5 mt-3 pb-5" style="background-color: #0080ff;color: black" data-aos="fade-up"
         data-aos-duration="3000">
         <h1 class="text-center" style="color: white;">Latest Jobs Post</h1>
         <p class="text-center" style="color: white;">Explore the different types of available jobs to apply
