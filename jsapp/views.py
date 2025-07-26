@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from employer.models import Jobs, Post
 from jsapp.models import Response, SavedJob
 from django.contrib import messages
-from jobapp.models import JobSeeker
+from jobapp.models import JobSeeker,Employer
 from .models import AppliedJobs
 from datetime import datetime
 from django.shortcuts import get_object_or_404
@@ -97,14 +97,14 @@ def parent(request):
     return render(request, "parent.html")
 
 def admin_dashboard(request):
-    jobs = Job.objects.all()
+    jobs = Jobs.objects.all()
     return render(request, "admin.html", {"jobs": jobs})
 
 def applyjob(request, jobid):
     if "username" not in request.session:
         return redirect("login")
     
-    job = Job.objects.get(id=jobid)
+    job = Jobs.objects.get(id=jobid)
     return render(request, "apply.html", {"job": job})
 
 def myapplications(request):
@@ -152,12 +152,12 @@ def changepassword(request):
             return redirect("login")
 
     return render(request, "changepassword.html")
-# ✅ NEW FEATURE: Save Job
+# NEW FEATURE: Save Job
 def savejob(request, jobid):
     if "username" not in request.session:
         return redirect("login")
     
-    job = Job.objects.get(id=jobid)
+    job = Jobs.objects.get(id=jobid)
     user_email = request.session["username"]
 
     # Check if already saved
