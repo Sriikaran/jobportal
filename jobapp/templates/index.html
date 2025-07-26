@@ -15,56 +15,99 @@
     integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
     crossorigin="anonymous"></script>
   <style>
-    @media only screen and (max-width:600px) {
-      .col-sm-6 img {
-        display: none;
-      }
-
-      #search-input {
-        width: 100%;
-      }
-
-      #img2 {
-        display: none;
-      }
-     }
     .card li {
-      list-style: none;
-      text-align: left;
-    }
-    .job-card {
-      height: 100% !important;
-      display: flex !important;
-      flex-direction: column !important;
-      transition: transform 0.3s ease, box-shadow 0.3s ease !important;
-      border-radius: 10px !important;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
-      background: white !important;
-      position: relative !important;
-      z-index: 1 !important;
-      overflow: hidden !important;
-    }
+  list-style: none;
+  text-align: left;
+  padding-left: 0;
+  margin-bottom: 6px;
+}
 
-    .job-card::after {
-      content: "" !important;
-      position: absolute !important;
-      inset: 0 !important;
-      background: radial-gradient(circle at center, rgba(0, 136, 255, 0.15), transparent 70%) !important;
-      opacity: 0 !important;
-      transition: opacity 0.4s ease !important;
-      border-radius: 16px !important;
-      z-index: -1 !important;
-    }
+.job-card {
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between;
+  border-radius: 16px !important;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08) !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+  background: #ffffff !important;
+  padding: 16px !important;
+  position: relative !important;
+  overflow: hidden !important;
+  border: 1px solid #e6e6e6 !important;
+}
 
-    .job-card:hover {
-      transform: translateY(-10px) scale(1.02) !important;
-      box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2) !important;
-      z-index: 5 !important;
-    }
+.job-card img {
+  border-radius: 12px !important;
+  height: 150px !important;
+  object-fit: cover !important;
+  margin-bottom: 10px !important;
+}
 
-    .job-card:hover::after {
-      opacity: 1 !important;
-    }
+.job-card h5 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #093f75;
+  margin-bottom: 10px;
+}
+
+.job-card p,
+.job-card li {
+  font-size: 14px;
+  color: #555;
+}
+
+.job-card:hover {
+  transform: translateY(-6px) scale(1.01) !important;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12) !important;
+  z-index: 5 !important;
+}
+
+.job-card::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background: radial-gradient(circle at center, rgba(0, 136, 255, 0.1), transparent 70%) !important;
+  opacity: 0 !important;
+  transition: opacity 0.4s ease !important;
+  z-index: -1 !important;
+}
+
+.job-card:hover::after {
+  opacity: 1 !important;
+}
+
+.job-card .btn {
+  background: linear-gradient(to right, #093f75, #56a8fa) !important;
+  border: none !important;
+  padding: 8px 16px !important;
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+}
+
+.job-card .btn:hover {
+  background: #05488b !important;
+}
+
+@media only screen and (max-width: 600px) {
+  .col-sm-6 img {
+    display: none;
+  }
+
+  #search-input {
+    width: 100%;
+  }
+
+  #img2 {
+    display: none;
+  }
+
+  .job-card {
+    margin-bottom: 20px;
+  }
+}
+
   </style>
   <script>
     function login() {
