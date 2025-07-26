@@ -15,12 +15,21 @@
     integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
     crossorigin="anonymous"></script>
   <style>
-    /* Section: Job Cards */
-.card.job-card.h-100 {
+    /* Wrapper for job cards */
+.cards-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+  padding: 16px 0;
+}
+
+/* Individual Job Card */
+.col {
+  flex: 0 0 23%; /* ~4 cards per row with spacing */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%;
   background-color: #fff;
   padding: 16px;
   border-radius: 16px;
@@ -30,31 +39,29 @@
   position: relative;
   overflow: hidden;
   z-index: 1;
+  min-width: 220px;
 }
 
-.card.job-card.h-100:hover {
+.col:hover {
   transform: translateY(-6px) scale(1.01);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
   z-index: 10;
 }
 
-.card.job-card.h-100::after {
+.col:hover::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at center, rgba(0, 136, 255, 0.08), transparent 70%);
-  opacity: 0;
+  background: radial-gradient(circle at center, rgba(8, 132, 241, 0.08), transparent 70%);
+  background: radial-gradient(circle at end, rgba(215, 116, 35, 0.08), transparent 70%);
+  opacity: 1;
   transition: opacity 0.4s ease;
   z-index: -1;
   border-radius: 16px;
 }
 
-.card.job-card.h-100:hover::after {
-  opacity: 1;
-}
-
 /* Image Styling */
-.card.job-card.h-100 img {
+.col img {
   border-radius: 12px;
   height: 150px;
   object-fit: cover;
@@ -62,7 +69,7 @@
 }
 
 /* Job Title */
-.card.job-card.h-100 h5 {
+.col h5 {
   font-size: 18px;
   font-weight: 600;
   color: #093f75;
@@ -70,23 +77,23 @@
 }
 
 /* Description and List */
-.card.job-card.h-100 p,
-.card.job-card.h-100 li {
+.col p,
+.col li {
   font-size: 14px;
   color: #555;
   line-height: 1.5;
 }
 
 /* Remove bullet points */
-.card.job-card.h-100 li {
+.col li {
   list-style: none;
   padding-left: 0;
   margin-bottom: 6px;
 }
 
 /* Apply Button */
-.card.job-card.h-100 .btn {
-  background: linear-gradient(to right, #093f75, #56a8fa);
+.col .btn {
+  background: linear-gradient(to right, white, #56a8fa);
   color: white;
   border: none;
   padding: 8px 16px;
@@ -98,26 +105,32 @@
   transition: background 0.3s ease;
 }
 
-.card.job-card.h-100 .btn:hover {
-  background: #05488b;
+.col .btn:hover {
+  background: white;
+  color: #56a8fa;
+  border: 1px solid #56a8fa;
 }
 
 /* Responsive Tweaks */
+@media (max-width: 1024px) {
+  .col {
+    flex: 0 0 48%; /* 2 per row on tablets */
+  }
+}
+
 @media (max-width: 600px) {
-  .card.job-card.h-100 img {
-    display: none;
+  .col {
+    flex: 0 0 100%; /* 1 per row on phones */
+    margin-bottom: 20px;
   }
 
-  .card.job-card.h-100 {
-    margin-bottom: 20px;
+  .col img,
+  #img2 {
+    display: none;
   }
 
   #search-input {
     width: 100%;
-  }
-
-  #img2 {
-    display: none;
   }
 }
 
@@ -185,7 +198,7 @@
           discover which is right for you.</p>
         <br>
         <div class="row mx-auto" data-aos="fade-up">
-          <div class="col-sm-3 pt-5">
+          <div class="col">
             <div class="job-card" data-aos="fade-up">
               <img src="{% static 'images/job.png' %}" class="card-img-top" alt="...">
               <div class="card-body">
@@ -207,7 +220,7 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-3 pt-5 ">
+          <div class="col">
             <div class="job-card" data-aos="fade-up">
               <img src="{% static 'images/job.png' %}" class="card-img-top" alt="...">
               <div class="card-body">
@@ -228,7 +241,7 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-3 mt-5 ">
+          <div class="col">
             <div class="job-card" data-aos="fade-up">
               <img src="{% static 'images/job.png' %}" class="card-img-top" alt="...">
               <div class="card-body">
@@ -248,7 +261,7 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-3 mt-5">
+          <div class="col">
             <div class="job-card" data-aos="fade-up">
               <img src="{% static 'images/job.png' %}" class="card-img-top" alt="...">
               <div class="card-body">
@@ -269,7 +282,7 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-3 pt-3">
+          <div class="col">
             <div class="job-card " data-aos="fade-up">
               <img src="{% static 'images/job.png' %}" class="card-img-top" alt="...">
               <div class="card-body">
@@ -288,7 +301,7 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-3 pt-3">
+          <div class="col">
             <div class="job-card" data-aos="fade-up">
               <img src="{% static 'images/job.png' %}" class="card-img-top" alt="...">
               <div class="card-body">
@@ -307,7 +320,7 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-3 pt-3">
+          <div class="col">
             <div class="job-card" data-aos="fade-up">
               <img src="{% static 'images/job.png' %}" class="card-img-top" alt="...">
               <div class="card-body">
@@ -331,7 +344,7 @@
             </div>
           </div>
           {% for j in job %}
-          <div class="col-sm-3 pt-3">
+          <div class="col">
             <div class="job-card" data-aos="fade-up" style="height: 100%">
               <div class="card-body mx-2">
                 <img src="{% static 'images/job.png' %}" class="card-img-top" alt="...">
