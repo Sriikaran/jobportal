@@ -1,5 +1,4 @@
 from django.db import models
-from .models import JobSeeker, Jobs
 
 # Avoid storing passwords in plain text!
 # If you're not using Django's built-in auth system, hash passwords before saving!

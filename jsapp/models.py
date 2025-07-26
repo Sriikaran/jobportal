@@ -1,5 +1,6 @@
 from django.db import models
-from jobapp.models import JobSeeker, Jobs 
+from jobapp.models import JobSeeker
+from employer.models import Jobs  
 # Create your models here.
 class AppliedJobs(models.Model):
     id=models.AutoField(primary_key=True)
@@ -24,7 +25,7 @@ class Response(models.Model):
     subject=models.CharField(max_length=500)
     responsetext=models.CharField(max_length=5000)
     posteddate=models.CharField(max_length=30)
-# ✅ New Feature: Saved Job functionality
+#  New Feature: Saved Job functionality
 class SavedJob(models.Model):
     jobseeker = models.ForeignKey(JobSeeker, on_delete=models.CASCADE)
     job = models.ForeignKey(Jobs, on_delete=models.CASCADE)
