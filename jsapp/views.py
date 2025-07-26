@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from django.shortcuts import render, redirect
 from employer.models import Jobs, Post
 from jsapp.models import Response, SavedJob
@@ -7,7 +6,9 @@ from jobapp.models import JobSeeker
 from .models import AppliedJobs
 from datetime import datetime
 from jobapp.utils import send_notification_email
-
+from django.shortcuts import get_object_or_404
+from employer.models import Employer
+from django.views.decorators.cache import cache_control
 def index(request):
     return render(request, "index.html")
 
@@ -45,46 +46,37 @@ def appliedjobs(request):
 
     return render(request, "appliedjobs.html", {"jobs": jobs})
 
+from django.views.decorators.cache import cache_control
+from jobapp.models import JobSeeker
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def viewprofile(request):
     if "username" not in request.session:
-        return redirect("login")
-
-    seeker_email = request.session["username"]
-    try:
-<<<<<<< HEAD
-        if request.session["username"]!=None:
-            username=request.session["username"]
-            user=JobSeeker.objects.get(emailaddress=request.session['username'])
-            selected_tags = user.seeker_tags.all()
-            recommended_posts = Jobs.objects.filter(job_tags__in=selected_tags)
-=======
-from django.shortcuts import render,redirect
-from jobapp.models import JobSeeker,Employer
-from django.views.decorators.cache import cache_control
-from employer.models import Jobs,Post
-import datetime
-from . models import AppliedJobs,Response
-# Create your views here.
-@cache_control(no_cache=True, must_revalidate=True,no_store=True)
-def jshome(request):
-    try:
-        if request.session["username"]!=None:
-            username=request.session["username"]
->>>>>>> d0a70a6 (responsive-issue#27)
-            empreg=Employer.objects.all()
-            jobseek=JobSeeker.objects.get(emailaddress=username)
-            job=Jobs.objects.all()
-            apost=Post.objects.all()
-            return render(request,"jshome.html",locals())
-    except KeyError:
         return redirect("jobapp:login")
-<<<<<<< HEAD
-=======
-        jobseeker = JobSeeker.objects.get(emailaddress=seeker_email)
-    except JobSeeker.DoesNotExist:
-        jobseeker = None
 
-    return render(request, "viewprofile.html", {"jobseeker": jobseeker})
+    try:
+        username = request.session["username"]
+        jobseeker = JobSeeker.objects.get(emailaddress=username)
+
+        if request.method == "POST":
+            jobseeker.name = request.POST.get("name")
+            jobseeker.gender = request.POST.get("gender")
+            jobseeker.address = request.POST.get("address")
+            jobseeker.contactno = request.POST.get("contactno")
+            jobseeker.emailaddress = request.POST.get("emailaddress")
+            jobseeker.qualification = request.POST.get("qualification")
+            jobseeker.dob = request.POST.get("dob")
+            jobseeker.experience = request.POST.get("experience")
+            jobseeker.keyskills = request.POST.get("keyskills")
+            jobseeker.save()
+            messages.success(request, "Profile updated successfully.")
+            return redirect("jsapp:jshome")
+
+        return render(request, "viewprofile.html", {"jobseeker": jobseeker})
+
+    except JobSeeker.DoesNotExist:
+        messages.error(request, "Job seeker not found.")
+        return redirect("jobapp:login")
 
 def response(request):
     if "username" not in request.session:
@@ -127,14 +119,14 @@ def parent(request):
     return render(request, "parent.html")
 
 def admin_dashboard(request):
-    jobs = Job.objects.all()
+    jobs = Jobs.objects.all()
     return render(request, "admin.html", {"jobs": jobs})
 
 def applyjob(request, jobid):
     if "username" not in request.session:
         return redirect("login")
     
-    job = Job.objects.get(id=jobid)
+    job = Jobs.objects.get(id=jobid)
     return render(request, "apply.html", {"job": job})
 
 def myapplications(request):
@@ -145,23 +137,54 @@ def myapplications(request):
     applications = Response.objects.filter(emailaddress=email)
     return render(request, "myapplications.html", {"applications": applications})
 
->>>>>>> upstream/master
 def logout(request):
     try:
         del request.session["username"]
     except:
         pass
     return redirect("index")
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def changepassword(request):
-<<<<<<< HEAD
-=======
+    if "username" not in request.session:
+        return redirect("jobapp:login")
+
+    email = request.session["username"]
+
+    if request.method == "POST":
+        current_password = request.POST.get("current_password")
+        new_password = request.POST.get("new_password")
+        confirm_password = request.POST.get("confirm_password")
+
+        try:
+            user = Response.objects.get(emailaddress=email)
+
+            if user.password != current_password:
+                messages.error(request, "Current password is incorrect.")
+                return redirect("changepassword")
+
+            if new_password != confirm_password:
+                messages.error(request, "New passwords do not match.")
+                return redirect("changepassword")
+
+            user.password = new_password
+            user.save()
+            messages.success(request, "Password changed successfully.")
+            return redirect("index")
+
+        except Response.DoesNotExist:
+            messages.error(request, "User not found.")
+            return redirect("jobapp:login")
+
+    return render(request, "changepassword.html")
+
+
 def logout(request):
     try:
         del request.session["username"]
     except KeyError:
-        return redirect("jobapp:login")
+        pass
     return redirect("jobapp:login")
-@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+
 def viewjobs(request):
     try:
         if request.session["username"]!=None:
@@ -194,7 +217,6 @@ def viewprofile(request):
         #return redirect("jobapp:login")
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
 def changepassword(request):
->>>>>>> d0a70a6 (responsive-issue#27)
     try:
         if request.session["username"]!=None:
             username=request.session["username"]
@@ -257,11 +279,6 @@ def response(request):
         return render(request,"response.html")
     except KeyError:
         return redirect("jobapp:login")
-<<<<<<< HEAD
-
-
-   
-=======
     if "username" not in request.session:
         return redirect("login")
 
@@ -297,7 +314,7 @@ def savejob(request, jobid):
     if "username" not in request.session:
         return redirect("login")
     
-    job = Job.objects.get(id=jobid)
+    job = Jobs.objects.get(id=jobid)
     user_email = request.session["username"]
 
     # Check if already saved
@@ -345,6 +362,3 @@ def jshome(request):
 def viewjobs(request):
     # Just rendering a template for now
     return render(request, 'jsapp/viewjobs.html')
->>>>>>> upstream/master
-=======
->>>>>>> d0a70a6 (responsive-issue#27)
