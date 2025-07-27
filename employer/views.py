@@ -14,7 +14,7 @@ from .models import Jobs, Post
 from jsapp.models import AppliedJobs
 # Create your views here.
 
-from jobapp.utils import send_notification_email
+# from jobapp.utils import send_notification_email
 
 def employer_login_required(view_func):
     @wraps(view_func)

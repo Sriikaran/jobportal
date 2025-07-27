@@ -453,7 +453,7 @@
                 {% endif %}
 
                 <!-- Login Form -->
-                <form method="POST" autocomplete="off">
+                <form method="POST" action="{% url 'jobapp:login' %}" autocomplete="off">
                     {% csrf_token %}
 
                     <!-- User Type -->
