@@ -16,7 +16,6 @@ from jsapp.models import AppliedJobs
 
 from jobapp.utils import send_notification_email
 
-
 def employer_login_required(view_func):
     @wraps(view_func)
     def wrapper(request, *args, **kwargs):
