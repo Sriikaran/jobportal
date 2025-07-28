@@ -40,7 +40,7 @@ def jobseekerreg(request):
         log.save()
 
         messages.success(request, "Registration successful! You can now log in.")
-        return redirect("jobapp:login") 
+        return render(request, "jobseeker.html", {"show_modal": True})
 
     return render(request, "jobseeker.html")
 
@@ -98,7 +98,7 @@ def employerreg(request):
         log.save()
 
         messages.success(request, "Employer registration successful! Please log in.")
-        return redirect("jobapp:login")
+        return render(request, "employer.html", {"show_modal": True})
 
     return render(request, "employer.html")
 

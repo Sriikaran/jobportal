@@ -130,6 +130,36 @@
         </form>
     </div>
 </div>
+
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="registerSuccessModal" tabindex="-1" aria-labelledby="registerSuccessModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-center">
+      <div class="modal-header">
+        <h5 class="modal-title w-100" id="registerSuccessModalLabel">Registration Successful</h5>
+      </div>
+      <div class="modal-body">
+        Your career profile has been registered successfully!
+      </div>
+      <div class="modal-footer justify-content-center">
+        <a href="{% url 'jobapp:login' %}" class="btn btn-primary">Login Now</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if show_modal %}
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        var myModal = new bootstrap.Modal(document.getElementById('registerSuccessModal'), {
+            backdrop: 'static',
+            keyboard: false
+        });
+        myModal.show();
+    });
+</script>
+{% endif %}
+
 <script>
   function validateForm() {
     let valid = true;
@@ -221,5 +251,6 @@
     return valid;
   }
 </script>
+
 {% endblock body %}
 
