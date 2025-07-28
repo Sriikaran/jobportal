@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from . models import Login,Employer,JobSeeker,Enquiry
+from .models import Login,Employer,JobSeeker,Enquiry
 from adminapp.models import News
 from employer.models import Jobs
 from django.core.exceptions import ObjectDoesNotExist
@@ -9,7 +9,7 @@ import datetime
 # Create your views here.
 def index(request):
     job=Jobs.objects.all()
-    return render(request,"index.html",locals())
+    return render(request, "index.html", locals())
 def aboutus(request):
     return render(request,"aboutus.html")
 def jobseekerreg(request):

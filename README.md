@@ -1,3 +1,4 @@
+<!-- top -->
 ### Live Deployment Link: 
 [View Project](https://dreamjobs-9pmg.onrender.com/)
 
@@ -12,10 +13,13 @@ This  Project is a dynamic web application designed to bridge the gap between jo
 **Responsive Design:** Fully optimized for both desktop and mobile devices.  
 
 ### 🚀 Technologies Used:
-**Frontend**: HTML, CSS, JavaScript,Bootstrap  
-**Backend**: Python Django.  
-**Database:** SQLite  
-**Deployment:** Render  
+
+|   Purpose      | Technologies                     |
+|-------------   |----------------------------------|
+| **`Frontend`**   | HTML, CSS, JavaScript, Bootstrap |
+| **`Backend`**    | Python, Django                   |
+| **`Database`**   | SQLite                           |
+| **`Deployment`** | Render                           |
 
 # Here are the snapshots of this project
 ![Screenshot 2025-02-08 235944](https://github.com/user-attachments/assets/6e3bbeb0-6db3-4cfc-ac6f-260a3bf36bbc)
@@ -37,3 +41,67 @@ This  Project is a dynamic web application designed to bridge the gap between jo
 ![Screenshot 2025-02-09 000251](https://github.com/user-attachments/assets/837a1424-7924-4059-9e29-01fe81e62608)
 
 
+##  🗂️ File Structure
+
+```
+jobportal/
+|
+├── adminapp/
+│   ├── migrations/
+│   ├── static/assets/
+│   ├── templates/
+│   └── __init__.py, admin.py, adminappurrls.py, apps.py, models.py, tests.py, views.py
+|
+├── employer/
+│   ├── migrations/
+│   ├── static/
+│   ├── templates/
+│   └── Procfile, __init__.py, admin.py,apps.py, employerurls.py,  models.py, tests.py, views.py
+|
+├── jobapp/
+│   ├── migrations/
+│   ├── static/
+│   ├── templates/
+│   └── __init__.py, admin.py, apps.py, jobappurls.py, models.py, tests.py, views.py
+|
+├── jsapp/
+│   ├── migrations/
+│   ├── static/
+│   ├── templates/
+│   └── __init__.py, admin.py, apps.py,jsappurls.py, models.py, tests.py, views.py
+|
+├── jobportal/  # root config
+│   └── settings.py, urls.py, ...
+|
+├── media/
+│   └── *avif / *.jpg / *.png / *.webp
+|
+├── staticfiles/
+|   ├── admin/
+│   ├── assets/
+│   ├── css/
+|   ├── images/
+│   ├── js/
+│   └── *.jpg / *mp4 / *.png / *.svg / *.webp
+|
+├── README.md
+├── db.sqlite3
+├── manage.py
+└── requirements.txt
+```
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+
+
+<p align="center">
+  <a href="#top" style="font-size: 18px; padding: 8px 16px; display: inline-block; border: 1px solid #ccc; border-radius: 6px; text-decoration: none;">
+    ⬆️ Back to Top
+  </a>
+</p>

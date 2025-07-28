@@ -1,5 +1,6 @@
 {% extends "index.html" %}
 {% block body %}
+{% load static %}
 <style>
     .required-asterisk {
     color: red;
@@ -12,78 +13,143 @@
     input:invalid {
       border-color: initial; 
     } 
+
+  .inter-font {
+    font-family: 'Inter', sans-serif;
+  }
+
+  .form-label {
+    display: block;
+    font-weight: 600;
+    color: #093f75;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .form-input, .form-select {
+    width: 100%;
+    padding: 12px 12px 12px 45px;
+    border: 2px solid #e8f2ff;
+    border-radius: 12px;
+    background: #f8fbff;
+    font-size: 0.95rem;
+    transition: box-shadow 0.25s, border-color 0.25s;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .form-input:focus, .form-select:focus {
+    outline: none;
+    border-color: #093f75;
+    background: #ffffff;
+    box-shadow: 0 4px 16px rgba(9, 63, 117, 0.10);
+  }
+
+  input[type="file"].form-input {
+    padding: 10px 16px;
+    background-color: #f8fbff;
+    border: 2px solid #e8f2ff;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    color: #093f75;
+    cursor: pointer;
+  }
+
+  input[type="file"].form-input::file-selector-button {
+    background-color: #093f75;
+    color: white;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  input[type="file"].form-input::file-selector-button:hover {
+    background-color: #072f5c;
+  }
 </style>
 
-<div class="container" style="background-color:#093f75;">
-  <div class="row mt-5 w-75 mx-auto pb-5">
-    <h1 class="p-5 text-light" style="text-align: center; font-weight:600;"> Register as Employer </h1>
-    {% if msg %}
-      <p style="text-align: center; color: blue;">{{msg}}</p>
-    {% endif %}
-    <div class="main mx-auto" style="background-color: rgb(223, 221, 221); border-radius: 40px;">
-      <form class="form-group p-5" method="post">
-        {% csrf_token %}
-        <div class="mb-3"> 
-          <label for="empprofilepic" class="form-label">Upload Profile Pic</label><br>
-          <input type="file" name="empprofilepic" class="form-control">
+<div class="container inter-font" style="background: linear-gradient(135deg, #f6fafd 0%, #e8f2ff 100%);">
+  <div class="row w-75 mx-auto pb-5 fs-6">
+    <form class="mb-3 mt-5 p-5" method="post" style="
+      background-color: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(9, 63, 117, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);">
+      {% csrf_token %}
+
+      <h2 style="color: #093f75; font-weight: 600; margin-bottom: 2rem;">
+        Employer Registration
+      </h2>
+
+      {% if msg %}
+        <p style="text-align: center; color: rgb(253, 253, 255);">{{ msg }}</p>
+      {% endif %}
+      <div class="mb-3">
+        <label for="empprofilepic" class="form-label">Upload Profile Pic</label>
+        <input type="file" name="empprofilepic" class="form-input">
+      </div>
+      <div class="mb-3">
+        <label for="FirmName" class="form-label">Firm Name<span class="required-asterisk">*</span></label>
+        <input type="text" class="form-control" name="firmname" placeholder="Name of the firm" pattern="[a-zA-Z\s]+" required>
+        <span class="error-message">Please enter a valid firm name.</span>
+      </div>
+      <div class="mb-3">
+        <label for="Firmwork" class="form-label">Firm Work<span class="required-asterisk">*</span></label>
+        <input type="text" class="form-control" name="firmwork" placeholder="Work of the firm" required>
+        <span class="error-message">Firm work is required.</span>
+      </div>
+      <div class="mb-3">
+        <label for="address" class="form-label">Firm Address<span class="required-asterisk">*</span></label>
+        <textarea class="form-control" name="firmaddress" rows="3" placeholder="Enter your firm's Address" required></textarea>
+        <span class="error-message">Firm address is required.</span>
+      </div>
+      <div class="mb-3">
+        <label for="CompanyName" class="form-label">Name of the company<span class="required-asterisk">*</span></label>
+        <input type="text" class="form-control" name="cpname" placeholder="Enter your Company's Name" required>
+        <span class="error-message">Company name is required.</span>
+      </div>
+      <div class="mb-3">
+        <label for="contactno" class="form-label">Company's Contact No<span class="required-asterisk">*</span></label>
+        <input type="text" class="form-control" name="cpcontactno" placeholder="Enter Contact no." pattern="\d{10}" required>
+        <span class="error-message">Please enter a valid 10-digit contact number.</span>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email address<span class="required-asterisk">*</span></label>
+        <input type="email" class="form-control" name="cpemailaddress" placeholder="Enter Email" required>
+        <span class="error-message">A valid email address is required.</span>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password<span class="required-asterisk">*</span></label>
+        <input type="password" class="form-control" name="password" placeholder="Enter Password" required>
+        <span class="error-message">Password is required.</span>
+      </div>
+      <div class="mb-3">
+        <label for="aadhar" class="form-label">Aadhar No.<span class="required-asterisk">*</span></label>
+        <input type="text" class="form-control" name="aadharno" placeholder="Enter Aadhar No." pattern="\d{12}" required>
+        <span class="error-message">Aadhar number must be 12 digits.</span>
+      </div>
+      <div class="mb-3">
+        <label for="panno" class="form-label">PAN No.<span class="required-asterisk">*</span></label>
+        <input type="text" class="form-control" name="panno" placeholder="Enter PAN No." pattern="[A-Z]{5}\d{4}[A-Z]" required>
+        <span class="error-message">Please enter a valid PAN number.</span>
+      </div>
+      <div class="mb-3">
+        <label for="gstno" class="form-label">GST No.<span class="required-asterisk">*</span></label>
+        <input type="text" class="form-control" name="gstno" placeholder="Enter GST No." required>
+        <span class="error-message">GST number is required.</span>
+      </div>
+      <div class="mb-3 form-check pt-3">
+        <div class="form-check d-flex mb-5">
+          <input class="form-check-input me-2" type="checkbox" required />
+          <label class="form-check-label">
+            I agree all statements in <a href="#">Terms of service<span class="required-asterisk">*</span></a>
+          </label>
         </div>
-        <div class="mb-3">
-          <label for="FirmName" class="form-label">Firm Name<span class="required-asterisk">*</span></label>
-          <input type="text" class="form-control" name="firmname" placeholder="Name of the firm" pattern="[a-zA-Z\s]+" required>
-          <span class="error-message">Please enter a valid firm name.</span>
-        </div>
-        <div class="mb-3">
-          <label for="Firmwork" class="form-label">Firm Work<span class="required-asterisk">*</span></label>
-          <input type="text" class="form-control" name="firmwork" placeholder="Work of the firm" required>
-          <span class="error-message">Firm work is required.</span>
-        </div>
-        <div class="mb-3">
-          <label for="address" class="form-label">Firm Address<span class="required-asterisk">*</span></label>
-          <textarea class="form-control" name="firmaddress" rows="3" placeholder="Enter your firm's Address" required></textarea>
-          <span class="error-message">Firm address is required.</span>
-        </div>
-        <div class="mb-3">
-          <label for="CompanyName" class="form-label">Name of the company<span class="required-asterisk">*</span></label>
-          <input type="text" class="form-control" name="cpname" placeholder="Enter your Company's Name" required>
-          <span class="error-message">Company name is required.</span>
-        </div>
-        <div class="mb-3">
-          <label for="contactno" class="form-label">Company's Contact No<span class="required-asterisk">*</span></label>
-          <input type="text" class="form-control" name="cpcontactno" placeholder="Enter Contact no." pattern="\d{10}" required>
-          <span class="error-message">Please enter a valid 10-digit contact number.</span>
-        </div>
-        <div class="mb-3">
-          <label for="email" class="form-label">Email address<span class="required-asterisk">*</span></label>
-          <input type="email" class="form-control" name="cpemailaddress" placeholder="Enter Email" required>
-          <span class="error-message">A valid email address is required.</span>
-        </div>
-        <div class="mb-3">
-          <label for="password" class="form-label">Password<span class="required-asterisk">*</span></label>
-          <input type="password" class="form-control" name="password" placeholder="Enter Password" required>
-          <span class="error-message">Password is required.</span>
-        </div>
-        <div class="mb-3">
-          <label for="aadhar" class="form-label">Aadhar No.<span class="required-asterisk">*</span></label>
-          <input type="text" class="form-control" name="aadharno" placeholder="Enter Aadhar No." pattern="\d{12}" required>
-          <span class="error-message">Aadhar number must be 12 digits.</span>
-        </div>
-        <div class="mb-3">
-          <label for="panno" class="form-label">PAN No.<span class="required-asterisk">*</span></label>
-          <input type="text" class="form-control" name="panno" placeholder="Enter PAN No." pattern="[A-Z]{5}\d{4}[A-Z]" required>
-          <span class="error-message">Please enter a valid PAN number.</span>
-        </div>
-        <div class="mb-3">
-          <label for="gstno" class="form-label">GST No.<span class="required-asterisk">*</span></label>
-          <input type="text" class="form-control" name="gstno" placeholder="Enter GST No." required>
-          <span class="error-message">GST number is required.</span>
-        </div>
-        <div class="mb-3 form-check pt-3">
-          <div class="form-check d-flex mb-5">
-            <input class="form-check-input me-2" type="checkbox" required />
-            <label class="form-check-label">
-              I agree all statements in <a href="#">Terms of service<span class="required-asterisk">*</span></a>
-            </label>
-          </div>
         </div>
         <button type="submit" class="btn btn-primary w-100" style="background-color: #093f75; color:white;">Submit</button>
       </form>
@@ -119,5 +185,9 @@
     });
 </script>
 {% endif %}
-
+      </div>
+      <button type="submit" class="btn btn-primary w-100" style="background-color: #093f75; color:white;">Submit</button>
+    </form>
+  </div>
+</div>
 {% endblock body %}
