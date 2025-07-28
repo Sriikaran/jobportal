@@ -2,7 +2,27 @@
 {% block body %}
     <div class="row">
         <div class="col-sm-12">
-            <h1 style="text-align:center;">View Jobs</h1>   
+            <h1 style="text-align:center;">View Jobs</h1>  
+            <form method="GET" action="" style="width: 60%; margin: 20px auto;">
+  <div class="form-row row">
+    <div class="form-group col-md-6">
+      <input type="text" name="location" class="form-control" placeholder="Enter location" value="{{ location }}">
+    </div>
+    <div class="form-group col-md-4">
+      <select name="experience" class="form-control">
+        <option value="">Select experience</option>
+        <option value="1" {% if experience == "1" %}selected{% endif %}>1 year</option>
+        <option value="2" {% if experience == "2" %}selected{% endif %}>2 years</option>
+        <option value="5" {% if experience == "5" %}selected{% endif %}>5+ years</option>
+      </select>
+    </div>
+    <div class="form-group col-md-2">
+      <button type="submit" class="btn btn-primary btn-block">Filter</button>
+    </div>
+  </div>
+</form>
+
+
             <table class="table table-bordered" style="margin: auto;">
             <div class="table-responsive">
                 <tr>

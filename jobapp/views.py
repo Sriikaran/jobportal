@@ -6,8 +6,19 @@ from django.core.exceptions import ObjectDoesNotExist
 import datetime
 # Create your views here.
 def index(request):
-    job=Jobs.objects.all()
-    return render(request, "index.html", locals())
+    jobs = Jobs.objects.all()
+
+    location = request.GET.get('location')
+    experience = request.GET.get('experience')
+
+    if location:
+        jobs = jobs.filter(location__icontains=location)
+
+    if experience:
+        jobs = jobs.filter(experience__icontains=experience)
+
+    return render(request, "index.html", {'jobs': jobs, 'location': location, 'experience': experience})
+
 def aboutus(request):
     return render(request,"aboutus.html")
 def jobseekerreg(request):
@@ -87,3 +98,13 @@ def services(request):
 def blog(request):
         new=News.objects.all()
         return render(request,"blog.html",locals())
+def forgot_password(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        try:
+            user = Login.objects.get(username=email)
+            # For now, just show a success message (simulate email sent)
+            return render(request, 'reset_password.html', {'user_email': user.username})
+        except Login.DoesNotExist:
+            messages.error(request, "Email not registered.")
+    return render(request, 'forgot_password.html')
