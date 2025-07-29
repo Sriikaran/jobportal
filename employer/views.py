@@ -291,3 +291,22 @@ def addpost(request):
             messages.error(request, f"Error creating post: {str(e)}")
     
     return render(request, "addpost.html", {"empreg": empreg})
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@employer_login_required
+def viewpjobs(request):
+    username = request.session["username"]
+    
+    # Get filter parameters from GET
+    location = request.GET.get("location", "")
+    experience = request.GET.get("experience", "")
+
+    # Start with all jobs posted by this employer
+    vjobs = Jobs.objects.filter(emailaddress=username)
+
+    # Apply filters if provided
+    if location:
+        vjobs = vjobs.filter(location__icontains=location)
+    if experience:
+        vjobs = vjobs.filter(experience__icontains=experience)
+
+    return render(request, "viewpjobs.html", {"vjobs": vjobs, "location": location, "experience": experience})

@@ -11,4 +11,8 @@ urlpatterns=[
     path('viewmyprofile/',views.viewmyprofile,name='viewmyprofile'),
     path('logout/',views.logout,name='logout'),
     path('addpost/',views.addpost,name='addpost'),
+    path('viewpjobs/', views.viewpjobs, name='viewpjobs'),
+    path('forgot-password/', views.forgot_password, name='forgot_password'),
+
+
     ]

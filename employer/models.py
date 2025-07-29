@@ -7,7 +7,7 @@ class Jobs(models.Model):
     jobdesc=models.TextField()
     qualification=models.CharField(max_length=50)
     experience=models.CharField(max_length=20)
-    location=models.CharField(max_length=50)
+    location=models.CharField(max_length=100)
     salarypa=models.IntegerField()
     posteddate=models.CharField(max_length=30)
     emailaddress=models.EmailField(max_length=50)
