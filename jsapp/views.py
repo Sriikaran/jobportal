@@ -197,7 +197,13 @@ def jsapply(request, id):
     return render(request, "applyjob.html", {"job": job, "seeker": seeker})
 
 def jshome(request):
-    return render(request, 'jsapp/jshome.html')  # create jsapp/templates/jsapp/home.html if needed
+    return render(request, 'jshome.html')  # create jsapp/templates/jsapp/home.html if needed
 def viewjobs(request):
     # Just rendering a template for now
-    return render(request, 'jsapp/viewjobs.html')
+    return render(request, 'viewjobs.html')
+def logout(request):
+    try:
+        del request.session["username"]
+    except KeyError:
+        return redirect("jobapp:login")
+    return redirect("jobapp:login")
