@@ -310,3 +310,16 @@ def viewpjobs(request):
         vjobs = vjobs.filter(experience__icontains=experience)
 
     return render(request, "viewpjobs.html", {"vjobs": vjobs, "location": location, "experience": experience})
+def employer_login_required(view_func):
+    @wraps(view_func)
+    def wrapper(request, *args, **kwargs):
+        if "username" not in request.session or request.session.get("usertype") != "employer":
+            messages.error(request, "Access denied. Employer login required.")
+            return redirect("jobapp:login")
+        try:
+            Employer.objects.get(cpemailaddress=request.session["username"])
+            return view_func(request, *args, **kwargs)
+        except Employer.DoesNotExist:
+            messages.error(request, "Invalid employer account.")
+            return redirect("jobapp:login")
+    return wrapper

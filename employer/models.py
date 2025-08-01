@@ -16,3 +16,18 @@ class Post(models.Model):
     caption=models.TextField(max_length=500)
     media=models.FileField(upload_to="")
     posteddate=models.CharField(max_length=30,default="")
+class Employer(models.Model):
+    empprofilepic = models.ImageField(upload_to='employer_pics/', blank=True, null=True)
+    firmname = models.CharField(max_length=100)
+    firmwork = models.CharField(max_length=100)
+    firmaddress = models.CharField(max_length=200)
+    cpname = models.CharField(max_length=100)
+    cpcontactno = models.CharField(max_length=20)
+    cpemailaddress = models.EmailField(max_length=100)
+    aadharno = models.CharField(max_length=20)
+    panno = models.CharField(max_length=20)
+    gstno = models.CharField(max_length=20)
+    regdate = models.DateTimeField()
+
+    def __str__(self):
+        return self.firmname

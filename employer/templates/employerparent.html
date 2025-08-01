@@ -27,7 +27,11 @@
               <div class="profile-desc">
                 <div class="profile-pic">
                   <div class="count-indicator">
-                    <img class="img-xs rounded-circle " src="{{empreg.empprofilepic.url}}" alt="">
+                    {% if empreg.empprofilepic %}
+                        <img class="img-xs rounded-circle" src="{{ empreg.empprofilepic.url }}" alt="">
+                    {% else %}
+                        <img class="img-xs rounded-circle" src="{% static 'default-avatar.png' %}" alt="">
+                    {% endif %}
                     <span class="count bg-success"></span>
                   </div>
                   <div class="profile-name">
@@ -136,7 +140,7 @@
                 <li class="nav-item dropdown">
                   <a class="nav-link" id="profileDropdown" href="#" data-bs-toggle="dropdown">
                     <div class="navbar-profile">
-                      <img class="img-xs rounded-circle" src="{{empreg.empprofilepic.url}}" alt="">
+                      <img class="img-xs rounded-circle" src="{% if empreg.empprofilepic %}{{ empreg.empprofilepic.url }}{% else %}{% static 'default-avatar.png' %}{% endif %}" alt="">
                       <p class="mb-0 d-none d-sm-block navbar-profile-name text-dark">{{empreg.cpname}}</p>
                       <i class="mdi mdi-menu-down d-none d-sm-block"></i>
                     </div>

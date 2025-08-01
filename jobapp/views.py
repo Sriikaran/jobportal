@@ -59,25 +59,29 @@ def login(request):
     if request.method=="POST":  
         username=request.POST["username"]
         password=request.POST["password"]
-        usertype=request.POST['usertype']
+        # usertype=request.POST['usertype']
         try:
-            obj=Login.objects.get(username=username,password=password)
-            if obj is not None:
-                if obj.usertype=='jobseeker':
-                   request.session["username"]=username
-                   return redirect("jsapp:jshome")
-                elif obj.usertype=='administrator':
-                    request.session["adminid"]=username
-                    return redirect("adminapp:adminhome")
-                elif obj.usertype=='employer':
-                    request.session["username"]=username
-                    return redirect("employer:employerhome")
+            obj = Login.objects.get(username=username, password=password)
+            usertype = obj.usertype 
+            request.session["username"] = username
+            request.session["usertype"] = usertype
+            if usertype == 'jobseeker':
+                request.session["usertype"] = usertype
+                return redirect("jsapp:jshome")
+            elif usertype == 'administrator':
+                request.session["adminid"] = username
+                return redirect("adminapp:adminhome")
+            elif usertype == 'employer':
+                request.session["usertype"] = usertype
+                return redirect("employer:employerhome")
+            else:
+                return render(request, 'login.html', {"msg": "Invalid user type"})
         except ObjectDoesNotExist:
          return render(request,'login.html',{"msg":"Invalid user"}) 
     return render(request,"login.html")
 def employerreg(request):
     if request.method == "POST":
-        empprofilepic = request.POST["empprofilepic"]
+        empprofilepic = request.FILES.get("empprofilepic")
         firmname = request.POST["firmname"]
         firmwork = request.POST["firmwork"]
         firmaddress = request.POST["firmaddress"]
