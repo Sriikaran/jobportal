@@ -1,564 +1,572 @@
 {% extends 'parent.html' %}
 {% load static %}
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  
-  <style>
-    :root {
-      --primary-blue: #0080ff;
-      --secondary-blue: #56a8fa;
-      --dark-blue: #093f75;
-      --light-blue: #7ecce6;
-      --accent-cyan: #00f5ff;
-      --accent-purple: #8b5cf6;
-      --accent-pink: #ec4899;
-      --accent-orange: #f97316;
-      --gradient-1: linear-gradient(135deg, #0080ff 0%, #56a8fa 50%, #7ecce6 100%);
-      --gradient-2: linear-gradient(135deg, #093f75 0%, #0080ff 50%, #56a8fa 100%);
-      --gradient-3: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #f97316 100%);
-      --gradient-4: linear-gradient(135deg, #00f5ff 0%, #0080ff 100%);
-    }
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"> -->
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<style>
+  :root {
+    --primary-blue: #0080ff;
+    --secondary-blue: #56a8fa;
+    --dark-blue: #093f75;
+    --light-blue: #7ecce6;
+    --accent-cyan: #00f5ff;
+    --accent-purple: #8b5cf6;
+    --accent-pink: #ec4899;
+    --accent-orange: #f97316;
+    --gradient-1: linear-gradient(135deg, #0080ff 0%, #56a8fa 50%, #7ecce6 100%);
+    --gradient-2: linear-gradient(135deg, #093f75 0%, #0080ff 50%, #56a8fa 100%);
+    --gradient-3: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #f97316 100%);
+    --gradient-4: linear-gradient(135deg, #00f5ff 0%, #0080ff 100%);
+  }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-      overflow-x: hidden;
-      position: relative;
-    }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-    /* Animated Background */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      background: 
-        radial-gradient(circle at 20% 80%, rgba(0, 128, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(236, 72, 153, 0.08) 0%, transparent 50%);
-      animation: float 20s ease-in-out infinite;
-    }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    overflow-x: hidden;
+    position: relative;
+  }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      33% { transform: translateY(-20px) rotate(1deg); }
-      66% { transform: translateY(10px) rotate(-1deg); }
-    }
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: 
+      radial-gradient(circle at 20% 80%, rgba(0, 128, 255, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, rgba(236, 72, 153, 0.08) 0%, transparent 50%);
+    animation: float 20s ease-in-out infinite;
+  }
 
-    /* Hero Section Improvements */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    33% { transform: translateY(-20px) rotate(1deg); }
+    66% { transform: translateY(10px) rotate(-1deg); }
+  }
+
+  .hero-section {
+    background: var(--gradient-1);
+    border-radius: 0 0 50px 50px;
+    position: relative;
+    overflow: hidden;
+    padding: 4rem 0;
+  }
+
+  .hero-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 100%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: rotate 30s linear infinite;
+  }
+
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .hero-content h1 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    background: linear-gradient(135deg, #ffffff 0%, #e0f2fe 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 4px 20px rgba(0, 128, 255, 0.3);
+    margin-bottom: 1rem;
+  }
+
+  .hero-content p {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 2rem;
+    font-weight: 400;
+  }
+
+  .hero-image {
+    position: relative;
+  }
+
+  .hero-image img {
+    border-radius: 30px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 128, 255, 0.3);
+    transition: transform 0.3s ease;
+  }
+
+  .hero-image img:hover {
+    transform: scale(1.05) rotate(2deg);
+  }
+
+  .search-container {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .search-container input {
+    border: none;
+    background: transparent;
+    font-size: 1.1rem;
+    padding: 0.8rem 1rem;
+  }
+
+  .search-container input:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  .search-btn {
+    background: var(--gradient-2);
+    border: none;
+    border-radius: 15px;
+    padding: 0.8rem 2rem;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(9, 63, 117, 0.3);
+  }
+
+  .search-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(9, 63, 117, 0.4);
+  }
+
+  .jobs-section {
+    background: linear-gradient(135deg, #7ecce6 0%, #56a8fa 100%);
+    position: relative;
+    padding: 4rem 0;
+    overflow: hidden;
+  }
+
+  .jobs-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+    z-index: 1;
+  }
+
+  .jobs-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .jobs-section h1 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    color: white;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+  }
+
+  .jobs-section p {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 3rem;
+  }
+
+  .col {
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    min-height: 320px;
+  }
+
+  .col::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-3);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 1;
+  }
+
+  .col:hover::before {
+    opacity: 0.05;
+  }
+
+  .col:hover {
+    transform: translateY(-15px) scale(1.02);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+  }
+
+  .col:nth-child(odd) {
+    animation: slideInLeft 0.6s ease forwards;
+  }
+
+  .col:nth-child(even) {
+    animation: slideInRight 0.6s ease forwards;
+  }
+
+  @keyframes slideInLeft {
+    from { transform: translateX(-100px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+
+  @keyframes slideInRight {
+    from { transform: translateX(100px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+
+  .job-card {
+    height: 100%;
+    position: relative;
+    z-index: 2;
+  }
+
+  .card-body {
+    padding: 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .card-title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: var(--dark-blue);
+    margin-bottom: 1rem;
+    position: relative;
+  }
+
+  .card-title::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: var(--gradient-4);
+    border-radius: 2px;
+  }
+
+  .job-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .job-meta p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .job-meta i {
+    color: var(--primary-blue);
+    width: 16px;
+  }
+
+  .job-skills {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+  }
+
+  .job-skills li {
+    padding: 0.5rem 0;
+    font-size: 0.95rem;
+    color: #475569;
+    position: relative;
+    padding-left: 20px;
+  }
+
+  .job-skills li::before {
+    content: '▶';
+    position: absolute;
+    left: 0;
+    color: var(--accent-cyan);
+    font-size: 0.8rem;
+  }
+
+  .apply-btn {
+    background: var(--gradient-2);
+    border: none;
+    border-radius: 15px;
+    padding: 0.8rem 2rem;
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(9, 63, 117, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .apply-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    transform: translate(-50%, -50%);
+  }
+
+  .apply-btn:hover::before {
+    width: 300px;
+    height: 300px;
+  }
+
+  .apply-btn:hover {
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(9, 63, 117, 0.4);
+  }
+
+  .ats-section {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    padding: 4rem 0;
+    position: relative;
+  }
+
+  .ats-section h2 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    background: var(--gradient-2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    margin-bottom: 1rem;
+  }
+
+  .ats-section p {
+    font-size: 1.1rem;
+    color: #64748b;
+    margin-bottom: 2rem;
+  }
+
+  .upload-btn {
+    background: var(--gradient-3);
+    border: none;
+    border-radius: 20px;
+    padding: 1rem 3rem;
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+  }
+
+  .upload-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(139, 92, 246, 0.4);
+  }
+
+  .ats-benefits {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin: 2rem 0;
+  }
+
+  .ats-benefits ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .ats-benefits li {
+    padding: 1rem 0;
+    font-size: 1.1rem;
+    color: #334155;
+    position: relative;
+    padding-left: 40px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .ats-benefits li:last-child {
+    border-bottom: none;
+  }
+
+  .ats-benefits li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    top: 1rem;
+    width: 30px;
+    height: 30px;
+    background: var(--gradient-4);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
+
+  .testimonials-section {
+    background: var(--gradient-1);
+    padding: 4rem 0;
+    position: relative;
+  }
+
+  .testimonials-section h3 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    color: white;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    margin-bottom: 1rem;
+  }
+
+  .testimonials-section p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+  }
+
+  .testimonial-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 1rem 0;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    height: 100%;
+  }
+
+  .testimonial-card:hover {
+    transform: translateY(-10px);
+  }
+
+  .testimonial-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 4px solid var(--primary-blue);
+    box-shadow: 0 5px 15px rgba(0, 128, 255, 0.3);
+  }
+
+  .stars {
+    color: #fbbf24;
+    font-size: 1.2rem;
+    margin-top: 1rem;
+  }
+
+  .loading-spinner {
+    display: none;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid var(--primary-blue);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @media (max-width: 768px) {
     .hero-section {
-      background: var(--gradient-1);
-      border-radius: 0 0 50px 50px;
-      position: relative;
-      overflow: hidden;
-      padding: 4rem 0;
+      padding: 2rem 0;
     }
-
-    .hero-section::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      right: -10%;
-      width: 100%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-      animation: rotate 30s linear infinite;
-    }
-
-    @keyframes rotate {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    .hero-content h1 {
-      font-family: 'Poppins', sans-serif;
-      font-weight: 800;
-      font-size: clamp(2.5rem, 5vw, 4rem);
-      background: linear-gradient(135deg, #ffffff 0%, #e0f2fe 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 4px 20px rgba(0, 128, 255, 0.3);
-      margin-bottom: 1rem;
-    }
-
-    .hero-content p {
-      font-size: 1.2rem;
-      color: rgba(255, 255, 255, 0.9);
-      margin-bottom: 2rem;
-      font-weight: 400;
-    }
-
-    .hero-image {
-      position: relative;
-    }
-
-    .hero-image img {
-      border-radius: 30px;
-      border: 5px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 20px 60px rgba(0, 128, 255, 0.3);
-      transition: transform 0.3s ease;
-    }
-
-    .hero-image img:hover {
-      transform: scale(1.05) rotate(2deg);
-    }
-
-    /* Search Bar Enhancement */
-    .search-container {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      padding: 1rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .search-container input {
-      border: none;
-      background: transparent;
-      font-size: 1.1rem;
-      padding: 0.8rem 1rem;
-    }
-
-    .search-container input:focus {
-      outline: none;
-      box-shadow: none;
-    }
-
-    .search-btn {
-      background: var(--gradient-2);
-      border: none;
-      border-radius: 15px;
-      padding: 0.8rem 2rem;
-      color: white;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      box-shadow: 0 5px 15px rgba(9, 63, 117, 0.3);
-    }
-
-    .search-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(9, 63, 117, 0.4);
-    }
-
-    /* Jobs Section Enhancement */
+    
     .jobs-section {
-      background: linear-gradient(135deg, #7ecce6 0%, #56a8fa 100%);
-      position: relative;
-      padding: 4rem 0;
-      overflow: hidden;
+      padding: 2rem 0;
     }
-
-    .jobs-section::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: 
-        radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
-      z-index: 1;
-    }
-
-    .jobs-content {
-      position: relative;
-      z-index: 2;
-    }
-
-    .jobs-section h1 {
-      font-family: 'Poppins', sans-serif;
-      font-weight: 700;
-      font-size: clamp(2rem, 4vw, 3.5rem);
-      color: white;
-      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-      margin-bottom: 1rem;
-    }
-
-    .jobs-section p {
-      font-size: 1.2rem;
-      color: rgba(255, 255, 255, 0.9);
-      margin-bottom: 3rem;
-    }
-
-    /* Job Cards Revolution */
+    
     .col {
-      display: flex;
-      flex-direction: column;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(20px);
-      border-radius: 25px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-      transition: all 0.4s ease;
-      position: relative;
-      overflow: hidden;
-      margin-bottom: 2rem;
-      min-height: 320px;
+      margin-bottom: 1.5rem;
     }
-
-    .col::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
+    
+    .search-container {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .search-btn {
       width: 100%;
-      height: 100%;
-      background: var(--gradient-3);
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      z-index: 1;
     }
+  }
 
-    .col:hover::before {
-      opacity: 0.05;
-    }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(0, 128, 255, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(0, 128, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 128, 255, 0); }
+  }
 
-    .col:hover {
-      transform: translateY(-15px) scale(1.02);
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-    }
+  .btn-pulse {
+    animation: pulse 2s infinite;
+  }
 
-    .col:nth-child(odd) {
-      animation: slideInLeft 0.6s ease forwards;
-    }
+  .fade-in {
+    animation: fadeIn 1s ease-in;
+  }
 
-    .col:nth-child(even) {
-      animation: slideInRight 0.6s ease forwards;
-    }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
 
-    @keyframes slideInLeft {
-      from { transform: translateX(-100px); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
+<script>
+  function login() {
+    alert("Please login to continue");
+  }
+</script>
+<!-- <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> -->
+<!-- <script>
+  AOS.init({
+    duration: 800,
+    easing: 'ease-in-out',
+    once: true
+  });
+</script> -->
 
-    @keyframes slideInRight {
-      from { transform: translateX(100px); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-
-    .job-card {
-      height: 100%;
-      position: relative;
-      z-index: 2;
-    }
-
-    .card-body {
-      padding: 2rem;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .card-title {
-      font-family: 'Poppins', sans-serif;
-      font-weight: 700;
-      font-size: 1.4rem;
-      color: var(--dark-blue);
-      margin-bottom: 1rem;
-      position: relative;
-    }
-
-    .card-title::after {
-      content: '';
-      position: absolute;
-      bottom: -5px;
-      left: 0;
-      width: 50px;
-      height: 3px;
-      background: var(--gradient-4);
-      border-radius: 2px;
-    }
-
-    .job-meta {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
-
-    .job-meta p {
-      margin: 0;
-      font-size: 0.9rem;
-      color: #64748b;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .job-meta i {
-      color: var(--primary-blue);
-      width: 16px;
-    }
-
-    .job-skills {
-      list-style: none;
-      padding: 0;
-      margin: 1rem 0;
-    }
-
-    .job-skills li {
-      padding: 0.5rem 0;
-      font-size: 0.95rem;
-      color: #475569;
-      position: relative;
-      padding-left: 20px;
-    }
-
-    .job-skills li::before {
-      content: '▶';
-      position: absolute;
-      left: 0;
-      color: var(--accent-cyan);
-      font-size: 0.8rem;
-    }
-
-    .apply-btn {
-      background: var(--gradient-2);
-      border: none;
-      border-radius: 15px;
-      padding: 0.8rem 2rem;
-      color: white;
-      font-weight: 600;
-      text-decoration: none;
-      text-align: center;
-      transition: all 0.3s ease;
-      box-shadow: 0 5px 15px rgba(9, 63, 117, 0.3);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .apply-btn::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 50%;
-      transition: all 0.3s ease;
-      transform: translate(-50%, -50%);
-    }
-
-    .apply-btn:hover::before {
-      width: 300px;
-      height: 300px;
-    }
-
-    .apply-btn:hover {
-      color: white;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(9, 63, 117, 0.4);
-    }
-
-    /* ATS Section Enhancement */
-    .ats-section {
-      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-      padding: 4rem 0;
-      position: relative;
-    }
-
-    .ats-section h2 {
-      font-family: 'Poppins', sans-serif;
-      font-weight: 700;
-      background: var(--gradient-2);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-size: clamp(1.8rem, 4vw, 3rem);
-      margin-bottom: 1rem;
-    }
-
-    .ats-section p {
-      font-size: 1.1rem;
-      color: #64748b;
-      margin-bottom: 2rem;
-    }
-
-    .upload-btn {
-      background: var(--gradient-3);
-      border: none;
-      border-radius: 20px;
-      padding: 1rem 3rem;
-      color: white;
-      font-weight: 600;
-      font-size: 1.1rem;
-      transition: all 0.3s ease;
-      box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
-    }
-
-    .upload-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 15px 40px rgba(139, 92, 246, 0.4);
-    }
-
-    .ats-benefits {
-      background: white;
-      border-radius: 20px;
-      padding: 2rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      margin: 2rem 0;
-    }
-
-    .ats-benefits ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    .ats-benefits li {
-      padding: 1rem 0;
-      font-size: 1.1rem;
-      color: #334155;
-      position: relative;
-      padding-left: 40px;
-      border-bottom: 1px solid #f1f5f9;
-    }
-
-    .ats-benefits li:last-child {
-      border-bottom: none;
-    }
-
-    .ats-benefits li::before {
-      content: '✓';
-      position: absolute;
-      left: 0;
-      top: 1rem;
-      width: 30px;
-      height: 30px;
-      background: var(--gradient-4);
-      color: white;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-    }
-
-    /* Testimonials Enhancement */
-    .testimonials-section {
-      background: var(--gradient-1);
-      padding: 4rem 0;
-      position: relative;
-    }
-
-    .testimonials-section h3 {
-      font-family: 'Poppins', sans-serif;
-      font-weight: 700;
-      color: white;
-      font-size: clamp(1.8rem, 4vw, 2.5rem);
-      margin-bottom: 1rem;
-    }
-
-    .testimonials-section p {
-      color: rgba(255, 255, 255, 0.9);
-      font-size: 1.1rem;
-    }
-
-    .testimonial-card {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(20px);
-      border-radius: 20px;
-      padding: 2rem;
-      margin: 1rem 0;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease;
-      height: 100%;
-    }
-
-    .testimonial-card:hover {
-      transform: translateY(-10px);
-    }
-
-    .testimonial-avatar {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      border: 4px solid var(--primary-blue);
-      box-shadow: 0 5px 15px rgba(0, 128, 255, 0.3);
-    }
-
-    .stars {
-      color: #fbbf24;
-      font-size: 1.2rem;
-      margin-top: 1rem;
-    }
-
-    /* Responsive Improvements */
-    @media (max-width: 768px) {
-      .hero-section {
-        padding: 2rem 0;
-      }
-      
-      .jobs-section {
-        padding: 2rem 0;
-      }
-      
-      .col {
-        margin-bottom: 1.5rem;
-      }
-      
-      .search-container {
-        flex-direction: column;
-        gap: 1rem;
-      }
-      
-      .search-btn {
-        width: 100%;
-      }
-    }
-
-    /* Button Animations */
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(0, 128, 255, 0.7); }
-      70% { box-shadow: 0 0 0 10px rgba(0, 128, 255, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(0, 128, 255, 0); }
-    }
-
-    .btn-pulse {
-      animation: pulse 2s infinite;
-    }
-
-    /* Loading animations */
-    .fade-in {
-      animation: fadeIn 1s ease-in;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  </style>
-  
-  <script>
-    function login() {
-      alert("Please login to continue");
-    }
-  </script>
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>
-    AOS.init({
-      duration: 800,
-      easing: 'ease-in-out',
-      once: true
-    });
-  </script>
 {% block body %}
 <section class="hero-section py-5">
   <div class="container px-3">
+ ui-fixes
     <div class="row px-lg-5 d-flex flex-column flex-md-row align-items-center">
       
       <!-- Hero Image -->
@@ -580,12 +588,14 @@
         <form class="d-flex w-100 flex-wrap gap-2 search-container" role="search">
           <input class="form-control flex-grow-1 rounded-pill px-4 py-2" type="search" id="search-input" placeholder="Search jobs here..." aria-label="Search">
           <button class="btn rounded-pill fw-semibold px-4" style="background-color: #093f75; color: #fff;" id="search-button">Search</button>
+
         </form>
       </div>
     </div>
   </div>
 </section>
 
+ ui-fixes
 
 <section style="padding: 60px 0; background: #f9f9f9;">
   <div style="max-width: 1200px; margin: 0 auto; padding: 0 15px;">
@@ -747,6 +757,7 @@
     </ul>
     <div style="text-align: center;">
       <a href="{% url 'jobapp:login' %}" onclick="login()" style="background: #0ef; color: #fff; padding: 0.5rem 1.5rem; font-weight: 600; border-radius: 6px; text-decoration: none;">Apply Now</a>
+
     </div>
   </div>
   {% endfor %}
@@ -800,6 +811,7 @@
   </div>
 </section>
 
+ ui-fixes
     
 <div style="flex: 1 1 calc(33.33% - 24px); background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 2rem; margin-bottom: 2rem; text-align: center;">
   <div style="display: flex; justify-content: center; margin-bottom: 1.2rem;">
@@ -860,6 +872,85 @@
   </div>
 </div>
 
+
+<section class="testimonials-section">
+  <div class="container">
+    <div class="row d-flex justify-content-center">
+      <div class="col-md-10 col-xl-8 text-center">
+        <h3 class="mb-5">Our Clients Say !!</h3>
+        <p class="mb-4 pb-2 mb-md-5 pb-md-0">
+          The experiences of our clients with us are truly commendable. DreamJobs helped them to get their<br> 
+          <span style="color: #ffffff; font-style:italic; font-weight: 800; font-size: 1.3rem;">Dream job.</span>
+        </p>
+      </div>
+    </div>
+    
+    <div class="row text-center">
+      <div class="col-md-4 mb-5 mb-md-0">
+        <div class="testimonial-card">
+          <div class="d-flex justify-content-center mb-4">
+            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(1).webp" class="testimonial-avatar" />
+          </div>
+          <h5 class="mb-3" style="color: var(--dark-blue); font-weight: 600;">Maria Smantha</h5>
+          <h6 class="text-primary mb-3" style="color: var(--primary-blue);">Web Developer</h6>
+          <p class="px-xl-3" style="color: #64748b; font-style: italic;">
+            <i class="fas fa-quote-left pe-2" style="color: var(--accent-cyan);"></i>I've used several job portals in the past, but this one stands out for
+            its simplicity and ease of use. The interface is intuitive, and I was able to set up my profile and start
+            applying for jobs within minutes. Highly recommended!
+          </p>
+          <div class="stars d-flex justify-content-center">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-5 mb-md-0">
+        <div class="testimonial-card">
+          <div class="d-flex justify-content-center mb-4">
+            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(2).webp" class="testimonial-avatar" />
+          </div>
+          <h5 class="mb-3" style="color: var(--dark-blue); font-weight: 600;">Lisa Cudrow</h5>
+          <h6 class="text-primary mb-3" style="color: var(--primary-blue);">Graphic Designer</h6>
+          <p class="px-xl-3" style="color: #64748b; font-style: italic;">
+            <i class="fas fa-quote-left pe-2" style="color: var(--accent-cyan);"></i>What really impressed me about this job portal is the exceptional
+            customer support. Whenever I had a question or ran into an issue, the support team was quick to respond and
+            incredibly helpful. It's clear they care about their users' success.
+          </p>
+          <div class="stars d-flex justify-content-center">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-0">
+        <div class="testimonial-card">
+          <div class="d-flex justify-content-center mb-4">
+            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(9).webp" class="testimonial-avatar" />
+          </div>
+          <h5 class="mb-3" style="color: var(--dark-blue); font-weight: 600;">John Smith</h5>
+          <h6 class="text-primary mb-3" style="color: var(--primary-blue);">Marketing Specialist</h6>
+          <p class="px-xl-3" style="color: #64748b; font-style: italic;">
+            <i class="fas fa-quote-left pe-2" style="color: var(--accent-cyan);"></i>This platform offers a wide range of job listings across various
+            industries. I was able to find opportunities that matched my skills and interests perfectly. It's the best
+            resource for job seekers I've come across.
+          </p>
+          <div class="stars d-flex justify-content-center">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="far fa-star"></i>
+          </div>
+        </div>
+ master
       </div>
     </div>
   </div>
@@ -867,33 +958,25 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script>
-  // Add some interactive effects
   document.addEventListener('DOMContentLoaded', function() {
-    // Add pulse animation to upload button
     const uploadBtn = document.querySelector('.upload-btn');
     if (uploadBtn) {
       uploadBtn.addEventListener('mouseenter', function() {
         this.style.animation = 'pulse 1s infinite';
       });
-      
       uploadBtn.addEventListener('mouseleave', function() {
         this.style.animation = 'none';
       });
     }
-
-    // Add hover effects to job cards
     const jobCards = document.querySelectorAll('.job-card');
     jobCards.forEach(card => {
       card.addEventListener('mouseenter', function() {
         this.style.transform = 'scale(1.02)';
       });
-      
       card.addEventListener('mouseleave', function() {
         this.style.transform = 'scale(1)';
       });
     });
-
-    // Smooth scroll for any internal links
     const links = document.querySelectorAll('a[href^="#"]');
     links.forEach(link => {
       link.addEventListener('click', function(e) {
@@ -907,9 +990,63 @@
         }
       });
     });
+
+    // AJAX search handling
+    const searchForm = document.querySelector('.search-container');
+    const jobsContainer = document.querySelector('#jobs-container');
+    const spinner = document.querySelector('#loading-spinner');
+    if (searchForm && jobsContainer && spinner) {
+      searchForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const query = document.querySelector('#search-input').value;
+        spinner.style.display = 'block';
+        jobsContainer.style.display = 'none';
+        fetch(`/search-jobs/?q=${encodeURIComponent(query)}`)
+          .then(response => response.json())
+          .then(data => {
+            jobsContainer.innerHTML = '';
+            if (data.jobs.length > 0) {
+              data.jobs.forEach(job => {
+                const jobCard = `
+                  <div class="col-lg-4 col-md-6">
+                    <div class="job-card">
+                      <div class="card-body">
+                        <h5 class="card-title">${job.post}</h5>
+                        <div class="job-meta">
+                          <p><i class="fa-solid fa-location-dot"></i>${job.location}</p>
+                          <p><i class="fa-regular fa-clock"></i>${job.posteddate}</p>
+                          <p><i class="fa-solid fa-briefcase"></i>${job.jobtitle}</p>
+                        </div>
+                        <ul class="job-skills">
+                          <li><strong>Company:</strong> ${job.firmname}</li>
+                          <li><strong>Qualifications:</strong> ${job.qualification}</li>
+                          <li><strong>Skills:</strong> ${job.jobdesc}</li>
+                          <li><strong>Salary:</strong> ${job.salarypa} LPA</li>
+                          <li><strong>Email:</strong> <a href="mailto:${job.emailaddress}" style="color: #7db9f6;">${job.emailaddress}</a></li>
+                        </ul>
+                        <div class="d-flex justify-content-center">
+                          <a href="{% url 'jobapp:login' %}" class="apply-btn" onclick="login()">Apply Now</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>`;
+                jobsContainer.innerHTML += jobCard;
+              });
+            } else {
+              jobsContainer.innerHTML = '<div class="col-12 text-center"><p>No jobs found matching your search.</p></div>';
+            }
+            spinner.style.display = 'none';
+            jobsContainer.style.display = 'flex';
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            jobsContainer.innerHTML = '<div class="col-12 text-center"><p>Error loading jobs. Please try again.</p></div>';
+            spinner.style.display = 'none';
+            jobsContainer.style.display = 'flex';
+          });
+      });
+    }
   });
 </script>
 
 {% endblock body %}
-</body>
-</html>
