@@ -7,6 +7,7 @@
             <form method="post" class="form-group bg-light text-dark text-center mx-auto" style="
             border-radius: 40px;">
                 {% csrf_token %}
+               
                 <table class="table text-dark bg-light mx-auto" style="width:60%; margin:auto; border:transparent">
                 <tr>
                     <td>Name</td>
@@ -45,7 +46,7 @@
                 <tr>
                     <td>dob</td>
                     <td>
-                    <input type="date" name="dob" value="{{jobseek.dob}}" class="form-control bg-light text-dark"/>  
+                    <input type="date" name="dob" value="{{jobseek.dob|date:'Y-m-d'}}" class="form-control bg-light text-dark"/>  
                     </td>
                 </tr>
                 <tr>
@@ -59,6 +60,8 @@
                     <td><textarea name="keyskills" class="form-control bg-light text-dark">{{jobseek.keyskills}}</textarea></td>
                 </tr>
                 </table>
+                <input type = "submit" value = "Save" class = "btn m-3" style = "background-color: navy">
+
             </form>
         </div>
     </div>
