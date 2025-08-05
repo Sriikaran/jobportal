@@ -4,7 +4,7 @@ from jsapp.models import Response, SavedJob
 from django.contrib import messages
 from jobapp.models import JobSeeker,Employer
 from .models import AppliedJobs
-from datetime import datetime
+import datetime
 from django.shortcuts import get_object_or_404
 
 def index(request):
@@ -48,13 +48,34 @@ def viewprofile(request):
     if "username" not in request.session:
         return redirect("login")
 
+
     seeker_email = request.session["username"]
+
+    if request.method == "POST":
+        jobseeker = JobSeeker.objects.get(emailaddress = seeker_email)
+        jobseeker.name= request.POST.get("name")
+        jobseeker.gender = request.POST.get("gender")
+        jobseeker.address = request.POST.get('address')
+        jobseeker.contactno = request.POST.get('contactno')
+        dob_str = request.POST.get("dob")
+        if dob_str:
+            try:
+                jobseeker.dob = datetime.datetime.strptime(dob_str, "%Y-%m-%d").date()
+            except ValueError:
+                messages.error(request, "Invalid date format for DOB. Use YYYY-MM-DD.")
+        
+        jobseeker.qualification  = request.POST.get('qualification')
+        jobseeker.experience = request.POST.get('experience')
+        jobseeker.keyskills = request.POST.get('keyskills')
+        jobseeker.save()
+        messages.success(request, "Profile updated")
+
     try:
         jobseeker = JobSeeker.objects.get(emailaddress=seeker_email)
     except JobSeeker.DoesNotExist:
         jobseeker = None
 
-    return render(request, "viewprofile.html", {"jobseeker": jobseeker})
+    return render(request, "viewprofile.html", {"jobseek": jobseeker})
 
 def response(request):
     if "username" not in request.session:
@@ -198,9 +219,15 @@ def jsapply(request, id):
 
 def jshome(request):
     # return render(request, 'jshome.html')  # create jsapp/templates/jsapp/home.html if needed
+    print("hi")
     if request.session.get("usertype") != "jobseeker":
         return redirect("jobapp:login")
-    return render(request, 'jshome.html')
+    seeker_email = request.session["username"]
+    jobseeker = JobSeeker.objects.get(emailaddress = seeker_email)
+    print(jobseeker)
+    return render(request, 'jshome.html',{"jobseek": jobseeker})
+
+
 def viewjobs(request):
     # Just rendering a template for now
     return render(request, 'viewjobs.html')
