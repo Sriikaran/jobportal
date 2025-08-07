@@ -54,7 +54,9 @@ def viewprofile(request):
 
     if request.method == "POST":
         jobseeker = JobSeeker.objects.get(emailaddress = seeker_email)
-        jobseeker.profilepic = request.FILES["profilepic"]
+        profile_pic = request.FILES.get("profilepic")
+        if profile_pic:
+            jobseeker.profilepic = profile_pic
         jobseeker.name= request.POST.get("name")
         jobseeker.gender = request.POST.get("gender")
         jobseeker.address = request.POST.get('address')
