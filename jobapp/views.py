@@ -1,29 +1,59 @@
-from django.shortcuts import render,redirect
-from .models import Login,Employer,JobSeeker,Enquiry
+from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from .models import Login, Employer, JobSeeker, Enquiry
 from adminapp.models import News
 from employer.models import Jobs
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.urls import reverse
 import datetime
+from django.db.models import Q
 
-# Create your views here.
 def index(request):
     jobs = Jobs.objects.all()
+    q = request.GET.get('q')
+    if q:
+        jobs = jobs.filter(
+            Q(post__icontains=q) |
+            Q(location__icontains=q) |
+            Q(jobdesc__icontains=q) |
+            Q(firmname__icontains=q) |
+            Q(qualification__icontains=q)
+        )
+        jobs = list(jobs)  # Force evaluation
+        print(f"Search query: {q}, Found jobs: {len(jobs)}, Jobs: {[job.post for job in jobs]}")
+    else:
+        print(f"No search query, Total jobs: {jobs.count()}")
+    context = {'jobs': jobs, 'q': q}
+    print("Context:", context)
+    return render(request, "index.html", context)
 
-    location = request.GET.get('location')
-    experience = request.GET.get('experience')
-
-    if location:
-        jobs = jobs.filter(location__icontains=location)
-
-    if experience:
-        jobs = jobs.filter(experience__icontains=experience)
-
-    return render(request, "index.html", {'jobs': jobs, 'location': location, 'experience': experience})
+def search_jobs(request):
+    jobs = Jobs.objects.all()
+    q = request.GET.get('q')
+    if q:
+        jobs = jobs.filter(
+            Q(post__icontains=q) |
+            Q(location__icontains=q) |
+            Q(jobdesc__icontains=q) |
+            Q(firmname__icontains=q) |
+            Q(qualification__icontains=q)
+        )
+    job_list = [{
+        'post': job.post,
+        'location': job.location,
+        'posteddate': job.posteddate,  # Use string directly
+        'jobtitle': job.jobtitle,
+        'firmname': job.firmname,
+        'qualification': job.qualification,
+        'jobdesc': job.jobdesc,
+        'salarypa': str(job.salarypa),
+        'emailaddress': job.emailaddress
+    } for job in jobs]
+    return JsonResponse({'jobs': job_list})
 
 def aboutus(request):
-    return render(request,"aboutus.html")
+    return render(request, "aboutus.html")
 
 def jobseekerreg(request):
     if request.method == "POST":
@@ -61,7 +91,6 @@ def login(request):
     if request.method=="POST":  
         username=request.POST["username"]
         password=request.POST["password"]
-        # usertype=request.POST['usertype']
         try:
             obj = Login.objects.get(username=username, password=password)
             usertype = obj.usertype 
@@ -81,8 +110,9 @@ def login(request):
             else:
                 return render(request, 'login.html', {"msg": "Invalid user type"})
         except ObjectDoesNotExist:
-         return render(request,'login.html',{"msg":"Invalid user"}) 
-    return render(request,"login.html")
+            return render(request, 'login.html', {"msg": "Invalid user"}) 
+    return render(request, "login.html")
+
 def employerreg(request):
     if request.method == "POST":
         empprofilepic = request.FILES.get("empprofilepic")
@@ -130,23 +160,26 @@ def contactus(request):
         emailaddress=request.POST["emailaddress"]
         enquirytext=request.POST["enquirytext"]
         posteddate=datetime.datetime.today()
-        enq=Enquiry(name=name,gender=gender,address=address,contactno=contactno, emailaddress=emailaddress, enquirytext=enquirytext, posteddate=posteddate)
+        enq=Enquiry(name=name, gender=gender, address=address, contactno=contactno, emailaddress=emailaddress, enquirytext=enquirytext, posteddate=posteddate)
         enq.save()
-        return render(request,"contactus.html",{"msg":"Enquiry is saved"})
-    return render(request,"contactus.html")
+        return render(request, "contactus.html", {"msg": "Enquiry is saved"})
+    return render(request, "contactus.html")
+
 def apply(request):
-    return render(request,"apply.html")
+    return render(request, "apply.html")
+
 def services(request):
-    return render(request,"services.html")
+    return render(request, "services.html")
+
 def blog(request):
-        new=News.objects.all()
-        return render(request,"blog.html",locals())
+    new = News.objects.all()
+    return render(request, "blog.html", locals())
+
 def forgot_password(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         try:
             user = Login.objects.get(username=email)
-            # For now, just show a success message (simulate email sent)
             return render(request, 'reset_password.html', {'user_email': user.username})
         except Login.DoesNotExist:
             messages.error(request, "Email not registered.")

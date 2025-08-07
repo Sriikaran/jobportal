@@ -1,804 +1,881 @@
 {% extends 'parent.html' %}
 {% load static %}
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  
-  <style>
-    :root {
-      --primary-blue: #0080ff;
-      --secondary-blue: #56a8fa;
-      --dark-blue: #093f75;
-      --light-blue: #7ecce6;
-      --accent-cyan: #00f5ff;
-      --accent-purple: #8b5cf6;
-      --accent-pink: #ec4899;
-      --accent-orange: #f97316;
-      --gradient-1: linear-gradient(135deg, #0080ff 0%, #56a8fa 50%, #7ecce6 100%);
-      --gradient-2: linear-gradient(135deg, #093f75 0%, #0080ff 50%, #56a8fa 100%);
-      --gradient-3: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #f97316 100%);
-      --gradient-4: linear-gradient(135deg, #00f5ff 0%, #0080ff 100%);
-    }
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"> -->
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<style>
+  :root {
+    --primary-blue: #0080ff;
+    --secondary-blue: #56a8fa;
+    --dark-blue: #093f75;
+    --light-blue: #7ecce6;
+    --accent-cyan: #00f5ff;
+    --accent-purple: #8b5cf6;
+    --accent-pink: #ec4899;
+    --accent-orange: #f97316;
+    --gradient-1: linear-gradient(135deg, #0080ff 0%, #56a8fa 50%, #7ecce6 100%);
+    --gradient-2: linear-gradient(135deg, #093f75 0%, #0080ff 50%, #56a8fa 100%);
+    --gradient-3: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #f97316 100%);
+    --gradient-4: linear-gradient(135deg, #00f5ff 0%, #0080ff 100%);
+  }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-      overflow-x: hidden;
-      position: relative;
-    }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-    /* Animated Background */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      background: 
-        radial-gradient(circle at 20% 80%, rgba(0, 128, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(236, 72, 153, 0.08) 0%, transparent 50%);
-      animation: float 20s ease-in-out infinite;
-    }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    overflow-x: hidden;
+    position: relative;
+  }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0px) rotate(0deg); }
-      33% { transform: translateY(-20px) rotate(1deg); }
-      66% { transform: translateY(10px) rotate(-1deg); }
-    }
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: 
+      radial-gradient(circle at 20% 80%, rgba(0, 128, 255, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, rgba(236, 72, 153, 0.08) 0%, transparent 50%);
+    animation: float 20s ease-in-out infinite;
+  }
 
-    /* Hero Section Improvements */
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    33% { transform: translateY(-20px) rotate(1deg); }
+    66% { transform: translateY(10px) rotate(-1deg); }
+  }
+
+  .hero-section {
+    background: var(--gradient-1);
+    border-radius: 0 0 50px 50px;
+    position: relative;
+    overflow: hidden;
+    padding: 4rem 0;
+  }
+
+  .hero-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 100%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: rotate 30s linear infinite;
+  }
+
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .hero-content h1 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    background: linear-gradient(135deg, #ffffff 0%, #e0f2fe 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 4px 20px rgba(0, 128, 255, 0.3);
+    margin-bottom: 1rem;
+  }
+
+  .hero-content p {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 2rem;
+    font-weight: 400;
+  }
+
+  .hero-image {
+    position: relative;
+  }
+
+  .hero-image img {
+    border-radius: 30px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 128, 255, 0.3);
+    transition: transform 0.3s ease;
+  }
+
+  .hero-image img:hover {
+    transform: scale(1.05) rotate(2deg);
+  }
+
+  .search-container {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .search-container input {
+    border: none;
+    background: transparent;
+    font-size: 1.1rem;
+    padding: 0.8rem 1rem;
+  }
+
+  .search-container input:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  .search-btn {
+    background: var(--gradient-2);
+    border: none;
+    border-radius: 15px;
+    padding: 0.8rem 2rem;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(9, 63, 117, 0.3);
+  }
+
+  .search-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(9, 63, 117, 0.4);
+  }
+
+  .jobs-section {
+    background: linear-gradient(135deg, #7ecce6 0%, #56a8fa 100%);
+    position: relative;
+    padding: 4rem 0;
+    overflow: hidden;
+  }
+
+  .jobs-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+    z-index: 1;
+  }
+
+  .jobs-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .jobs-section h1 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    color: white;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+  }
+
+  .jobs-section p {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 3rem;
+  }
+
+  .col {
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    min-height: 320px;
+  }
+
+  .col::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-3);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 1;
+  }
+
+  .col:hover::before {
+    opacity: 0.05;
+  }
+
+  .col:hover {
+    transform: translateY(-15px) scale(1.02);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+  }
+
+  .col:nth-child(odd) {
+    animation: slideInLeft 0.6s ease forwards;
+  }
+
+  .col:nth-child(even) {
+    animation: slideInRight 0.6s ease forwards;
+  }
+
+  @keyframes slideInLeft {
+    from { transform: translateX(-100px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+
+  @keyframes slideInRight {
+    from { transform: translateX(100px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+
+  .job-card {
+    height: 100%;
+    position: relative;
+    z-index: 2;
+  }
+
+  .card-body {
+    padding: 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .card-title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: var(--dark-blue);
+    margin-bottom: 1rem;
+    position: relative;
+  }
+
+  .card-title::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: var(--gradient-4);
+    border-radius: 2px;
+  }
+
+  .job-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .job-meta p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .job-meta i {
+    color: var(--primary-blue);
+    width: 16px;
+  }
+
+  .job-skills {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+  }
+
+  .job-skills li {
+    padding: 0.5rem 0;
+    font-size: 0.95rem;
+    color: #475569;
+    position: relative;
+    padding-left: 20px;
+  }
+
+  .job-skills li::before {
+    content: '▶';
+    position: absolute;
+    left: 0;
+    color: var(--accent-cyan);
+    font-size: 0.8rem;
+  }
+
+  .apply-btn {
+    background: var(--gradient-2);
+    border: none;
+    border-radius: 15px;
+    padding: 0.8rem 2rem;
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(9, 63, 117, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .apply-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    transform: translate(-50%, -50%);
+  }
+
+  .apply-btn:hover::before {
+    width: 300px;
+    height: 300px;
+  }
+
+  .apply-btn:hover {
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(9, 63, 117, 0.4);
+  }
+
+  .ats-section {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    padding: 4rem 0;
+    position: relative;
+  }
+
+  .ats-section h2 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    background: var(--gradient-2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    margin-bottom: 1rem;
+  }
+
+  .ats-section p {
+    font-size: 1.1rem;
+    color: #64748b;
+    margin-bottom: 2rem;
+  }
+
+  .upload-btn {
+    background: var(--gradient-3);
+    border: none;
+    border-radius: 20px;
+    padding: 1rem 3rem;
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+  }
+
+  .upload-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(139, 92, 246, 0.4);
+  }
+
+  .ats-benefits {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin: 2rem 0;
+  }
+
+  .ats-benefits ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .ats-benefits li {
+    padding: 1rem 0;
+    font-size: 1.1rem;
+    color: #334155;
+    position: relative;
+    padding-left: 40px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .ats-benefits li:last-child {
+    border-bottom: none;
+  }
+
+  .ats-benefits li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    top: 1rem;
+    width: 30px;
+    height: 30px;
+    background: var(--gradient-4);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
+
+  .testimonials-section {
+    background: var(--gradient-1);
+    padding: 4rem 0;
+    position: relative;
+  }
+
+  .testimonials-section h3 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    color: white;
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    margin-bottom: 1rem;
+  }
+
+  .testimonials-section p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+  }
+
+  .testimonial-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 1rem 0;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    height: 100%;
+  }
+
+  .testimonial-card:hover {
+    transform: translateY(-10px);
+  }
+
+  .testimonial-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 4px solid var(--primary-blue);
+    box-shadow: 0 5px 15px rgba(0, 128, 255, 0.3);
+  }
+
+  .stars {
+    color: #fbbf24;
+    font-size: 1.2rem;
+    margin-top: 1rem;
+  }
+
+  .loading-spinner {
+    display: none;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid var(--primary-blue);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @media (max-width: 768px) {
     .hero-section {
-      background: var(--gradient-1);
-      border-radius: 0 0 50px 50px;
-      position: relative;
-      overflow: hidden;
-      padding: 4rem 0;
+      padding: 2rem 0;
     }
-
-    .hero-section::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      right: -10%;
-      width: 100%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-      animation: rotate 30s linear infinite;
-    }
-
-    @keyframes rotate {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    .hero-content h1 {
-      font-family: 'Poppins', sans-serif;
-      font-weight: 800;
-      font-size: clamp(2.5rem, 5vw, 4rem);
-      background: linear-gradient(135deg, #ffffff 0%, #e0f2fe 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 4px 20px rgba(0, 128, 255, 0.3);
-      margin-bottom: 1rem;
-    }
-
-    .hero-content p {
-      font-size: 1.2rem;
-      color: rgba(255, 255, 255, 0.9);
-      margin-bottom: 2rem;
-      font-weight: 400;
-    }
-
-    .hero-image {
-      position: relative;
-    }
-
-    .hero-image img {
-      border-radius: 30px;
-      border: 5px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 20px 60px rgba(0, 128, 255, 0.3);
-      transition: transform 0.3s ease;
-    }
-
-    .hero-image img:hover {
-      transform: scale(1.05) rotate(2deg);
-    }
-
-    /* Search Bar Enhancement */
-    .search-container {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      padding: 1rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .search-container input {
-      border: none;
-      background: transparent;
-      font-size: 1.1rem;
-      padding: 0.8rem 1rem;
-    }
-
-    .search-container input:focus {
-      outline: none;
-      box-shadow: none;
-    }
-
-    .search-btn {
-      background: var(--gradient-2);
-      border: none;
-      border-radius: 15px;
-      padding: 0.8rem 2rem;
-      color: white;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      box-shadow: 0 5px 15px rgba(9, 63, 117, 0.3);
-    }
-
-    .search-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(9, 63, 117, 0.4);
-    }
-
-    /* Jobs Section Enhancement */
+    
     .jobs-section {
-      background: linear-gradient(135deg, #7ecce6 0%, #56a8fa 100%);
-      position: relative;
-      padding: 4rem 0;
-      overflow: hidden;
+      padding: 2rem 0;
     }
-
-    .jobs-section::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: 
-        radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
-      z-index: 1;
-    }
-
-    .jobs-content {
-      position: relative;
-      z-index: 2;
-    }
-
-    .jobs-section h1 {
-      font-family: 'Poppins', sans-serif;
-      font-weight: 700;
-      font-size: clamp(2rem, 4vw, 3.5rem);
-      color: white;
-      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-      margin-bottom: 1rem;
-    }
-
-    .jobs-section p {
-      font-size: 1.2rem;
-      color: rgba(255, 255, 255, 0.9);
-      margin-bottom: 3rem;
-    }
-
-    /* Job Cards Revolution */
+    
     .col {
-      display: flex;
-      flex-direction: column;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(20px);
-      border-radius: 25px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-      transition: all 0.4s ease;
-      position: relative;
-      overflow: hidden;
-      margin-bottom: 2rem;
-      min-height: 320px;
+      margin-bottom: 1.5rem;
     }
-
-    .col::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
+    
+    .search-container {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .search-btn {
       width: 100%;
-      height: 100%;
-      background: var(--gradient-3);
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      z-index: 1;
     }
+  }
 
-    .col:hover::before {
-      opacity: 0.05;
-    }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(0, 128, 255, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(0, 128, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 128, 255, 0); }
+  }
 
-    .col:hover {
-      transform: translateY(-15px) scale(1.02);
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-    }
+  .btn-pulse {
+    animation: pulse 2s infinite;
+  }
 
-    .col:nth-child(odd) {
-      animation: slideInLeft 0.6s ease forwards;
-    }
+  .fade-in {
+    animation: fadeIn 1s ease-in;
+  }
 
-    .col:nth-child(even) {
-      animation: slideInRight 0.6s ease forwards;
-    }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
 
-    @keyframes slideInLeft {
-      from { transform: translateX(-100px); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
+<script>
+  function login() {
+    alert("Please login to continue");
+  }
+</script>
+<!-- <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> -->
+<!-- <script>
+  AOS.init({
+    duration: 800,
+    easing: 'ease-in-out',
+    once: true
+  });
+</script> -->
 
-    @keyframes slideInRight {
-      from { transform: translateX(100px); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-
-    .job-card {
-      height: 100%;
-      position: relative;
-      z-index: 2;
-    }
-
-    .card-body {
-      padding: 2rem;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .card-title {
-      font-family: 'Poppins', sans-serif;
-      font-weight: 700;
-      font-size: 1.4rem;
-      color: var(--dark-blue);
-      margin-bottom: 1rem;
-      position: relative;
-    }
-
-    .card-title::after {
-      content: '';
-      position: absolute;
-      bottom: -5px;
-      left: 0;
-      width: 50px;
-      height: 3px;
-      background: var(--gradient-4);
-      border-radius: 2px;
-    }
-
-    .job-meta {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
-
-    .job-meta p {
-      margin: 0;
-      font-size: 0.9rem;
-      color: #64748b;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .job-meta i {
-      color: var(--primary-blue);
-      width: 16px;
-    }
-
-    .job-skills {
-      list-style: none;
-      padding: 0;
-      margin: 1rem 0;
-    }
-
-    .job-skills li {
-      padding: 0.5rem 0;
-      font-size: 0.95rem;
-      color: #475569;
-      position: relative;
-      padding-left: 20px;
-    }
-
-    .job-skills li::before {
-      content: '▶';
-      position: absolute;
-      left: 0;
-      color: var(--accent-cyan);
-      font-size: 0.8rem;
-    }
-
-    .apply-btn {
-      background: var(--gradient-2);
-      border: none;
-      border-radius: 15px;
-      padding: 0.8rem 2rem;
-      color: white;
-      font-weight: 600;
-      text-decoration: none;
-      text-align: center;
-      transition: all 0.3s ease;
-      box-shadow: 0 5px 15px rgba(9, 63, 117, 0.3);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .apply-btn::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 50%;
-      transition: all 0.3s ease;
-      transform: translate(-50%, -50%);
-    }
-
-    .apply-btn:hover::before {
-      width: 300px;
-      height: 300px;
-    }
-
-    .apply-btn:hover {
-      color: white;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(9, 63, 117, 0.4);
-    }
-
-    /* ATS Section Enhancement */
-    .ats-section {
-      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-      padding: 4rem 0;
-      position: relative;
-    }
-
-    .ats-section h2 {
-      font-family: 'Poppins', sans-serif;
-      font-weight: 700;
-      background: var(--gradient-2);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-size: clamp(1.8rem, 4vw, 3rem);
-      margin-bottom: 1rem;
-    }
-
-    .ats-section p {
-      font-size: 1.1rem;
-      color: #64748b;
-      margin-bottom: 2rem;
-    }
-
-    .upload-btn {
-      background: var(--gradient-3);
-      border: none;
-      border-radius: 20px;
-      padding: 1rem 3rem;
-      color: white;
-      font-weight: 600;
-      font-size: 1.1rem;
-      transition: all 0.3s ease;
-      box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
-    }
-
-    .upload-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 15px 40px rgba(139, 92, 246, 0.4);
-    }
-
-    .ats-benefits {
-      background: white;
-      border-radius: 20px;
-      padding: 2rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-      margin: 2rem 0;
-    }
-
-    .ats-benefits ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    .ats-benefits li {
-      padding: 1rem 0;
-      font-size: 1.1rem;
-      color: #334155;
-      position: relative;
-      padding-left: 40px;
-      border-bottom: 1px solid #f1f5f9;
-    }
-
-    .ats-benefits li:last-child {
-      border-bottom: none;
-    }
-
-    .ats-benefits li::before {
-      content: '✓';
-      position: absolute;
-      left: 0;
-      top: 1rem;
-      width: 30px;
-      height: 30px;
-      background: var(--gradient-4);
-      color: white;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-    }
-
-    /* Testimonials Enhancement */
-    .testimonials-section {
-      background: var(--gradient-1);
-      padding: 4rem 0;
-      position: relative;
-    }
-
-    .testimonials-section h3 {
-      font-family: 'Poppins', sans-serif;
-      font-weight: 700;
-      color: white;
-      font-size: clamp(1.8rem, 4vw, 2.5rem);
-      margin-bottom: 1rem;
-    }
-
-    .testimonials-section p {
-      color: rgba(255, 255, 255, 0.9);
-      font-size: 1.1rem;
-    }
-
-    .testimonial-card {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(20px);
-      border-radius: 20px;
-      padding: 2rem;
-      margin: 1rem 0;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease;
-      height: 100%;
-    }
-
-    .testimonial-card:hover {
-      transform: translateY(-10px);
-    }
-
-    .testimonial-avatar {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      border: 4px solid var(--primary-blue);
-      box-shadow: 0 5px 15px rgba(0, 128, 255, 0.3);
-    }
-
-    .stars {
-      color: #fbbf24;
-      font-size: 1.2rem;
-      margin-top: 1rem;
-    }
-
-    /* Responsive Improvements */
-    @media (max-width: 768px) {
-      .hero-section {
-        padding: 2rem 0;
-      }
-      
-      .jobs-section {
-        padding: 2rem 0;
-      }
-      
-      .col {
-        margin-bottom: 1.5rem;
-      }
-      
-      .search-container {
-        flex-direction: column;
-        gap: 1rem;
-      }
-      
-      .search-btn {
-        width: 100%;
-      }
-    }
-
-    /* Button Animations */
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(0, 128, 255, 0.7); }
-      70% { box-shadow: 0 0 0 10px rgba(0, 128, 255, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(0, 128, 255, 0); }
-    }
-
-    .btn-pulse {
-      animation: pulse 2s infinite;
-    }
-
-    /* Loading animations */
-    .fade-in {
-      animation: fadeIn 1s ease-in;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  </style>
-  
-  <script>
-    function login() {
-      alert("Please login to continue");
-    }
-  </script>
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>
-    AOS.init({
-      duration: 800,
-      easing: 'ease-in-out',
-      once: true
-    });
-  </script>
 {% block body %}
-<section class="hero-section">
+<section class="hero-section py-5">
   <div class="container px-3">
-    <div class="row pt-5 px-lg-5 pb-5 d-flex flex-column flex-md-row align-items-center">
-      <div class="order-1 order-md-2 col-md-6 d-flex align-items-center justify-content-center mb-4 mb-md-0 hero-image"
-        data-aos="fade-left" data-aos-duration="800">
-        <img src="{% static 'images/right3.jpg' %}" class="img-fluid">
+ ui-fixes
+    <div class="row px-lg-5 d-flex flex-column flex-md-row align-items-center">
+      
+      <!-- Hero Image -->
+      <div class="order-1 order-md-2 col-md-6 d-flex align-items-center justify-content-center mb-4 mb-md-0 hero-image" data-aos="fade-left" data-aos-duration="800">
+        <img src="{% static 'images/right3.jpg' %}" class="img-fluid rounded-4 shadow" alt="Hero Image">
       </div>
-
-      <div class="order-2 order-md-1 col-md-6 px-4 px-md-5 pt-2 pt-md-5 hero-content" data-aos="fade-right"
-        data-aos-duration="800">
-        <h1>
+      
+      <!-- Hero Content -->
+      <div class="order-2 order-md-1 col-md-6 px-4 px-md-5 pt-3 pt-md-5 hero-content" data-aos="fade-right" data-aos-duration="800">
+        <h1 class="fw-bold mb-3" style="color: #093f75; font-size: 2.5rem;">
           Get The Right Job You Deserve
         </h1>
-        <p>
+        <p class="mb-4 text-secondary" style="font-size: 1rem; line-height: 1.6;">
           Each month, more than 3 million job seekers turn to our website in their search for work,
-          making over 140,000 applications every single day
+          making over 140,000 applications every single day.
         </p>
-        <form class="d-flex w-100 flex-wrap gap-2 mt-3 search-container" role="search">
-          <input class="form-control flex-grow-1" type="search" id="search-input" placeholder="Search Jobs here.."
-            aria-label="Search">
-          <button class="search-btn" id="search-button">Search</button>
+        
+        <!-- Search Form -->
+        <form class="d-flex w-100 flex-wrap gap-2 search-container" role="search">
+          <input class="form-control flex-grow-1 rounded-pill px-4 py-2" type="search" id="search-input" placeholder="Search jobs here..." aria-label="Search">
+          <button class="btn rounded-pill fw-semibold px-4" style="background-color: #093f75; color: #fff;" id="search-button">Search</button>
+
         </form>
       </div>
     </div>
   </div>
 </section>
 
-<section class="jobs-section">
-  <div class="container jobs-content">
-    <div class="text-center mb-5" data-aos="fade-up" data-aos-duration="600">
-      <h1>Latest Jobs Post</h1>
-      <p>Explore the different types of available jobs to apply discover which is right for you.</p>
-    </div>
-    
-    <div class="row" data-aos="fade-up">
-      <div class="col-lg-4 col-md-6">
-        <div class="job-card" data-aos="fade-up">
-          <div class="card-body">
-            <h5 class="card-title">React Native Web Developer</h5>
-            <div class="job-meta">
-              <p><i class="fa-solid fa-location-dot"></i>Mumbai, Maharashtra</p>
-              <p><i class="fa-regular fa-clock"></i>10 Minutes ago</p>
-            </div>
-            <ul class="job-skills">
-              <li>Remote-Full time/Part Time</li>
-              <li>Experience: 5+ Years</li>
-              <li>Salary: 4 LPA</li>
-              <li>Skills: HTML, CSS, JSX, React</li>
-            </ul>
-            <div class="d-flex justify-content-center">
-              <a href="{% url 'jobapp:login' %}" class="apply-btn" onclick="login()">Apply Now</a>
-            </div>
-          </div>
-        </div>
-      </div>
+ ui-fixes
 
-      <div class="col-lg-4 col-md-6">
-        <div class="job-card" data-aos="fade-up">
-          <div class="card-body">
-            <h5 class="card-title">Digital Marketing Manager</h5>
-            <div class="job-meta">
-              <p><i class="fa-solid fa-location-dot"></i>Chicago, US</p>
-              <p><i class="fa-regular fa-clock"></i>6 Minutes ago</p>
-              <p><i class="fa-solid fa-briefcase"></i>Full-Time</p>
-            </div>
-            <ul class="job-skills">
-              <li>In-depth knowledge of current digital trends</li>
-              <li>Experience in digital marketing, or a related field</li>
-            </ul>
-            <div class="d-flex justify-content-center">
-              <a href="{% url 'jobapp:login' %}" class="apply-btn" onclick="login()">Apply Now</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-4 col-md-6">
-        <div class="job-card" data-aos="fade-up">
-          <div class="card-body">
-            <h5 class="card-title">IIB Developer</h5>
-            <div class="job-meta">
-              <p><i class="fa-solid fa-location-dot"></i>Bangalore</p>
-              <p><i class="fa-regular fa-clock"></i>28 Minutes ago</p>
-              <p><i class="fa-solid fa-briefcase"></i>Remote</p>
-            </div>
-            <ul class="job-skills">
-              <li>Role: Database Administrator</li>
-              <li>Department: Engineering</li>
-              <li>Role Category: DBA / Data warehousing</li>
-            </ul>
-            <div class="d-flex justify-content-center">
-              <a href="{% url 'jobapp:login' %}" class="apply-btn" onclick="login()">Apply Now</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-4 col-md-6">
-        <div class="job-card" data-aos="fade-up">
-          <div class="card-body">
-            <h5 class="card-title">Full Stack Developer</h5>
-            <div class="job-meta">
-              <p><i class="fa-solid fa-location-dot"></i>Lucknow, Pradesh</p>
-              <p><i class="fa-regular fa-clock"></i>2 Hours ago</p>
-            </div>
-            <ul class="job-skills">
-              <li>Full Time</li>
-              <li>Skills: HTML, CSS, JS, ReactJS, NodeJS</li>
-              <li>Freshers/Experienced</li>
-              <li>Salary: Based On Skill Set</li>
-            </ul>
-            <div class="d-flex justify-content-center">
-              <a href="{% url 'jobapp:login' %}" class="apply-btn" onclick="login()">Apply Now</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-4 col-md-6">
-        <div class="job-card" data-aos="fade-up">
-          <div class="card-body">
-            <h5 class="card-title">UX/UI Designer</h5>
-            <div class="job-meta">
-              <p><i class="fa-solid fa-location-dot"></i>Lucknow, Pradesh</p>
-              <p><i class="fa-regular fa-clock"></i>10 Hours ago</p>
-            </div>
-            <ul class="job-skills">
-              <li>Up-to-date knowledge of design softwares</li>
-              <li>BSc in Design, Computer Science or relevant field</li>
-              <li>Good time-management skills</li>
-            </ul>
-            <div class="d-flex justify-content-center">
-              <a href="{% url 'jobapp:login' %}" class="apply-btn" onclick="login()">Apply Now</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-4 col-md-6">
-        <div class="job-card" data-aos="fade-up">
-          <div class="card-body">
-            <h5 class="card-title">Data Scientist</h5>
-            <div class="job-meta">
-              <p><i class="fa-solid fa-location-dot"></i>Lucknow, Pradesh</p>
-              <p><i class="fa-regular fa-clock"></i>2 Hours ago</p>
-            </div>
-            <ul class="job-skills">
-              <li><strong>Job Type:</strong> Full Time</li>
-              <li><strong>Skills:</strong> R, SQL, Python, Java, C++</li>
-              <li><strong>Qualifications:</strong> BSc/BA in Computer Science, Engineering</li>
-            </ul>
-            <div class="d-flex justify-content-center">
-              <a href="{% url 'jobapp:login' %}" class="apply-btn" onclick="login()">Apply Now</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-4 col-md-6">
-        <div class="job-card" data-aos="fade-up">
-          <div class="card-body">
-            <h5 class="card-title">Nestle Nutrition Officer</h5>
-            <div class="job-meta">
-              <p><i class="fa-solid fa-location-dot"></i>Lucknow, Pradesh</p>
-              <p><i class="fa-regular fa-clock"></i>2 Hours ago</p>
-              <p><i class="fa-solid fa-briefcase"></i>Full-Time</p>
-            </div>
-            <ul class="job-skills">
-              <li><strong>Company:</strong> Nestle</li>
-              <li><strong>Qualifications:</strong> BSc, BPharm, BTech Graduates can apply</li>
-              <li><strong>Skills:</strong> Communication, Teamwork</li>
-              <li><strong>Salary:</strong> 6 LPA</li>
-            </ul>
-            <div class="d-flex justify-content-center">
-              <a href="{% url 'jobapp:login' %}" class="apply-btn" onclick="login()">Apply Now</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {% for j in job %}
-      <div class="col-lg-4 col-md-6">
-        <div class="job-card" data-aos="fade-up">
-          <div class="card-body">
-            <h5 class="card-title">{{ j.post }}</h5>
-            <div class="job-meta">
-              <p><i class="fa-solid fa-location-dot"></i>{{ j.location }}</p>
-              <p><i class="fa-regular fa-clock"></i>{{ j.posteddate }}</p>
-              <p><i class="fa-solid fa-briefcase"></i>{{ j.jobtitle }}</p>
-            </div>
-            <ul class="job-skills">
-              <li><strong>Company:</strong> {{ j.firmname }}</li>
-              <li><strong>Qualifications:</strong> {{ j.qualification }}</li>
-              <li><strong>Skills:</strong> {{ j.jobdesc }}</li>
-              <li><strong>Salary:</strong> {{ j.salarypa }} LPA</li>
-              <li><strong>Email:</strong> <a href="mailto:{{ j.emailaddress }}" style="color: #7db9f6;">{{ j.emailaddress }}</a></li>
-            </ul>
-            <div class="d-flex justify-content-center">
-              <a href="{% url 'jobapp:login' %}" class="apply-btn" onclick="login()">Apply Now</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-
-<section class="ats-section">
-  <div class="container">
-    <div class="text-center fade-in">
-      <h2>Is Your Resume ATS Friendly?</h2>
-      <p>Check It Out here...</p>
-      <div class="mb-5">
-        <button class="upload-btn btn-pulse">Upload Resume</button>
-      </div>
-    </div>
-    
-    <div class="ats-benefits">
-      <h2 class="text-center mb-3" style="font-weight: 700; font-size: 2.2rem; color: #05284a;">
-        Why an ATS-Friendly Resume is Important?
-      </h2>
-      <h3 class="text-center mb-4">Only 2% of resumes make it past the first round. Be in the top 2%</h3>
-      <p class="text-center mb-4" style="font-size: 1.2rem; color: #05488b;">
-        Many companies use Applicant Tracking Systems (ATS) to filter resumes. If your resume isn't ATS-optimized, 
-        it might never reach a recruiter. Here's why an ATS-friendly resume matters:
+<section style="padding: 60px 0; background: #f9f9f9;">
+  <div style="max-width: 1200px; margin: 0 auto; padding: 0 15px;">
+    <div style="text-align: center; margin-bottom: 3rem;">
+      <h1 style="font-size: 2.5rem; font-weight: 700; color: #0ef; margin-bottom: 0.5rem; letter-spacing: 0.5px;">
+        Latest Jobs Post
+      </h1>
+      <p style="font-size: 1.1rem; color: #888; line-height: 1.6; max-width: 600px; margin: 0 auto;">
+        Explore the different types of available jobs to apply and discover which is right for you.
       </p>
-      <ul>
-        <li><b>Keyword Matching:</b> ATS scans for job-related keywords, so including them increases your chances of being noticed.</li>
-        <li><b>Simple Formatting:</b> Complex designs can confuse ATS. A clean, structured resume ensures it's read correctly.</li>
-        <li><b>More Interviews:</b> An ATS-friendly resume boosts your chances of being shortlisted for interviews.</li>
-      </ul>
-      <div class="text-center">
-        <a class="btn btn-primary" href="resume-sample.pdf" style="background: var(--gradient-2); border: none; border-radius: 15px; padding: 1rem 2rem; font-weight: 600;">View Top Resume Samples</a>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 24px;">
+
+      <!-- React Native Web Developer -->
+      <div style="flex: 1 1 calc(25% - 24px); background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 1.5rem;">
+        <h5 style="font-size: 1.3rem; font-weight: 600; color: #222; margin-bottom: 1rem;">React Native Web Developer</h5>
+        <div style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
+          <p><i class="fa-solid fa-location-dot" style="color: #0ef; margin-right: 6px;"></i>Mumbai, Maharashtra</p>
+          <p><i class="fa-regular fa-clock" style="color: #0ef; margin-right: 6px;"></i>10 Minutes ago</p>
+        </div>
+        <ul style="list-style: none; padding: 0; color: #444; font-size: 0.95rem; margin-bottom: 1.2rem;">
+          <li>Remote - Full time / Part Time</li>
+          <li>Experience: 5+ Years</li>
+          <li>Salary: 4 LPA</li>
+          <li>Skills: HTML, CSS, JSX, React</li>
+        </ul>
+        <div style="text-align: center;">
+          <a href="{% url 'jobapp:login' %}" onclick="login()" style="background: #0ef; color: #fff; padding: 0.5rem 1.5rem; font-weight: 600; border-radius: 6px; text-decoration: none;">Apply Now</a>
+        </div>
       </div>
+
+      <!-- Digital Marketing Manager -->
+      <div style="flex: 1 1 calc(25% - 24px); background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 1.5rem;">
+        <h5 style="font-size: 1.3rem; font-weight: 600; color: #222; margin-bottom: 1rem;">Digital Marketing Manager</h5>
+        <div style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
+          <p><i class="fa-solid fa-location-dot" style="color: #0ef; margin-right: 6px;"></i>Chicago, US</p>
+          <p><i class="fa-regular fa-clock" style="color: #0ef; margin-right: 6px;"></i>6 Minutes ago</p>
+          <p><i class="fa-solid fa-briefcase" style="color: #0ef; margin-right: 6px;"></i>Full-Time</p>
+        </div>
+        <ul style="list-style: none; padding: 0; color: #444; font-size: 0.95rem; margin-bottom: 1.2rem;">
+          <li>In-depth knowledge of current digital trends</li>
+          <li>Experience in digital marketing</li>
+        </ul>
+        <div style="text-align: center;">
+          <a href="{% url 'jobapp:login' %}" onclick="login()" style="background: #0ef; color: #fff; padding: 0.5rem 1.5rem; font-weight: 600; border-radius: 6px; text-decoration: none;">Apply Now</a>
+        </div>
+      </div>
+
+      <!-- IIB Developer -->
+      <div style="flex: 1 1 calc(25% - 24px); background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 1.5rem;">
+        <h5 style="font-size: 1.3rem; font-weight: 600; color: #222; margin-bottom: 1rem;">IIB Developer</h5>
+        <div style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
+          <p><i class="fa-solid fa-location-dot" style="color: #0ef; margin-right: 6px;"></i>Bangalore</p>
+          <p><i class="fa-regular fa-clock" style="color: #0ef; margin-right: 6px;"></i>28 Minutes ago</p>
+          <p><i class="fa-solid fa-briefcase" style="color: #0ef; margin-right: 6px;"></i>Remote</p>
+        </div>
+        <ul style="list-style: none; padding: 0; color: #444; font-size: 0.95rem; margin-bottom: 1.2rem;">
+          <li>Role: Database Administrator</li>
+          <li>Department: Engineering</li>
+          <li>Role Category: DBA / Data warehousing</li>
+        </ul>
+        <div style="text-align: center;">
+          <a href="{% url 'jobapp:login' %}" onclick="login()" style="background: #0ef; color: #fff; padding: 0.5rem 1.5rem; font-weight: 600; border-radius: 6px; text-decoration: none;">Apply Now</a>
+        </div>
+      </div>
+
+      <!-- Full Stack Developer -->
+      <div style="flex: 1 1 calc(25% - 24px); background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 1.5rem;">
+        <h5 style="font-size: 1.3rem; font-weight: 600; color: #222; margin-bottom: 1rem;">Full Stack Developer</h5>
+        <div style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
+          <p><i class="fa-solid fa-location-dot" style="color: #0ef; margin-right: 6px;"></i>Lucknow, Pradesh</p>
+          <p><i class="fa-regular fa-clock" style="color: #0ef; margin-right: 6px;"></i>2 Hours ago</p>
+        </div>
+        <ul style="list-style: none; padding: 0; color: #444; font-size: 0.95rem; margin-bottom: 1.2rem;">
+          <li>Full Time</li>
+          <li>Skills: HTML, CSS, JS, ReactJS, NodeJS</li>
+          <li>Freshers/Experienced</li>
+          <li>Salary: Based On Skill Set</li>
+        </ul>
+        <div style="text-align: center;">
+          <a href="{% url 'jobapp:login' %}" onclick="login()" style="background: #0ef; color: #fff; padding: 0.5rem 1.5rem; font-weight: 600; border-radius: 6px; text-decoration: none;">Apply Now</a>
+        </div>
+      </div>
+
+      <!-- UX/UI Designer -->
+         <div style="flex: 1 1 calc(25% - 24px); background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 1.5rem;">
+        <h5 style="font-size: 1.3rem; font-weight: 600; color: #222; margin-bottom: 1rem;">UI/UX Designer</h5>
+        <div style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
+          <p><i class="fa-solid fa-location-dot" style="color: #0ef; margin-right: 6px;"></i>Lucknow, Pradesh</p>
+          <p><i class="fa-regular fa-clock" style="color: #0ef; margin-right: 6px;"></i>10 Hours ago</p>
+        </div>
+        <ul style="list-style: none; padding: 0; color: #444; font-size: 0.95rem; margin-bottom: 1.2rem;">
+          <li>Up-to-date knowledge of design softwares</li>
+          <li>BSc in Design, Computer Science or relevant field</li>
+          <li>Good time-management skills</li>
+          <li>Salary: Based On Skill Set</li>
+        </ul>
+        <div style="text-align: center;">
+          <a href="{% url 'jobapp:login' %}" onclick="login()" style="background: #0ef; color: #fff; padding: 0.5rem 1.5rem; font-weight: 600; border-radius: 6px; text-decoration: none;">Apply Now</a>
+        </div>
+      </div>
+
+
+      <!-- Data Scientist -->
+<div style="flex: 1 1 calc(25% - 24px); background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 1.5rem;">
+  <h5 style="font-size: 1.3rem; font-weight: 600; color: #222; margin-bottom: 1rem;">Data Scientist</h5>
+  <div style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
+    <p><i class="fa-solid fa-location-dot" style="color: #0ef; margin-right: 6px;"></i>Lucknow, Pradesh</p>
+    <p><i class="fa-regular fa-clock" style="color: #0ef; margin-right: 6px;"></i>2 Hours ago</p>
+  </div>
+  <ul style="list-style: none; padding: 0; color: #444; font-size: 0.95rem; margin-bottom: 1.2rem;">
+    <li><strong>Job Type:</strong> Full Time</li>
+    <li><strong>Skills:</strong> R, SQL, Python, Java, C++</li>
+    <li><strong>Qualifications:</strong> BSc/BA in Computer Science, Engineering</li>
+    <li>Salary: Based On Skill Set</li>
+  </ul>
+  <div style="text-align: center;">
+    <a href="{% url 'jobapp:login' %}" onclick="login()" style="background: #0ef; color: #fff; padding: 0.5rem 1.5rem; font-weight: 600; border-radius: 6px; text-decoration: none;">Apply Now</a>
+  </div>
+</div>
+
+<!-- Nestle Nutrition Officer -->
+<div style="flex: 1 1 calc(25% - 24px); background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 1.5rem;">
+  <h5 style="font-size: 1.3rem; font-weight: 600; color: #222; margin-bottom: 1rem;">Nestle Nutrition Officer</h5>
+  <div style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
+    <p><i class="fa-solid fa-location-dot" style="color: #0ef; margin-right: 6px;"></i>Lucknow, Pradesh</p>
+    <p><i class="fa-regular fa-clock" style="color: #0ef; margin-right: 6px;"></i>2 Hours ago</p>
+    <p><i class="fa-solid fa-briefcase" style="color: #0ef; margin-right: 6px;"></i>Full-Time</p>
+  </div>
+  <ul style="list-style: none; padding: 0; color: #444; font-size: 0.95rem; margin-bottom: 1.2rem;">
+    <li><strong>Company:</strong> Nestle</li>
+    <li><strong>Qualifications:</strong> BSc, BPharm, BTech Graduates can apply</li>
+    <li><strong>Skills:</strong> Communication, Teamwork</li>
+    <li><strong>Salary:</strong> 6 LPA</li>
+  </ul>
+  <div style="text-align: center;">
+    <a href="{% url 'jobapp:login' %}" onclick="login()" style="background: #0ef; color: #fff; padding: 0.5rem 1.5rem; font-weight: 600; border-radius: 6px; text-decoration: none;">Apply Now</a>
+  </div>
+</div>
+
+
+      <!-- Dynamic Job Cards Loop -->
+    <div style="display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between;">
+  {% for j in job %}
+  <div style="flex: 1 1 calc(25% - 24px); background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 1.5rem;">
+    <h5 style="font-size: 1.3rem; font-weight: 600; color: #222; margin-bottom: 1rem;">{{ j.post }}</h5>
+    <div style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
+      <p><i class="fa-solid fa-location-dot" style="color: #0ef; margin-right: 6px;"></i>{{ j.location }}</p>
+      <p><i class="fa-regular fa-clock" style="color: #0ef; margin-right: 6px;"></i>{{ j.posteddate }}</p>
+      <p><i class="fa-solid fa-briefcase" style="color: #0ef; margin-right: 6px;"></i>{{ j.jobtitle }}</p>
+    </div>
+    <ul style="list-style: none; padding: 0; color: #444; font-size: 0.95rem; margin-bottom: 1.2rem;">
+      <li><strong>Company:</strong> {{ j.firmname }}</li>
+      <li><strong>Qualifications:</strong> {{ j.qualification }}</li>
+      <li><strong>Skills:</strong> {{ j.jobdesc }}</li>
+      <li><strong>Salary:</strong> {{ j.salarypa }} LPA</li>
+      <li><strong>Email:</strong> <a href="mailto:{{ j.emailaddress }}" style="color: #7db9f6;">{{ j.emailaddress }}</a></li>
+    </ul>
+    <div style="text-align: center;">
+      <a href="{% url 'jobapp:login' %}" onclick="login()" style="background: #0ef; color: #fff; padding: 0.5rem 1.5rem; font-weight: 600; border-radius: 6px; text-decoration: none;">Apply Now</a>
+
     </div>
   </div>
+  {% endfor %}
+</div>
+
 </section>
+
+
+<section style="padding: 4rem 0; background: #f9f9f9;">
+  <div style="max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
+    <div style="text-align: center; margin-bottom: 2rem; animation: fadeIn 1s ease;">
+      <h2 style="font-size: 2.5rem; font-weight: 700; color: #0ef; margin-bottom: 0.5rem;">Is Your Resume ATS Friendly?</h2>
+      <p style="font-size: 1.1rem; color: #555;">Check It Out here...</p>
+      <div style="margin-top: 1.5rem;">
+        <button style="background: #0ef; color: #fff; padding: 0.8rem 2rem; font-size: 1rem; font-weight: 600; border: none; border-radius: 8px; cursor: pointer; animation: pulse 1.5s infinite;">Upload Resume</button>
+      </div>
+    </div>
+    
+ <div style="background: #fff; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-top: 2rem;">
+  <h2 style="text-align: center; font-weight: 700; font-size: 2.2rem; color: #05284a; margin-bottom: 1rem;">
+    Why an ATS-Friendly Resume is Important?
+  </h2>
+  <h3 style="text-align: center; font-size: 1.5rem; color: #333; margin-bottom: 1.5rem;">
+    Only 2% of resumes make it past the first round. Be in the top 2%
+  </h3>
+  <p style="text-align: center; font-size: 1.1rem; color: #05488b; max-width: 800px; margin: 0 auto 2rem;">
+    Many companies use Applicant Tracking Systems (ATS) to filter resumes. If your resume isn't ATS-optimized, 
+    it might never reach a recruiter. Here's why an ATS-friendly resume matters:
+  </p>
+  <ul style="list-style: none; padding: 0; font-size: 1rem; color: #444; max-width: 800px; margin: 0 auto 2rem;">
+    <li style="margin-bottom: 0.8rem;"><strong>Keyword Matching:</strong> ATS scans for job-related keywords, so including them increases your chances of being noticed.</li>
+    <li style="margin-bottom: 0.8rem;"><strong>Simple Formatting:</strong> Complex designs can confuse ATS. A clean, structured resume ensures it's read correctly.</li>
+    <li><strong>More Interviews:</strong> An ATS-friendly resume boosts your chances of being shortlisted for interviews.</li>
+  </ul>
+  <div style="text-align: center;">
+    <a href="resume-sample.pdf" style="background: linear-gradient(135deg, #0ef, #7db9f6); color: #fff; padding: 0.8rem 2rem; font-weight: 600; border-radius: 10px; text-decoration: none;">
+      View Top Resume Samples
+    </a>
+  </div>
+</div>
+
+</section>
+
+<section style="margin-top: 3rem;">
+  <div style="max-width: 900px; margin: 0 auto; padding: 2rem; background: #fff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center;">
+    <h3 style="font-size: 2rem; font-weight: 700; color: #05284a; margin-bottom: 1rem;">Our Clients Say !!</h3>
+    <p style="font-size: 1.1rem; color: #444; line-height: 1.6; margin-bottom: 1.5rem;">
+      The experiences of our clients with us are truly commendable. DreamJobs helped them to get their <br>
+      <span style="color: #0ef; font-style: italic; font-weight: 800; font-size: 1.3rem;">Dream job.</span>
+    </p>
+  </div>
+</section>
+
+ ui-fixes
+    
+<div style="flex: 1 1 calc(33.33% - 24px); background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 2rem; margin-bottom: 2rem; text-align: center;">
+  <div style="display: flex; justify-content: center; margin-bottom: 1.2rem;">
+    <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(1).webp" alt="Maria Smantha" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">
+  </div>
+  <h5 style="font-size: 1.2rem; font-weight: 600; color: #05284a; margin-bottom: 0.5rem;">Maria Smantha</h5>
+  <h6 style="font-size: 1rem; font-weight: 500; color: #0ef; margin-bottom: 1rem;">Web Developer</h6>
+  <p style="font-size: 0.95rem; color: #64748b; font-style: italic; line-height: 1.5; margin-bottom: 1rem;">
+    <i class="fas fa-quote-left" style="color: #0ef; margin-right: 6px;"></i>
+    I've used several job portals in the past, but this one stands out for its simplicity and ease of use. The interface is intuitive, and I was able to set up my profile and start applying for jobs within minutes. Highly recommended!
+  </p>
+  <div style="color: #facc15; font-size: 1.1rem;">
+    <i class="fas fa-star"></i>
+    <i class="fas fa-star"></i>
+    <i class="fas fa-star"></i>
+    <i class="fas fa-star"></i>
+    <i class="fas fa-star-half-alt"></i>
+  </div>
+</div>
+
+      
+      <div style="flex: 1 1 calc(33.33% - 24px); background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 2rem; margin-bottom: 2rem; text-align: center;">
+  <div style="display: flex; justify-content: center; margin-bottom: 1.2rem;">
+    <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(2).webp" alt="Lisa Cudrow" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">
+  </div>
+  <h5 style="font-size: 1.2rem; font-weight: 600; color: #05284a; margin-bottom: 0.5rem;">Lisa Cudrow</h5>
+  <h6 style="font-size: 1rem; font-weight: 500; color: #0ef; margin-bottom: 1rem;">Graphic Designer</h6>
+  <p style="font-size: 0.95rem; color: #64748b; font-style: italic; line-height: 1.5; margin-bottom: 1rem;">
+    <i class="fas fa-quote-left" style="color: #0ef; margin-right: 6px;"></i>
+    What really impressed me about this job portal is the exceptional customer support. Whenever I had a question or ran into an issue, the support team was quick to respond and incredibly helpful. It's clear they care about their users' success.
+  </p>
+  <div style="color: #facc15; font-size: 1.1rem;">
+    <i class="fas fa-star"></i>
+    <i class="fas fa-star"></i>
+    <i class="fas fa-star"></i>
+    <i class="fas fa-star"></i>
+    <i class="fas fa-star"></i>
+  </div>
+</div>
+
+      
+      <div style="flex: 1 1 calc(33.33% - 24px); background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 2rem; margin-bottom: 2rem; text-align: center;">
+  <div style="display: flex; justify-content: center; margin-bottom: 1.2rem;">
+    <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(9).webp" alt="John Smith" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">
+  </div>
+  <h5 style="font-size: 1.2rem; font-weight: 600; color: #05284a; margin-bottom: 0.5rem;">John Smith</h5>
+  <h6 style="font-size: 1rem; font-weight: 500; color: #0ef; margin-bottom: 1rem;">Marketing Specialist</h6>
+  <p style="font-size: 0.95rem; color: #64748b; font-style: italic; line-height: 1.5; margin-bottom: 1rem;">
+    <i class="fas fa-quote-left" style="color: #0ef; margin-right: 6px;"></i>
+    This platform offers a wide range of job listings across various industries. I was able to find opportunities that matched my skills and interests perfectly. It's the best resource for job seekers I've come across.
+  </p>
+  <div style="color: #facc15; font-size: 1.1rem;">
+    <i class="fas fa-star"></i>
+    <i class="fas fa-star"></i>
+    <i class="fas fa-star"></i>
+    <i class="fas fa-star"></i>
+    <i class="far fa-star"></i>
+  </div>
+</div>
+
 
 <section class="testimonials-section">
   <div class="container">
-    <div class="row d-flex justify-content-center" data-aos="fade-up">
+    <div class="row d-flex justify-content-center">
       <div class="col-md-10 col-xl-8 text-center">
         <h3 class="mb-5">Our Clients Say !!</h3>
         <p class="mb-4 pb-2 mb-md-5 pb-md-0">
@@ -810,7 +887,7 @@
     
     <div class="row text-center">
       <div class="col-md-4 mb-5 mb-md-0">
-        <div class="testimonial-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="testimonial-card">
           <div class="d-flex justify-content-center mb-4">
             <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(1).webp" class="testimonial-avatar" />
           </div>
@@ -832,7 +909,7 @@
       </div>
       
       <div class="col-md-4 mb-5 mb-md-0">
-        <div class="testimonial-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="testimonial-card">
           <div class="d-flex justify-content-center mb-4">
             <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(2).webp" class="testimonial-avatar" />
           </div>
@@ -854,7 +931,7 @@
       </div>
       
       <div class="col-md-4 mb-0">
-        <div class="testimonial-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="testimonial-card">
           <div class="d-flex justify-content-center mb-4">
             <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(9).webp" class="testimonial-avatar" />
           </div>
@@ -873,6 +950,7 @@
             <i class="far fa-star"></i>
           </div>
         </div>
+ master
       </div>
     </div>
   </div>
@@ -880,33 +958,25 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script>
-  // Add some interactive effects
   document.addEventListener('DOMContentLoaded', function() {
-    // Add pulse animation to upload button
     const uploadBtn = document.querySelector('.upload-btn');
     if (uploadBtn) {
       uploadBtn.addEventListener('mouseenter', function() {
         this.style.animation = 'pulse 1s infinite';
       });
-      
       uploadBtn.addEventListener('mouseleave', function() {
         this.style.animation = 'none';
       });
     }
-
-    // Add hover effects to job cards
     const jobCards = document.querySelectorAll('.job-card');
     jobCards.forEach(card => {
       card.addEventListener('mouseenter', function() {
         this.style.transform = 'scale(1.02)';
       });
-      
       card.addEventListener('mouseleave', function() {
         this.style.transform = 'scale(1)';
       });
     });
-
-    // Smooth scroll for any internal links
     const links = document.querySelectorAll('a[href^="#"]');
     links.forEach(link => {
       link.addEventListener('click', function(e) {
@@ -920,9 +990,63 @@
         }
       });
     });
+
+    // AJAX search handling
+    const searchForm = document.querySelector('.search-container');
+    const jobsContainer = document.querySelector('#jobs-container');
+    const spinner = document.querySelector('#loading-spinner');
+    if (searchForm && jobsContainer && spinner) {
+      searchForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const query = document.querySelector('#search-input').value;
+        spinner.style.display = 'block';
+        jobsContainer.style.display = 'none';
+        fetch(`/search-jobs/?q=${encodeURIComponent(query)}`)
+          .then(response => response.json())
+          .then(data => {
+            jobsContainer.innerHTML = '';
+            if (data.jobs.length > 0) {
+              data.jobs.forEach(job => {
+                const jobCard = `
+                  <div class="col-lg-4 col-md-6">
+                    <div class="job-card">
+                      <div class="card-body">
+                        <h5 class="card-title">${job.post}</h5>
+                        <div class="job-meta">
+                          <p><i class="fa-solid fa-location-dot"></i>${job.location}</p>
+                          <p><i class="fa-regular fa-clock"></i>${job.posteddate}</p>
+                          <p><i class="fa-solid fa-briefcase"></i>${job.jobtitle}</p>
+                        </div>
+                        <ul class="job-skills">
+                          <li><strong>Company:</strong> ${job.firmname}</li>
+                          <li><strong>Qualifications:</strong> ${job.qualification}</li>
+                          <li><strong>Skills:</strong> ${job.jobdesc}</li>
+                          <li><strong>Salary:</strong> ${job.salarypa} LPA</li>
+                          <li><strong>Email:</strong> <a href="mailto:${job.emailaddress}" style="color: #7db9f6;">${job.emailaddress}</a></li>
+                        </ul>
+                        <div class="d-flex justify-content-center">
+                          <a href="{% url 'jobapp:login' %}" class="apply-btn" onclick="login()">Apply Now</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>`;
+                jobsContainer.innerHTML += jobCard;
+              });
+            } else {
+              jobsContainer.innerHTML = '<div class="col-12 text-center"><p>No jobs found matching your search.</p></div>';
+            }
+            spinner.style.display = 'none';
+            jobsContainer.style.display = 'flex';
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            jobsContainer.innerHTML = '<div class="col-12 text-center"><p>Error loading jobs. Please try again.</p></div>';
+            spinner.style.display = 'none';
+            jobsContainer.style.display = 'flex';
+          });
+      });
+    }
   });
 </script>
 
 {% endblock body %}
-</body>
-</html>

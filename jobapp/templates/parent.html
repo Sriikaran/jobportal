@@ -160,38 +160,51 @@
     </div> -->
 
     <!-- navbar -->
-    <nav class="navbar navbar-expand-lg">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'jobapp:index' %}">
-          <img src="{% static 'images/logo.png' %}" height="60px" width="120px" style="border-radius: 20px 20px 0px 20px;" />
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+    <nav class="navbar navbar-expand-lg shadow-sm" style="background-color: #ffffff;">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'jobapp:index' %}">
+      <img src="{% static 'images/logo.png' %}" height="60" width="120" style="border-radius: 20px 20px 0 20px;" alt="Logo" />
+    </a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <div class="collapse navbar-collapse text-center" id="navbarSupportedContent">
-          <ul class="navbar-nav mx-auto">
-            <li class="nav-item"><a class="nav-link" href="{% url 'jobapp:index' %}">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'jobapp:aboutus' %}">About Us</a></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'jobapp:services' %}">Services</a></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'jobapp:blog' %}">Blog</a></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'jobapp:contactus' %}">Contact</a></li>
-          </ul>
+    <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
+      <ul class="navbar-nav gap-3 align-items-center">
+        <li class="nav-item">
+          <a class="nav-link fw-semibold px-3 py-2 rounded-pill" href="{% url 'jobapp:index' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-semibold px-3 py-2 rounded-pill" href="{% url 'jobapp:aboutus' %}">About Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-semibold px-3 py-2 rounded-pill" href="{% url 'jobapp:services' %}">Services</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-semibold px-3 py-2 rounded-pill" href="{% url 'jobapp:blog' %}">Blog</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-semibold px-3 py-2 rounded-pill" href="{% url 'jobapp:contactus' %}">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </div>
 
-          <div class="auth-buttons ms-auto mt-2 mt-lg-0">
-            <a href="{% url 'jobapp:login' %}" class="btn" style="background-color: #093f75; color: white;">Login</a>
-            <div class="dropdown">
-              <button class="btn dropdown-toggle" style="background-color: #093f75; color: white;" data-bs-toggle="dropdown">
-                Register
-              </button>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="{% url 'jobapp:employerreg' %}">Employer</a></li>
-                <li><a class="dropdown-item" href="{% url 'jobapp:jobseekerreg' %}">Job Seeker</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
+         <div class="auth-buttons ms-auto mt-3 mt-lg-0 d-flex align-items-center gap-3">
+  <a href="{% url 'jobapp:login' %}" class="btn fw-semibold px-4 py-2 rounded-pill" style="background-color: #093f75; color: white; transition: all 0.3s;">
+    Login
+  </a>
+  <div class="dropdown">
+    <button class="btn fw-semibold px-4 py-2 rounded-pill dropdown-toggle" style="background-color: #093f75; color: white; transition: all 0.3s;" data-bs-toggle="dropdown">
+      Register
+    </button>
+    <ul class="dropdown-menu shadow-sm rounded-3">
+      <li><a class="dropdown-item fw-semibold" href="{% url 'jobapp:employerreg' %}">Employer</a></li>
+      <li><a class="dropdown-item fw-semibold" href="{% url 'jobapp:jobseekerreg' %}">Job Seeker</a></li>
+    </ul>
+  </div>
+</div>
+
     </nav>
 
     {% block body %}
@@ -199,57 +212,81 @@
 
     <!-- Footer -->
     <footer class="text-center text-lg-start bg-body-light">
-      <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
-        <div class="me-5 d-none d-lg-block">
-          <span style="color: #093f75; font-weight: 600;">Get connected with us on social networks:</span>
-        </div>
-        <div>
-          <a href="https://www.facebook.com/" class="me-4 text-reset"><i class="fab fa-facebook-f" style="color: #053a70;"></i></a>
-          <a href="https://twitter.com/" class="me-4 text-reset"><i class="fab fa-twitter" style="color: #47bde4;"></i></a>
-          <a href="https://www.gmail.com/" class="me-4 text-reset"><i class="fa-regular fa-envelope"></i></a>
-          <a href="https://www.instagram.com/" class="me-4 text-reset"><i class="fa-brands fa-instagram" style="color: #e5397b;"></i></a>
-          <a href="https://www.linkedin.com/" class="me-4 text-reset"><i class="fab fa-linkedin" style="color: #364ade;"></i></a>
-          <a href="https://github.com/" class="me-4 text-reset"><i class="fab fa-github"></i></a>
-        </div>
-      </section>
+  <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+    <div class="me-5 d-none d-lg-block">
+      <span style="color: #093f75; font-weight: 600; font-size: 1rem;">
+        Get connected with us on social networks:
+      </span>
+    </div>
+    <div class="d-flex align-items-center gap-3">
+      <a href="https://www.facebook.com/" class="social-link">
+        <i class="fab fa-facebook-f" style="color: #053a70;"></i>
+      </a>
+      <a href="https://twitter.com/" class="social-link">
+        <i class="fab fa-twitter" style="color: #47bde4;"></i>
+      </a>
+      <a href="https://www.gmail.com/" class="social-link">
+        <i class="fa-regular fa-envelope" style="color: #e03c31;"></i>
+      </a>
+      <a href="https://www.instagram.com/" class="social-link">
+        <i class="fab fa-instagram" style="color: #e5397b;"></i>
+      </a>
+      <a href="https://www.linkedin.com/" class="social-link">
+        <i class="fab fa-linkedin" style="color: #364ade;"></i>
+      </a>
+      <a href="https://github.com/" class="social-link">
+        <i class="fab fa-github" style="color: #24292e;"></i>
+      </a>
+    </div>
+  </section>
 
-      <section class="">
-        <div class="container text-center text-md-start mt-5">
-          <div class="row mt-3">
-            <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-              <h6 class="fw-bold mb-4"><img src="{% static 'images/logo.png' %}" width="50%"></h6>
-              <p>At Dream Jobs, we believe in the power of human potential...</p>
-            </div>
 
-            <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-              <h6 class="fw-bold mb-4" style="color:#093f75">COMPANY</h6>
-              <p><a href="{% url 'jobapp:aboutus' %}" class="text-reset">About us</a></p>
-              <p><a href="{% url 'jobapp:index' %}" class="text-reset">Privacy Policy</a></p>
-              <p><a href="{% url 'jobapp:index' %}" class="text-reset">Terms</a></p>
-              <p><a href="{% url 'jobapp:services' %}" class="text-reset">Services</a></p>
-            </div>
 
-            <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-              <h6 class="fw-bold mb-4" style="color:#093f75">SERVICES</h6>
-              <p><a href="{% url 'jobapp:services' %}" class="text-reset">Internships</a></p>
-              <p><a href="{% url 'jobapp:services' %}" class="text-reset">Apprenticeship</a></p>
-              <p><a href="{% url 'jobapp:services' %}" class="text-reset">Dream Jobs</a></p>
-              <p><a href="{% url 'jobapp:services' %}" class="text-reset">Work from home</a></p>
-            </div>
-
-            <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-4">
-              <h6 class="fw-bold mb-4" style="color:#093f75">CONTACT</h6>
-              <p><i class="fas fa-home me-3"></i> 501, Cyber Heights, Lucknow</p>
-              <p><i class="fas fa-envelope me-3"></i> info@dreamjobs.com</p>
-              <p><i class="fas fa-phone me-3"></i> 9889106834</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div class="text-center p-4" style="background-color: rgb(4, 4, 108); color: white;">
-        Copyright © 2024 Dream Jobs. Developed By Khushi Nigam.
+  <section>
+  <div class="container text-center text-md-start mt-5">
+    <div class="row mt-3">
+      <!-- Company Info -->
+      <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+        <h6 class="fw-bold mb-4">
+          <img src="{% static 'images/logo.png' %}" width="50%" alt="Dream Jobs Logo">
+        </h6>
+        <p style="color: #6c757d; font-size: 0.95rem;">
+          At Dream Jobs, we believe in the power of human potential...
+        </p>
       </div>
+
+      <!-- Company Links -->
+      <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+        <h6 class="fw-bold mb-4" style="color:#093f75">COMPANY</h6>
+        <p><a href="{% url 'jobapp:aboutus' %}" class="footer-link">About us</a></p>
+        <p><a href="{% url 'jobapp:index' %}" class="footer-link">Privacy Policy</a></p>
+        <p><a href="{% url 'jobapp:index' %}" class="footer-link">Terms</a></p>
+        <p><a href="{% url 'jobapp:services' %}" class="footer-link">Services</a></p>
+      </div>
+
+      <!-- Services Links -->
+      <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+        <h6 class="fw-bold mb-4" style="color:#093f75">SERVICES</h6>
+        <p><a href="{% url 'jobapp:services' %}" class="footer-link">Internships</a></p>
+        <p><a href="{% url 'jobapp:services' %}" class="footer-link">Apprenticeship</a></p>
+        <p><a href="{% url 'jobapp:services' %}" class="footer-link">Dream Jobs</a></p>
+        <p><a href="{% url 'jobapp:services' %}" class="footer-link">Work from Home</a></p>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-4">
+        <h6 class="fw-bold mb-4" style="color:#093f75">CONTACT</h6>
+        <p><i class="fas fa-home me-3"></i> 501, Cyber Heights, Lucknow</p>
+        <p><i class="fas fa-envelope me-3"></i> info@dreamjobs.com</p>
+        <p><i class="fas fa-phone me-3"></i> 9889106834</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+      <div class="text-center p-3" style="background-color: #041b55; color: #ffffff; font-size: 0.9rem;">
+  &copy; 2024 Dream Jobs. Developed by <a href="#" style="color: #ffffff; text-decoration: underline;">Khushi Nigam</a>.
+</div>
     </footer>
   </div>
 </body>
