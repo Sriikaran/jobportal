@@ -20,7 +20,7 @@
         {% if msg %}
         <p style="text-align: center; color: rgb(253, 253, 255);">{{msg}}</p>
         {% endif %}
-        <form class="form-group p-5" method="post" id="form" onsubmit="return validateForm()" style="background-color: rgb(231, 231, 231); border-radius: 40px;">
+        <form class="form-group p-5" method="post" enctype="multipart/form-data" id="form" onsubmit="return validateForm()" style="background-color: rgb(231, 231, 231); border-radius: 40px;">
             {% csrf_token %}
             <div class="mb-3">
                 <label for="profilepic" class="form-label" required>Upload Profile Pic</label><br>

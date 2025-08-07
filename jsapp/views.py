@@ -40,9 +40,10 @@ def appliedjobs(request):
         return redirect("login")
 
     seeker_email = request.session["username"]
+    jobseeker = JobSeeker.objects.get(emailaddress = seeker_email)
     jobs = AppliedJobs.objects.filter(emailaddress=seeker_email)
 
-    return render(request, "appliedjobs.html", {"jobs": jobs})
+    return render(request, "appliedjobs.html", {"jobs": jobs,"jobseek": jobseeker})
 
 def viewprofile(request):
     if "username" not in request.session:
@@ -53,6 +54,7 @@ def viewprofile(request):
 
     if request.method == "POST":
         jobseeker = JobSeeker.objects.get(emailaddress = seeker_email)
+        jobseeker.profilepic = request.FILES["profilepic"]
         jobseeker.name= request.POST.get("name")
         jobseeker.gender = request.POST.get("gender")
         jobseeker.address = request.POST.get('address')
@@ -82,9 +84,10 @@ def response(request):
         return redirect("login")
 
     email = request.session["username"]
+    jobseeker = JobSeeker.objects.get(emailaddress = email)
     responses = Response.objects.filter(emailaddress=email).order_by("-posteddate")
 
-    return render(request, "response.html", {"responses": responses})
+    return render(request, "response.html", {"responses": responses,"jobseek": jobseeker})
 
 def jobseeker(request):
     if request.method == "POST":
@@ -219,13 +222,15 @@ def jsapply(request, id):
 
 def jshome(request):
     # return render(request, 'jshome.html')  # create jsapp/templates/jsapp/home.html if needed
-    print("hi")
+
     if request.session.get("usertype") != "jobseeker":
         return redirect("jobapp:login")
-    seeker_email = request.session["username"]
+    seeker_email = request.session.get("username")
     jobseeker = JobSeeker.objects.get(emailaddress = seeker_email)
-    print(jobseeker)
+ 
     return render(request, 'jshome.html',{"jobseek": jobseeker})
+
+
 
 
 def viewjobs(request):
@@ -237,7 +242,7 @@ def logout(request):
     except KeyError:
         return redirect("jobapp:login")
     return redirect("jobapp:login")
-def jshome(request):
-    if request.session.get("usertype") != "jobseeker":
-        return redirect("jobapp:login")
-    return render(request, 'jshome.html')
+# def jshome(request):
+#     if request.session.get("usertype") != "jobseeker":
+#         return redirect("jobapp:login")
+#     return render(request, 'jshome.html')

@@ -4,6 +4,7 @@ from adminapp.models import News
 from employer.models import Jobs
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
+from django.urls import reverse
 import datetime
 
 # Create your views here.
@@ -23,9 +24,10 @@ def index(request):
 
 def aboutus(request):
     return render(request,"aboutus.html")
+
 def jobseekerreg(request):
     if request.method == "POST":
-        profilepic = request.POST["profilepic"]
+        profilepic = request.FILES.get("profilepic")
         name = request.POST["name"]
         gender = request.POST["gender"]
         address = request.POST["address"]
@@ -67,7 +69,9 @@ def login(request):
             request.session["usertype"] = usertype
             if usertype == 'jobseeker':
                 request.session["usertype"] = usertype
+                print("Redirect URL:", reverse("jsapp:jshome"))
                 return redirect("jsapp:jshome")
+            
             elif usertype == 'administrator':
                 request.session["adminid"] = username
                 return redirect("adminapp:adminhome")
