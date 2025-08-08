@@ -1,15 +1,37 @@
+
 {% extends "jsparent.html" %}
+{%load static%}
 {% block body %}
 
     <div class="row w-75 text-center mx-auto">
         <div class="col-sm-12 text-center">
             <h1 style="text-align:center;">View Your Profile</h1>
-            <form method="post" class="form-group bg-light text-dark text-center mx-auto" style="
+             {% if messages %}
+                {% for message in messages %}
+                <div class="alert alert-warning">{{ message }}</div>
+                {% endfor %}
+                {% endif %}
+
+            <form method="post" enctype = "multipart/form-data" class="form-group bg-light text-dark text-center mx-auto" style="
             border-radius: 40px;">
                 {% csrf_token %}
+                <div class="mb-4 text-center d-flex flex-column align-items-center justify-content-center">
+                {% if jobseek.profilepic %}
+                <img src="{{ jobseek.profilepic.url }}" id="profile-preview" alt="profilepic" height="200" width="200" style="margin-top: 20px;border-radius:50%;">
+                {% else %}
+                <img src="{% static 'default-profile.png' %}" id="profile-preview" alt="profilepic" height="200" width="200" style="border-radius:50%;">
+                {% endif %}
+                
+          
+
+                <label for="profilepic" style="color: navy;  padding: 5px 15px; border-radius: 20px; cursor: pointer; font-size: 14px;">Change Profile Picture</label>
+
+                <input type="file" name="profilepic" id="profilepic" value = "Change Profile picture" accept="image/*" style="display: none;">
+                </div>
                
                 <table class="table text-dark bg-light mx-auto" style="width:60%; margin:auto; border:transparent">
-                <tr>
+                
+                    <tr>
                     <td>Name</td>
                     <td>
                         <input type="text" name="name" value="{{jobseek.name}}" class="form-control bg-light text-dark"/>
@@ -65,4 +87,13 @@
             </form>
         </div>
     </div>
+
+<script>
+document.getElementById("profilepic").onchange = function (event) {
+    const [file] = event.target.files;
+    if (file) {
+        document.getElementById("profile-preview").src = URL.createObjectURL(file);
+    }
+};
+</script>
 {% endblock body %}
