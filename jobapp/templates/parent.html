@@ -1,294 +1,970 @@
 {% load static %}
 <html>
-<head>
+  <head>
     {% load static %}
     <title>Dream Jobs</title>
-    <link rel="icon" href="{% static 'images/img2.png' %}">
+    <link rel="icon" href="../static/images/img2.png" />
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
 
     <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <title>Dream Jobs</title>
-    <link rel="icon" href="{% static 'images/img2.png' %}">
-    <!-- Bootstrap 5 JS and Popper -->
-    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" />
 
-<style>
-  header {
-    background: linear-gradient(to right, #0c3056, #1c5aa6);
-    color: white;
-    padding: 20px 0;
-    text-align: center;
-    font-size: 30px;
-    font-weight: bold;
-    border-bottom: 5px solid #56a8fa;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .nav-link {
-    position: relative;
-    font-weight: 500;
-    color: #0c3056 !important;
-  }
-
-  .nav-link::after {
-    content: "";
-    position: absolute;
-    width: 0%;
-    height: 2px;
-    bottom: 0;
-    left: 0;
-    background-color: #0c3056;
-    transition: width 0.3s;
-  }
-
-  .nav-link:hover::after {
-    width: 100%;
-  }
-
-  .nav-link:hover {
-    font-weight: 600;
-    color: #093f75 !important;
-  }
-
-  .navbar-collapse {
-    justify-content: center;
-  }
-
-  .navbar-nav {
-    gap: 20px;
-  }
-
-  .auth-buttons {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-  }
-
-  .container {
-    max-width: 100%;
-  }
-
-  footer {
-    background-color: #0c3056;
-    color: white;
-    text-align: center;
-    padding: 40px 20px;
-    border-top: 4px solid #56a8fa;
-    font-size: 16px;
-    line-height: 1.6;
-    position: relative;
-  }
-
-  footer::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background: url('https://www.transparenttextures.com/patterns/diamond-upholstery.png');
-    opacity: 0.04;
-    z-index: 0;
-  }
-
-  footer .container {
-    position: relative;
-    z-index: 1;
-  }
-
-  footer a {
-    color: #56a8fa;
-    text-decoration: none;
-    margin: 0 15px;
-    transition: color 0.3s ease, text-shadow 0.3s ease;
-  }
-
-  footer a:hover {
-    text-decoration: underline;
-    color: #a1d0ff;
-    text-shadow: 0 0 5px #56a8fa;
-  }
-
-  footer .footer-links {
-    margin-top: 10px;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-
-  .nav-item li a {
-        text-decoration: none;
+    <style>
+      :root {
+        --primary-blue: #093f75;
+        --secondary-blue: #0c3056;
+        --accent-blue: #56a8fa;
+        --light-blue: #1c5aa6;
+        --text-dark: #2c3e50;
+        --text-light: #6c757d;
+        --bg-light: #f8fafc;
+        --shadow-light: 0 4px 20px rgba(9, 63, 117, 0.08);
+        --shadow-medium: 0 8px 32px rgba(9, 63, 117, 0.12);
+        --gradient-primary: linear-gradient(
+          135deg,
+          #0c3056 0%,
+          #1c5aa6 50%,
+          #56a8fa 100%
+        );
+        --gradient-accent: linear-gradient(45deg, #56a8fa, #a1d0ff);
       }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: var(--text-dark);
+        overflow-x: hidden;
+      }
+
+      /* Enhanced Header */
+      header {
+        background: var(--gradient-primary);
+        color: white;
+        padding: 24px 0;
+        text-align: center;
+        font-size: clamp(24px, 4vw, 32px);
+        font-weight: 700;
+        border-bottom: 3px solid var(--accent-blue);
+        box-shadow: var(--shadow-medium);
+        position: relative;
+        overflow: hidden;
+      }
+
+      header::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 200%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.1),
+          transparent
+        );
+        animation: shimmer 3s infinite;
+      }
+
+      @keyframes shimmer {
+        0% {
+          left: -100%;
+        }
+        100% {
+          left: 100%;
+        }
+      }
+
+      /* Enhanced Navbar */
+      .navbar {
+        background: rgba(255, 255, 255, 0.98) !important;
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(9, 63, 117, 0.1);
+        padding: 12px 0;
+        transition: all 0.3s ease;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      .navbar.scrolled {
+        box-shadow: var(--shadow-light);
+      }
+
+      .navbar-brand img {
+        border-radius: 16px;
+        transition: all 0.3s ease;
+      }
+
+      .navbar-brand:hover img {
+        transform: scale(1.05);
+        box-shadow: var(--shadow-light);
+      }
+
+      /* Enhanced Navigation Links */
+      .nav-link {
+        position: relative;
+        font-weight: 500;
+        color: var(--text-dark) !important;
+        margin: 0 8px;
+        padding: 10px 20px !important;
+        border-radius: 25px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+      }
+
+      .nav-link::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: var(--gradient-accent);
+        transition: all 0.4s ease;
+        z-index: -1;
+        border-radius: 25px;
+      }
+
+      .nav-link:hover {
+        color: white !important;
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-light);
+      }
+
+      .nav-link:hover::before {
+        left: 0;
+      }
+
+      /* Enhanced Auth Buttons */
+      .auth-buttons .btn {
+        font-weight: 600;
+        padding: 12px 24px;
+        border-radius: 25px;
+        border: none;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-size: 14px;
+        background: var(--gradient-primary) !important;
+        color: white !important;
+        margin-right: 8px;
+      }
+
+      .auth-buttons .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(9, 63, 117, 0.3);
+      }
+
+      .dropdown-menu {
+        border: none;
+        border-radius: 16px;
+        box-shadow: var(--shadow-medium);
+        padding: 8px;
+        margin-top: 8px;
+        backdrop-filter: blur(20px);
+        background: rgba(255, 255, 255, 0.95);
+      }
+
+      .dropdown-item {
+        border-radius: 12px;
+        padding: 10px 16px;
+        margin: 2px 0;
+        font-weight: 500;
+        transition: all 0.2s ease;
+      }
+
+      .dropdown-item:hover {
+        background: var(--gradient-accent);
+        color: white;
+        transform: translateX(4px);
+      }
+
+      /* Enhanced Container */
       .container {
         max-width: 100%;
       }
-      .footer {
-        max-width: 100%;
-        background-color: #e8f3f8;
-      }
-      .footer a {
+
+      /* Enhanced Social Links */
+      .social-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
         text-decoration: none;
+        margin: 0 8px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.6);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
       }
-      .footer a:hover {
-        color: #0b447e;
+
+      .social-link i {
+        color: white;
+        font-size: 20px;
+        transition: transform 0.3s ease, color 0.3s ease;
       }
-      .collapse li a:hover {
+
+      .social-link:hover {
+        transform: translateY(-4px) scale(1.1);
+        background: white;
+      }
+
+      .social-link:hover i {
+        color: var(--accent-blue);
+        transform: scale(1.2);
+      }
+
+      /* Enhanced Footer */
+      footer {
+        background: var(--gradient-primary);
+        color: white;
+        position: relative;
+        overflow: hidden;
+        margin-top: 40px;
+      }
+
+      footer::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--gradient-accent);
+      }
+
+      footer::after {
+        content: "";
+        position: absolute;
+        top: -40px;
+        left: 0;
+        right: 0;
+        height: 80px;
+        background: radial-gradient(
+          ellipse at center,
+          rgba(86, 168, 250, 0.1) 0%,
+          transparent 70%
+        );
+      }
+
+      .footer-section {
+        padding: 30px 0 20px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .social-links {
+        padding: 15px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        position: relative;
+        z-index: 2;
+      }
+
+      .footer-link {
+        color: rgba(255, 255, 255, 0.8) !important;
+        text-decoration: none !important;
+        transition: all 0.3s ease;
+        display: inline-block;
+        position: relative;
+      }
+
+      .footer-link::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -2px;
+        left: 0;
+        background: var(--accent-blue);
+        transition: width 0.3s ease;
+      }
+
+      .footer-link:hover {
+        color: white !important;
+        transform: translateX(4px);
+      }
+
+      .footer-link:hover::after {
+        width: 100%;
+      }
+
+      .footer-logo {
+        border-radius: 12px;
+        transition: all 0.3s ease;
+      }
+
+      .footer-logo:hover {
+        transform: scale(1.05);
+        box-shadow: var(--shadow-light);
+      }
+
+      .footer-heading {
+        color: var(--accent-blue) !important;
+        font-weight: 700 !important;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+        margin-bottom: 12px;
+        position: relative;
+      }
+
+      .footer-heading::after {
+        content: "";
+        position: absolute;
+        bottom: -6px;
+        left: 0;
+        width: 30px;
+        height: 3px;
+        background: var(--gradient-accent);
+        border-radius: 2px;
+      }
+
+      footer p {
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        font-size: 15px;
+        line-height: 1.4;
+      }
+
+      footer p i {
+        color: var(--accent-blue);
+        margin-right: 10px;
+        width: 20px;
+        text-align: center;
+      }
+
+      .copyright {
+        background: rgba(0, 0, 0, 0.2);
+        padding: 10px 0;
+        font-size: 13px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .copyright a {
+        color: var(--accent-blue);
+        text-decoration: none;
         font-weight: 600;
-        color: #0b447e;
+        transition: all 0.3s ease;
       }
-</style>
-</head>
 
-<body>
-  <div class="container">
-    <!-- top row -->
-    <!-- <div class="row py-3" style="background-color: rgba(0, 0, 0, 0.05);">
-      <div class="col-sm-6 text-center">
-        <i class="fa-solid fa-envelope" style="color: #093f75;"></i>
-        <span><a href="mailto:info@dreamjobs.com" style="text-decoration: none; color: #444545;">Email : info@dreamjobs.com</a></span>
-      </div>
-      <div class="col-sm-6 text-center">
-        <i class="fa-solid fa-location-dot" style="color: #093f75;"></i>
-        <span style="color: #444545;"> Office Address : 501, Cyber Heights, Lucknow</span>
-      </div>
-    </div> -->
+      .copyright a:hover {
+        color: white;
+        text-shadow: 0 0 10px rgba(86, 168, 250, 0.5);
+      }
 
-    <!-- navbar -->
-    <nav class="navbar navbar-expand-lg shadow-sm" style="background-color: #ffffff;">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="{% url 'jobapp:index' %}">
-      <img src="{% static 'images/logo.png' %}" height="60" width="120" style="border-radius: 20px 20px 0 20px;" alt="Logo" />
-    </a>
-    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+      /* Responsive Design Enhancements */
+      @media (max-width: 991px) {
+        .auth-buttons {
+          margin-top: 20px;
+          justify-content: center;
+        }
 
-    <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
-      <ul class="navbar-nav gap-3 align-items-center">
-        <li class="nav-item">
-          <a class="nav-link fw-semibold px-3 py-2 rounded-pill" href="{% url 'jobapp:index' %}">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link fw-semibold px-3 py-2 rounded-pill" href="{% url 'jobapp:aboutus' %}">About Us</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link fw-semibold px-3 py-2 rounded-pill" href="{% url 'jobapp:services' %}">Services</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link fw-semibold px-3 py-2 rounded-pill" href="{% url 'jobapp:blog' %}">Blog</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link fw-semibold px-3 py-2 rounded-pill" href="{% url 'jobapp:contactus' %}">Contact</a>
-        </li>
-      </ul>
+        .navbar-collapse {
+          background: rgba(255, 255, 255, 0.98);
+          border-radius: 16px;
+          padding: 20px;
+          margin-top: 16px;
+          box-shadow: var(--shadow-light);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .social-links .d-none {
+          display: block !important;
+          text-align: center;
+          margin-bottom: 20px;
+        }
+
+        .footer-section {
+          padding: 40px 0 20px;
+        }
+      }
+
+      /* Loading Animation */
+      .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--gradient-primary);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .spinner {
+        width: 50px;
+        height: 50px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-top: 3px solid white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Smooth Scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Button Hover Effects */
+      .btn-primary {
+        background: var(--gradient-primary);
+        border: none;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(9, 63, 117, 0.3);
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+      <div class="spinner"></div>
     </div>
-  </div>
 
-         <div class="auth-buttons ms-auto mt-3 mt-lg-0 d-flex align-items-center gap-3">
-  <a href="{% url 'jobapp:login' %}" class="btn fw-semibold px-4 py-2 rounded-pill" style="background-color: #093f75; color: white; transition: all 0.3s;">
-    Login
-  </a>
-  <div class="dropdown">
-    <button class="btn fw-semibold px-4 py-2 rounded-pill dropdown-toggle" style="background-color: #093f75; color: white; transition: all 0.3s;" data-bs-toggle="dropdown">
-      Register
-    </button>
-    <ul class="dropdown-menu shadow-sm rounded-3">
-      <li><a class="dropdown-item fw-semibold" href="{% url 'jobapp:employerreg' %}">Employer</a></li>
-      <li><a class="dropdown-item fw-semibold" href="{% url 'jobapp:jobseekerreg' %}">Job Seeker</a></li>
-    </ul>
-  </div>
-</div>
+    <div class="container">
+      <!-- Enhanced Navbar -->
+      <nav class="navbar navbar-expand-lg shadow-sm" id="mainNavbar">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="./index.html">
+            <img
+              src="../static/images/logo.png"
+              height="60"
+              width="120"
+              style="border-radius: 20px 20px 0 20px"
+              alt="Logo"
+            />
+          </a>
+          <button
+            class="navbar-toggler border-0 shadow-none"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
 
-    </nav>
+          <div
+            class="collapse navbar-collapse justify-content-center"
+            id="navbarSupportedContent"
+          >
+            <ul class="navbar-nav align-items-center">
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'jobapp:index' %}">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'jobapp:aboutus' %}"
+                  >About Us</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'jobapp:services' %}"
+                  >Services</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'jobapp:blog' %}">Blog</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'jobapp:contactus' %}"
+                  >Contact</a
+                >
+              </li>
+            </ul>
+          </div>
 
-    {% block body %}
-    {% endblock body %}
+          <div class="auth-buttons d-flex align-items-center">
+            <a href="{% url 'jobapp:login' %}" class="btn">Login</a>
+            <div class="dropdown">
+              <button class="btn dropdown-toggle" data-bs-toggle="dropdown">
+                Register
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="{% url 'jobapp:employerreg' %}"
+                    >Employer</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-item"
+                    href="{% url 'jobapp:jobseekerreg' %}"
+                    >Job Seeker</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
 
-    <!-- Footer -->
-    <footer class="text-center text-lg-start bg-body-light">
-  <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
-    <div class="me-5 d-none d-lg-block">
-      <span style="color: #093f75; font-weight: 600; font-size: 1rem;">
-        Get connected with us on social networks:
-      </span>
+      {% block body %} {% endblock body %}
+
+      <footer>
+        <!-- Social Links Section -->
+        <section class="social-links">
+          <div class="container">
+            <div class="row align-items-center">
+              <div class="col-lg-6">
+                <div class="d-none d-lg-block">
+                  <span
+                    style="
+                      font-weight: 600;
+                      font-size: 18px;
+                      color: rgba(255, 255, 255, 0.9);
+                    "
+                  >
+                    Get connected with us on social networks
+                  </span>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="text-center text-lg-end">
+                  <a href="https://www.facebook.com/" class="social-link">
+                    <i class="fab fa-facebook-f"></i>
+                  </a>
+                  <a href="https://twitter.com/" class="social-link">
+                    <i class="fab fa-twitter"></i>
+                  </a>
+                  <a href="https://www.gmail.com/" class="social-link">
+                    <i class="fa-regular fa-envelope"></i>
+                  </a>
+                  <a href="https://www.instagram.com/" class="social-link">
+                    <i class="fab fa-instagram"></i>
+                  </a>
+                  <a href="https://www.linkedin.com/" class="social-link">
+                    <i class="fab fa-linkedin"></i>
+                  </a>
+                  <a href="https://github.com/" class="social-link">
+                    <i class="fab fa-github"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Main Footer Content -->
+        <section class="footer-section">
+          <div class="container text-center text-md-start mt-5">
+            <div class="row mt-3">
+              <!-- Company Info -->
+              <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+                <h6 class="footer-heading">
+                  <img
+                    src="{% static 'images/logo.png' %}"
+                    width="35%"
+                    alt="Dream Jobs Logo"
+                    class="footer-logo"
+                  />
+                </h6>
+                <p
+                  style="
+                    color: rgba(255, 255, 255, 0.8);
+                    font-size: 15px;
+                    line-height: 1.7;
+                  "
+                >
+                  At Dream Jobs, we believe in the power of human potential. We
+                  connect talented individuals with opportunities that inspire
+                  growth, innovation, and success.
+                </p>
+              </div>
+
+              <!-- Company Links -->
+              <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+                <h6 class="footer-heading">COMPANY</h6>
+                <div class="d-flex flex-column gap-3">
+                  <a href="{% url 'jobapp:aboutus' %}" class="footer-link"
+                    >About Us</a
+                  >
+                  <a href="{% url 'jobapp:index' %}" class="footer-link"
+                    >Privacy Policy</a
+                  >
+                  <a href="{% url 'jobapp:index' %}" class="footer-link"
+                    >Terms</a
+                  >
+                  <a href="{% url 'jobapp:services' %}" class="footer-link"
+                    >Services</a
+                  >
+                </div>
+              </div>
+
+              <!-- Services Links -->
+              <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+                <h6 class="footer-heading">SERVICES</h6>
+                <div class="d-flex flex-column gap-3">
+                  <a href="{% url 'jobapp:services' %}" class="footer-link"
+                    >Internships</a
+                  >
+                  <a href="{% url 'jobapp:services' %}" class="footer-link"
+                    >Apprenticeship</a
+                  >
+                  <a href="{% url 'jobapp:services' %}" class="footer-link"
+                    >Dream Jobs</a
+                  >
+                  <a href="{% url 'jobapp:services' %}" class="footer-link"
+                    >Work from Home</a
+                  >
+                </div>
+              </div>
+
+              <!-- Contact Info -->
+              <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-4">
+                <h6 class="footer-heading">GET IN TOUCH</h6>
+                <div class="d-flex flex-column gap-3">
+                  <p><i class="fas fa-home"></i> 501, Cyber Heights, Lucknow</p>
+                  <p>
+                    <i class="fas fa-envelope"></i>
+                    <a href="mailto:info@dreamjobs.com" class="footer-link"
+                      >info@dreamjobs.com</a
+                    >
+                  </p>
+                  <p>
+                    <i class="fas fa-phone"></i>
+                    <a href="tel:+919889106834" class="footer-link"
+                      >9889106834</a
+                    >
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Copyright Section -->
+        <div class="copyright text-center">
+          <div class="container">
+            <p class="mb-0">
+              &copy; 2024 Dream Jobs. All rights reserved. Developed by&nbsp;
+              <a href="#">Khushi Nigam</a>
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
-    <div class="d-flex align-items-center gap-3">
-      <a href="https://www.facebook.com/" class="social-link">
-        <i class="fab fa-facebook-f" style="color: #053a70;"></i>
-      </a>
-      <a href="https://twitter.com/" class="social-link">
-        <i class="fab fa-twitter" style="color: #47bde4;"></i>
-      </a>
-      <a href="https://www.gmail.com/" class="social-link">
-        <i class="fa-regular fa-envelope" style="color: #e03c31;"></i>
-      </a>
-      <a href="https://www.instagram.com/" class="social-link">
-        <i class="fab fa-instagram" style="color: #e5397b;"></i>
-      </a>
-      <a href="https://www.linkedin.com/" class="social-link">
-        <i class="fab fa-linkedin" style="color: #364ade;"></i>
-      </a>
-      <a href="https://github.com/" class="social-link">
-        <i class="fab fa-github" style="color: #24292e;"></i>
-      </a>
-    </div>
-  </section>
 
+    <script>
+      // Enhanced JavaScript functionality
+      document.addEventListener("DOMContentLoaded", function () {
+        // Hide loading overlay
+        setTimeout(() => {
+          document.getElementById("loadingOverlay").style.opacity = "0";
+          setTimeout(() => {
+            document.getElementById("loadingOverlay").style.visibility =
+              "hidden";
+          }, 300);
+        }, 500);
 
+        // Navbar scroll effect
+        const navbar = document.getElementById("mainNavbar");
+        window.addEventListener("scroll", function () {
+          if (window.scrollY > 50) {
+            navbar.classList.add("scrolled");
+          } else {
+            navbar.classList.remove("scrolled");
+          }
+        });
 
-  <section>
-  <div class="container text-center text-md-start mt-5">
-    <div class="row mt-3">
-      <!-- Company Info -->
-      <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-        <h6 class="fw-bold mb-4">
-          <img src="{% static 'images/logo.png' %}" width="50%" alt="Dream Jobs Logo">
-        </h6>
-        <p style="color: #6c757d; font-size: 0.95rem;">
-          At Dream Jobs, we believe in the power of human potential...
-        </p>
-      </div>
+        // Enhanced dropdown animation
+        document.querySelectorAll(".dropdown").forEach((dropdown) => {
+          const menu = dropdown.querySelector(".dropdown-menu");
 
-      <!-- Company Links -->
-      <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-        <h6 class="fw-bold mb-4" style="color:#093f75">COMPANY</h6>
-        <p><a href="{% url 'jobapp:aboutus' %}" class="footer-link">About us</a></p>
-        <p><a href="{% url 'jobapp:index' %}" class="footer-link">Privacy Policy</a></p>
-        <p><a href="{% url 'jobapp:index' %}" class="footer-link">Terms</a></p>
-        <p><a href="{% url 'jobapp:services' %}" class="footer-link">Services</a></p>
-      </div>
+          dropdown.addEventListener("shown.bs.dropdown", function () {
+            menu.style.animation = "fadeInUp 0.3s ease-out";
+          });
 
-      <!-- Services Links -->
-      <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-        <h6 class="fw-bold mb-4" style="color:#093f75">SERVICES</h6>
-        <p><a href="{% url 'jobapp:services' %}" class="footer-link">Internships</a></p>
-        <p><a href="{% url 'jobapp:services' %}" class="footer-link">Apprenticeship</a></p>
-        <p><a href="{% url 'jobapp:services' %}" class="footer-link">Dream Jobs</a></p>
-        <p><a href="{% url 'jobapp:services' %}" class="footer-link">Work from Home</a></p>
-      </div>
+          dropdown.addEventListener("hide.bs.dropdown", function () {
+            menu.style.animation = "fadeOutDown 0.2s ease-in";
+          });
+        });
 
-      <!-- Contact Info -->
-      <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-4">
-        <h6 class="fw-bold mb-4" style="color:#093f75">CONTACT</h6>
-        <p><i class="fas fa-home me-3"></i> 501, Cyber Heights, Lucknow</p>
-        <p><i class="fas fa-envelope me-3"></i> info@dreamjobs.com</p>
-        <p><i class="fas fa-phone me-3"></i> 9889106834</p>
-      </div>
-    </div>
-  </div>
-</section>
+        // Parallax effect for footer
+        window.addEventListener("scroll", function () {
+          const scrolled = window.pageYOffset;
+          const footer = document.querySelector("footer");
+          const footerOffset = footer.offsetTop;
+          const windowHeight = window.innerHeight;
 
-      <div class="text-center p-3" style="background-color: #041b55; color: #ffffff; font-size: 0.9rem;">
-  &copy; 2024 Dream Jobs. Developed by <a href="#" style="color: #ffffff; text-decoration: underline;">Khushi Nigam</a>.
-</div>
-    </footer>
-  </div>
-</body>
+          if (scrolled + windowHeight > footerOffset) {
+            const parallax = (scrolled + windowHeight - footerOffset) * 0.3;
+            footer.style.transform = `translateY(-${parallax}px)`;
+          }
+        });
+
+        // Add hover sound effect (optional)
+        const playHoverSound = (frequency = 800, duration = 100) => {
+          if (
+            typeof AudioContext !== "undefined" ||
+            typeof webkitAudioContext !== "undefined"
+          ) {
+            const audioContext = new (window.AudioContext ||
+              window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            oscillator.frequency.value = frequency;
+            oscillator.type = "sine";
+
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            gainNode.gain.linearRampToValueAtTime(
+              0.1,
+              audioContext.currentTime + 0.01
+            );
+            gainNode.gain.exponentialRampToValueAtTime(
+              0.001,
+              audioContext.currentTime + duration / 1000
+            );
+
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration / 1000);
+          }
+        };
+
+        // Add navbar scroll effect
+        window.addEventListener("scroll", function () {
+          const navbar = document.getElementById("mainNavbar");
+          if (window.scrollY > 50) {
+            navbar.classList.add("scrolled");
+          } else {
+            navbar.classList.remove("scrolled");
+          }
+        });
+
+        // Hide loading overlay when page is loaded
+        window.addEventListener("load", function () {
+          const loadingOverlay = document.getElementById("loadingOverlay");
+          if (loadingOverlay) {
+            loadingOverlay.style.opacity = "0";
+            loadingOverlay.style.visibility = "hidden";
+          }
+        });
+
+        // Add subtle sound effects to interactive elements
+        document
+          .querySelectorAll(".nav-link, .btn, .social-link")
+          .forEach((element) => {
+            element.addEventListener("mouseenter", () => {
+              // Uncomment the line below if you want hover sound effects
+              // playHoverSound(600, 80);
+            });
+          });
+
+        // Progressive enhancement for animations
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          document.querySelectorAll("*").forEach((el) => {
+            el.style.animationDuration = "0.01ms !important";
+            el.style.animationIterationCount = "1 !important";
+            el.style.transitionDuration = "0.01ms !important";
+          });
+        }
+
+        // Add intersection observer for fade-in animations
+        const observerOptions = {
+          threshold: 0.1,
+          rootMargin: "0px 0px -50px 0px",
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.style.opacity = "1";
+              entry.target.style.transform = "translateY(0)";
+            }
+          });
+        }, observerOptions);
+
+        // Observe footer sections for animation
+        document
+          .querySelectorAll(
+            "footer .col-md-6, footer .col-lg-2, footer .col-lg-3, footer .col-lg-4"
+          )
+          .forEach((section) => {
+            section.style.opacity = "0";
+            section.style.transform = "translateY(30px)";
+            section.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+            observer.observe(section);
+          });
+      });
+
+      // Add CSS animations
+      const style = document.createElement("style");
+      style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+            
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(15px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            @keyframes fadeOutDown {
+                from {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                to {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+            }
+            
+            @keyframes pulse {
+                0%, 100% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.05);
+                }
+            }
+            
+            .social-link:hover {
+                animation: pulse 0.6s ease-in-out;
+            }
+            
+            /* Enhanced responsive design */
+            @media (max-width: 576px) {
+                .auth-buttons {
+                    flex-direction: column;
+                    gap: 10px;
+                }
+                
+                .auth-buttons .btn {
+                    width: 100%;
+                    max-width: 200px;
+                }
+                
+                .social-link {
+                    width: 40px;
+                    height: 40px;
+                    margin: 0 4px;
+                }
+                
+                .footer-section {
+                    padding: 30px 0 20px;
+                }
+                
+                .footer-heading {
+                    font-size: 14px;
+                }
+            }
+            
+            /* Dark mode support (optional) */
+            @media (prefers-color-scheme: dark) {
+                .navbar {
+                    background: rgba(12, 48, 86, 0.95) !important;
+                }
+                
+                .nav-link {
+                    color: rgba(255, 255, 255, 0.9) !important;
+                }
+                
+                .dropdown-menu {
+                    background: rgba(12, 48, 86, 0.95);
+                    border: 1px solid rgba(86, 168, 250, 0.3);
+                }
+                
+                .dropdown-item {
+                    color: rgba(255, 255, 255, 0.9);
+                }
+            }
+            
+            /* Accessibility improvements */
+            .nav-link:focus,
+            .btn:focus,
+            .social-link:focus,
+            .footer-link:focus {
+                outline: 2px solid var(--accent-blue);
+                outline-offset: 2px;
+                box-shadow: 0 0 0 4px rgba(86, 168, 250, 0.3);
+            }
+            
+            /* Print styles */
+            @media print {
+                .navbar,
+                .auth-buttons,
+                .social-links,
+                .loading-overlay {
+                    display: none !important;
+                }
+                
+                footer {
+                    background: white !important;
+                    color: black !important;
+                }
+                
+                .footer-link {
+                    color: #0c3056 !important;
+                }
+            }
+            
+            /* High contrast mode support */
+            @media (prefers-contrast: high) {
+                .nav-link,
+                .btn,
+                .footer-link {
+                    border: 2px solid currentColor;
+                }
+            }
+        `;
+      document.head.appendChild(style);
+    </script>
+  </body>
 </html>
-
