@@ -3,298 +3,629 @@
 <style>
   body {
     font-family: 'Segoe UI', sans-serif;
-    background: #f4f8fb;
+    background: linear-gradient(135deg, #f4f8fb 0%, #e8f4f8 100%);
+  }
+
+  .main-container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .hero-section {
+    background: linear-gradient(135deg, #033261 0%, #093f75 100%);
+    color: white;
+    padding: 80px 0;
+    margin-bottom: 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="white" fill-opacity="0.1"><polygon points="0,100 1000,0 1000,100"/></svg>') no-repeat bottom;
+    background-size: cover;
   }
 
   .contact-title {
-    text-align: center;
-    color: #313030;
-    font-weight: 700;
-    font-size: 2.8rem;
-    margin-bottom: 30px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-
-  .contact-section {
-    background: #ffffff;
-    border-radius: 10px;
-    padding: 40px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    margin-bottom: 40px;
-  }
-
-  .contact-section h2 {
-    color: #093f75;
-    font-weight: 700;
+    font-size: 3.5rem;
+    font-weight: 800;
     margin-bottom: 20px;
-    font-size: 1.6rem;
+    text-align: center;
+    position: relative;
+    z-index: 2;
   }
 
-  .contact-section p, .contact-section label {
-    color: #333;
-    font-size: 1.05rem;
+  .contact-subtitle {
+    font-size: 1.3rem;
+    text-align: center;
+    opacity: 0.9;
+    margin-bottom: 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  .contact-card {
+    background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 25px;
+    padding: 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+  }
+
+  .contact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.15);
+  }
+
+  .contact-info-card {
+    background: linear-gradient(135deg, #033261 0%, #0a4d8c 100%);
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .contact-info-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    z-index: 1;
+  }
+
+  .contact-info-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .contact-card h2 {
+    color: #033261;
+    font-weight: 700;
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+    position: relative;
+  }
+
+  .contact-info-card h2 {
+    color: white;
+  }
+
+  .contact-card h2::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(90deg, #033261, #093f75);
+    border-radius: 2px;
+  }
+
+  .contact-info-card h2::after {
+    background: linear-gradient(90deg, rgba(255,255,255,0.8), rgba(255,255,255,0.4));
+  }
+
+  .contact-info-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .contact-info-item:last-child {
+    border-bottom: none;
+  }
+
+  .contact-info-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding-left: 15px;
+    margin: 0 -15px;
+  }
+
+  .contact-icon {
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+    font-size: 1.2rem;
   }
 
   .form-control {
-    border-radius: 8px;
-    border: 1px solid #ced4da;
-    padding: 12px;
+    border-radius: 15px;
+    border: 2px solid #e9ecef;
+    padding: 15px 20px;
     font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #fafbfc;
+  }
+
+  .form-control:focus {
+    border-color: #033261;
+    box-shadow: 0 0 0 0.2rem rgba(3, 50, 97, 0.25);
+    background: white;
+  }
+
+  .form-label {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+    font-size: 1rem;
+  }
+
+  .gender-options {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 10px;
+  }
+
+  .form-check {
+    margin-bottom: 0;
+  }
+
+  .form-check-input:checked {
+    background-color: #033261;
+    border-color: #033261;
   }
 
   .form-check-label {
-    margin-right: 15px;
-    margin-left: 5px;
-    font-size: 1rem;
+    font-weight: 500;
+    color: #495057;
   }
 
   .btn-submit {
-    background-color: #093f75;
+    background: linear-gradient(135deg, #033261 0%, #093f75 100%);
     color: white;
-    padding: 14px;
-    border-radius: 8px;
-    font-weight: bold;
+    padding: 18px 40px;
+    border-radius: 25px;
+    font-weight: 700;
     font-size: 1.1rem;
     border: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(3, 50, 97, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
   }
 
   .btn-submit:hover {
-    background-color: #0b4d90;
-    cursor: pointer;
+    background: linear-gradient(135deg, #093f75 0%, #0a4d8c 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(3, 50, 97, 0.4);
   }
 
-  iframe {
-    width: 100%;
+  .map-container {
+    border-radius: 20px;
+    overflow: hidden;
     height: 350px;
-    border-radius: 10px;
-    border: 0;
-    margin-top: 15px;
+    margin-top: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    border: 3px solid rgba(255, 255, 255, 0.3);
   }
 
-.faq-accordion .accordion-button {
-  background-color: #eaf3ff;
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #0a58ca;
-  transition: background-color 0.3s, box-shadow 0.3s;
-  border-radius: 8px;
-  margin-bottom: 10px;
-}
+  .faq-section {
+    background: white;
+    border-radius: 30px;
+    padding: 60px 40px;
+    margin-top: 80px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+    position: relative;
+  }
 
-.faq-accordion .accordion-button:hover {
-  background-color: #d8eaff;
-}
+  .faq-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: #1e1e1e;
+    margin-bottom: 50px;
+    text-align: center;
+    position: relative;
+  }
 
-.faq-accordion .accordion-button:focus {
-  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
-}
+  .faq-title::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(90deg, #033261, #093f75);
+    border-radius: 2px;
+  }
 
-.faq-accordion .accordion-body {
-  background: #ffffff;
-  padding: 15px 20px;
-  font-size: 1rem;
-  color: #333;
-  border-radius: 0 0 8px 8px;
-  box-shadow: inset 0 1px 0 rgba(0,0,0,0.05);
-  animation: fadeIn 0.4s ease-in-out;
-}
+  .accordion-item {
+    border: none;
+    margin-bottom: 20px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+  }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-
-.faq-title {
-  font-size: 28px;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-
+  .accordion-item:hover {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+  }
 
   .accordion-button {
-    font-size: 1rem;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    color: #033261;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 25px 30px;
+    border: none;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .accordion-button:not(.collapsed) {
+    background: linear-gradient(135deg, #033261 0%, #093f75 100%);
+    color: white;
+    box-shadow: none;
+  }
+
+  .accordion-button:focus {
+    box-shadow: 0 0 0 0.25rem rgba(3, 50, 97, 0.25);
+    border: none;
+  }
+
+  .accordion-button::after {
+    transition: transform 0.3s ease;
   }
 
   .accordion-body {
-    font-size: 0.95rem;
-    color: #444;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    padding: 30px;
+    font-size: 1.05rem;
+    color: #495057;
+    line-height: 1.7;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
   }
 
-  @media only screen and (max-width: 600px) {
-    .contact-section {
-      padding: 20px;
+  .success-message {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    border: 2px solid #b8dacc;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 30px;
+    text-align: center;
+    font-weight: 600;
+    color: #155724;
+    animation: slideInDown 0.5s ease;
+  }
+
+  @keyframes slideInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .section-divider {
+    height: 100px;
+    background: linear-gradient(to right, transparent, rgba(3, 50, 97, 0.1), transparent);
+    margin: 60px 0;
+    position: relative;
+  }
+
+  .section-divider::before {
+    content: '✦';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    color: #033261;
+    background: white;
+    padding: 10px 20px;
+    border-radius: 50px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  @media only screen and (max-width: 768px) {
+    .hero-section {
+      padding: 50px 0;
+      margin-bottom: 40px;
     }
 
+    .contact-title {
+      font-size: 2.5rem;
+    }
+
+    .contact-subtitle {
+      font-size: 1.1rem;
+    }
+
+    .contact-card {
+      padding: 30px 20px;
+      margin-bottom: 30px;
+    }
+
+    .faq-section {
+      padding: 40px 20px;
+      margin-top: 50px;
+    }
+
+    .faq-title {
+      font-size: 2rem;
+    }
+
+    .accordion-button {
+      padding: 20px;
+      font-size: 1rem;
+    }
+
+    .accordion-body {
+      padding: 20px;
+      font-size: 1rem;
+    }
+
+    .map-container {
+      height: 250px;
+    }
+
+    .contact-info-item:hover {
+      margin: 0;
+      padding-left: 0;
+    }
+  }
+
+  @media only screen and (max-width: 576px) {
     .contact-title {
       font-size: 2rem;
     }
 
-    .faq-title {
-      font-size: 1.5rem;
+    .gender-options {
+      padding: 15px;
+    }
+
+    .btn-submit {
+      padding: 15px 30px;
+      font-size: 1rem;
     }
   }
 </style>
 
-<div class="container pb-5">
-  <h1 class="contact-title text-center fw-bold mb-4">Contact Us</h1>
-  <div class="row gy-4 align-items-start">
-    
-    <!-- Contact Info -->
-    <div class="col-md-6">
-      <div class="bg-light rounded-4 p-4 shadow-sm h-100">
-        <h2 class="fw-semibold mb-3">DreamJobs Office</h2>
-        <p class="mb-2"><i class="fas fa-home me-2 text-primary"></i> 501, Cyber Heights, Lucknow</p>
-        <p class="mb-2"><i class="fas fa-phone me-2 text-primary"></i> 9878648647</p>
-        <p class="mb-4"><i class="fas fa-envelope me-2 text-primary"></i> info@dreamjobs.com</p>
-        <div class="rounded-3 overflow-hidden" style="height: 300px;">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3559.0700769905407!2d81.00675540936595!3d26.869514561851368!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjbCsDUyJzEwLjQiTiA4McKwMDAnMzMuNSJF!5e0!3m2!1sen!2sin!4v1718951750100!5m2!1sen!2sin"
-            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-          </iframe>
+<div class="main-container">
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="container">
+      <h1 class="contact-title">Get In Touch</h1>
+      <p class="contact-subtitle">We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
+    </div>
+  </div>
+
+  <div class="container pb-5">
+    <div class="row gy-4 align-items-start">
+      
+      <!-- Contact Info Card -->
+      <div class="col-lg-6">
+        <div class="contact-card contact-info-card">
+          <div class="contact-info-content">
+            <h2>DreamJobs Headquarters</h2>
+            
+            <div class="contact-info-item">
+              <div class="contact-icon">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <div>
+                <h6 class="mb-1 fw-semibold">Our Location</h6>
+                <p class="mb-0 opacity-75">501, Cyber Heights, Lucknow</p>
+              </div>
+            </div>
+
+            <div class="contact-info-item">
+              <div class="contact-icon">
+                <i class="fas fa-phone"></i>
+              </div>
+              <div>
+                <h6 class="mb-1 fw-semibold">Phone Number</h6>
+                <p class="mb-0 opacity-75">+91 98786 48647</p>
+              </div>
+            </div>
+
+            <div class="contact-info-item">
+              <div class="contact-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div>
+                <h6 class="mb-1 fw-semibold">Email Address</h6>
+                <p class="mb-0 opacity-75">info@dreamjobs.com</p>
+              </div>
+            </div>
+
+            <div class="contact-info-item">
+              <div class="contact-icon">
+                <i class="fas fa-clock"></i>
+              </div>
+              <div>
+                <h6 class="mb-1 fw-semibold">Business Hours</h6>
+                <p class="mb-0 opacity-75">Mon - Fri: 9:00 AM - 6:00 PM</p>
+              </div>
+            </div>
+
+            <div class="map-container">
+              <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3559.0700769905407!2d81.00675540936595!3d26.869514561851368!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjbCsDUyJzEwLjQiTiA4McKwMDAnMzMuNSJF!5e0!3m2!1sen!2sin!4v1718951750100!5m2!1sen!2sin"
+                width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+              </iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form Card -->
+      <div class="col-lg-6">
+        <div class="contact-card">
+          <h2>Send Us a Message</h2>
+          
+          {% if msg %}
+            <div class="success-message">
+              <i class="fas fa-check-circle me-2"></i>{{ msg }}
+            </div>
+          {% endif %}
+          
+          <p class="text-secondary mb-4" style="font-size: 1.1rem; line-height: 1.6;">
+            Please fill out the form below accurately. Our dedicated support team will reach out to you within 24 hours to assist with your inquiry.
+          </p>
+
+          <form class="form-group" method="post">
+            {% csrf_token %}
+            
+            <div class="mb-4">
+              <label class="form-label">Full Name *</label>
+              <input type="text" class="form-control" name="name" placeholder="Enter your complete name" required>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label">Gender *</label>
+              <div class="gender-options">
+                <div class="d-flex flex-wrap gap-4">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gender" value="female" id="genderFemale" checked>
+                    <label class="form-check-label" for="genderFemale">
+                      <i class="fas fa-venus me-1"></i> Female
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gender" value="male" id="genderMale">
+                    <label class="form-check-label" for="genderMale">
+                      <i class="fas fa-mars me-1"></i> Male
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="gender" value="other" id="genderOther">
+                    <label class="form-check-label" for="genderOther">
+                      <i class="fas fa-genderless me-1"></i> Other
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="mb-4">
+              <label class="form-label">Address *</label>
+              <textarea class="form-control" name="address" rows="3" placeholder="Enter your complete address" required></textarea>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label">Contact Number *</label>
+              <input type="tel" class="form-control" name="contactno" placeholder="Enter your mobile number" required>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label">Email Address *</label>
+              <input type="email" class="form-control" name="emailaddress" placeholder="Enter your email address" required>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label">Your Inquiry *</label>
+              <textarea class="form-control" name="enquirytext" rows="4" placeholder="Please describe your inquiry in detail..." required></textarea>
+            </div>
+
+            <div class="text-center">
+              <button type="submit" class="btn btn-submit">
+                <i class="fas fa-paper-plane me-2"></i>Send Message
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
 
-    <div class="col-md-6">
-  <div class="bg-white rounded-4 p-4 shadow-sm">
-    <h2 class="fw-semibold mb-3">Fill the form below</h2>
-    
-    {% if msg %}
-      <p class="text-center text-success fw-medium mb-3">{{ msg }}</p>
-    {% endif %}
-    
-    <p class="text-secondary mb-4">
-      Please fill the form accurately. Our agents will reach out within 24 hours.
-    </p>
+    <!-- Section Divider -->
+    <div class="section-divider"></div>
 
-    <form class="form-group" method="post">
-      {% csrf_token %}
-      <div class="mb-3">
-        <label class="form-label fw-semibold">Name</label>
-        <input type="text" class="form-control rounded-3 shadow-sm" name="name" placeholder="Enter your full name">
-      </div>
+    <!-- FAQ Section -->
+    <div class="faq-section">
+      <h2 class="faq-title">Frequently Asked Questions</h2>
+      
+      <div class="accordion accordion-flush" id="faqAccordion">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-one" aria-expanded="false" aria-controls="faq-one">
+              <i class="fas fa-upload me-3"></i> How do I upload my resume?
+            </button>
+          </h2>
+          <div id="faq-one" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              <strong>Uploading your resume is simple!</strong> Click on "Apply Now" under any job listing that interests you. A detailed application form will appear where you can fill in your personal information and upload your resume file. We accept PDF, DOC, and DOCX formats up to 5MB in size.
+            </div>
+          </div>
+        </div>
 
-       <div class="mb-3">
-  <label class="form-label fw-semibold">Gender:</label>
-  <div class="d-flex gap-4 pt-2">
-    <div class="form-check">
-      <input class="form-check-input" type="radio" name="gender" value="female" id="genderFemale" checked>
-      <label class="form-check-label" for="genderFemale">Female</label>
-    </div>
-    <div class="form-check">
-      <input class="form-check-input" type="radio" name="gender" value="male" id="genderMale">
-      <label class="form-check-label" for="genderMale">Male</label>
-    </div>
-    <div class="form-check">
-      <input class="form-check-input" type="radio" name="gender" value="other" id="genderOther">
-      <label class="form-check-label" for="genderOther">Other</label>
-    </div>
-  </div>
-</div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-two" aria-expanded="false" aria-controls="faq-two">
+              <i class="fas fa-key me-3"></i> What if I forgot my password?
+            </button>
+          </h2>
+          <div id="faq-two" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              <strong>No worries!</strong> Simply click on "Forgot Password" on the login page. Enter your registered email address, and we'll send you a secure verification link. Follow the instructions in the email to create a new password. The link expires in 24 hours for security reasons.
+            </div>
+          </div>
+        </div>
 
-        
-<div class="mb-3">
-  <label class="form-label fw-semibold">Address</label>
-  <textarea class="form-control rounded-3 shadow-sm" name="address" rows="3" placeholder="Enter your address"></textarea>
-</div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-three" aria-expanded="false" aria-controls="faq-three">
+              <i class="fas fa-clock me-3"></i> How long does it take for recruiters to respond?
+            </button>
+          </h2>
+          <div id="faq-three" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              <strong>Response times vary by position and company.</strong> Typically, you can expect to hear back within 2-3 working days. Once you submit your application, you'll receive an immediate confirmation email. Our partner recruiters review applications carefully to ensure the best match for both candidates and employers.
+            </div>
+          </div>
+        </div>
 
-<div class="mb-3">
-  <label class="form-label fw-semibold">Contact No.</label>
-  <input type="number" class="form-control rounded-3 shadow-sm" name="contactno" placeholder="Enter your contact number">
-</div>
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-four" aria-expanded="false" aria-controls="faq-four">
+              <i class="fas fa-history me-3"></i> How do I view my past applications?
+            </button>
+          </h2>
+          <div id="faq-four" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              <strong>Easy access to your application history!</strong> Log into your DreamJobs account and navigate to the "My Profile" section. Here you'll find a comprehensive list of all your past applications, including their current status, application dates, and any feedback from recruiters. You can also update your profile information anytime.
+            </div>
+          </div>
+        </div>
 
-<div class="mb-3">
-  <label class="form-label fw-semibold">Email address</label>
-  <input type="email" class="form-control rounded-3 shadow-sm" name="emailaddress" placeholder="Enter your email">
-</div>
-
-<div class="mb-3">
-  <label class="form-label fw-semibold">Enquiry Text</label>
-  <textarea class="form-control rounded-3 shadow-sm" name="enquirytext" rows="3" placeholder="Write your enquiry"></textarea>
-</div>
-
-<button type="submit" class="btn btn-primary w-100 rounded-pill fw-semibold shadow-sm" style="background-color: #093f75;">Submit</button>
-
-      </form>
-    </div>
-  </div>
-
- <div class="row pb-5">
-  <h1 class="faq-title fw-bold text-center mb-4" style="font-size: 2.5rem; color: #1e1e1e;">Frequently Asked Questions</h1>
-  
-  <div class="accordion accordion-flush faq-accordion shadow-sm rounded-4" id="accordionFlushExample">
-
-    <div class="accordion-item mb-3 border-0">
-      <h2 class="accordion-header">
-        <button class="accordion-button collapsed fw-semibold shadow-sm rounded-3" type="button" data-bs-toggle="collapse"
-          data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne"
-          style="background-color: #f8f9fa; color: #093f75;">
-          <i class="fas fa-question-circle me-2 text-primary"></i> How do I upload resume?
-        </button>
-      </h2>
-      <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-        <div class="accordion-body text-secondary">
-          To upload a resume, click on "Apply Now" under the job you're applying for. A form will appear where you can fill in details and upload your resume.
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq-five" aria-expanded="false" aria-controls="faq-five">
+              <i class="fas fa-shield-alt me-3"></i> Is my personal information secure?
+            </button>
+          </h2>
+          <div id="faq-five" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              <strong>Your privacy is our priority!</strong> We use industry-standard encryption and security measures to protect your personal information. Your data is only shared with potential employers when you apply for specific positions, and you maintain full control over your profile visibility and application preferences.
+            </div>
+          </div>
         </div>
       </div>
     </div>
-
-  
-
-
-<div class="accordion-item mb-3 border-0">
-  <h2 class="accordion-header">
-    <button class="accordion-button collapsed fw-semibold shadow-sm rounded-3" type="button" data-bs-toggle="collapse"
-      data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo"
-      style="background-color: #f8f9fa; color: #093f75; transition: all 0.3s ease;">
-      <i class="fas fa-lock me-2 text-primary"></i> What if I forgot my password?
-    </button>
-  </h2>
-  <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-    <div class="accordion-body text-secondary">
-      Click on "Forgot Password" on the login page. A verification link will be sent to your email to reset the password.
-    </div>
   </div>
 </div>
 
-<div class="accordion-item mb-3 border-0">
-  <h2 class="accordion-header">
-    <button class="accordion-button collapsed fw-semibold shadow-sm rounded-3" type="button" data-bs-toggle="collapse"
-      data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree"
-      style="background-color: #f8f9fa; color: #093f75; transition: all 0.3s ease;">
-      <i class="fas fa-clock me-2 text-primary"></i> How long does it take for recruiters to respond?
-    </button>
-  </h2>
-  <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-    <div class="accordion-body text-secondary">
-      It usually takes 2-3 working days. A confirmation email will be sent once your application is submitted.
-    </div>
-  </div>
-</div>
-
-<div class="accordion-item mb-3 border-0">
-  <h2 class="accordion-header">
-    <button class="accordion-button collapsed fw-semibold shadow-sm rounded-3" type="button" data-bs-toggle="collapse"
-      data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour"
-      style="background-color: #f8f9fa; color: #093f75; transition: all 0.3s ease;">
-      <i class="fas fa-user me-2 text-primary"></i> How do I preview my past applications?
-    </button>
-  </h2>
-  <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-    <div class="accordion-body text-secondary">
-      Log into your account and go to the "Profile" section to view all past applications.
-    </div>
-  </div>
-</div>
-
-  </div>
-</div>
- 
-  </div>
-</div>
-
-</div>
 {% endblock body %}
