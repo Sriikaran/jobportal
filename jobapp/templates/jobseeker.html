@@ -204,7 +204,8 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="password" class="form-label">Password<span class="required-asterisk">*</span></label>
-                            <input type="password" name="password" class="form-input" id="password" placeholder="Enter Password" required>
+                            <input type="password" name="password" class="form-input" id="password" placeholder="Enter Password" minlength="6" pattern="(?=.*[A-Za-z])(?=.*[\d@#$%^+\-*])[A-Za-z\d@#$%^+\-*]{6,}"
+                            title="Password must be at least 6 characters and include both letters and numbers." required>
                             <span class="error-message">Password is required.</span>
                         </div>
                     </div>
@@ -214,8 +215,7 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="phone" class="form-label">Phone Number<span class="required-asterisk">*</span></label>
-                            <input type="text" name="contactno" class="form-input" pattern="^[6-9]{1}[0-9]{9}" id="phoneno" placeholder="Enter Phone No." required>
-                            <span class="error-message">Enter a valid 10-digit phone number.</span>
+                            <input type="text" name="contactno" class="form-input" pattern="^[6-9]{1}[0-9]{9}" id="phoneno" title="Plase Enter valid 10 digit mobile number." placeholder="Enter Phone No." required>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -299,7 +299,8 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="resume" class="form-label">Upload Resume<span class="required-asterisk">*</span></label>
-                            <input type="file" name="resume" id="resume" class="form-control" required>
+                            <input type="file" name="resume" accept=".pdf, .doc, .docx" id="resume" class="form-control" required>
+                            <span class="error-message ms-3">File type must be pdf, doc, or docx.</span>
                         </div>
                     </div>
                 </div>
@@ -386,14 +387,6 @@
                 valid = false;
             }
 
-            const phone = document.getElementById('phoneno');
-            const phonePattern = /^[6-9]\d{9}$/;
-            if (!phone.value.trim().match(phonePattern)) {
-                phone.nextElementSibling.textContent = "Enter a valid 10-digit Indian mobile number.";
-                phone.nextElementSibling.style.display = 'block';
-                valid = false;
-            }
-
             const email = document.getElementById('email');
             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!email.value.trim().match(emailPattern)) {
@@ -408,6 +401,26 @@
                 valid = false;
             } else {
                 document.querySelector('.form-check .error-message').style.display = 'none';
+            }
+
+            const resume = document.getElementById('resume');
+            const allowedExtensions = ['pdf', 'doc', 'docx'];
+
+            if (resume.files.length > 0) {
+                const fileName = resume.files[0].name;
+                const fileExtension = fileName.split('.').pop().toLowerCase();
+
+                if (!allowedExtensions.includes(fileExtension)) {
+                    resume.nextElementSibling.textContent = "File type must be PDF, DOC, or DOCX.";
+                    resume.nextElementSibling.style.display = 'block';
+                    valid = false; // stop form submission
+                } else {
+                    resume.nextElementSibling.style.display = 'none';
+                }
+            } else {
+                resume.nextElementSibling.textContent = "Please upload your resume.";
+                resume.nextElementSibling.style.display = 'block';
+                valid = false;
             }
 
             return valid;
