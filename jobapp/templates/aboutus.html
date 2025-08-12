@@ -323,13 +323,13 @@
       </div>
     </div>
 
-       <p class="about-description text-secondary mt-4 fs-6">
+       <p class="about-description text-secondary mt-4 fs-6" id="aboutText">
       At <span class="brand-name fw-bold text-dark">DreamJobs</span>, we believe in empowering job seekers with the tools and opportunities they need to succeed in today's competitive job market.
       Our platform offers a comprehensive suite of services designed to cater to every stage of your career journey, from internships and training programs to full-time job placements.
       <br>
       We offer a wide range of services to support you at every stage of your professional journey.
     </p>
-    <a href="{% url 'jobapp:aboutus' %}" class="btn btn-primary mt-3">Read More</a>
+    <button id="readMoreBtn" class="btn btn-primary mt-3">Read More</button>
   </div>
 </div>
   </section>
@@ -516,6 +516,28 @@
     tooltipTriggerList.map(function (tooltipTriggerEl) {
       return new bootstrap.Tooltip(tooltipTriggerEl);
     });
+
+    // About US Text
+    const aboutText = document.getElementById('aboutText');
+    const readMoreBtn = document.getElementById('readMoreBtn');
+    const fullText = aboutText.innerHTML;
+    const shortText = fullText.substring(0, 150) + '...';
+
+    let isExpanded = false;
+
+    aboutText.innerHTML = shortText;
+
+    readMoreBtn.addEventListener('click', () => {
+      if (isExpanded) {
+        aboutText.innerHTML = shortText;
+        readMoreBtn.textContent = 'Read More';
+      } else {
+        aboutText.innerHTML = fullText;
+        readMoreBtn.textContent = 'Read Less';
+      }
+      isExpanded = !isExpanded;
+    });
+
   });
 </script>
 {% endblock %}
