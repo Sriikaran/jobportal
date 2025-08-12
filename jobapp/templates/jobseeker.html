@@ -1,257 +1,416 @@
 {% extends "index.html" %}
-{% block body %}
 {% load static %}
-<style>
-    .required-asterisk {
-    color: red;
-    }
-    .error-message {
-        color: red;
-        display: none;
-        font-size: 0.875rem;
-    }
-    input:invalid {
-      border-color: initial; 
-    }
-</style>
-<div class="contaiiner" style="background-color: #093f75;">
-    <div class="row mt-5 w-75 mx-auto pb-5 fs-6">
-        <h1 style="text-align: center; color: #ffffff; font-weight:600;" class="p-5">Register as Job Seeker</h1>
-        {% if msg %}
-        <p style="text-align: center; color: rgb(253, 253, 255);">{{msg}}</p>
-        {% endif %}
-        <form class="form-group p-5" method="post" enctype="multipart/form-data" id="form" onsubmit="return validateForm()" style="background-color: rgb(231, 231, 231); border-radius: 40px;">
-            {% csrf_token %}
-            <div class="mb-3">
-                <label for="profilepic" class="form-label" required>Upload Profile Pic</label><br>
-                <input type="file" name="profilepic" id="profilepic" class="form-control">
+
+{% block body %}
+    <style>
+        :root {
+            --primary-blue: #093f75;
+            --accent-blue: #0b447e;
+            --light-bg: #e8f2ff;
+            --light-bg-alt: #f8fbff;
+            --text-color: #666;
+            --shadow-color: rgba(9, 63, 117, 0.12);
+        }
+
+        /* Override parent styles for this specific page */
+        body {
+            background: linear-gradient(135deg, #f6fafd 0%, var(--light-bg) 100%);
+        }
+
+        .registration-container {
+            width: 100%;
+            max-width: 700px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .registration-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 2.5rem 2rem 2rem 2rem;
+            box-shadow: 0 8px 32px var(--shadow-color);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+
+        .registration-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .registration-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .registration-subtitle {
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .required-asterisk {
+            color: red;
+        }
+
+        .form-input, .form-select, .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--light-bg);
+            border-radius: 12px;
+            background: var(--light-bg-alt);
+            font-size: 0.95rem;
+            transition: box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-input:focus, .form-select:focus, .form-control:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            background: #ffffff;
+            box-shadow: 0 4px 16px rgba(9, 63, 117, 0.10);
+        }
+
+        textarea.form-control {
+            padding: 12px 16px;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+        }
+
+        .form-check-label {
+            color: var(--text-color);
+            font-size: 0.95rem;
+        }
+
+        .form-check-input {
+            accent-color: var(--primary-blue);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--accent-blue) 100%);
+            color: white;
+            box-shadow: 0 4px 16px rgba(9, 63, 117, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(9, 63, 117, 0.4);
+        }
+
+        .error-message {
+            color: red;
+            display: none;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        
+        .alert {
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .modal-content {
+            border-radius: 12px;
+        }
+
+        .modal-footer .btn-primary {
+            width: auto;
+            min-width: 150px;
+        }
+
+        @media (max-width: 768px) {
+            .registration-container {
+                margin: 1rem auto;
+            }
+            .registration-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+
+    <div class="registration-container">
+        <div class="registration-card">
+            <div class="registration-header">
+                <h1 class="registration-title">Register as Job Seeker</h1>
+                <p class="registration-subtitle">Create your career profile with us!</p>
             </div>
-            <div class="mb-3"> 
-                <label for="name" class="form-label">Name<span class="required-asterisk">*</span></label>
-                <input type="text" name="name" class="form-control" id="name" title="Enter name using alphabets(a-z)" placeholder="Enter Your Full Name" required>
-                <span class="error-message">Please enter a valid name(ex: Ravi)</span>
-            </div>
-            <div class="col-md-6 mb-3">
-                <h6 class="mb-2 pb-1">Gender<span class="required-asterisk">*</span></h6>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="gender" id="femaleGender" value="female"
-                        checked />
-                    <label class="form-check-label" for="femaleGender">Female</label>
+            
+            {% if msg %}
+            <div class="alert alert-info">{{ msg }}</div>
+            {% endif %}
+            
+            <form class="form-group" method="post" enctype="multipart/form-data" id="jobseeker-form" onsubmit="return validateForm()">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name<span class="required-asterisk">*</span></label>
+                            <input type="text" name="name" class="form-input" id="name" placeholder="Enter Your Full Name" required>
+                            <span class="error-message">Enter a valid name (e.g., John Doe).</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="dob" class="form-label">Date of Birth<span class="required-asterisk">*</span></label>
+                            <input type="date" name="dob" class="form-input" id="dob" required>
+                            <span class="error-message">Date of Birth is required.</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="gender" id="maleGender" value="male" />
-                    <label class="form-check-label" for="maleGender">Male</label>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email address<span class="required-asterisk">*</span></label>
+                            <input type="email" name="emailaddress" class="form-input" id="email" placeholder="Enter Email" required>
+                            <span class="error-message">Please enter a valid email address.</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password<span class="required-asterisk">*</span></label>
+                            <input type="password" name="password" class="form-input" id="password" placeholder="Enter Password" required>
+                            <span class="error-message">Password is required.</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="gender" id="otherGender" value="other" />
-                    <label class="form-check-label" for="otherGender">Other</label>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone Number<span class="required-asterisk">*</span></label>
+                            <input type="text" name="contactno" class="form-input" pattern="^[6-9]{1}[0-9]{9}" id="phoneno" placeholder="Enter Phone No." required>
+                            <span class="error-message">Enter a valid 10-digit phone number.</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="qualification" class="form-label">Highest Qualification<span class="required-asterisk">*</span></label>
+                            <select name="qualification" id="qualification" class="form-select" required>
+                                <option value="" disabled selected>--Select Qualification--</option>
+                                <option value="BCA">BCA</option>
+                                <option value="BBA">BBA</option>
+                                <option value="Btech">Btech</option>
+                                <option value="Bsc">Bsc</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <span class="error-message">Qualification is required.</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="mb-3">
-                <label for="address" class="form-label">Address<span class="required-asterisk">*</span></label>
-                <div class="col-md-9 pe-5">
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="experience" class="form-label">Work Experience<span class="required-asterisk">*</span></label>
+                            <select name="experience" id="experience" class="form-select" required>
+                                <option value="" disabled selected>--Select Work Experience--</option>
+                                <option value="1-2 Years">1-2 Years</option>
+                                <option value="3-4 Years">3-4 Years</option>
+                                <option value="5+Years">5+Years</option>
+                                <option value="No Experience">No Experience</option>
+                            </select>
+                            <span class="error-message">Work experience is required.</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="skills" class="form-label">Key Skills<span class="required-asterisk">*</span></label>
+                            <select name="skills" id="skills" class="form-select" required>
+                                <option value="" disabled selected>--Select Skills--</option>
+                                <option value="IT">IT</option>
+                                <option value="Management">Management</option>
+                                <option value="Customer Services">Customer Service</option>
+                                <option value="Accounting & Finance">Accounting & Finance</option>
+                                <option value="Digital Marketing">Digital Marketing</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <span class="error-message">Key skills are required.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="address" class="form-label">Address<span class="required-asterisk">*</span></label>
                     <textarea class="form-control" name="address" rows="3" placeholder="Enter Address" required></textarea>
-                    <span class="error-message" style="display:none;">Address is required.</span>
+                    <span class="error-message">Address is required.</span>
                 </div>
-            </div>
-            <div class="mb-3">
-                <label for="phone" class="form-label">Phone Number<span class="required-asterisk">*</span></label>
-                <input type="text" name="contactno" class="form-control" pattern="^[6-9]{1}[0-9]{9}" aria-label="Enter a valid phone no." id="phoneno" placeholder="Enter Phone No." required>
-                <span class="error-message" style="display:none;">Address is required.</span>
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email address<span class="required-asterisk">*</span></label>
-                <input type="email" name="emailaddress" class="form-control" id="email" placeholder="Enter Email" required>
-                <span class="error-message" style="display:none;">Please enter a valid email address.</span>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password<span class="required-asterisk">*</span></label>
-                <input type="password" name="password" class="form-control" id="password" placeholder="Enter Password" required>
-                <span class="error-message">Password is required.</span>
-            </div>
-            <div class="mb-3">
-                <label for="dob" class="form-label">Date of Birth<span class="required-asterisk">*</span></label>
-                <input type="date" name="dob" class="form-control" id="dob" required>
-                <span class="error-message">Date of Birth is required.</span>
-            </div>
-            <div class="mb-3">
-                <label for="qualification" class="form-label">Highest Qualification<span class="required-asterisk">*</span></label>
-                <div class="col-md-9 pe-5">
-                    <select name="qualification" id="qualification" class="form-control ">
-                        <option value="null">--Select Qualification--</option>
-                        <option value="BCA">BCA</option>
-                        <option value="BBA">BBA</option>
-                        <option value="Btech">Btech</option>
-                        <option value="Bsc">Bsc</option>
-                        <option value="Other">Other</option>
-                    </select>
-                    <span class="error-message">Qualification is required.</span>
+                
+                <div class="mb-3">
+                    <h6 class="form-label">Gender<span class="required-asterisk">*</span></h6>
+                    <div class="d-flex gap-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="gender" id="femaleGender" value="female" checked />
+                            <label class="form-check-label" for="femaleGender">Female</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="gender" id="maleGender" value="male" />
+                            <label class="form-check-label" for="maleGender">Male</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="gender" id="otherGender" value="other" />
+                            <label class="form-check-label" for="otherGender">Other</label>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="mb-3">
-                <label for="we" class="form-label">Work Experience<span class="required-asterisk">*</span></label>
-                <select name="experience" id="experience" class="form-control">
-                    <option value="null">--Select Work Experience--</option>
-                    <option value="1-2 Years">1-2 Years</option>
-                    <option value="3-4 Years">3-4 Years</option>
-                    <option value="5+Years">5+Years</option>
-                    <option value="Other">No Experience</option>
-                </select>
-                <span class="error-message">Work experience is required.</span>
-            </div>
-            <div class="mb-3">
-                <label for="Skills" class="form-label">Key Skills<span class="required-asterisk">*</span></label>
-                <div class="col-md-9 pe-5">
-                    <select name="skills" id="skills" class="form-control">
-                        <option value="null">--Select Skills--</option>
-                        <option value="IT">IT</option>
-                        <option value="Management">Management</option>
-                        <option value="Customer Services">Customer Service</option>
-                        <option value="Accounting & Finance">Accounting & Finance</option>
-                        <option value="Digital Marketing">Digital Marketing</option>
-                        <option value="Other">Other</option>
-                    </select>
-                    <span class="error-message">Key skills are required.</span>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="profilepic" class="form-label">Upload Profile Pic</label>
+                            <input type="file" name="profilepic" id="profilepic" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="resume" class="form-label">Upload Resume<span class="required-asterisk">*</span></label>
+                            <input type="file" name="resume" id="resume" class="form-control" required>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="mb-3"> 
-                <label for="resume" class="form-label" required>Upload Resume<span class="required-asterisk">*</span></label><br>
-                <input type="file" name="resume" id="resume" class="form-control">
-            </div> 
-            <div class="mb-3 form-check pt-3">
-                <div class="form-check d-flex mb-5">
-                    <input class="form-check-input me-2" type="checkbox" value="" name="checkbox" required />
-                    <label class="form-check-label">
-                        I agree all statements in <a href="#">Terms of service<span class="required-asterisk">*</span></a>
+
+                <div class="mb-3 form-check d-flex align-items-center">
+                    <input class="form-check-input me-2" type="checkbox" value="agreed" name="checkbox" id="terms-checkbox" required />
+                    <label class="form-check-label" for="terms-checkbox">
+                        I agree to all statements in <a href="#">Terms of service<span class="required-asterisk">*</span></a>
                     </label>
+                    <span class="error-message ms-3">You must agree to the terms.</span>
                 </div>
-                <span class="error-message">You must agree to the terms.</span>
+                
+                <button type="submit" class="btn btn-primary mt-4">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="registerSuccessModal" tabindex="-1" aria-labelledby="registerSuccessModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-center">
+                <div class="modal-header">
+                    <h5 class="modal-title w-100" id="registerSuccessModalLabel">Registration Successful</h5>
+                </div>
+                <div class="modal-body">
+                    Your career profile has been registered successfully!
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <a href="{% url 'jobapp:login' %}" class="btn btn-primary">Login Now</a>
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary w-100"
-                style="background-color: #093f75; color:white;">Submit</button>
-        </form>
+        </div>
     </div>
-</div>
 
-<!-- Bootstrap Modal -->
-<div class="modal fade" id="registerSuccessModal" tabindex="-1" aria-labelledby="registerSuccessModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content text-center">
-      <div class="modal-header">
-        <h5 class="modal-title w-100" id="registerSuccessModalLabel">Registration Successful</h5>
-      </div>
-      <div class="modal-body">
-        Your career profile has been registered successfully!
-      </div>
-      <div class="modal-footer justify-content-center">
-        <a href="{% url 'jobapp:login' %}" class="btn btn-primary">Login Now</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-{% if show_modal %}
-<script>
-    window.addEventListener('DOMContentLoaded', (event) => {
-        var myModal = new bootstrap.Modal(document.getElementById('registerSuccessModal'), {
-            backdrop: 'static',
-            keyboard: false
+    {% if show_modal %}
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            var myModal = new bootstrap.Modal(document.getElementById('registerSuccessModal'), {
+                backdrop: 'static',
+                keyboard: false
+            });
+            myModal.show();
         });
-        myModal.show();
-    });
-</script>
-{% endif %}
+    </script>
+    {% endif %}
 
-<script>
-  function validateForm() {
-    let valid = true;
+    <script>
+        function validateForm() {
+            let valid = true;
+            
+            // Generic validation for all required fields
+            const requiredInputs = document.querySelectorAll('#jobseeker-form [required]');
+            requiredInputs.forEach(input => {
+                let errorElement = input.nextElementSibling;
+                if (input.type === 'radio' || input.type === 'checkbox') {
+                    // Handle radio and checkbox groups
+                    let group = document.querySelectorAll(`[name="${input.name}"]`);
+                    let groupValid = Array.from(group).some(i => i.checked);
+                    if (!groupValid) {
+                        valid = false;
+                        if (errorElement) {
+                             errorElement.style.display = 'block';
+                        }
+                    } else if (errorElement) {
+                        errorElement.style.display = 'none';
+                    }
+                } else if (input.value.trim() === '' || input.value === null || input.value === 'null') {
+                    valid = false;
+                    if (errorElement) {
+                        errorElement.style.display = 'block';
+                    }
+                } else {
+                    if (errorElement) {
+                        errorElement.style.display = 'none';
+                    }
+                }
+            });
 
-    // Name
-    const name = document.getElementById('name');
-    const nameError = name.nextElementSibling;
-    const namePattern = /^[A-Za-z]{2,}(?:\s+[A-Za-z]{2,})+$/;
-    if (!name.value.trim().match(namePattern)) {
-        nameError.textContent = "Enter a valid name (eg. John Doe).";
-        nameError.style.display = 'block';
-        valid = false;
-    } else {
-        nameError.style.display = 'none';
-    }
+            // Specific validations
+            const name = document.getElementById('name');
+            const namePattern = /^[A-Za-z]{2,}(?:\s+[A-Za-z]{2,})+$/;
+            if (!name.value.trim().match(namePattern)) {
+                name.nextElementSibling.textContent = "Enter a valid full name (e.g., John Doe).";
+                name.nextElementSibling.style.display = 'block';
+                valid = false;
+            }
 
-    // Phone
-    const phone = document.getElementById('phoneno');
-    const phoneError = phone.nextElementSibling;
-    if (!phone.value.trim().match(/^[6-9]\d{9}$/)) {
-      phoneError.textContent = "Enter a valid 10-digit Indian mobile number.";
-      phoneError.style.display = 'block';
-      valid = false;
-    } else {
-      phoneError.style.display = 'none';
-    }
+            const phone = document.getElementById('phoneno');
+            const phonePattern = /^[6-9]\d{9}$/;
+            if (!phone.value.trim().match(phonePattern)) {
+                phone.nextElementSibling.textContent = "Enter a valid 10-digit Indian mobile number.";
+                phone.nextElementSibling.style.display = 'block';
+                valid = false;
+            }
 
-    // Email
-    const email = document.getElementById('email');
-    const emailError = email.nextElementSibling;
-    if (!email.value.trim().match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-      emailError.textContent = "Please enter a valid email address.";
-      emailError.style.display = 'block';
-      valid = false;
-    } else {
-      emailError.style.display = 'none';
-    }
+            const email = document.getElementById('email');
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email.value.trim().match(emailPattern)) {
+                email.nextElementSibling.textContent = "Please enter a valid email address.";
+                email.nextElementSibling.style.display = 'block';
+                valid = false;
+            }
 
-    // Password
-    const password = document.getElementById('password');
-    const passwordError = password.nextElementSibling;
-    if (!password.value.trim()) {
-      passwordError.style.display = 'block';
-      valid = false;
-    } else {
-      passwordError.style.display = 'none';
-    }
+            const termsCheckbox = document.getElementById('terms-checkbox');
+            if (!termsCheckbox.checked) {
+                document.querySelector('.form-check .error-message').style.display = 'block';
+                valid = false;
+            } else {
+                document.querySelector('.form-check .error-message').style.display = 'none';
+            }
 
-    // DOB
-    const dob = document.getElementById('dob');
-    const dobError = dob.nextElementSibling;
-    if (!dob.value.trim()) {
-      dobError.style.display = 'block';
-      valid = false;
-    } else {
-      dobError.style.display = 'none';
-    }
-
-    // Qualification
-    const qualification = document.getElementById('qualification');
-    const qualificationError = qualification.nextElementSibling;
-    if (qualification.value === 'null') {
-      qualificationError.style.display = 'block';
-      valid = false;
-    } else {
-      qualificationError.style.display = 'none';
-    }
-
-    // Work Experience
-    const experience = document.querySelectorAll('experience');
-    const experienceError = experience.nextElementSibling;
-    if (experience.value === 'null') {
-      experienceError.style.display = 'block';
-      valid = false;
-    } else {
-      experienceError.style.display = 'none';
-    }
-
-    // Skills
-    const skills = document.querySelectorAll('skills');  
-    const skillsError = skills.nextElementSibling;
-    if (skills.value === 'null') {
-      skillsError.style.display = 'block';
-      valid = false;
-    } else {
-      skillsError.style.display = 'none';
-    }
-
-    return valid;
-  }
-</script>
-
+            return valid;
+        }
+    </script>
 {% endblock body %}
