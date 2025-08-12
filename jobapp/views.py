@@ -88,29 +88,31 @@ def jobseekerreg(request):
     return render(request, "jobseeker.html")
 
 def login(request):
-    if request.method=="POST":  
-        username=request.POST["username"]
-        password=request.POST["password"]
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
         try:
-            obj = Login.objects.get(username=username, password=password)
-            usertype = obj.usertype 
-            request.session["username"] = username
-            request.session["usertype"] = usertype
-            if usertype == 'jobseeker':
-                request.session["usertype"] = usertype
-                print("Redirect URL:", reverse("jsapp:jshome"))
-                return redirect("jsapp:jshome")
-            
-            elif usertype == 'administrator':
-                request.session["adminid"] = username
-                return redirect("adminapp:adminhome")
-            elif usertype == 'employer':
-                request.session["usertype"] = usertype
-                return redirect("employer:employerhome")
-            else:
-                return render(request, 'login.html', {"msg": "Invalid user type"})
+            obj = Login.objects.get(username=username)
         except ObjectDoesNotExist:
-            return render(request, 'login.html', {"msg": "Invalid user"}) 
+            return render(request, 'login.html', {"msg": "No user found with this username."})
+
+        if obj.password.strip() != password.strip():
+            return render(request, 'login.html', {"msg": "Incorrect password."})
+
+        usertype = obj.usertype
+        request.session["username"] = username
+        request.session["usertype"] = usertype
+
+        if usertype == 'jobseeker':
+            return redirect("jsapp:jshome")
+        elif usertype == 'administrator':
+            request.session["adminid"] = username
+            return redirect("adminapp:adminhome")
+        elif usertype == 'employer':
+            return redirect("employer:employerhome")
+        else:
+            return render(request, 'login.html', {"msg": "Invalid user type."})
+
     return render(request, "login.html")
 
 def employerreg(request):

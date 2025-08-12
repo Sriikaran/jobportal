@@ -507,6 +507,9 @@
                 {% endfor %}
                 {% endif %}
 
+                {% if msg %}
+  <p style="color: red; font-weight: bold;text-align:center;">{{ msg }}</p>
+{% endif %}
                 <!-- Login Form -->
                 <form method="POST" action="{% url 'jobapp:login' %}" autocomplete="off">
                     {% csrf_token %}
