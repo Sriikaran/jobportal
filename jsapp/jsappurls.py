@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 
+app_name = 'jsapp'
+
 urlpatterns=[
     path('home/', views.jshome, name='jshome'),  
     path('jsapp/',views.jshome,name='jshome'),
@@ -11,4 +13,4 @@ urlpatterns=[
     path('appliedjobs/',views.appliedjobs,name='appliedjobs'),
     path('viewprofile/',views.viewprofile,name='viewprofile'),
     path('response/',views.response,name='response'),
-    ]
+]

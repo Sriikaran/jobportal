@@ -94,7 +94,7 @@ def jobseeker(request):
         Response(name=name, emailaddress=emailaddress, password=password).save()
         messages.success(request, "Job Seeker account created successfully.")
         return redirect('login')
-    return render(request, "jobseeker.html")
+    return render(request, "jsparent.html")
 
 def apply(request, jobid):
     if "username" not in request.session:
@@ -119,7 +119,9 @@ def parent(request):
 
 def admin_dashboard(request):
     jobs = Jobs.objects.all()
-    return render(request, "admin.html", {"jobs": jobs})
+    return render(request, "admin.html", {"jobs": jobs, #"profile_completion": profile_completion
+                                          })
+
 
 def applyjob(request, jobid):
     if "username" not in request.session:

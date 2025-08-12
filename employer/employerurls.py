@@ -13,5 +13,4 @@ urlpatterns=[
     path('addpost/',views.addpost,name='addpost'),
     path('viewpjobs/', views.viewpjobs, name='viewpjobs'),
     # path('forgot-password/', views.forgot_password, name='forgot_password')
-
-    ]
+]
