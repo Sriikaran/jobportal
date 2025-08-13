@@ -20801,7 +20801,7 @@ div.tagsinput {
   padding-left: 0;
   padding-right: 0;
   transition: all 0.25s ease;
-  width: calc(100% - 244px); }
+  width: 100% !important; }
   .page-body-wrapper.full-page-wrapper {
     width: 100%;
     min-height: 100vh; }
