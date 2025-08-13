@@ -99,7 +99,7 @@ def login(request):
                 request.session["usertype"] = usertype
                 return redirect("jsapp:jshome")
             elif usertype == 'administrator':
-                request.session["adminid"] = username
+                request.session["usertype"] = username
                 return redirect("adminapp:adminhome")
             elif usertype == 'employer':
                 request.session["usertype"] = usertype

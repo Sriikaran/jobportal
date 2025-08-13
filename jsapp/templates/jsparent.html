@@ -4,43 +4,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>JobSeeker Page</title>
+    <title>
+      {% block title %}JobSeeker Dashboard - DreamJobs{% endblock %}
+    </title>
     <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
-      href="{% static 'assets/vendors/mdi/css/materialdesignicons.min.css' %}"
-    />
-    <link
-      rel="stylesheet"
-      href="{% static 'assets/vendors/css/vendor.bundle.base.css' %}"
-    />
-    <link
-      rel="stylesheet"
-      href="{% static 'assets/vendors/jvectormap/jquery-jvectormap.css' %}"
-    />
-    <link
-      rel="stylesheet"
-      href="{% static 'assets/vendors/flag-icon-css/css/flag-icon.min.css' %}"
-    />
-    <link
-      rel="stylesheet"
-      href="{% static 'assets/vendors/owl-carousel-2/owl.carousel.min.css' %}"
-    />
-    <link
-      rel="stylesheet"
-      href="{% static 'assets/vendors/owl-carousel-2/owl.theme.default.min.css' %}"
-    />
-    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
-    <link rel="shortcut icon" href="{% static 'images/img2.png' %}" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/brands.min.css"
-      integrity="sha512-EJp8vMVhYl7tBFE2rgNGb//drnr1+6XKMvTyamMS34YwOEFohhWkGq13tPWnK0FbjSS6D8YoA3n3bZmb3KiUYA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
     <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
     <link
@@ -50,486 +19,1411 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="shortcut icon" href="{% static 'images/img2.png' %}" />
+    
+    <!-- Google Fonts for better typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
+    <!-- Enhanced Styles -->
     <style>
       :root {
-        --sidebar-bg: rgb(3, 3, 114);
-        --sidebar-text: #ffffff;
-        --brand-color: rgb(7, 7, 125);
-        --hover-bg: rgba(255, 255, 255, 0.1);
-        --accent: #4f8cff;
+        /* Enhanced Color Palette */
+        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        --sidebar-bg: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
+        --navbar-bg: rgba(255, 255, 255, 0.95);
+        
+        /* Enhanced Colors */
+        --primary-blue: #667eea;
+        --secondary-blue: #764ba2;
+        --accent-blue: #4facfe;
+        --dark-blue: #2c3e50;
+        --light-blue: #ecf0f1;
+        --text-primary: #2c3e50;
+        --text-secondary: #7f8c8d;
+        --text-light: #95a5a6;
+        --bg-main: #f8fafc;
+        --bg-card: #ffffff;
+        --border-light: #e3f2fd;
+        --shadow-light: 0 2px 20px rgba(0,0,0,0.08);
+        --shadow-medium: 0 8px 30px rgba(0,0,0,0.12);
+        --shadow-heavy: 0 20px 60px rgba(0,0,0,0.15);
+
+        /* Layout */
+        --sidebar-width: 300px;
+        --navbar-height: 85px;
+        --border-radius: 16px;
+        --border-radius-lg: 24px;
+        --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        --transition-fast: all 0.2s ease-out;
       }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
       html {
         scroll-behavior: smooth;
       }
+
       body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        background: var(--bg-main);
+        color: var(--text-primary);
+        line-height: 1.6;
+        overflow-x: hidden;
         -webkit-font-smoothing: antialiased;
-        text-rendering: optimizeLegibility;
       }
+
+      /* Enhanced Layout Structure */
+      .container-scroller {
+        display: flex;
+        min-height: 100vh;
+        background: var(--bg-main);
+      }
+
+      .page-body-wrapper {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        margin-left: var(--sidebar-width);
+        transition: var(--transition);
+      }
+
+      /* Premium Sidebar Design */
       .sidebar {
-        box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.06);
+        background: var(--sidebar-bg);
+        backdrop-filter: blur(20px);
+        width: var(--sidebar-width);
+        height: 100vh;
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 1000;
+        transition: var(--transition);
+        overflow: hidden;
+        box-shadow: var(--shadow-heavy);
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
       }
-      .sidebar .nav .nav-item .nav-link {
-        border-radius: 10px;
-        margin: 4px 12px;
-        padding: 10px 12px;
-        transition: background-color 0.2s ease, transform 0.2s ease;
+
+      .sidebar::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(180deg, rgba(102, 126, 234, 0.1) 0%, rgba(52, 73, 94, 0.05) 100%);
+        pointer-events: none;
       }
-      .sidebar .nav .nav-item .nav-link:hover {
-        background-color: var(--hover-bg);
-        transform: translateX(2px);
-      }
-      .sidebar .menu-icon {
-        display: inline-flex;
+
+      /* Enhanced Brand Section */
+      .sidebar-brand-wrapper {
+        height: var(--navbar-height);
+        display: flex;
         align-items: center;
         justify-content: center;
-        width: 34px;
-        height: 34px;
-        margin-right: 8px;
-        border-radius: 50%;
-      }
-      .navbar {
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-      }
-      .content-wrapper {
-        padding-top: 24px;
-      }
-      .footer {
-        border-top: 1px solid rgba(0, 0, 0, 0.08);
-      }
-      .brand-title {
-        color: var(--brand-color);
-        font-weight: 700;
-        letter-spacing: 0.2px;
-      }
-      .navbar-profile {
-        gap: 8px;
-        align-items: center;
-      }
-      .dropdown-menu {
-        border-radius: 12px;
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+        padding: 0 24px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.05);
+        position: relative;
         overflow: hidden;
       }
-      .preview-item {
-        padding: 10px 14px;
+
+      .sidebar-brand-wrapper::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        transition: var(--transition);
       }
-      .img-xs {
-        object-fit: cover;
+
+      .sidebar-brand-wrapper:hover::before {
+        left: 100%;
       }
-      a {
+
+      .brand-logo-container {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        text-decoration: none;
+        transition: var(--transition);
+        padding: 12px 20px;
+        border-radius: var(--border-radius);
+        position: relative;
+        z-index: 2;
+      }
+
+      .brand-logo-container:hover {
+        transform: translateY(-2px);
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .brand-logo {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        box-shadow: var(--shadow-medium);
+        transition: var(--transition);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .brand-logo:hover {
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: var(--shadow-heavy);
+      }
+
+      .brand-text {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .brand-title {
+        font-family: "Poppins", sans-serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin: 0;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      }
+
+      .brand-subtitle {
+        font-size: 0.75rem;
+        color: rgba(255, 255, 255, 0.7);
+        font-weight: 500;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+
+      /* Enhanced Profile Section */
+      .nav-item.profile {
+        padding: 24px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        margin-bottom: 20px;
+        background: rgba(255, 255, 255, 0.02);
+        position: relative;
+      }
+
+      .profile-card {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: var(--border-radius);
+        padding: 20px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        transition: var(--transition);
+      }
+
+      .profile-card:hover {
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-medium);
+      }
+
+      .profile-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+
+      .profile-avatar-container {
+        position: relative;
+      }
+
+      .profile-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 20px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        transition: var(--transition);
+        box-shadow: var(--shadow-medium);
+      }
+
+      .profile-avatar:hover {
+        border-color: var(--accent-blue);
+        transform: scale(1.05);
+      }
+
+      .status-indicator {
+        position: absolute;
+        bottom: 2px;
+        right: 2px;
+        width: 18px;
+        height: 18px;
+        background: #00ff88;
+        border: 3px solid white;
+        border-radius: 50%;
+        box-shadow: var(--shadow-light);
+        animation: pulse-status 2s infinite;
+      }
+
+      @keyframes pulse-status {
+        0% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7); }
+        70% { box-shadow: 0 0 0 6px rgba(0, 255, 136, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0); }
+      }
+
+      .profile-info h5 {
+        color: white;
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin: 0;
+        line-height: 1.3;
+      }
+
+      .profile-role {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.85rem;
+        margin: 0;
+        font-weight: 500;
+      }
+
+      .profile-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .profile-action-btn {
+        padding: 8px 16px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        text-decoration: none;
+        font-size: 0.8rem;
+        transition: var(--transition);
+        font-weight: 500;
+      }
+
+      .profile-action-btn:hover {
+        background: var(--accent-blue);
+        border-color: var(--accent-blue);
+        color: white;
+        transform: translateY(-1px);
+      }
+
+      /* Enhanced Navigation Menu */
+      .nav-menu {
+        padding: 0 16px;
+      }
+
+      .nav-section {
+        margin-bottom: 32px;
+      }
+
+      .nav-section-title {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 12px;
+        padding: 0 20px;
+      }
+
+      .nav .nav-item {
+        margin: 6px 0;
+      }
+
+      .nav .nav-item .nav-link {
+        border-radius: var(--border-radius);
+        padding: 16px 20px;
+        transition: var(--transition);
+        color: rgba(255, 255, 255, 0.85);
+        font-weight: 500;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        position: relative;
+        overflow: hidden;
+        text-decoration: none;
+        margin: 4px 0;
+      }
+
+      .nav .nav-item .nav-link::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 4px;
+        background: var(--accent-blue);
+        transform: scaleY(0);
+        transition: var(--transition);
+        border-radius: 0 4px 4px 0;
+      }
+
+      .nav .nav-item .nav-link:hover::before,
+      .nav .nav-item .nav-link.is-active::before {
+        transform: scaleY(1);
+      }
+
+      .nav .nav-item .nav-link:hover {
+        background: rgba(255, 255, 255, 0.12);
+        color: white;
+        transform: translateX(8px);
+        box-shadow: var(--shadow-light);
+      }
+
+      .nav .nav-item .nav-link.is-active {
+        background: rgba(102, 126, 234, 0.2);
+        color: white;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+        font-weight: 600;
+      }
+
+      .menu-icon-wrapper {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition);
+        flex-shrink: 0;
+      }
+
+      .nav-link:hover .menu-icon-wrapper {
+        background: var(--accent-blue);
+        transform: scale(1.1);
+        box-shadow: var(--shadow-medium);
+      }
+
+      .menu-icon-wrapper i {
+        font-size: 1.2rem;
+        color: white;
+      }
+
+      .menu-title {
+        font-weight: 500;
+        flex: 1;
+      }
+
+      .nav-badge {
+        background: var(--secondary-gradient);
+        color: white;
+        font-size: 0.7rem;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-weight: 600;
+        min-width: 20px;
+        text-align: center;
+      }
+
+      /* Premium Navbar */
+      .navbar {
+        background: var(--navbar-bg) !important;
+        backdrop-filter: blur(20px);
+        box-shadow: var(--shadow-light);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+        height: var(--navbar-height);
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: var(--sidebar-width);
+        z-index: 999;
+        transition: var(--transition);
+      }
+
+      .navbar-menu-wrapper {
+        padding: 0 32px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .navbar-brand-mobile {
+        font-family: "Poppins", sans-serif;
+        font-weight: 700;
+        font-size: 1.4rem;
+        color: var(--primary-blue);
         text-decoration: none;
       }
-      .nav-link:focus-visible,
-      button:focus-visible,
-      [role="button"]:focus-visible {
-        outline: 3px solid var(--accent);
-        outline-offset: 2px;
+
+      .navbar-toggler {
+        border: none;
+        background: rgba(102, 126, 234, 0.1);
+        color: var(--primary-blue);
+        padding: 12px;
+        border-radius: 12px;
+        transition: var(--transition);
+        font-size: 1.2rem;
+      }
+
+      .navbar-toggler:hover {
+        background: var(--primary-blue);
+        color: white;
+        transform: scale(1.05);
+      }
+
+      .navbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .navbar-search {
+        position: relative;
+        max-width: 400px;
+        flex: 1;
+      }
+
+      .search-input {
+        width: 100%;
+        padding: 12px 16px 12px 48px;
+        border: 2px solid var(--border-light);
+        border-radius: var(--border-radius);
+        background: white;
+        font-size: 0.9rem;
+        transition: var(--transition);
+      }
+
+      .search-input:focus {
+        outline: none;
+        border-color: var(--accent-blue);
+        box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+      }
+
+      .search-icon {
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-light);
+        font-size: 1.1rem;
+      }
+
+      .notification-btn {
+        position: relative;
+        padding: 12px;
+        border-radius: 12px;
+        background: rgba(102, 126, 234, 0.1);
+        border: none;
+        color: var(--primary-blue);
+        transition: var(--transition);
+        font-size: 1.2rem;
+      }
+
+      .notification-btn:hover {
+        background: var(--primary-blue);
+        color: white;
+        transform: scale(1.05);
+      }
+
+      .notification-badge {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        background: #ff4757;
+        color: white;
+        font-size: 0.7rem;
+        padding: 2px 6px;
         border-radius: 10px;
+        min-width: 18px;
+        text-align: center;
       }
-      .nav .nav-item .nav-link.is-active,
-      .nav .nav-item .nav-link[aria-current="page"] {
-        background: rgba(255, 255, 255, 0.15);
-        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+
+      /* Enhanced Profile Dropdown */
+      .navbar-profile-dropdown {
+        position: relative;
       }
-      /* Subtle scrollbar */
+
+      .navbar-profile-toggle {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 16px;
+        border-radius: var(--border-radius);
+        background: rgba(102, 126, 234, 0.05);
+        border: 2px solid transparent;
+        transition: var(--transition);
+        text-decoration: none;
+        color: var(--text-primary);
+      }
+
+      .navbar-profile-toggle:hover {
+        background: rgba(102, 126, 234, 0.1);
+        border-color: var(--accent-blue);
+        transform: translateY(-1px);
+        color: var(--text-primary);
+      }
+
+      .navbar-profile-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        border: 2px solid rgba(102, 126, 234, 0.2);
+        transition: var(--transition);
+      }
+
+      .navbar-profile-info h6 {
+        margin: 0;
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: var(--text-primary);
+      }
+
+      .navbar-profile-role {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        margin: 0;
+      }
+
+      /* Enhanced Dropdown Menus */
+      .dropdown-menu {
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-heavy);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        padding: 12px;
+        margin-top: 12px;
+        min-width: 280px;
+        backdrop-filter: blur(20px);
+        background: rgba(255, 255, 255, 0.98);
+      }
+
+      .dropdown-header {
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border-light);
+        margin-bottom: 8px;
+      }
+
+      .dropdown-header h6 {
+        margin: 0;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .dropdown-header p {
+        margin: 0;
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+      }
+
+      .dropdown-item {
+        border-radius: 10px;
+        padding: 12px 16px;
+        transition: var(--transition);
+        font-size: 0.9rem;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 2px 0;
+      }
+
+      .dropdown-item:hover {
+        background: rgba(102, 126, 234, 0.08);
+        transform: translateX(4px);
+        color: var(--text-primary);
+      }
+
+      .dropdown-item-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+      }
+
+      .dropdown-item-content h6 {
+        margin: 0;
+        font-weight: 500;
+        font-size: 0.9rem;
+      }
+
+      .dropdown-item-content p {
+        margin: 0;
+        font-size: 0.75rem;
+        color: var(--text-light);
+      }
+
+      .dropdown-divider {
+        border-color: rgba(0, 0, 0, 0.06);
+        margin: 8px 0;
+      }
+
+      /* Main Content Area */
+      .main-panel {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        margin-top: var(--navbar-height);
+        min-height: calc(100vh - var(--navbar-height));
+      }
+
+      .content-wrapper {
+        flex: 1;
+        padding: 32px;
+        background: transparent;
+      }
+
+      /* Enhanced Footer */
+      .footer {
+        background: white;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+        padding: 24px 32px;
+        box-shadow: var(--shadow-light);
+        margin-top: auto;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 991px) {
+        .sidebar {
+          transform: translateX(-100%);
+          z-index: 1001;
+        }
+
+        .sidebar.show {
+          transform: translateX(0);
+        }
+
+        .page-body-wrapper {
+          margin-left: 0;
+        }
+
+        .navbar {
+          left: 0;
+        }
+
+        .navbar-search {
+          display: none;
+        }
+
+        .sidebar-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.6);
+          z-index: 1000;
+          opacity: 0;
+          visibility: hidden;
+          transition: var(--transition);
+          backdrop-filter: blur(4px);
+        }
+
+        .sidebar-overlay.show {
+          opacity: 1;
+          visibility: visible;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .content-wrapper {
+          padding: 16px 12px;
+        }
+
+        .navbar-menu-wrapper {
+          padding: 0 16px;
+        }
+
+        .navbar-actions {
+          gap: 8px;
+        }
+      }
+
+      /* Animations */
+      .fade-in {
+        animation: fadeIn 0.6s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .nav-item {
+        opacity: 0;
+        animation: slideIn 0.5s ease-out forwards;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      /* Stagger animation delays */
+      .nav-item:nth-child(1) { animation-delay: 0.1s; }
+      .nav-item:nth-child(2) { animation-delay: 0.2s; }
+      .nav-item:nth-child(3) { animation-delay: 0.3s; }
+      .nav-item:nth-child(4) { animation-delay: 0.4s; }
+      .nav-item:nth-child(5) { animation-delay: 0.5s; }
+      .nav-item:nth-child(6) { animation-delay: 0.6s; }
+      .nav-item:nth-child(7) { animation-delay: 0.7s; }
+      .nav-item:nth-child(8) { animation-delay: 0.8s; }
+
+      /* Scrollbar Enhancement */
       ::-webkit-scrollbar {
         width: 8px;
         height: 8px;
       }
+
       ::-webkit-scrollbar-thumb {
-        background: rgba(0, 0, 0, 0.2);
-        border-radius: 8px;
+        background: linear-gradient(45deg, var(--primary-blue), var(--accent-blue));
+        border-radius: 10px;
       }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(45deg, var(--accent-blue), var(--primary-blue));
+      }
+
       ::-webkit-scrollbar-track {
-        background: transparent;
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
       }
-      /* Screen reader only helper */
-      .sr-only {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
+
+      /* Focus Styles for Accessibility */
+      .nav-link:focus-visible,
+      button:focus-visible,
+      .dropdown-item:focus-visible {
+        outline: 3px solid var(--accent-blue);
+        outline-offset: 2px;
       }
     </style>
+
+    <!-- Cache busting meta -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
   </head>
   <body>
     <div class="container-scroller">
-      <nav
-        class="sidebar sidebar-offcanvas"
-        id="sidebar"
-        role="navigation"
-        aria-label="Sidebar"
-        style="background-color: var(--sidebar-bg); color: var(--sidebar-text)"
-      >
-        <div
-          class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top"
-          style="background-color: #ffffff"
-        >
-          <a href="{% url 'jsapp:jshome' %}" style="text-decoration: none">
-            <span class="brand-title">DreamJobs</span>
+      <!-- Enhanced Premium Sidebar -->
+      <nav class="sidebar sidebar-offcanvas" id="sidebar" role="navigation" aria-label="Main Navigation">
+        <!-- Enhanced Brand Section -->
+        <div class="sidebar-brand-wrapper">
+          <a href="{% url 'jsapp:jshome' %}" class="brand-logo-container" title="DreamJobs - Your Career Partner">
+            <img
+              src="{% static 'images/logo.png' %}"
+              alt="DreamJobs Logo"
+              class="brand-logo"
+            />
+            <div class="brand-text">
+              <h1 class="brand-title">DreamJobs</h1>
+              <span class="brand-subtitle">Career Portal</span>
+            </div>
           </a>
         </div>
-        <ul class="nav" style="color: white">
-          <li class="nav-item profile">
-            <div class="profile-desc">
-              <div class="profile-pic">
-                <div class="count-indicator">
-                  {% if a.profilepic %}
-                  <img
-                    class="img-xs rounded-circle"
-                    src="{{ a.profilepic.url }}"
-                    alt="{{ jobseek.name }} profile photo"
-                    width="40"
-                    height="40"
-                  />
-                  {% else %}
-                  <span
-                    class="img-xs rounded-circle bg-secondary d-inline-flex justify-content-center align-items-center"
-                    style="width: 40px; height: 40px"
-                    aria-hidden="true"
-                  >
-                    <i class="fa-solid fa-user" aria-hidden="true"></i>
-                    <span class="sr-only">Profile</span>
-                  </span>
-                  {% endif %}
-                  <span class="count bg-success"></span>
+
+        <!-- Enhanced Profile Section -->
+        <li class="nav-item profile">
+          <div class="profile-card">
+            <div class="profile-header">
+              <div class="profile-avatar-container">
+                {% if jobseek.profilepic %}
+                <img
+                  class="profile-avatar"
+                  src="{{ jobseek.profilepic.url }}"
+                  alt="{{ jobseek.name }} profile photo"
+                  loading="lazy"
+                />
+                {% else %}
+                <div
+                  class="profile-avatar bg-gradient d-flex align-items-center justify-content-center"
+                  style="background: var(--primary-gradient);"
+                  aria-label="Default profile avatar"
+                >
+                  <i class="fas fa-user text-white" style="font-size: 1.5rem;"></i>
                 </div>
-                <div class="profile-name">
-                  <a
-                    href="{% url 'jsapp:jshome' %}"
-                    style="text-decoration: none; color: white"
-                  >
-                    <h5 class="mb-0 font-weight-normal">{{ jobseek.name }}</h5>
-                  </a>
-                </div>
+                {% endif %}
+                <span class="status-indicator" title="Online"></span>
               </div>
-              <a
-                href="#"
-                id="profile-dropdown"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                aria-haspopup="true"
-                title="Profile menu"
-              >
-                <i class="mdi mdi-dots-vertical" style="color: white"></i>
-              </a>
-              <div
-                class="dropdown-menu dropdown-menu-right sidebar-dropdown preview-list text-light"
-                aria-labelledby="profile-dropdown"
-              >
-                <a href="#" class="dropdown-item preview-item">
-                  <div class="preview-thumbnail">
-                    <div class="preview-icon rounded-circle">
-                      <i
-                        class="mdi mdi-settings text-primary"
-                        aria-hidden="true"
-                      ></i>
-                    </div>
-                  </div>
-                  <div class="preview-item-content">
-                    <p class="preview-subject ellipsis mb-1 text-small">
-                      Profile Management
-                    </p>
-                  </div>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a
-                  href="{% url 'jsapp:changepassword' %}"
-                  class="dropdown-item preview-item"
-                >
-                  <div class="preview-thumbnail">
-                    <div class="preview-icon bg-dark rounded-circle">
-                      <i
-                        class="mdi mdi-onepassword text-info"
-                        aria-hidden="true"
-                      ></i>
-                    </div>
-                  </div>
-                  <div class="preview-item-content">
-                    <p class="preview-subject ellipsis mb-1 text-small">
-                      Change Password
-                    </p>
-                  </div>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a
-                  href="{% url 'jsapp:logout' %}"
-                  class="dropdown-item preview-item"
-                >
-                  <div class="preview-thumbnail">
-                    <div class="preview-icon bg-dark rounded-circle">
-                      <i
-                        class="mdi mdi-calendar-today text-success"
-                        aria-hidden="true"
-                      ></i>
-                    </div>
-                  </div>
-                  <div class="preview-item-content">
-                    <p class="preview-subject ellipsis mb-1 text-small">
-                      Logout
-                    </p>
-                  </div>
-                </a>
+              <div class="profile-info flex-grow-1">
+                <h5>{{ jobseek.name|default:"User" }}</h5>
+                <p class="profile-role">Job Seeker</p>
               </div>
             </div>
-          </li>
+            <div class="profile-actions">
+              <a href="{% url 'jsapp:viewprofile' %}" class="profile-action-btn">
+                <i class="fas fa-user-edit me-1"></i> Profile
+              </a>
+              <a href="{% url 'jsapp:changepassword' %}" class="profile-action-btn">
+                <i class="fas fa-key me-1"></i> Security
+              </a>
+            </div>
+          </div>
+        </li>
 
-          <li class="nav-item menu-items">
-            <a
-              class="nav-link"
-              href="{% url 'jsapp:jshome' %}"
-              title="Go to Home"
-            >
-              <span
-                class="menu-icon rounded-circle"
-                style="background-color: white"
-              >
-                <i
-                  class="mdi mdi-speedometer"
-                  style="background-color: white"
-                  aria-hidden="true"
-                ></i>
-              </span>
-              <span class="menu-title" style="color: white">Home</span>
-            </a>
-          </li>
+        <!-- Enhanced Navigation Menu -->
+        <div class="nav-menu">
+          <ul class="nav flex-column">
+            <!-- Main Section -->
+            <div class="nav-section">
+              <div class="nav-section-title">Dashboard</div>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'jsapp:appliedjobs' %}" title="View Your Job Applications">
+                  <div class="menu-icon-wrapper">
+                    <i class="fas fa-file-alt"></i>
+                  </div>
+                  <span class="menu-title">My Applications</span>
+                </a>
+              </li>
+            </div>
 
-          <li class="nav-item menu-items">
-            <a
-              class="nav-link"
-              href="{% url 'jsapp:viewjobs' %}"
-              title="Browse available jobs"
-            >
-              <span
-                class="menu-icon rounded-circle"
-                style="background-color: white"
-              >
-                <i
-                  class="mdi mdi-speedometer"
-                  style="background-color: white"
-                  aria-hidden="true"
-                ></i>
-              </span>
-              <span class="menu-title" style="color: white">View Jobs</span>
-            </a>
-          </li>
+            <!-- Profile & Settings Section -->
+            <div class="nav-section">
+              <div class="nav-section-title">Profile & Settings</div>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'jsapp:viewprofile' %}" title="View and Edit Your Profile">
+                  <div class="menu-icon-wrapper">
+                    <i class="fas fa-user-circle"></i>
+                  </div>
+                  <span class="menu-title">My Profile</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'jsapp:changepassword' %}" title="Change Your Password">
+                  <div class="menu-icon-wrapper">
+                    <i class="fas fa-lock"></i>
+                  </div>
+                  <span class="menu-title">Security</span>
+                </a>
+              </li>
+            </div>
 
-          <li class="nav-item menu-items">
-            <a
-              class="nav-link"
-              href="{% url 'jsapp:appliedjobs' %}"
-              title="See your job applications"
-            >
-              <span class="menu-icon" style="background-color: white">
-                <i
-                  class="mdi mdi-playlist-play"
-                  style="background-color: white"
-                  aria-hidden="true"
-                ></i>
-              </span>
-              <span class="menu-title" style="color: white"
-                >My Applications</span
-              >
-            </a>
-          </li>
-
-          <li class="nav-item menu-items">
-            <a
-              class="nav-link"
-              href="{% url 'jsapp:response' %}"
-              title="Send a complaint or feedback"
-            >
-              <span class="menu-icon" style="background-color: white">
-                <i
-                  class="mdi mdi-playlist-play"
-                  style="background-color: white"
-                  aria-hidden="true"
-                ></i>
-              </span>
-              <span class="menu-title" style="color: white"
-                >Complain/Feedback</span
-              >
-            </a>
-          </li>
-
-          <li class="nav-item menu-items">
-            <a
-              class="nav-link"
-              href="{% url 'jsapp:viewprofile' %}"
-              title="View your profile"
-            >
-              <span class="menu-icon" style="background-color: white">
-                <i
-                  class="mdi mdi-playlist-play"
-                  style="background-color: white"
-                  aria-hidden="true"
-                ></i>
-              </span>
-              <span class="menu-title" style="color: white">View Profile</span>
-            </a>
-          </li>
-        </ul>
+            <!-- Support Section -->
+            <div class="nav-section">
+              <div class="nav-section-title">Support</div>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'jsapp:response' %}" title="Send Feedback or Report Issues">
+                  <div class="menu-icon-wrapper">
+                    <i class="fas fa-comment-dots"></i>
+                  </div>
+                  <span class="menu-title">Feedback</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'jsapp:logout' %}" title="Sign Out" style="color: rgba(255, 107, 107, 0.9);">
+                  <div class="menu-icon-wrapper" style="background: rgba(255, 107, 107, 0.2);">
+                    <i class="fas fa-sign-out-alt"></i>
+                  </div>
+                  <span class="menu-title">Logout</span>
+                </a>
+              </li>
+            </div>
+          </ul>
+        </div>
       </nav>
 
+      <!-- Main Content Area -->
       <div class="container-fluid page-body-wrapper">
-        <nav
-          class="navbar p-0 fixed-top d-flex flex-row"
-          style="background-color: #ffffff"
-        >
-          <div
-            class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center"
-          >
-            <a class="navbar-brand brand-logo-mini" href="#" title="DreamJobs">
-              <img src="{% static 'images/img2.png' %}" alt="DreamJobs logo" />
+        <!-- Enhanced Premium Navbar -->
+        <nav class="navbar p-0 d-flex flex-row">
+          <!-- Mobile Brand -->
+          <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
+            <a class="navbar-brand-mobile" href="{% url 'jsapp:jshome' %}" title="DreamJobs">
+              DreamJobs
             </a>
           </div>
-          <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
+
+          <!-- Navbar Content -->
+          <div class="navbar-menu-wrapper">
+            <!-- Mobile Menu Toggle -->
             <button
-              class="navbar-toggler navbar-toggler align-self-center"
+              class="navbar-toggler d-lg-none"
               type="button"
               data-toggle="minimize"
-              aria-label="Toggle sidebar"
+              aria-label="Toggle sidebar navigation"
+              title="Toggle sidebar"
             >
-              <span class="mdi mdi-menu" aria-hidden="true"></span>
+              <i class="fas fa-bars"></i>
             </button>
-            <ul class="navbar-nav navbar-nav-right">
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link"
-                  id="profileDropdown"
-                  href="#"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                  aria-haspopup="true"
-                >
-                  <div class="navbar-profile">
-                    {% if a.profilepic %}
-                    <img
-                      class="img-xs rounded-circle"
-                      src="{{ a.profilepic.url }}"
-                      alt="{{ jobseek.name }} profile photo"
-                      width="40"
-                      height="40"
-                    />
-                    {% else %}
-                    <span
-                      class="img-xs rounded-circle bg-secondary d-inline-flex justify-content-center align-items-center"
-                      style="width: 40px; height: 40px"
-                      aria-hidden="true"
-                    >
-                      <i class="fa-solid fa-user" aria-hidden="true"></i>
-                      <span class="sr-only">Profile</span>
-                    </span>
-                    {% endif %}
-                    <p
-                      class="mb-0 d-none d-sm-block navbar-profile-name text-dark"
-                    >
-                      {{ jobseek.name }}
-                    </p>
-                    <i
-                      class="mdi mdi-menu-down d-none d-sm-block"
-                      aria-hidden="true"
-                    ></i>
+
+            <!-- Search Bar (Desktop) -->
+            <div class="navbar-search d-none d-md-flex">
+              <div class="position-relative w-100">
+                <i class="fas fa-search search-icon"></i>
+                <input
+                  type="text"
+                  class="search-input"
+                  placeholder="Search jobs, companies, skills..."
+                  aria-label="Search"
+                />
+              </div>
+            </div>
+
+            <!-- Navbar Actions -->
+            <div class="navbar-actions">
+              <!-- Notifications -->
+              <button class="notification-btn" title="Notifications" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+              </button>
+              <div class="dropdown-menu dropdown-menu-end">
+                <div class="dropdown-header">
+                  <h6>Notifications</h6>
+                  <p>You have 3 new notifications</p>
+                </div>
+                <a class="dropdown-item" href="#">
+                  <div class="dropdown-item-icon bg-primary text-white">
+                    <i class="fas fa-briefcase"></i>
+                  </div>
+                  <div class="dropdown-item-content">
+                    <h6>New Job Match</h6>
+                    <p>Software Developer position available</p>
                   </div>
                 </a>
-                <div
-                  class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
-                  aria-labelledby="profileDropdown"
+                <a class="dropdown-item" href="#">
+                  <div class="dropdown-item-icon bg-success text-white">
+                    <i class="fas fa-check-circle"></i>
+                  </div>
+                  <div class="dropdown-item-content">
+                    <h6>Application Update</h6>
+                    <p>Your application was reviewed</p>
+                  </div>
+                </a>
+                <a class="dropdown-item" href="#">
+                  <div class="dropdown-item-icon bg-info text-white">
+                    <i class="fas fa-user-plus"></i>
+                  </div>
+                  <div class="dropdown-item-content">
+                    <h6>Profile Views</h6>
+                    <p>5 recruiters viewed your profile</p>
+                  </div>
+                </a>
+              </div>
+
+              <!-- Enhanced Profile Dropdown -->
+              <div class="navbar-profile-dropdown dropdown">
+                <a
+                  class="navbar-profile-toggle dropdown-toggle"
+                  href="#"
+                  id="profileDropdown"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  title="Profile menu"
                 >
-                  <h6 class="p-3 mb-0">Profile</h6>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item preview-item" href="#">
-                    <div class="preview-thumbnail">
-                      <div class="preview-icon bg-dark rounded-circle">
-                        <i
-                          class="mdi mdi-settings text-success"
-                          aria-hidden="true"
-                        ></i>
-                      </div>
-                    </div>
-                    <div class="preview-item-content">
-                      <p class="preview-subject mb-1">Settings</p>
-                    </div>
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a
-                    href="{% url 'jsapp:logout' %}"
-                    class="dropdown-item preview-item"
+                  {% if jobseek.profilepic %}
+                  <img
+                    class="navbar-profile-avatar"
+                    src="{{ jobseek.profilepic.url }}"
+                    alt="{{ jobseek.name }} profile photo"
+                    loading="lazy"
+                  />
+                  {% else %}
+                  <div
+                    class="navbar-profile-avatar bg-gradient d-flex align-items-center justify-content-center"
+                    style="background: var(--primary-gradient);"
+                    aria-label="Default profile avatar"
                   >
-                    <div class="preview-thumbnail">
-                      <div class="preview-icon bg-dark rounded-circle">
-                        <i
-                          class="mdi mdi-logout text-danger"
-                          aria-hidden="true"
-                        ></i>
-                      </div>
+                    <i class="fas fa-user text-white"></i>
+                  </div>
+                  {% endif %}
+                  <div class="navbar-profile-info d-none d-sm-block">
+                    <h6>{{ jobseek.name|default:"User" }}</h6>
+                    <p class="navbar-profile-role">Job Seeker</p>
+                  </div>
+                </a>
+
+                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                  <div class="dropdown-header">
+                    <h6>{{ jobseek.name|default:"User" }}</h6>
+                    <p>{{ jobseek.emailaddress|default:"user@example.com" }}</p>
+                  </div>
+                  <div class="dropdown-divider"></div>
+                  
+                  <a class="dropdown-item" href="{% url 'jsapp:viewprofile' %}">
+                    <div class="dropdown-item-icon bg-primary text-white">
+                      <i class="fas fa-user"></i>
                     </div>
-                    <div class="preview-item-content">
-                      <p class="preview-subject mb-1">Log out</p>
+                    <div class="dropdown-item-content">
+                      <h6>My Profile</h6>
+                      <p>View and edit profile information</p>
                     </div>
                   </a>
+
+                  <a class="dropdown-item" href="{% url 'jsapp:appliedjobs' %}">
+                    <div class="dropdown-item-icon bg-info text-white">
+                      <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="dropdown-item-content">
+                      <h6>My Applications</h6>
+                      <p>Track your job applications</p>
+                    </div>
+                  </a>
+
+                  <a class="dropdown-item" href="{% url 'jsapp:changepassword' %}">
+                    <div class="dropdown-item-icon bg-warning text-white">
+                      <i class="fas fa-key"></i>
+                    </div>
+                    <div class="dropdown-item-content">
+                      <h6>Security Settings</h6>
+                      <p>Change password and security options</p>
+                    </div>
+                  </a>
+
+                  <a class="dropdown-item" href="{% url 'jsapp:response' %}">
+                    <div class="dropdown-item-icon bg-secondary text-white">
+                      <i class="fas fa-comment-dots"></i>
+                    </div>
+                    <div class="dropdown-item-content">
+                      <h6>Feedback</h6>
+                      <p>Send feedback or report issues</p>
+                    </div>
+                  </a>
+
                   <div class="dropdown-divider"></div>
-                  <p class="p-3 mb-0 text-center">Advanced settings</p>
+
+                  <a href="{% url 'jsapp:logout' %}" class="dropdown-item" style="color: #dc3545;">
+                    <div class="dropdown-item-icon bg-danger text-white">
+                      <i class="fas fa-sign-out-alt"></i>
+                    </div>
+                    <div class="dropdown-item-content">
+                      <h6>Sign Out</h6>
+                      <p>End your current session</p>
+                    </div>
+                  </a>
                 </div>
-              </li>
-            </ul>
-            <button
-              class="navbar-toggler navbar-toggler-right d-lg-none align-self-center"
-              type="button"
-              data-toggle="offcanvas"
-              aria-label="Toggle menu"
-            >
-              <span
-                class="mdi mdi-format-line-spacing"
-                aria-hidden="true"
-              ></span>
-            </button>
+              </div>
+            </div>
           </div>
         </nav>
 
-        <div class="main-panel" style="background-color: white">
-          <div
-            class="content-wrapper"
-            style="background-color: white; color: black"
-          >
-            {% block body %}{% endblock body %}
+        <!-- Main Content Panel -->
+        <div class="main-panel">
+          <div class="content-wrapper fade-in">
+            {% block body %}
+            <!-- Page content will be inserted here -->
+            {% endblock body %}
           </div>
 
-          <footer class="footer" style="background-color: #ffffff; color: #000">
-            <div
-              class="d-sm-flex justify-content-center justify-content-sm-between"
-            >
-              <span
-                class="text-muted d-block text-center text-sm-left d-sm-inline-block"
-                >Copyright© DreamJobs</span
-              >
+          <!-- Enhanced Footer -->
+          <footer class="footer">
+            <div class="d-flex justify-content-between align-items-center w-100 flex-wrap">
+              <span class="text-muted">
+                Copyright © 2025 DreamJobs. All rights reserved.
+              </span>
+              <div class="d-flex align-items-center gap-4">
+                <small class="text-muted">
+                  Made with <i class="fas fa-heart text-danger"></i> for job seekers
+                </small>
+                <div class="d-flex gap-3">
+                  <a href="#" class="text-muted" title="Privacy Policy">Privacy</a>
+                  <a href="#" class="text-muted" title="Terms of Service">Terms</a>
+                  <a href="#" class="text-muted" title="Support">Support</a>
+                </div>
+              </div>
             </div>
           </footer>
         </div>
       </div>
     </div>
 
+    <!-- Sidebar Overlay for Mobile -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- Scripts -->
     <script src="{% static 'assets/vendors/js/vendor.bundle.base.js' %}"></script>
     <script src="{% static 'assets/vendors/chart.js/Chart.min.js' %}"></script>
     <script src="{% static 'assets/vendors/progressbar.js/progressbar.min.js' %}"></script>
     <script src="{% static 'assets/vendors/jvectormap/jquery-jvectormap.min.js' %}"></script>
     <script src="{% static 'assets/vendors/jvectormap/jquery-jvectormap-world-mill-en.js' %}"></script>
     <script src="{% static 'assets/vendors/owl-carousel-2/owl.carousel.min.js' %}"></script>
-    <script
-      src="{% static 'assets/js/jquery.cookie.js' %}"
-      type="text/javascript"
-    ></script>
+    <script src="{% static 'assets/js/jquery.cookie.js' %}" type="text/javascript"></script>
     <script src="{% static 'assets/js/off-canvas.js' %}"></script>
     <script src="{% static 'assets/js/hoverable-collapse.js' %}"></script>
     <script src="{% static 'assets/js/misc.js' %}"></script>
     <script src="{% static 'assets/js/settings.js' %}"></script>
     <script src="{% static 'assets/js/todolist.js' %}"></script>
     <script src="{% static 'assets/js/dashboard.js'%}"></script>
+
+    <!-- Enhanced Universal Script -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Enhanced navigation active state management
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll(".sidebar .nav-link");
+
+        navLinks.forEach((link) => {
+          if (link.getAttribute("href") === currentPath) {
+            link.classList.add("is-active");
+            link.setAttribute("aria-current", "page");
+          }
+        });
+
+        // Enhanced mobile sidebar toggle with smooth animations
+        const sidebarToggle = document.querySelector('[data-toggle="minimize"]');
+        const sidebar = document.getElementById("sidebar");
+        const sidebarOverlay = document.getElementById("sidebar-overlay");
+
+        if (sidebarToggle && sidebar) {
+          sidebarToggle.addEventListener("click", function (e) {
+            e.preventDefault();
+            sidebar.classList.toggle("show");
+            if (sidebarOverlay) {
+              sidebarOverlay.classList.toggle("show");
+            }
+            // Add aria attributes for accessibility
+            const isExpanded = sidebar.classList.contains("show");
+            sidebarToggle.setAttribute("aria-expanded", isExpanded);
+          });
+        }
+
+        // Close sidebar when clicking overlay
+        if (sidebarOverlay) {
+          sidebarOverlay.addEventListener("click", function () {
+            sidebar.classList.remove("show");
+            this.classList.remove("show");
+            if (sidebarToggle) {
+              sidebarToggle.setAttribute("aria-expanded", "false");
+            }
+          });
+        }
+
+        // Enhanced search functionality
+        const searchInput = document.querySelector(".search-input");
+        if (searchInput) {
+          let searchTimeout;
+          searchInput.addEventListener("input", function () {
+            clearTimeout(searchTimeout);
+            const query = this.value.trim();
+            
+            if (query.length > 2) {
+              searchTimeout = setTimeout(() => {
+                // Add search functionality here
+                console.log("Searching for:", query);
+                // You can add AJAX search functionality here
+              }, 500);
+            }
+          });
+
+          // Add search on Enter key
+          searchInput.addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              const query = this.value.trim();
+              if (query) {
+                // Redirect to search results
+                window.location.href = `{% url 'jsapp:viewjobs' %}?q=${encodeURIComponent(query)}`;
+              }
+            }
+          });
+        }
+
+        // Enhanced dropdown behavior with better UX
+        const dropdownToggles = document.querySelectorAll('[data-bs-toggle="dropdown"]');
+        dropdownToggles.forEach((toggle) => {
+          toggle.addEventListener("show.bs.dropdown", function () {
+            // Add active state
+            this.classList.add("dropdown-active");
+          });
+
+          toggle.addEventListener("hide.bs.dropdown", function () {
+            // Remove active state
+            this.classList.remove("dropdown-active");
+          });
+        });
+
+        // Notification management
+        const notificationBtn = document.querySelector(".notification-btn");
+        if (notificationBtn) {
+          notificationBtn.addEventListener("click", function () {
+            // Mark notifications as seen
+            const badge = this.querySelector(".notification-badge");
+            if (badge) {
+              setTimeout(() => {
+                badge.style.display = "none";
+              }, 2000);
+            }
+          });
+        }
+
+        // Auto-hide mobile sidebar when clicking outside or resizing
+        function closeMobileSidebar() {
+          if (window.innerWidth <= 991 && sidebar && sidebar.classList.contains("show")) {
+            sidebar.classList.remove("show");
+            if (sidebarOverlay) {
+              sidebarOverlay.classList.remove("show");
+            }
+            if (sidebarToggle) {
+              sidebarToggle.setAttribute("aria-expanded", "false");
+            }
+          }
+        }
+
+        // Close sidebar on outside click
+        document.addEventListener("click", function (e) {
+          if (window.innerWidth <= 991 && sidebar && sidebar.classList.contains("show")) {
+            if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+              closeMobileSidebar();
+            }
+          }
+        });
+
+        // Enhanced resize handler
+        let resizeTimeout;
+        window.addEventListener("resize", function () {
+          clearTimeout(resizeTimeout);
+          resizeTimeout = setTimeout(() => {
+            if (window.innerWidth > 991) {
+              closeMobileSidebar();
+            }
+          }, 250);
+        });
+
+        // Keyboard navigation enhancement
+        document.addEventListener("keydown", function (e) {
+          // ESC key closes dropdowns and mobile sidebar
+          if (e.key === "Escape") {
+            // Close all open dropdowns
+            const openDropdowns = document.querySelectorAll(".dropdown-menu.show");
+            openDropdowns.forEach((dropdown) => {
+              const toggle = dropdown.previousElementSibling;
+              if (toggle) {
+                toggle.click();
+              }
+            });
+
+            // Close mobile sidebar
+            closeMobileSidebar();
+          }
+
+          // Alt + M for mobile menu toggle
+          if (e.altKey && e.key.toLowerCase() === "m") {
+            e.preventDefault();
+            if (sidebarToggle) {
+              sidebarToggle.click();
+            }
+          }
+
+          // Alt + S for search focus
+          if (e.altKey && e.key.toLowerCase() === "s") {
+            e.preventDefault();
+            if (searchInput) {
+              searchInput.focus();
+            }
+          }
+        });
+
+        // Loading states for navigation with better visual feedback
+        navLinks.forEach((link) => {
+          link.addEventListener("click", function (e) {
+            if (this.getAttribute("href") !== currentPath && !this.getAttribute("href").startsWith("#")) {
+              // Add loading state
+              const iconWrapper = this.querySelector(".menu-icon-wrapper");
+              const icon = iconWrapper.querySelector("i");
+              const originalIcon = icon.className;
+              
+              // Show loading spinner
+              icon.className = "fas fa-spinner fa-spin";
+              iconWrapper.style.background = "var(--accent-blue)";
+              
+              // Reset after a delay if page doesn't load
+              setTimeout(() => {
+                if (icon.classList.contains("fa-spinner")) {
+                  icon.className = originalIcon;
+                  iconWrapper.style.background = "";
+                }
+              }, 3000);
+            }
+          });
+        });
+
+        // Enhanced profile picture lazy loading
+        const profileImages = document.querySelectorAll('img[loading="lazy"]');
+        if ("IntersectionObserver" in window) {
+          const imageObserver = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  const img = entry.target;
+                  img.addEventListener("load", () => {
+                    img.style.opacity = "1";
+                  });
+                  img.addEventListener("error", () => {
+                    // Fallback for broken images
+                    const fallback = document.createElement("div");
+                    fallback.className = img.className;
+                    fallback.style.background = "var(--primary-gradient)";
+                    fallback.innerHTML = '<i class="fas fa-user text-white"></i>';
+                    img.parentNode.replaceChild(fallback, img);
+                  });
+                  imageObserver.unobserve(img);
+                }
+              });
+            },
+            { threshold: 0.1 }
+          );
+
+          profileImages.forEach((img) => {
+            img.style.opacity = "0";
+            img.style.transition = "opacity 0.3s ease";
+            imageObserver.observe(img);
+          });
+        }
+
+        // Add smooth scroll behavior for in-page links
+        document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+          anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute("href"));
+            if (target) {
+              target.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            }
+          });
+        });
+
+        // Initialize tooltips if Bootstrap tooltips are available
+        if (typeof bootstrap !== "undefined" && bootstrap.Tooltip) {
+          const tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+          tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+          });
+        }
+
+        // Add page transition effects
+        window.addEventListener("beforeunload", function () {
+          document.body.style.opacity = "0.7";
+          document.body.style.transform = "scale(0.98)";
+        });
+
+        console.log("✨ Enhanced DreamJobs Dashboard Ready!");
+      });
+
+      // Service Worker registration for better performance (optional)
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+          // Register service worker here if you have one
+          console.log("Service Worker support detected");
+        });
+      }
+    </script>
+
+    <!-- Allow child templates to add custom scripts -->
+    {% block extra_scripts %}{% endblock %}
   </body>
-</html>
+</html>">

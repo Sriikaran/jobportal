@@ -3,78 +3,150 @@
 {% block body %}
 
 <style>
+    /* Dashboard-specific variables only */
     :root {
-        --primary-blue: #093f75;
-        --secondary-blue: #0c3056;
-        --accent-blue: #56a8fa;
-        --light-blue: #1c5aa6;
-        --text-dark: #2c3e50;
-        --text-light: #6c757d;
-        --bg-light: #f8fafc;
-        --shadow-light: 0 4px 20px rgba(9, 63, 117, 0.08);
-        --shadow-medium: 0 8px 32px rgba(9, 63, 117, 0.12);
+        --space-1: 0.25rem;
+        --space-2: 0.5rem;
+        --space-3: 0.75rem;
+        --space-4: 1rem;
+        --space-5: 1.25rem;
+        --space-6: 1.5rem;
+        --space-8: 2rem;
+        --space-10: 2.5rem;
+        --space-12: 3rem;
+        --space-16: 4rem;
+        --space-20: 5rem;
+        --shadow-blue: 0 10px 25px -5px rgba(9, 63, 117, 0.25), 0 4px 6px -2px rgba(9, 63, 117, 0.05);
         --gradient-primary: linear-gradient(135deg, #0c3056 0%, #1c5aa6 50%, #56a8fa 100%);
-        --gradient-accent: linear-gradient(45deg, #56a8fa, #a1d0ff);
-        --success-color: #28a745;
-        --warning-color: #ffc107;
+        --gradient-accent: linear-gradient(135deg, #56a8fa 0%, #3182ce 100%);
     }
 
-    /* Dashboard Header */
+    body {
+        background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        line-height: 1.6;
+        color: var(--text-dark);
+        font-weight: 400;
+    }
+
+    .container {
+        max-width: 1280px;
+    }
+
+    /* Enhanced Dashboard Header */
     .dashboard-header {
         background: var(--gradient-primary);
-        color: white;
-        padding: 2rem 0;
-        margin-bottom: 2rem;
         position: relative;
         overflow: hidden;
+        margin-bottom: var(--space-8);
+        border-radius: 0 0 var(--radius-2xl) var(--radius-2xl);
+        box-shadow: var(--shadow-xl);
     }
 
     .dashboard-header::before {
         content: "";
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="rgba(255,255,255,0.1)"/></svg>');
-        opacity: 0.3;
+        inset: 0;
+        background: 
+            radial-gradient(circle at 25% 25%, rgba(255,255,255,0.1) 0%, transparent 50%),
+            radial-gradient(circle at 75% 75%, rgba(255,255,255,0.08) 0%, transparent 50%);
+        pointer-events: none;
+    }
+
+    .header-content {
+        position: relative;
+        z-index: 2;
+        padding: var(--space-12) 0 var(--space-16);
     }
 
     .welcome-section {
-        position: relative;
-        z-index: 2;
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto;
     }
 
     .welcome-title {
-        font-size: 2rem;
+        font-size: 3rem;
         font-weight: 700;
-        margin-bottom: 0.5rem;
+        margin-bottom: var(--space-4);
+        color: white;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        line-height: 1.1;
     }
 
     .welcome-subtitle {
-        font-size: 1.1rem;
-        opacity: 0.9;
+        font-size: 1.125rem;
+        color: rgba(255,255,255,0.9);
+        font-weight: 400;
+        margin-bottom: var(--space-10);
+        line-height: 1.6;
     }
 
-    /* Dashboard Cards */
-    .dashboard-card {
-        background: white;
-        border-radius: 16px;
-        padding: 1.5rem;
-        box-shadow: var(--shadow-light);
-        border: 1px solid rgba(9, 63, 117, 0.1);
-        transition: all 0.3s ease;
-        margin-bottom: 1.5rem;
+    .header-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: var(--space-8);
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .header-stat {
+        text-align: center;
+        padding: var(--space-6);
+        background: rgba(255,255,255,0.1);
+        border-radius: var(--radius-xl);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.2);
+        transition: var(--transition-normal);
+    }
+
+    .header-stat:hover {
+        background: rgba(255,255,255,0.15);
+        transform: translateY(-2px);
+    }
+
+    .header-stat-number {
+        font-size: 2.25rem;
+        font-weight: 700;
+        color: white;
+        display: block;
+        line-height: 1;
+        margin-bottom: var(--space-2);
+    }
+
+    .header-stat-label {
+        color: rgba(255,255,255,0.8);
+        font-size: 0.875rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* Main Content Area */
+    .main-content {
+        padding: 0 var(--space-4);
+    }
+
+    /* Enhanced Dashboard Cards */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: var(--space-6);
+        margin-bottom: var(--space-10);
+    }
+
+    .stat-card {
+        background: var(--bg-white);
+        border-radius: var(--radius-xl);
+        padding: var(--space-8);
+        box-shadow: var(--shadow-md);
+        border: 1px solid var(--border-light);
+        transition: var(--transition-normal);
         position: relative;
         overflow: hidden;
     }
 
-    .dashboard-card:hover {
-        transform: translateY(-5px);
-        box-shadow: var(--shadow-medium);
-    }
-
-    .dashboard-card::before {
+    .stat-card::before {
         content: "";
         position: absolute;
         top: 0;
@@ -82,395 +154,1307 @@
         right: 0;
         height: 4px;
         background: var(--gradient-primary);
+        opacity: 0;
+        transition: var(--transition-normal);
     }
 
-    .card-icon {
-        width: 60px;
-        height: 60px;
-        border-radius: 12px;
+    .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-blue);
+        border-color: rgba(86, 168, 250, 0.2);
+    }
+
+    .stat-card:hover::before {
+        opacity: 1;
+    }
+
+    .stat-header {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--space-4);
+        margin-bottom: var(--space-6);
+    }
+
+    .stat-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: var(--radius-lg);
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 1.5rem;
         color: white;
-        margin-bottom: 1rem;
+        position: relative;
+        flex-shrink: 0;
     }
 
-    .card-icon.jobs {
-        background: var(--gradient-primary);
+    .stat-icon.jobs {
+        background: linear-gradient(135deg, #3b82f6, #1e40af);
     }
 
-    .card-icon.applications {
-        background: linear-gradient(135deg, #28a745, #20c997);
+    .stat-icon.applications {
+        background: linear-gradient(135deg, #10b981, #047857);
     }
 
-    .card-icon.profile {
-        background: linear-gradient(135deg, #ffc107, #fd7e14);
+    .stat-icon.profile {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
     }
 
-    .card-icon.messages {
-        background: linear-gradient(135deg, #dc3545, #e83e8c);
+    .stat-icon.messages {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+    }
+
+    .stat-content {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .stat-label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text-light);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: var(--space-2);
+    }
+
+    .stat-value {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        line-height: 1;
+        margin-bottom: var(--space-3);
+    }
+
+    .stat-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+    }
+
+    .stat-description {
+        color: var(--text-light);
+        font-size: 0.875rem;
+    }
+
+    .trend-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-1);
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: var(--space-1) var(--space-3);
+        border-radius: var(--radius-full);
+        text-transform: uppercase;
+        letter-spacing: 0.25px;
+    }
+
+    .trend-up {
+        color: var(--success-color);
+        background: rgba(56, 161, 105, 0.1);
+    }
+
+    .trend-down {
+        color: var(--error-color);
+        background: rgba(229, 62, 62, 0.1);
+    }
+
+    .trend-neutral {
+        color: var(--text-light);
+        background: rgba(113, 128, 150, 0.1);
+    }
+
+    /* Content Grid Layout */
+    .content-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-8);
+        margin-bottom: var(--space-10);
+    }
+
+    .content-card {
+        background: var(--bg-white);
+        border-radius: var(--radius-xl);
+        padding: var(--space-8);
+        box-shadow: var(--shadow-md);
+        border: 1px solid var(--border-light);
+        height: fit-content;
     }
 
     .card-title {
-        font-size: 1.1rem;
+        font-size: 1.25rem;
         font-weight: 600;
         color: var(--text-dark);
-        margin-bottom: 0.5rem;
+        margin-bottom: var(--space-6);
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
     }
 
-    .card-value {
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--primary-blue);
-        margin-bottom: 0.5rem;
-    }
-
-    .card-subtitle {
-        color: var(--text-light);
-        font-size: 0.9rem;
+    .card-title i {
+        color: var(--accent-blue);
+        font-size: 1.125rem;
     }
 
     /* Quick Actions */
-    .quick-actions {
-        margin: 2rem 0;
+    .actions-grid {
+        display: grid;
+        gap: var(--space-4);
     }
 
-    .action-btn {
-        background: white;
-        border: 2px solid var(--accent-blue);
-        color: var(--primary-blue);
-        padding: 1rem 1.5rem;
-        border-radius: 12px;
+    .action-item {
+        background: var(--bg-light);
+        border: 2px solid transparent;
+        color: var(--text-dark);
+        padding: var(--space-6);
+        border-radius: var(--radius-lg);
         text-decoration: none;
-        font-weight: 600;
+        transition: var(--transition-normal);
         display: flex;
         align-items: center;
-        gap: 12px;
-        transition: all 0.3s ease;
-        margin-bottom: 1rem;
+        gap: var(--space-4);
+        position: relative;
+        overflow: hidden;
     }
 
-    .action-btn:hover {
-        background: var(--accent-blue);
-        color: white;
+    .action-item::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--gradient-primary);
+        opacity: 0;
+        transition: var(--transition-normal);
+        border-radius: inherit;
+    }
+
+    .action-item:hover {
         transform: translateY(-2px);
-        box-shadow: var(--shadow-light);
+        box-shadow: var(--shadow-lg);
+        border-color: var(--accent-blue);
+        color: white;
     }
 
-    .action-btn i {
-        font-size: 1.2rem;
+    .action-item:hover::before {
+        opacity: 1;
     }
 
-    /* Recent Activities */
-    .recent-activity {
-        background: white;
-        border-radius: 16px;
-        padding: 1.5rem;
-        box-shadow: var(--shadow-light);
-        border: 1px solid rgba(9, 63, 117, 0.1);
+    .action-item > * {
+        position: relative;
+        z-index: 2;
+    }
+
+    .action-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: var(--radius-md);
+        background: rgba(86, 168, 250, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--accent-blue);
+        font-size: 1.25rem;
+        transition: var(--transition-normal);
+        flex-shrink: 0;
+    }
+
+    .action-item:hover .action-icon {
+        background: rgba(255,255,255,0.2);
+        color: white;
+    }
+
+    .action-content h6 {
+        font-weight: 600;
+        margin-bottom: var(--space-1);
+        font-size: 1rem;
+    }
+
+    .action-content small {
+        opacity: 0.8;
+        font-size: 0.875rem;
+    }
+
+    /* Recent Activity */
+    .activity-list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
     }
 
     .activity-item {
         display: flex;
-        align-items: center;
-        gap: 1rem;
-        padding: 1rem 0;
-        border-bottom: 1px solid rgba(9, 63, 117, 0.1);
+        align-items: flex-start;
+        gap: var(--space-4);
+        padding: var(--space-4);
+        border-radius: var(--radius-lg);
+        transition: var(--transition-normal);
+        border: 1px solid transparent;
     }
 
-    .activity-item:last-child {
-        border-bottom: none;
+    .activity-item:hover {
+        background: var(--bg-light);
+        border-color: var(--border-light);
     }
 
     .activity-icon {
         width: 40px;
         height: 40px;
-        border-radius: 8px;
+        border-radius: var(--radius-md);
         background: var(--gradient-accent);
         display: flex;
         align-items: center;
         justify-content: center;
         color: white;
-        font-size: 1rem;
+        font-size: 0.875rem;
+        flex-shrink: 0;
     }
 
     .activity-content {
         flex: 1;
+        min-width: 0;
     }
 
     .activity-title {
         font-weight: 600;
         color: var(--text-dark);
-        margin-bottom: 0.25rem;
+        margin-bottom: var(--space-1);
+        font-size: 0.925rem;
     }
 
     .activity-time {
-        font-size: 0.85rem;
+        font-size: 0.8125rem;
         color: var(--text-light);
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
     }
 
-    /* Progress Bar */
-    .progress-container {
-        margin: 1rem 0;
+    /* Job Recommendations */
+    .jobs-section {
+        background: var(--bg-white);
+        border-radius: var(--radius-xl);
+        padding: var(--space-8);
+        box-shadow: var(--shadow-md);
+        border: 1px solid var(--border-light);
+        margin-bottom: var(--space-10);
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: var(--space-8);
+        flex-wrap: wrap;
+        gap: var(--space-4);
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        margin: 0;
+    }
+
+    .section-badge {
+        background: var(--gradient-primary);
+        color: white;
+        padding: var(--space-2) var(--space-4);
+        border-radius: var(--radius-full);
+        font-size: 0.8125rem;
+        font-weight: 600;
+        letter-spacing: 0.25px;
+    }
+
+    .jobs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: var(--space-6);
+        margin-bottom: var(--space-8);
+    }
+
+    .job-card {
+        background: var(--bg-white);
+        border-radius: var(--radius-lg);
+        padding: var(--space-6);
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border-light);
+        transition: var(--transition-normal);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .job-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--gradient-primary);
+        transform: scaleX(0);
+        transition: var(--transition-normal);
+    }
+
+    .job-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-lg);
+        border-color: rgba(86, 168, 250, 0.3);
+    }
+
+    .job-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .job-title {
+        font-weight: 700;
+        color: var(--primary-blue);
+        margin-bottom: var(--space-4);
+        font-size: 1.125rem;
+        line-height: 1.3;
+    }
+
+    .job-meta {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-3);
+        margin-bottom: var(--space-6);
+    }
+
+    .job-meta-item {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        color: var(--text-medium);
+        font-size: 0.875rem;
+    }
+
+    .job-meta-item i {
+        color: var(--text-light);
+        width: 16px;
+        text-align: center;
+        font-size: 0.875rem;
+    }
+
+    .job-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: var(--space-4);
+        border-top: 1px solid var(--border-light);
+    }
+
+    .job-salary {
+        font-weight: 700;
+        color: var(--success-color);
+        font-size: 1rem;
+    }
+
+    .job-btn {
+        background: var(--gradient-primary);
+        color: white;
+        border: none;
+        padding: var(--space-2) var(--space-5);
+        border-radius: var(--radius-full);
+        font-weight: 600;
+        font-size: 0.875rem;
+        cursor: pointer;
+        transition: var(--transition-normal);
+    }
+
+    .job-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(86, 168, 250, 0.4);
+    }
+
+    .view-all-btn {
+        background: var(--gradient-primary);
+        color: white;
+        border: none;
+        padding: var(--space-4) var(--space-8);
+        border-radius: var(--radius-full);
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-3);
+        transition: var(--transition-normal);
+        margin: 0 auto;
+    }
+
+    .view-all-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+        color: white;
+    }
+
+    /* Bottom Grid */
+    .bottom-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-8);
+    }
+
+    /* Progress Indicators */
+    .progress-item {
+        margin-bottom: var(--space-6);
+    }
+
+    .progress-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: var(--space-3);
     }
 
     .progress-label {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 0.5rem;
         font-weight: 600;
         color: var(--text-dark);
+        font-size: 0.925rem;
     }
 
-    .progress {
+    .progress-value {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text-medium);
+    }
+
+    .progress-bar-container {
         height: 8px;
-        border-radius: 4px;
-        background: rgba(9, 63, 117, 0.1);
+        background: var(--border-light);
+        border-radius: var(--radius-full);
         overflow: hidden;
     }
 
     .progress-bar {
+        height: 100%;
         background: var(--gradient-primary);
-        transition: width 0.3s ease;
+        border-radius: var(--radius-full);
+        transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+    }
+
+    .progress-description {
+        margin-top: var(--space-2);
+        font-size: 0.8125rem;
+        color: var(--text-light);
+    }
+
+    /* Notifications */
+    .notification-list {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
+    }
+
+    .notification-item {
+        padding: var(--space-5);
+        border-radius: var(--radius-lg);
+        border: 1px solid;
+        transition: var(--transition-normal);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .notification-item.success {
+        background: rgba(56, 161, 105, 0.05);
+        border-color: rgba(56, 161, 105, 0.2);
+    }
+
+    .notification-item.info {
+        background: rgba(49, 130, 206, 0.05);
+        border-color: rgba(49, 130, 206, 0.2);
+    }
+
+    .notification-item.warning {
+        background: rgba(237, 137, 54, 0.05);
+        border-color: rgba(237, 137, 54, 0.2);
+    }
+
+    .notification-item:hover {
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .notification-content {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--space-4);
+    }
+
+    .notification-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: var(--radius-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.875rem;
+        flex-shrink: 0;
+    }
+
+    .notification-item.success .notification-icon {
+        background: rgba(56, 161, 105, 0.15);
+        color: var(--success-color);
+    }
+
+    .notification-item.info .notification-icon {
+        background: rgba(49, 130, 206, 0.15);
+        color: var(--info-color);
+    }
+
+    .notification-item.warning .notification-icon {
+        background: rgba(237, 137, 54, 0.15);
+        color: var(--warning-color);
+    }
+
+    .notification-text h6 {
+        font-weight: 600;
+        margin-bottom: var(--space-1);
+        font-size: 0.925rem;
+        color: var(--text-dark);
+    }
+
+    .notification-text p {
+        font-size: 0.8125rem;
+        color: var(--text-medium);
+        margin-bottom: var(--space-2);
+        line-height: 1.5;
+    }
+
+    .notification-time {
+        font-size: 0.75rem;
+        color: var(--text-light);
+        display: flex;
+        align-items: center;
+        gap: var(--space-1);
+    }
+
+    /* Notification Badge */
+    .notification-badge {
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        background: var(--error-color);
+        color: white;
+        border-radius: var(--radius-full);
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.6875rem;
+        font-weight: 600;
+        border: 2px solid var(--bg-white);
     }
 
     /* Responsive Design */
+    @media (max-width: 1024px) {
+        .content-grid,
+        .bottom-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .header-stats {
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--space-4);
+        }
+    }
+
     @media (max-width: 768px) {
         .dashboard-header {
-            padding: 1.5rem 0;
+            margin-bottom: var(--space-6);
         }
-
+        
+        .header-content {
+            padding: var(--space-8) 0 var(--space-10);
+        }
+        
         .welcome-title {
-            font-size: 1.5rem;
+            font-size: 2.25rem;
         }
+        
+        .stats-grid {
+            grid-template-columns: 1fr;
+            gap: var(--space-4);
+        }
+        
+        .stat-card {
+            padding: var(--space-6);
+        }
+        
+        .main-content {
+            padding: 0 var(--space-3);
+        }
+        
+        .jobs-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .section-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: var(--space-3);
+        }
+    }
 
-        .dashboard-card {
-            padding: 1.25rem;
+    @media (max-width: 640px) {
+        .welcome-title {
+            font-size: 2rem;
         }
+        
+        .stat-header {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .stat-meta {
+            flex-direction: column;
+            align-items: center;
+            gap: var(--space-2);
+        }
+        
+        .job-footer {
+            flex-direction: column;
+            gap: var(--space-3);
+            align-items: flex-start;
+        }
+        
+        .content-card {
+            padding: var(--space-6);
+        }
+    }
 
-        .card-value {
-            font-size: 1.5rem;
+    /* Animation and Loading States */
+    .fade-in {
+        animation: fadeIn 0.6s ease-out forwards;
+    }
+
+    .slide-up {
+        animation: slideUp 0.6s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
         }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Utility Classes */
+    .text-center {
+        text-align: center;
+    }
+
+    .d-flex {
+        display: flex;
+    }
+
+    .align-items-center {
+        align-items: center;
+    }
+
+    .justify-content-between {
+        justify-content: space-between;
+    }
+
+    .gap-3 {
+        gap: var(--space-3);
+    }
+
+    .mb-0 {
+        margin-bottom: 0;
+    }
+
+    .me-3 {
+        margin-right: var(--space-3);
+    }
+
+    .fw-semibold {
+        font-weight: 600;
     }
 </style>
 
 <div class="dashboard-header">
     <div class="container">
-        <div class="welcome-section">
-            <h1 class="welcome-title">
-                <i class="fas fa-user-circle me-3"></i>Welcome back, {{ user.first_name|default:user.username }}!
-            </h1>
-            <p class="welcome-subtitle">Ready to find your dream job? Let's explore new opportunities together.</p>
+        <div class="header-content">
+            <div class="welcome-section">
+                <h1 class="welcome-title">
+                    <i class="fas fa-user-circle me-3"></i>Welcome back!
+                </h1>
+                <p class="welcome-subtitle">
+                    Ready to find your dream job? Let's explore new opportunities together and take your career to the next level.
+                </p>
+                
+                <div class="header-stats">
+                    <div class="header-stat">
+                        <span class="header-stat-number">1,247</span>
+                        <span class="header-stat-label">Jobs Available</span>
+                    </div>
+                    <div class="header-stat">
+                        <span class="header-stat-number">{{ applications_count|default:8 }}</span>
+                        <span class="header-stat-label">Applications</span>
+                    </div>
+                    <div class="header-stat">
+                        <span class="header-stat-number">{{ profile_completion|default:85 }}%</span>
+                        <span class="header-stat-label">Profile Complete</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="container">
-    <div class="row">
-        <!-- Dashboard Stats Cards -->
-        <div class="col-lg-3 col-md-6 mb-4">
-            <div class="dashboard-card">
-                <div class="card-icon jobs">
-                    <i class="fas fa-briefcase"></i>
+<div class="main-content">
+    <div class="container">
+        <!-- Dashboard Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card fade-in">
+                <div class="stat-header">
+                    <div class="stat-icon jobs">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-label">Available Jobs</div>
+                        <div class="stat-value">1,247</div>
+                        <div class="stat-meta">
+                            <span class="stat-description">Active postings</span>
+                            <span class="trend-indicator trend-up">
+                                <i class="fas fa-arrow-up"></i>
+                                +12%
+                            </span>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-title">Available Jobs</div>
-                <div class="card-value">1,247</div>
-                <div class="card-subtitle">Active job postings</div>
             </div>
-        </div>
 
-        <div class="col-lg-3 col-md-6 mb-4">
-            <div class="dashboard-card">
-                <div class="card-icon applications">
-                    <i class="fas fa-file-alt"></i>
-                </div>
-                <div class="card-title">My Applications</div>
-                <div class="card-value">{{ applications_count|default:8 }}</div>
-                <div class="card-subtitle">Jobs applied to</div>
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6 mb-4">
-            <div class="dashboard-card">
-                <div class="card-icon profile">
-                    <i class="fas fa-user-edit"></i>
-                </div>
-                <div class="card-title">Profile Completion</div>
-                <div class="card-value">{{ profile_completion|default:85 }}%</div>
-                <div class="card-subtitle">Complete your profile</div>
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6 mb-4">
-            <div class="dashboard-card">
-                <div class="card-icon messages">
-                    <i class="fas fa-envelope"></i>
-                </div>
-                <div class="card-title">Messages</div>
-                <div class="card-value">3</div>
-                <div class="card-subtitle">New messages</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <!-- Quick Actions -->
-        <div class="col-lg-4 mb-4">
-            <div class="dashboard-card">
-                <h5 class="card-title">
-                    <i class="fas fa-rocket me-2"></i>Quick Actions
-                </h5>
-                <div class="quick-actions">
-                    <a href="{% url 'jsapp:viewjobs' %}" class="action-btn">
-                        <i class="fas fa-search"></i>
-                        <span>Search Jobs</span>
-                    </a>
-                    <a href="{% url 'jsapp:viewprofile' %}" class="action-btn">
-                        <i class="fas fa-user-edit"></i>
-                        <span>Update Profile</span>
-                    </a>
-                    <a href="{% url 'jsapp:appliedjobs' %}" class="action-btn">
+            <div class="stat-card fade-in">
+                <div class="stat-header">
+                    <div class="stat-icon applications" style="position: relative;">
                         <i class="fas fa-file-alt"></i>
-                        <span>View Applications</span>
-                    </a>
+                        {% if applications_count > 5 %}
+                        <div class="notification-badge">{{ applications_count }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-label">My Applications</div>
+                        <div class="stat-value">{{ applications_count|default:8 }}</div>
+                        <div class="stat-meta">
+                            <span class="stat-description">Jobs applied to</span>
+                            <span class="trend-indicator trend-up">
+                                <i class="fas fa-plus"></i>
+                                +3 this week
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Profile Completion -->
-        <!--<div class="col-lg-4 mb-4">
-            <div class="dashboard-card">
-                <h5 class="card-title">
-                    <i class="fas fa-chart-line me-2"></i>Profile Progress
-                </h5>
-                <div class="progress-container">
-                    <div class="progress-label">
-                        <span>Profile Completion</span>
-                        <span>{{ profile_completion|default:85 }}%</span>
-                    </div>
-                    <div class="progress">
-                        <div class="progress-bar" style="width: {{ profile_completion|default:85 }}%"></div>
-                    </div>
-                </div>
-                
-                <div style="margin-top: 1rem;">
-                    <small class="text-muted">
-                        <i class="fas fa-lightbulb me-1"></i>
-                        Complete your profile to get better job recommendations!
-                    </small>
-                </div>
-            </div>
-        </div> --->
-
-        <!-- Recent Activity -->
-        <div class="col-lg-4 mb-4">
-            <div class="recent-activity">
-                <h5 class="card-title">
-                    <i class="fas fa-clock me-2"></i>Recent Activity
-                </h5>
-                
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fas fa-paper-plane"></i>
-                    </div>
-                    <div class="activity-content">
-                        <div class="activity-title">Applied to Frontend Developer</div>
-                        <div class="activity-time">2 hours ago</div>
-                    </div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fas fa-eye"></i>
-                    </div>
-                    <div class="activity-content">
-                        <div class="activity-title">Viewed Python Developer role</div>
-                        <div class="activity-time">5 hours ago</div>
-                    </div>
-                </div>
-
-                <div class="activity-item">
-                    <div class="activity-icon">
+            <div class="stat-card fade-in">
+                <div class="stat-header">
+                    <div class="stat-icon profile">
                         <i class="fas fa-user-edit"></i>
                     </div>
-                    <div class="activity-content">
-                        <div class="activity-title">Updated resume</div>
-                        <div class="activity-time">1 day ago</div>
+                    <div class="stat-content">
+                        <div class="stat-label">Profile Score</div>
+                        <div class="stat-value">{{ profile_completion|default:85 }}%</div>
+                        <div class="stat-meta">
+                            <span class="stat-description">Completion rate</span>
+                            {% if profile_completion|default:85 < 90 %}
+                            <span class="trend-indicator trend-down">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                Needs work
+                            </span>
+                            {% else %}
+                            <span class="trend-indicator trend-up">
+                                <i class="fas fa-check"></i>
+                                Excellent
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card fade-in">
+                <div class="stat-header">
+                    <div class="stat-icon messages" style="position: relative;">
+                        <i class="fas fa-envelope"></i>
+                        <div class="notification-badge">3</div>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-label">Messages</div>
+                        <div class="stat-value">3</div>
+                        <div class="stat-meta">
+                            <span class="stat-description">Unread messages</span>
+                            <span class="trend-indicator trend-up">
+                                <i class="fas fa-bell"></i>
+                                2 today
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Recommended Jobs Section -->
-    <div class="row">
-        <div class="col-12">
-            <div class="dashboard-card">
+        <!-- Main Content Grid -->
+        <div class="content-grid">
+            <!-- Quick Actions -->
+            <div class="content-card slide-up">
                 <h5 class="card-title">
-                    <i class="fas fa-star me-2"></i>Recommended Jobs for You
+                    <i class="fas fa-rocket"></i>
+                    Quick Actions
                 </h5>
-                
-                <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <div class="card border-0" style="box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-radius: 12px;">
-                            <div class="card-body">
-                                <h6 class="card-title text-primary">Frontend Developer</h6>
-                                <p class="card-text text-muted mb-1">
-                                    <i class="fas fa-building me-1"></i>Tech Solutions Inc.
-                                </p>
-                                <p class="card-text text-muted mb-2">
-                                    <i class="fas fa-map-marker-alt me-1"></i>Remote
-                                </p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <small class="text-success font-weight-bold">$70k - $90k</small>
-                                    <a href="#" class="btn btn-outline-primary btn-sm">View Details</a>
-                                </div>
+                <div class="actions-grid">
+                    <a href="{% url 'jsapp:viewjobs' %}" class="action-item">
+                        <div class="action-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="action-content">
+                            <h6>Search Jobs</h6>
+                            <small>Find your perfect match</small>
+                        </div>
+                    </a>
+                    <a href="{% url 'jsapp:viewprofile' %}" class="action-item">
+                        <div class="action-icon">
+                            <i class="fas fa-user-edit"></i>
+                        </div>
+                        <div class="action-content">
+                            <h6>Update Profile</h6>
+                            <small>Boost your visibility</small>
+                        </div>
+                    </a>
+                    <a href="{% url 'jsapp:appliedjobs' %}" class="action-item">
+                        <div class="action-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="action-content">
+                            <h6>View Applications</h6>
+                            <small>Track your progress</small>
+                        </div>
+                    </a>
+                    <a href="#" class="action-item">
+                        <div class="action-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="action-content">
+                            <h6>Career Analytics</h6>
+                            <small>View insights & trends</small>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="content-card slide-up">
+                <h5 class="card-title">
+                    <i class="fas fa-clock"></i>
+                    Recent Activity
+                </h5>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-paper-plane"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Applied to Frontend Developer at Tech Solutions Inc.</div>
+                            <div class="activity-time">
+                                <i class="fas fa-clock"></i>
+                                2 hours ago
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-4 mb-3">
-                        <div class="card border-0" style="box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-radius: 12px;">
-                            <div class="card-body">
-                                <h6 class="card-title text-primary">Full Stack Developer</h6>
-                                <p class="card-text text-muted mb-1">
-                                    <i class="fas fa-building me-1"></i>StartupXYZ
-                                </p>
-                                <p class="card-text text-muted mb-2">
-                                    <i class="fas fa-map-marker-alt me-1"></i>San Francisco, CA
-                                </p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <small class="text-success font-weight-bold">$80k - $120k</small>
-                                    <a href="#" class="btn btn-outline-primary btn-sm">View Details</a>
-                                </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Viewed Python Developer role at DataCorp</div>
+                            <div class="activity-time">
+                                <i class="fas fa-clock"></i>
+                                5 hours ago
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-4 mb-3">
-                        <div class="card border-0" style="box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-radius: 12px;">
-                            <div class="card-body">
-                                <h6 class="card-title text-primary">UI/UX Designer</h6>
-                                <p class="card-text text-muted mb-1">
-                                    <i class="fas fa-building me-1"></i>Design Studio Pro
-                                </p>
-                                <p class="card-text text-muted mb-2">
-                                    <i class="fas fa-map-marker-alt me-1"></i>New York, NY
-                                </p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <small class="text-success font-weight-bold">$60k - $85k</small>
-                                    <a href="#" class="btn btn-outline-primary btn-sm">View Details</a>
-                                </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-user-edit"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Updated resume and portfolio</div>
+                            <div class="activity-time">
+                                <i class="fas fa-clock"></i>
+                                1 day ago
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Saved 3 new jobs to favorites</div>
+                            <div class="activity-time">
+                                <i class="fas fa-clock"></i>
+                                2 days ago
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-title">Received job recommendation match</div>
+                            <div class="activity-time">
+                                <i class="fas fa-clock"></i>
+                                3 days ago
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <div class="text-center mt-3">
-                    <a href="{% url 'jsapp:viewjobs' %}" class="btn" style="background: var(--gradient-primary); color: white; border-radius: 12px; padding: 12px 32px;">
-                        <i class="fas fa-search me-2"></i>View All Jobs
-                    </a>
+        <!-- Job Recommendations Section -->
+        <div class="jobs-section slide-up">
+            <div class="section-header">
+                <h5 class="section-title">
+                    <i class="fas fa-star"></i>
+                    Recommended Jobs for You
+                </h5>
+                <span class="section-badge">
+                    Personalized matches
+                </span>
+            </div>
+            
+            <div class="jobs-grid">
+                <div class="job-card">
+                    <div class="job-title">Senior Frontend Developer</div>
+                    <div class="job-meta">
+                        <div class="job-meta-item">
+                            <i class="fas fa-building"></i>
+                            <span>Tech Solutions Inc.</span>
+                        </div>
+                        <div class="job-meta-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Remote • Worldwide</span>
+                        </div>
+                        <div class="job-meta-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Full-time</span>
+                        </div>
+                        <div class="job-meta-item">
+                            <i class="fas fa-users"></i>
+                            <span>50-200 employees</span>
+                        </div>
+                    </div>
+                    <div class="job-footer">
+                        <div class="job-salary">$70k - $90k</div>
+                        <button class="job-btn">View Details</button>
+                    </div>
+                </div>
+
+                <div class="job-card">
+                    <div class="job-title">Full Stack Developer</div>
+                    <div class="job-meta">
+                        <div class="job-meta-item">
+                            <i class="fas fa-building"></i>
+                            <span>StartupXYZ</span>
+                        </div>
+                        <div class="job-meta-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>San Francisco, CA</span>
+                        </div>
+                        <div class="job-meta-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Full-time</span>
+                        </div>
+                        <div class="job-meta-item">
+                            <i class="fas fa-users"></i>
+                            <span>10-50 employees</span>
+                        </div>
+                    </div>
+                    <div class="job-footer">
+                        <div class="job-salary">$80k - $120k</div>
+                        <button class="job-btn">View Details</button>
+                    </div>
+                </div>
+
+                <div class="job-card">
+                    <div class="job-title">UI/UX Designer</div>
+                    <div class="job-meta">
+                        <div class="job-meta-item">
+                            <i class="fas fa-building"></i>
+                            <span>Design Studio Pro</span>
+                        </div>
+                        <div class="job-meta-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>New York, NY</span>
+                        </div>
+                        <div class="job-meta-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Full-time</span>
+                        </div>
+                        <div class="job-meta-item">
+                            <i class="fas fa-users"></i>
+                            <span>200+ employees</span>
+                        </div>
+                    </div>
+                    <div class="job-footer">
+                        <div class="job-salary">$60k - $85k</div>
+                        <button class="job-btn">View Details</button>
+                    </div>
+                </div>
+
+                <div class="job-card">
+                    <div class="job-title">Python Backend Developer</div>
+                    <div class="job-meta">
+                        <div class="job-meta-item">
+                            <i class="fas fa-building"></i>
+                            <span>DataCorp Analytics</span>
+                        </div>
+                        <div class="job-meta-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Austin, TX</span>
+                        </div>
+                        <div class="job-meta-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Full-time</span>
+                        </div>
+                        <div class="job-meta-item">
+                            <i class="fas fa-users"></i>
+                            <span>100-500 employees</span>
+                        </div>
+                    </div>
+                    <div class="job-footer">
+                        <div class="job-salary">$85k - $110k</div>
+                        <button class="job-btn">View Details</button>
+                    </div>
+                </div>
+
+                <div class="job-card">
+                    <div class="job-title">DevOps Engineer</div>
+                    <div class="job-meta">
+                        <div class="job-meta-item">
+                            <i class="fas fa-building"></i>
+                            <span>CloudTech Systems</span>
+                        </div>
+                        <div class="job-meta-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Seattle, WA</span>
+                        </div>
+                        <div class="job-meta-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Full-time</span>
+                        </div>
+                        <div class="job-meta-item">
+                            <i class="fas fa-users"></i>
+                            <span>500+ employees</span>
+                        </div>
+                    </div>
+                    <div class="job-footer">
+                        <div class="job-salary">$95k - $130k</div>
+                        <button class="job-btn">View Details</button>
+                    </div>
+                </div>
+
+                <div class="job-card">
+                    <div class="job-title">Mobile App Developer</div>
+                    <div class="job-meta">
+                        <div class="job-meta-item">
+                            <i class="fas fa-building"></i>
+                            <span>AppCraft Studios</span>
+                        </div>
+                        <div class="job-meta-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Remote • US Only</span>
+                        </div>
+                        <div class="job-meta-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Full-time</span>
+                        </div>
+                        <div class="job-meta-item">
+                            <i class="fas fa-users"></i>
+                            <span>20-100 employees</span>
+                        </div>
+                    </div>
+                    <div class="job-footer">
+                        <div class="job-salary">$75k - $105k</div>
+                        <button class="job-btn">View Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <a href="{% url 'jsapp:viewjobs' %}" class="view-all-btn">
+                    <i class="fas fa-search"></i>
+                    View All Jobs
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Bottom Section -->
+        <div class="bottom-grid">
+            <!-- Profile Progress & Insights
+            <div class="content-card slide-up">
+                <h5 class="card-title">
+                    <i class="fas fa-chart-line"></i>
+                    Career Progress
+                </h5>
+                
+                <div class="progress-item">
+                    <div class="progress-header">
+                        <span class="progress-label">Profile Completion</span>
+                        <span class="progress-value">{{ profile_completion|default:85 }}%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: {{ profile_completion|default:85 }}%" data-width="{{ profile_completion|default:85 }}"></div>
+                    </div>
+                    <div class="progress-description">
+                        {% if profile_completion|default:85 < 90 %}
+                        Add portfolio and skills to reach 100% completion
+                        {% else %}
+                        Your profile is well-optimized for job matching
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="progress-item">
+                    <div class="progress-header">
+                        <span class="progress-label">Profile Views This Week</span>
+                        <span class="progress-value">127</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 75%" data-width="75"></div>
+                    </div>
+                    <div class="progress-description">
+                        +23% increase from last week
+                    </div>
+                </div>
+
+                <div class="progress-item">
+                    <div class="progress-header">
+                        <span class="progress-label">Job Match Score</span>
+                        <span class="progress-value">8.4/10</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 84%" data-width="84"></div>
+                    </div>
+                    <div class="progress-description">
+                        Excellent matching with current skill set
+                    </div>
+                </div>
+
+                <div class="progress-item">
+                    <div class="progress-header">
+                        <span class="progress-label">Application Success Rate</span>
+                        <span class="progress-value">92%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 92%" data-width="92"></div>
+                    </div>
+                    <div class="progress-description">
+                        Above average success rate - keep it up!
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- Smart Notifications -->
+            <div class="content-card slide-up">
+                <h5 class="card-title">
+                    <i class="fas fa-bell"></i>
+                    Recent Notifications
+                </h5>
+                
+                <div class="notification-list">
+                    <div class="notification-item success">
+                        <div class="notification-content">
+                            <div class="notification-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="notification-text">
+                                <h6>Application Status Update</h6>
+                                <p>Your application for "Senior Developer" at TechCorp has moved to the interview stage.</p>
+                                <div class="notification-time">
+                                    <i class="fas fa-clock"></i>
+                                    30 minutes ago
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="notification-item info">
+                        <div class="notification-content">
+                            <div class="notification-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="notification-text">
+                                <h6>New Job Matches</h6>
+                                <p>5 new jobs perfectly match your profile and preferences. Check them out now!</p>
+                                <div class="notification-time">
+                                    <i class="fas fa-clock"></i>
+                                    2 hours ago
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="notification-item warning">
+                        <div class="notification-content">
+                            <div class="notification-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="notification-text">
+                                <h6>Profile Optimization</h6>
+                                <p>Add your portfolio link to increase profile visibility by up to 40%.</p>
+                                <div class="notification-time">
+                                    <i class="fas fa-clock"></i>
+                                    1 day ago
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="notification-item info">
+                        <div class="notification-content">
+                            <div class="notification-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="notification-text">
+                                <h6>Message from Recruiter</h6>
+                                <p>Sarah Johnson from TechRecruit wants to discuss opportunities with you.</p>
+                                <div class="notification-time">
+                                    <i class="fas fa-clock"></i>
+                                    2 days ago
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -478,35 +1462,262 @@
 </div>
 
 <script>
-    // Dashboard JavaScript functionality
     document.addEventListener('DOMContentLoaded', function() {
-        // Animate progress bars
-        const progressBars = document.querySelectorAll('.progress-bar');
-        progressBars.forEach(bar => {
-            const width = bar.style.width;
-            bar.style.width = '0%';
-            setTimeout(() => {
-                bar.style.width = width;
-            }, 500);
-        });
-
-        // Add hover effects to dashboard cards
-        const dashboardCards = document.querySelectorAll('.dashboard-card');
-        dashboardCards.forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-8px)';
+        // Initialize animations with staggered timing
+        function initializeAnimations() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            const slideElements = document.querySelectorAll('.slide-up');
+            
+            fadeElements.forEach((el, index) => {
+                el.style.animationDelay = `${index * 0.1}s`;
             });
             
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0)';
+            slideElements.forEach((el, index) => {
+                el.style.animationDelay = `${index * 0.15 + 0.3}s`;
             });
-        });
+        }
 
-        // Auto-refresh dashboard data every 5 minutes
-        setInterval(() => {
-            // Add AJAX call to refresh dashboard stats if needed
-            console.log('Dashboard data refresh interval');
-        }, 300000);
+        // Animate progress bars with realistic timing
+        function animateProgressBars() {
+            const progressBars = document.querySelectorAll('.progress-bar[data-width]');
+            
+            progressBars.forEach((bar, index) => {
+                const targetWidth = bar.getAttribute('data-width') + '%';
+                bar.style.width = '0%';
+                
+                setTimeout(() => {
+                    bar.style.width = targetWidth;
+                }, 500 + (index * 200));
+            });
+        }
+
+        // Enhanced interaction effects
+        function setupInteractions() {
+            // Stat cards hover effects
+            const statCards = document.querySelectorAll('.stat-card');
+            statCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-4px)';
+                    this.style.boxShadow = 'var(--shadow-blue)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = 'var(--shadow-md)';
+                });
+            });
+
+            // Job cards hover effects
+            const jobCards = document.querySelectorAll('.job-card');
+            jobCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-3px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+
+            // Button click ripple effect
+            const buttons = document.querySelectorAll('.action-item, .job-btn, .view-all-btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.cssText = `
+                        position: absolute;
+                        width: ${size}px;
+                        height: ${size}px;
+                        left: ${x}px;
+                        top: ${y}px;
+                        background: rgba(255, 255, 255, 0.3);
+                        border-radius: 50%;
+                        transform: scale(0);
+                        animation: ripple 0.6s ease-out;
+                        pointer-events: none;
+                        z-index: 10;
+                    `;
+                    
+                    this.style.position = 'relative';
+                    this.style.overflow = 'hidden';
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => ripple.remove(), 600);
+                });
+            });
+        }
+
+        // Intersection Observer for scroll animations
+        function setupScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-in');
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.job-card, .notification-item, .activity-item').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // Real-time updates simulation
+        function simulateRealTimeUpdates() {
+            // Update notification badge count occasionally
+            setInterval(() => {
+                const badges = document.querySelectorAll('.notification-badge');
+                badges.forEach(badge => {
+                    const currentCount = parseInt(badge.textContent);
+                    if (Math.random() < 0.1) { // 10% chance to update
+                        badge.textContent = Math.max(0, currentCount + (Math.random() < 0.5 ? 1 : -1));
+                        badge.style.animation = 'pulse 0.5s ease-in-out';
+                    }
+                });
+            }, 30000); // Every 30 seconds
+        }
+
+        // Enhanced toast notification system
+        function showToast(title, message, type = 'info', duration = 5000) {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.style.cssText = `
+                position: fixed;
+                top: 24px;
+                right: 24px;
+                background: var(--bg-white);
+                padding: 1rem 1.5rem;
+                border-radius: var(--radius-lg);
+                box-shadow: var(--shadow-xl);
+                border: 1px solid var(--border-light);
+                max-width: 400px;
+                z-index: 10000;
+                transform: translateX(450px);
+                transition: var(--transition-normal);
+                border-left: 4px solid var(--accent-blue);
+            `;
+            
+            const iconMap = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                warning: 'fa-exclamation-triangle',
+                info: 'fa-info-circle'
+            };
+            
+            const colorMap = {
+                success: 'var(--success-color)',
+                error: 'var(--error-color)',
+                warning: 'var(--warning-color)',
+                info: 'var(--info-color)'
+            };
+            
+            toast.innerHTML = `
+                <div class="d-flex align-items-flex-start gap-3">
+                    <i class="fas ${iconMap[type]}" style="color: ${colorMap[type]}; margin-top: 2px; font-size: 1.125rem;"></i>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600; margin-bottom: 0.25rem; color: var(--text-dark);">${title}</div>
+                        <div style="font-size: 0.875rem; color: var(--text-medium);">${message}</div>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" 
+                            style="background: none; border: none; font-size: 1.25rem; color: var(--text-light); cursor: pointer; padding: 0; margin-left: 0.5rem;">×</button>
+                </div>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            // Animate in
+            requestAnimationFrame(() => {
+                toast.style.transform = 'translateX(0)';
+            });
+            
+            // Auto remove
+            setTimeout(() => {
+                toast.style.transform = 'translateX(450px)';
+                setTimeout(() => toast.remove(), 300);
+            }, duration);
+        }
+
+        // Add custom CSS animations
+        const animationStyles = document.createElement('style');
+        animationStyles.textContent = `
+            @keyframes ripple {
+                0% {
+                    transform: scale(0);
+                    opacity: 1;
+                }
+                100% {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+            
+            @keyframes pulse {
+                0%, 100% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.05);
+                }
+            }
+            
+            .animate-in {
+                animation: slideUpFade 0.6s ease-out forwards;
+            }
+            
+            @keyframes slideUpFade {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        `;
+        document.head.appendChild(animationStyles);
+
+        // Initialize all functionality
+        initializeAnimations();
+        
+        // Delay progress bar animation to ensure smooth page load
+        setTimeout(() => {
+            animateProgressBars();
+        }, 800);
+        
+        setupInteractions();
+        setupScrollAnimations();
+        simulateRealTimeUpdates();
+
+        // Welcome back notification
+        setTimeout(() => {
+            showToast(
+                'Welcome back!', 
+                'Your dashboard has been updated with new job recommendations and insights.',
+                'info',
+                4000
+            );
+        }, 2000);
+
+        // Performance optimization - debounced resize handler
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                // Re-initialize animations on resize if needed
+                console.log('Dashboard layout adjusted for new viewport');
+            }, 250);
+        });
     });
 </script>
 

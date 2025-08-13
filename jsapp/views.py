@@ -23,7 +23,7 @@ def blog(request):
     return render(request, "blog.html")
 
 def login(request):
-    return render(request, "login.html")
+    return redirect("jobapp:login")
 
 def employer(request):
     if request.method == "POST":
@@ -37,7 +37,7 @@ def employer(request):
 
 def appliedjobs(request):
     if "username" not in request.session:
-        return redirect("login")
+        return redirect("jobapp:login")
 
     seeker_email = request.session["username"]
     jobs = AppliedJobs.objects.filter(emailaddress=seeker_email)

@@ -437,15 +437,8 @@
 
           <div class="auth-buttons d-flex align-items-center">
             <a href="{% url 'jobapp:login' %}" class="btn">Login</a>
-            <div class="dropdown">
-              <button
-                class="btn dropdown-toggle"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Register
-              </button>
+            <a href="{% url 'jobapp:jobseekerreg' %}" class="btn">Register</a>
+            
               <ul class="dropdown-menu">
                 <li>
                   <a class="dropdown-item" href="{% url 'jobapp:employerreg' %}"

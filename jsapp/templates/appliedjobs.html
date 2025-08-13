@@ -1,338 +1,1162 @@
-{% extends "jsparent.html" %}
-{% block body %}
-<div class="container-fluid px-4">
-    <!-- Header Section -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h2 class="mb-1" style="color: #2c3e50; font-weight: 600;">My Applications</h2>
-                    <p class="text-muted mb-0">Track your job applications and their current status</p>
-                </div>
-                <div class="badge bg-primary fs-6 px-3 py-2">
-                    <i class="fas fa-briefcase me-2"></i>
-                    {{ appl|length }} Application{{ appl|length|pluralize }}
-                </div>
-            </div>
+{% extends "jsparent.html" %} {% block body %}
+<div class="container-fluid px-4 py-3">
+  <!-- Header Section with Enhanced Typography -->
+  <div class="row mb-5">
+    <div class="col-12">
+      <div
+        class="d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center gap-3"
+      >
+        <div>
+          <h1
+            class="display-6 mb-2 fw-bold"
+            style="color: #2c3e50; letter-spacing: -0.5px"
+          >
+            My Applications
+          </h1>
+          <p class="text-muted mb-0 fs-5">
+            Track and manage your job applications efficiently
+          </p>
         </div>
+        <div class="d-flex align-items-center gap-3">
+          <div class="badge bg-primary fs-6 px-4 py-3 rounded-pill shadow-sm">
+            <i class="fas fa-briefcase me-2"></i>
+            {{ appl|length }} Application{{ appl|length|pluralize }}
+          </div>
+          <a
+            href="{% url 'jsapp:viewjobs' %}" 
+            class="btn btn-outline-primary rounded-pill px-4 py-2"
+          >
+            <i class="fas fa-plus me-2"></i>New Application
+          </a>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <!-- Filters & Search Section -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card shadow-sm border-0" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px;">
-                <div class="card-body p-3">
-                    <div class="row g-3">
-                        <div class="col-md-4">
-                            <div class="input-group">
-                                <span class="input-group-text bg-white border-0">
-                                    <i class="fas fa-search text-muted"></i>
-                                </span>
-                                <input type="text" class="form-control border-0" placeholder="Search by job title or company..." 
-                                       id="searchInput" style="box-shadow: none;">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <select class="form-select border-0" id="filterStatus" style="box-shadow: none;">
-                                <option value="">All Applications</option>
-                                <option value="pending">Pending</option>
-                                <option value="reviewed">Reviewed</option>
-                                <option value="shortlisted">Shortlisted</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <select class="form-select border-0" id="sortBy" style="box-shadow: none;">
-                                <option value="date">Sort by Date</option>
-                                <option value="title">Sort by Job Title</option>
-                                <option value="company">Sort by Company</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <button class="btn btn-light w-100" onclick="clearFilters()">
-                                <i class="fas fa-refresh me-1"></i> Reset
-                            </button>
-                        </div>
-                    </div>
+  <!-- Enhanced Filters & Search Section -->
+  <div class="row mb-5">
+    <div class="col-12">
+      <div
+        class="card shadow-sm border-0 overflow-hidden"
+        style="border-radius: 20px"
+      >
+        <div class="card-header border-0 p-0">
+          <div
+            style="
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              padding: 2rem;
+            "
+          >
+            <div class="row g-4 align-items-end">
+              <!-- Search Input -->
+              <div class="col-lg-4 col-md-6">
+                <label
+                  class="text-white-50 small fw-semibold mb-2"
+                  for="searchInput"
+                >
+                  <i class="fas fa-search me-1"></i>Search Applications
+                </label>
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control form-control-lg border-0 bg-white bg-opacity-90"
+                    placeholder="Job title, company name..."
+                    id="searchInput"
+                    style="box-shadow: none; backdrop-filter: blur(10px)"
+                  />
+                  <button class="btn btn-white bg-opacity-90" type="button">
+                    <i class="fas fa-search text-primary"></i>
+                  </button>
                 </div>
+              </div>
+
+              <!-- Status Filter -->
+              <div class="col-lg-3 col-md-6">
+                <label
+                  class="text-white-50 small fw-semibold mb-2"
+                  for="filterStatus"
+                >
+                  <i class="fas fa-filter me-1"></i>Filter by Status
+                </label>
+                <select
+                  class="form-select form-select-lg border-0 bg-white bg-opacity-90"
+                  id="filterStatus"
+                  style="box-shadow: none"
+                >
+                  <option value="">All Statuses</option>
+                  <option value="pending">⏳ Pending Review</option>
+                  <option value="reviewed">✅ Under Review</option>
+                  <option value="shortlisted">⭐ Shortlisted</option>
+                  <option value="rejected">❌ Not Selected</option>
+                </select>
+              </div>
+
+              <!-- Sort Options -->
+              <div class="col-lg-3 col-md-6">
+                <label
+                  class="text-white-50 small fw-semibold mb-2"
+                  for="sortBy"
+                >
+                  <i class="fas fa-sort me-1"></i>Sort By
+                </label>
+                <select
+                  class="form-select form-select-lg border-0 bg-white bg-opacity-90"
+                  id="sortBy"
+                  style="box-shadow: none"
+                >
+                  <option value="date">📅 Most Recent</option>
+                  <option value="title">🔤 Job Title A-Z</option>
+                  <option value="company">🏢 Company Name</option>
+                  <option value="status">📊 Status</option>
+                </select>
+              </div>
+
+              <!-- Clear Filters -->
+              <div class="col-lg-2 col-md-6">
+                <button
+                id="resetButton"
+                  class="btn btn-light btn-lg w-100 fw-semibold"
+                  onclick="clearFilters()"
+                >
+                  <i class="fas fa-refresh me-2"></i>Reset
+                </button>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 
-    <!-- Applications Grid -->
-    <div class="row" id="applicationsContainer">
-        {% for ap in appl %}
-        <div class="col-lg-6 col-xl-4 mb-4 application-card" 
-             data-title="{{ ap.jobtitle|lower }}" 
-             data-company="{{ ap.empemailaddress|lower }}"
-             data-date="{{ ap.applieddate }}">
-            <div class="card h-100 shadow-sm border-0" style="border-radius: 15px; transition: all 0.3s ease; overflow: hidden;">
-                <!-- Card Header -->
-                <div class="card-header border-0 position-relative" 
-                     style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 1.5rem;">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div class="flex-grow-1">
-                            <h5 class="text-white mb-1 fw-bold">{{ ap.jobtitle }}</h5>
-                            <p class="text-white-50 mb-0 small">{{ ap.post }}</p>
-                        </div>
-                        <span class="badge bg-light text-dark px-3 py-2 rounded-pill">
-                            <i class="fas fa-clock me-1"></i> Pending
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Card Body -->
-                <div class="card-body p-4">
-                    <!-- Company Info -->
-                    <div class="d-flex align-items-center mb-3 p-3 bg-light rounded-3">
-                        <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3" 
-                             style="width: 40px; height: 40px;">
-                            <i class="fas fa-building text-white"></i>
-                        </div>
-                        <div>
-                            <h6 class="mb-0 fw-semibold text-dark">Company</h6>
-                            <small class="text-muted">{{ ap.empemailaddress }}</small>
-                        </div>
-                    </div>
-
-                    <!-- Personal Details -->
-                    <div class="row g-3 mb-3">
-                        <div class="col-6">
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-user text-primary me-2"></i>
-                                <div>
-                                    <small class="text-muted d-block">Name</small>
-                                    <span class="fw-semibold text-dark">{{ ap.name }}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-venus-mars text-primary me-2"></i>
-                                <div>
-                                    <small class="text-muted d-block">Gender</small>
-                                    <span class="fw-semibold text-dark">{{ ap.gender }}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-envelope text-primary me-2"></i>
-                                <div>
-                                    <small class="text-muted d-block">Email</small>
-                                    <span class="fw-semibold text-dark">{{ ap.emailaddress }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Key Skills -->
-                    <div class="mb-3">
-                        <small class="text-muted d-block mb-2">Key Skills</small>
-                        <div class="d-flex flex-wrap gap-1">
-                            {% for skill in ap.keyskills|slice:":3" %}
-                            <span class="badge bg-primary bg-opacity-10 text-primary px-2 py-1 rounded-pill small">
-                                {{ skill|title }}
-                            </span>
-                            {% endfor %}
-                        </div>
-                    </div>
-
-                    <!-- Application Date -->
-                    <div class="d-flex align-items-center justify-content-between pt-3 border-top">
-                        <div class="d-flex align-items-center">
-                            <i class="fas fa-calendar-alt text-primary me-2"></i>
-                            <div>
-                                <small class="text-muted d-block">Applied On</small>
-                                <span class="fw-semibold text-dark">{{ ap.applieddate|date:"M d, Y" }}</span>
-                            </div>
-                        </div>
-                        <button class="btn btn-outline-primary btn-sm" onclick="viewDetails('{{ ap.id }}')">
-                            <i class="fas fa-eye me-1"></i> View Details
-                        </button>
-                    </div>
-                </div>
+  <!-- Applications Stats Summary -->
+  <div class="row mb-4">
+    <div class="col-lg-3 col-md-6 mb-3">
+      <div
+        class="card border-0 shadow-sm h-100"
+        style="border-radius: 15px; border-left: 4px solid #667eea"
+      >
+        <div class="card-body p-4">
+          <div class="d-flex align-items-center">
+            <div class="bg-primary bg-opacity-10 rounded-circle p-3 me-3">
+              <i class="fas fa-clock text-primary fs-4"></i>
             </div>
-        </div>
-        {% empty %}
-        <div class="col-12">
-            <div class="card border-0 shadow-sm" style="border-radius: 15px;">
-                <div class="card-body text-center py-5">
-                    <div class="mb-4">
-                        <i class="fas fa-briefcase text-muted" style="font-size: 4rem; opacity: 0.3;"></i>
-                    </div>
-                    <h4 class="text-muted mb-2">No Applications Yet</h4>
-                    <p class="text-muted mb-4">You haven't applied for any jobs yet. Start exploring opportunities!</p>
-                    <a href="{% url 'jsapp:viewjobs' %}" class="btn btn-primary px-4 py-2 rounded-pill">
-                        <i class="fas fa-search me-2"></i> Browse Jobs
-                    </a>
-                </div>
+            <div>
+              <h3 class="mb-0 fw-bold text-primary">{{ appl|length }}</h3>
+              <small class="text-muted fw-semibold">Pending Applications</small>
             </div>
+          </div>
         </div>
-        {% endfor %}
+      </div>
     </div>
+    <div class="col-lg-3 col-md-6 mb-3">
+      <div
+        class="card border-0 shadow-sm h-100"
+        style="border-radius: 15px; border-left: 4px solid #28a745"
+      >
+        <div class="card-body p-4">
+          <div class="d-flex align-items-center">
+            <div class="bg-success bg-opacity-10 rounded-circle p-3 me-3">
+              <i class="fas fa-eye text-success fs-4"></i>
+            </div>
+            <div>
+              <h3 class="mb-0 fw-bold text-success">0</h3>
+              <small class="text-muted fw-semibold">Under Review</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-3">
+      <div
+        class="card border-0 shadow-sm h-100"
+        style="border-radius: 15px; border-left: 4px solid #ffc107"
+      >
+        <div class="card-body p-4">
+          <div class="d-flex align-items-center">
+            <div class="bg-warning bg-opacity-10 rounded-circle p-3 me-3">
+              <i class="fas fa-star text-warning fs-4"></i>
+            </div>
+            <div>
+              <h3 class="mb-0 fw-bold text-warning">0</h3>
+              <small class="text-muted fw-semibold">Shortlisted</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 mb-3">
+      <div
+        class="card border-0 shadow-sm h-100"
+        style="border-radius: 15px; border-left: 4px solid #764ba2"
+      >
+        <div class="card-body p-4">
+          <div class="d-flex align-items-center">
+            <div class="bg-secondary bg-opacity-10 rounded-circle p-3 me-3">
+              <i class="fas fa-chart-line text-secondary fs-4"></i>
+            </div>
+            <div>
+              <h3 class="mb-0 fw-bold text-secondary">{{ appl|length }}</h3>
+              <small class="text-muted fw-semibold">Total Applied</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <!-- Load More Button -->
-    {% if appl|length > 6 %}
-    <div class="row mt-4">
-        <div class="col-12 text-center">
-            <button class="btn btn-outline-primary px-4 py-2 rounded-pill" onclick="loadMore()">
-                <i class="fas fa-plus-circle me-2"></i> Load More Applications
+  <!-- Enhanced Applications Grid -->
+  <div class="row" id="applicationsContainer">
+    {% for ap in appl %}
+    <div
+      class="col-lg-6 col-xl-4 mb-4 application-card"
+      data-title="{{ ap.jobtitle|lower }}"
+      data-company="{{ ap.empemailaddress|lower }}"
+      data-date="{{ ap.applieddate }}"
+      data-status="pending"
+    >
+      <div
+        class="card h-100 shadow-sm border-0 position-relative overflow-hidden"
+        style="
+          border-radius: 20px;
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        "
+      >
+        <!-- Priority Indicator -->
+        <div class="position-absolute top-0 end-0 m-3 z-index-2">
+          <div class="dropdown">
+            <button
+              class="btn btn-sm btn-light btn-floating rounded-circle p-2 shadow-sm"
+              data-bs-toggle="dropdown"
+              style="width: 36px; height: 36px"
+            >
+              <i class="fas fa-ellipsis-v text-muted"></i>
             </button>
+            <ul
+              class="dropdown-menu dropdown-menu-end shadow border-0"
+              style="border-radius: 12px"
+            >
+              <li>
+                <a class="dropdown-item" href="#"
+                  ><i class="fas fa-eye me-2"></i>View Details</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="#"
+                  ><i class="fas fa-edit me-2"></i>Edit Application</a
+                >
+              </li>
+              <li><hr class="dropdown-divider" /></li>
+              <li>
+                <a class="dropdown-item text-danger" href="#"
+                  ><i class="fas fa-trash me-2"></i>Withdraw</a
+                >
+              </li>
+            </ul>
+          </div>
         </div>
+
+        <!-- Enhanced Card Header -->
+        <div
+          class="card-header border-0 position-relative p-4"
+          style="
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 140px;
+          "
+        >
+          <div class="position-relative z-index-1">
+            <div class="mb-3">
+              <span
+                class="badge bg-light text-dark px-3 py-2 rounded-pill shadow-sm mb-3"
+              >
+                <i class="fas fa-clock me-1"></i> Pending Review
+              </span>
+            </div>
+            <h4 class="text-white mb-2 fw-bold" style="line-height: 1.3">
+              {{ ap.jobtitle }}
+            </h4>
+            <p class="text-white-50 mb-0 fw-medium">
+              {{ ap.post|default:"Full-time Position" }}
+            </p>
+          </div>
+          <!-- Decorative Background Pattern -->
+          <div class="position-absolute top-0 start-0 w-100 h-100 opacity-10">
+            <svg viewBox="0 0 100 100" class="w-100 h-100">
+              <defs>
+                <pattern
+                  id="dots"
+                  x="0"
+                  y="0"
+                  width="20"
+                  height="20"
+                  patternUnits="userSpaceOnUse"
+                >
+                  <circle cx="10" cy="10" r="1.5" fill="white" opacity="0.3" />
+                </pattern>
+              </defs>
+              <rect width="100" height="100" fill="url(#dots)" />
+            </svg>
+          </div>
+        </div>
+
+        <!-- Enhanced Card Body -->
+        <div class="card-body p-4">
+          <!-- Company Information -->
+          <div
+            class="d-flex align-items-center p-3 mb-4 rounded-4"
+            style="
+              background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+              border: 1px solid #e9ecef;
+            "
+          >
+            <div class="flex-shrink-0 me-3">
+              <div
+                class="bg-primary rounded-circle d-flex align-items-center justify-content-center shadow-sm"
+                style="width: 48px; height: 48px"
+              >
+                <i class="fas fa-building text-white fs-5"></i>
+              </div>
+            </div>
+            <div class="flex-grow-1 min-width-0">
+              <h6 class="mb-1 fw-bold text-dark">Company Details</h6>
+              <p class="mb-0 text-muted small text-truncate">
+                {{ ap.empemailaddress }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Personal Information Grid -->
+          <div class="row g-3 mb-4">
+            <div class="col-12">
+              <div class="border rounded-3 p-3">
+                <div class="d-flex align-items-center mb-2">
+                  <i class="fas fa-user text-primary me-2"></i>
+                  <small
+                    class="text-muted fw-semibold text-uppercase tracking-wide"
+                    >Applicant Info</small
+                  >
+                </div>
+                <div class="row g-2 small">
+                  <div class="col-6">
+                    <strong class="d-block text-dark"
+                      >{{ ap.name|title }}</strong
+                    >
+                    <span class="text-muted">{{ ap.gender|title }}</span>
+                  </div>
+                  <div class="col-6">
+                    <i class="fas fa-envelope text-muted me-1"></i>
+                    <span class="text-dark small"
+                      >{{ ap.emailaddress|truncatechars:20 }}</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Skills Tags -->
+          <div class="mb-4">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <small
+                class="text-muted fw-semibold text-uppercase tracking-wide"
+              >
+                <i class="fas fa-code me-1"></i>Key Skills
+              </small>
+              <small class="text-muted">Top 3</small>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+              {% for skill in ap.keyskills|slice:":3" %}
+              <span
+                class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-medium border border-primary border-opacity-25"
+              >
+                {{ skill|title }}
+              </span>
+              {% empty %}
+              <span class="text-muted small">No skills specified</span>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Enhanced Card Footer -->
+        <div class="card-footer bg-transparent border-0 p-4 pt-0">
+          <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+              <div class="bg-light rounded-circle p-2 me-3">
+                <i class="fas fa-calendar-alt text-primary"></i>
+              </div>
+              <div>
+                <small
+                  class="text-muted fw-semibold d-block text-uppercase tracking-wide"
+                  >Applied On</small
+                >
+                <span class="fw-bold text-dark"
+                  >{{ ap.applieddate|date:"M d, Y" }}</span
+                >
+              </div>
+            </div>
+            <button
+              class="btn btn-primary btn-sm rounded-pill px-4 shadow-sm"
+              onclick="viewDetails('{{ ap.id }}')"
+            >
+              <i class="fas fa-arrow-right me-1"></i> View
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-    {% endif %}
+    {% empty %}
+    <!-- Enhanced Empty State -->
+    <div class="col-12">
+      <div
+        class="card border-0 shadow-sm"
+        style="border-radius: 20px; min-height: 400px"
+      >
+        <div
+          class="card-body d-flex align-items-center justify-content-center text-center py-5"
+        >
+          <div>
+            <div class="mb-4">
+              <div
+                class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center"
+                style="width: 120px; height: 120px"
+              >
+                <i
+                  class="fas fa-briefcase text-primary"
+                  style="font-size: 3rem"
+                ></i>
+              </div>
+            </div>
+            <h3 class="fw-bold mb-3" style="color: #ffffff">
+              No Applications Yet
+            </h3>
+            <p class="text-muted mb-4 fs-5 mx-auto" style="max-width: 400px">
+              Start your career journey by exploring and applying to exciting
+              job opportunities tailored for you.
+            </p>
+            <div
+              class="d-flex flex-column flex-sm-row gap-3 justify-content-center"
+            >
+              <a
+                href="{% url 'jsapp:viewjobs' %}"
+                class="btn btn-primary px-5 py-3 rounded-pill shadow-sm"
+              >
+                <i class="fas fa-search me-2"></i> Browse Available Jobs
+              </a>
+              <button class="btn btn-outline-primary px-5 py-3 rounded-pill">
+                <i class="fas fa-bell me-2"></i> Set Job Alerts
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Enhanced Load More Section -->
+  {% if appl|length > 6 %}
+  <div class="row mt-5">
+    <div class="col-12">
+      <div class="text-center">
+        <button
+          class="btn btn-outline-primary btn-lg px-5 py-3 rounded-pill shadow-sm"
+          onclick="loadMore()"
+        >
+          <i class="fas fa-chevron-down me-2"></i> Load More Applications
+        </button>
+        <p class="text-muted mt-3 mb-0">
+          Showing 6 of {{ appl|length }} applications
+        </p>
+      </div>
+    </div>
+  </div>
+  {% endif %}
 </div>
 
-<!-- Application Details Modal -->
-<div class="modal fade" id="applicationModal" tabindex="-1" aria-labelledby="applicationModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg" style="border-radius: 15px;">
-            <div class="modal-header border-0 pb-0" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                <h5 class="modal-title text-white fw-bold" id="applicationModalLabel">Application Details</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+<!-- Enhanced Application Details Modal -->
+<div
+  class="modal fade"
+  id="applicationModal"
+  tabindex="-1"
+  aria-labelledby="applicationModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg" style="border-radius: 20px">
+      <div
+        class="modal-header border-0 pb-0"
+        style="
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          border-radius: 20px 20px 0 0;
+        "
+      >
+        <div class="container-fluid">
+          <div class="row align-items-center py-3">
+            <div class="col">
+              <h4
+                class="modal-title text-white fw-bold mb-1"
+                id="applicationModalLabel"
+              >
+                <i class="fas fa-document-text me-2"></i>Application Details
+              </h4>
+              <p class="text-white-50 mb-0">
+                Comprehensive overview of your job application
+              </p>
             </div>
-            <div class="modal-body p-4" id="modalContent">
-                <!-- Dynamic content will be loaded here -->
+            <div class="col-auto">
+              <button
+                type="button"
+                class="btn btn-light btn-sm rounded-circle p-2"
+                data-bs-dismiss="modal"
+                style="width: 40px; height: 40px"
+              >
+                <i class="fas fa-times"></i>
+              </button>
             </div>
+          </div>
         </div>
+      </div>
+      <div class="modal-body p-5" id="modalContent">
+        <!-- Dynamic content will be loaded here -->
+      </div>
     </div>
+  </div>
 </div>
 
 <style>
-.application-card:hover .card {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important;
-}
+  .form-select.form-select-lg {
+    font-size: 1rem; 
+    padding: 1rem 1rem;
+  }
 
-.card-header::after {
-    content: '';
+    #resetButton {
+        padding: 1rem 1rem; 
+        font-size: 1rem;
+    }
+
+  label {
+    font-size: 1rem; 
+  }
+  .tracking-wide {
+    letter-spacing: 0.05em;
+  }
+
+  .z-index-1 {
+    z-index: 1;
+  }
+  .z-index-2 {
+    z-index: 2;
+  }
+
+  .application-card:hover .card {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(204, 211, 244, 0.15) !important;
+  }
+
+  .application-card .card {
+    border: 1px solid rgba(102, 126, 234, 0.1);
+  }
+
+  .application-card:hover .card::before {
+    opacity: 1;
+  }
+
+  .application-card .card::before {
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="20" cy="20" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="30" r="1.5" fill="rgba(255,255,255,0.1)"/></svg>');
-    pointer-events: none;
-}
+    background: linear-gradient(
+      135deg,
+      rgba(102, 126, 234, 0.05) 0%,
+      rgba(118, 75, 162, 0.05) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 20px;
+    z-index: 0;
+  }
 
-.btn:focus {
-    box-shadow: none;
-}
-
-.form-control:focus, .form-select:focus {
+  .btn:focus,
+  .form-control:focus,
+  .form-select:focus {
+    box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
     border-color: #667eea;
-    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
-}
+  }
 
-@media (max-width: 768px) {
+  .btn-floating {
+    transition: all 0.3s ease;
+  }
+
+  .btn-floating:hover {
+    transform: translateY(-2px);
+  }
+
+  .dropdown-menu {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 0;
+  }
+
+  .dropdown-item:hover {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+  }
+
+  .card-header svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (max-width: 768px) {
+    .application-card:hover .card {
+      transform: translateY(-4px);
+    }
+
+    .modal-xl {
+      max-width: 95vw;
+    }
+
     .card-body {
-        padding: 1.5rem !important;
+      padding: 1.5rem !important;
     }
-    
-    .badge {
-        font-size: 0.75rem !important;
+
+    .display-6 {
+      font-size: 2rem !important;
     }
-}
+  }
+
+  @media (max-width: 576px) {
+    .container-fluid {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .btn-lg {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+    }
+  }
+
+  /* Loading Animation */
+  @keyframes shimmer {
+    0% {
+      background-position: -468px 0;
+    }
+    100% {
+      background-position: 468px 0;
+    }
+  }
+
+  .loading-shimmer {
+    animation: shimmer 1.5s ease-in-out infinite;
+    background: linear-gradient(to right, #f6f7f8 8%, #edeef1 18%, #f6f7f8 33%);
+    background-size: 800px 104px;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #5a67d8 0%, #6b4c87 100%);
+  }
 </style>
 
 <script>
-// Search and Filter Functionality
-document.getElementById('searchInput').addEventListener('keyup', filterApplications);
-document.getElementById('filterStatus').addEventListener('change', filterApplications);
-document.getElementById('sortBy').addEventListener('change', sortApplications);
+  // Enhanced Search and Filter Functionality
+  let debounceTimer;
 
-function filterApplications() {
-    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-    const statusFilter = document.getElementById('filterStatus').value.toLowerCase();
-    const cards = document.querySelectorAll('.application-card');
-    
-    cards.forEach(card => {
-        const title = card.getAttribute('data-title');
-        const company = card.getAttribute('data-company');
-        const matchesSearch = title.includes(searchTerm) || company.includes(searchTerm);
-        
-        if (matchesSearch) {
-            card.style.display = 'block';
-        } else {
-            card.style.display = 'none';
-        }
+  document.getElementById("searchInput").addEventListener("keyup", function () {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(filterApplications, 300);
+  });
+
+  document
+    .getElementById("filterStatus")
+    .addEventListener("change", filterApplications);
+  document
+    .getElementById("sortBy")
+    .addEventListener("change", sortApplications);
+
+  function filterApplications() {
+    const searchTerm = document
+      .getElementById("searchInput")
+      .value.toLowerCase()
+      .trim();
+    const statusFilter = document
+      .getElementById("filterStatus")
+      .value.toLowerCase();
+    const cards = document.querySelectorAll(".application-card");
+    let visibleCount = 0;
+
+    cards.forEach((card) => {
+      const title = card.getAttribute("data-title") || "";
+      const company = card.getAttribute("data-company") || "";
+      const status = card.getAttribute("data-status") || "";
+
+      const matchesSearch =
+        !searchTerm ||
+        title.includes(searchTerm) ||
+        company.includes(searchTerm);
+      const matchesStatus = !statusFilter || status === statusFilter;
+
+      if (matchesSearch && matchesStatus) {
+        card.style.display = "block";
+        card.style.animation = "fadeIn 0.5s ease-in-out";
+        visibleCount++;
+      } else {
+        card.style.display = "none";
+      }
     });
-}
 
-function sortApplications() {
-    const sortBy = document.getElementById('sortBy').value;
-    const container = document.getElementById('applicationsContainer');
-    const cards = Array.from(container.querySelectorAll('.application-card'));
-    
+    // Update results count
+    updateResultsCount(visibleCount, cards.length);
+  }
+
+  function sortApplications() {
+    const sortBy = document.getElementById("sortBy").value;
+    const container = document.getElementById("applicationsContainer");
+    const cards = Array.from(container.querySelectorAll(".application-card"));
+
     cards.sort((a, b) => {
-        if (sortBy === 'title') {
-            return a.getAttribute('data-title').localeCompare(b.getAttribute('data-title'));
-        } else if (sortBy === 'company') {
-            return a.getAttribute('data-company').localeCompare(b.getAttribute('data-company'));
-        } else if (sortBy === 'date') {
-            return new Date(b.getAttribute('data-date')) - new Date(a.getAttribute('data-date'));
-        }
+      switch (sortBy) {
+        case "title":
+          return a
+            .getAttribute("data-title")
+            .localeCompare(b.getAttribute("data-title"));
+        case "company":
+          return a
+            .getAttribute("data-company")
+            .localeCompare(b.getAttribute("data-company"));
+        case "status":
+          return a
+            .getAttribute("data-status")
+            .localeCompare(b.getAttribute("data-status"));
+        case "date":
+        default:
+          return (
+            new Date(b.getAttribute("data-date")) -
+            new Date(a.getAttribute("data-date"))
+          );
+      }
     });
-    
-    cards.forEach(card => container.appendChild(card));
-}
 
-function clearFilters() {
-    document.getElementById('searchInput').value = '';
-    document.getElementById('filterStatus').value = '';
-    document.getElementById('sortBy').value = 'date';
-    filterApplications();
-}
+    // Animate the reordering
+    container.style.opacity = "0.7";
+    setTimeout(() => {
+      cards.forEach((card) => container.appendChild(card));
+      container.style.opacity = "1";
+    }, 150);
+  }
 
-function viewDetails(applicationId) {
-    // This would typically make an AJAX call to get detailed application info
-    const modal = new bootstrap.Modal(document.getElementById('applicationModal'));
-    document.getElementById('modalContent').innerHTML = `
-        <div class="text-center">
-            <div class="spinner-border text-primary" role="status">
+  function clearFilters() {
+    document.getElementById("searchInput").value = "";
+    document.getElementById("filterStatus").value = "";
+    document.getElementById("sortBy").value = "date";
+
+    // Reset all cards
+    document.querySelectorAll(".application-card").forEach((card) => {
+      card.style.display = "block";
+    });
+
+    sortApplications();
+
+    // Show success message
+    showToast("Filters cleared successfully", "success");
+  }
+
+  function updateResultsCount(visible, total) {
+    const loadMoreSection = document.querySelector(".mt-5 .text-center p");
+    if (loadMoreSection) {
+      loadMoreSection.textContent = `Showing ${visible} of ${total} applications`;
+    }
+  }
+
+  function viewDetails(applicationId) {
+    const modal = new bootstrap.Modal(
+      document.getElementById("applicationModal")
+    );
+    const modalContent = document.getElementById("modalContent");
+
+    // Show loading state
+    modalContent.innerHTML = `
+        <div class="text-center py-5">
+            <div class="spinner-border text-primary mb-4" role="status" style="width: 3rem; height: 3rem;">
                 <span class="visually-hidden">Loading...</span>
             </div>
-            <p class="mt-3 text-muted">Loading application details...</p>
+            <h5 class="text-muted">Loading application details...</h5>
+            <p class="text-muted mb-0">Please wait while we fetch the information</p>
         </div>
     `;
+
     modal.show();
-    
-    // Simulate API call
+
+    // Simulate API call with enhanced content
     setTimeout(() => {
-        document.getElementById('modalContent').innerHTML = `
+      modalContent.innerHTML = `
             <div class="row g-4">
-                <div class="col-md-6">
-                    <h6 class="fw-bold mb-3">Personal Information</h6>
-                    <div class="bg-light p-3 rounded-3">
-                        <p><strong>Name:</strong> John Doe</p>
-                        <p><strong>Email:</strong> john@example.com</p>
-                        <p><strong>Phone:</strong> +1234567890</p>
-                        <p><strong>Address:</strong> 123 Main St, City</p>
-                        <p class="mb-0"><strong>DOB:</strong> Jan 1, 1990</p>
+                <!-- Personal Information Section -->
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm h-100" style="border-radius: 15px;">
+                        <div class="card-header bg-primary bg-opacity-10 border-0 py-3">
+                            <h6 class="fw-bold mb-0 text-primary">
+                                <i class="fas fa-user-circle me-2"></i>Personal Information
+                            </h6>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="row g-3">
+                                <div class="col-sm-6">
+                                    <label class="small text-muted fw-semibold">Full Name</label>
+                                    <p class="fw-bold mb-0">John Doe</p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="small text-muted fw-semibold">Gender</label>
+                                    <p class="fw-bold mb-0">Male</p>
+                                </div>
+                                <div class="col-12">
+                                    <label class="small text-muted fw-semibold">Email Address</label>
+                                    <p class="fw-bold mb-0">john.doe@example.com</p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="small text-muted fw-semibold">Phone Number</label>
+                                    <p class="fw-bold mb-0">+1 (555) 123-4567</p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="small text-muted fw-semibold">Date of Birth</label>
+                                    <p class="fw-bold mb-0">January 15, 1990</p>
+                                </div>
+                                <div class="col-12">
+                                    <label class="small text-muted fw-semibold">Address</label>
+                                    <p class="fw-bold mb-0">123 Main Street, Suite 100<br>New York, NY 10001</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <h6 class="fw-bold mb-3">Professional Details</h6>
-                    <div class="bg-light p-3 rounded-3">
-                        <p><strong>Qualification:</strong> Bachelor's Degree</p>
-                        <p><strong>Experience:</strong> 3+ years</p>
-                        <p class="mb-0"><strong>Skills:</strong> JavaScript, Python, React</p>
+                
+                <!-- Professional Information Section -->
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm h-100" style="border-radius: 15px;">
+                        <div class="card-header bg-success bg-opacity-10 border-0 py-3">
+                            <h6 class="fw-bold mb-0 text-success">
+                                <i class="fas fa-briefcase me-2"></i>Professional Details
+                            </h6>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="small text-muted fw-semibold">Highest Qualification</label>
+                                    <p class="fw-bold mb-0">Bachelor's Degree in Computer Science</p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="small text-muted fw-semibold">Experience</label>
+                                    <p class="fw-bold mb-0">3+ Years</p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="small text-muted fw-semibold">Current Role</label>
+                                    <p class="fw-bold mb-0">Software Developer</p>
+                                </div>
+                                <div class="col-12">
+                                    <label class="small text-muted fw-semibold">Key Skills</label>
+                                    <div class="d-flex flex-wrap gap-2 mt-2">
+                                        <span class="badge bg-primary px-3 py-2">JavaScript</span>
+                                        <span class="badge bg-primary px-3 py-2">Python</span>
+                                        <span class="badge bg-primary px-3 py-2">React</span>
+                                        <span class="badge bg-primary px-3 py-2">Django</span>
+                                        <span class="badge bg-primary px-3 py-2">SQL</span>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <label class="small text-muted fw-semibold">Portfolio/LinkedIn</label>
+                                    <p class="fw-bold mb-0">
+                                        <a href="#" class="text-decoration-none">linkedin.com/in/johndoe</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                
+                <!-- Application Status Section -->
                 <div class="col-12">
-                    <div class="bg-primary bg-opacity-10 p-3 rounded-3 text-center">
-                        <h6 class="text-primary mb-2">Application Status</h6>
-                        <span class="badge bg-warning px-3 py-2 fs-6">Under Review</span>
+                    <div class="card border-0 shadow-sm" style="border-radius: 15px;">
+                        <div class="card-header bg-warning bg-opacity-10 border-0 py-3">
+                            <h6 class="fw-bold mb-0 text-warning">
+                                <i class="fas fa-chart-line me-2"></i>Application Status & Timeline
+                            </h6>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="row align-items-center">
+                                <div class="col-md-4">
+                                    <div class="text-center">
+                                        <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                                             style="width: 80px; height: 80px;">
+                                            <i class="fas fa-clock text-primary fs-2"></i>
+                                        </div>
+                                        <h5 class="fw-bold text-primary mb-1">Under Review</h5>
+                                        <p class="text-muted mb-0 small">Application received and being processed</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="timeline-steps">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="bg-success rounded-circle me-3 d-flex align-items-center justify-content-center" 
+                                                 style="width: 30px; height: 30px; min-width: 30px;">
+                                                <i class="fas fa-check text-white small"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-1 fw-semibold">Application Submitted</h6>
+                                                <small class="text-muted">March 15, 2024 at 2:30 PM</small>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="bg-success rounded-circle me-3 d-flex align-items-center justify-content-center" 
+                                                 style="width: 30px; height: 30px; min-width: 30px;">
+                                                <i class="fas fa-check text-white small"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-1 fw-semibold">Initial Screening Complete</h6>
+                                                <small class="text-muted">March 16, 2024 at 10:15 AM</small>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="bg-primary rounded-circle me-3 d-flex align-items-center justify-content-center" 
+                                                 style="width: 30px; height: 30px; min-width: 30px;">
+                                                <i class="fas fa-eye text-white small"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-1 fw-semibold">Under Review by Hiring Manager</h6>
+                                                <small class="text-muted">Currently in progress</small>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="bg-light border rounded-circle me-3 d-flex align-items-center justify-content-center" 
+                                                 style="width: 30px; height: 30px; min-width: 30px;">
+                                                <i class="fas fa-comments text-muted small"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-1 fw-semibold text-muted">Interview Scheduling</h6>
+                                                <small class="text-muted">Pending review completion</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Job Details Section -->
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm" style="border-radius: 15px;">
+                        <div class="card-header bg-info bg-opacity-10 border-0 py-3">
+                            <h6 class="fw-bold mb-0 text-info">
+                                <i class="fas fa-info-circle me-2"></i>Job Details & Requirements
+                            </h6>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="row g-4">
+                                <div class="col-md-8">
+                                    <h5 class="fw-bold mb-3">Senior Software Developer</h5>
+                                    <p class="text-muted mb-3">
+                                        We are seeking a talented Senior Software Developer to join our dynamic team. 
+                                        The ideal candidate will have strong experience in full-stack development 
+                                        and a passion for creating innovative solutions.
+                                    </p>
+                                    <div class="mb-3">
+                                        <h6 class="fw-semibold mb-2">Key Responsibilities:</h6>
+                                        <ul class="text-muted mb-0">
+                                            <li>Develop and maintain web applications using modern frameworks</li>
+                                            <li>Collaborate with cross-functional teams to define and implement features</li>
+                                            <li>Write clean, maintainable, and well-documented code</li>
+                                            <li>Participate in code reviews and mentor junior developers</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h6 class="fw-semibold mb-2">Required Qualifications:</h6>
+                                        <ul class="text-muted mb-0">
+                                            <li>3+ years of experience in software development</li>
+                                            <li>Proficiency in JavaScript, Python, and modern frameworks</li>
+                                            <li>Experience with database design and optimization</li>
+                                            <li>Strong problem-solving and communication skills</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="bg-light rounded-3 p-3">
+                                        <div class="mb-3">
+                                            <label class="small text-muted fw-semibold">Salary Range</label>
+                                            <p class="fw-bold mb-0 text-success">$75,000 - $95,000</p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="small text-muted fw-semibold">Employment Type</label>
+                                            <p class="fw-bold mb-0">Full-time</p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="small text-muted fw-semibold">Location</label>
+                                            <p class="fw-bold mb-0">New York, NY</p>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="small text-muted fw-semibold">Remote Work</label>
+                                            <p class="fw-bold mb-0">Hybrid Available</p>
+                                        </div>
+                                        <div>
+                                            <label class="small text-muted fw-semibold">Benefits</label>
+                                            <div class="mt-2">
+                                                <span class="badge bg-success bg-opacity-10 text-success me-1 mb-1">Health Insurance</span>
+                                                <span class="badge bg-success bg-opacity-10 text-success me-1 mb-1">401(k)</span>
+                                                <span class="badge bg-success bg-opacity-10 text-success me-1 mb-1">PTO</span>
+                                                <span class="badge bg-success bg-opacity-10 text-success me-1 mb-1">Professional Development</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="col-12">
+                    <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center pt-3">
+                        <button class="btn btn-primary btn-lg px-5 rounded-pill">
+                            <i class="fas fa-edit me-2"></i>Edit Application
+                        </button>
+                        <button class="btn btn-outline-primary btn-lg px-5 rounded-pill">
+                            <i class="fas fa-download me-2"></i>Download Resume
+                        </button>
+                        <button class="btn btn-outline-danger btn-lg px-5 rounded-pill">
+                            <i class="fas fa-times me-2"></i>Withdraw Application
+                        </button>
                     </div>
                 </div>
             </div>
         `;
-    }, 1000);
-}
+    }, 1200);
+  }
 
-function loadMore() {
-    // Implementation for loading more applications
-    console.log('Loading more applications...');
-}
+  function loadMore() {
+    const button = event.target;
+    const originalText = button.innerHTML;
+
+    // Show loading state
+    button.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Loading...';
+    button.disabled = true;
+
+    // Simulate loading more applications
+    setTimeout(() => {
+      button.innerHTML = originalText;
+      button.disabled = false;
+      showToast("More applications loaded successfully", "success");
+    }, 2000);
+  }
+
+  function showToast(message, type = "success") {
+    // Create toast notification
+    const toast = document.createElement("div");
+    toast.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+    toast.style.cssText =
+      "top: 20px; right: 20px; z-index: 9999; min-width: 300px;";
+    toast.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+
+    document.body.appendChild(toast);
+
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+      if (toast.parentNode) {
+        toast.parentNode.removeChild(toast);
+      }
+    }, 5000);
+  }
+
+  // Initialize tooltips and enhanced interactions
+  document.addEventListener("DOMContentLoaded", function () {
+    // Initialize Bootstrap tooltips if available
+    var tooltipTriggerList = [].slice.call(
+      document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    );
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+
+    // Add smooth scrolling to load more button
+    const loadMoreBtn = document.querySelector('[onclick="loadMore()"]');
+    if (loadMoreBtn) {
+      loadMoreBtn.addEventListener("click", function () {
+        setTimeout(() => {
+          window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: "smooth",
+          });
+        }, 100);
+      });
+    }
+
+    // Add intersection observer for animation on scroll
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: "0px 0px -50px 0px",
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = "1";
+          entry.target.style.transform = "translateY(0)";
+        }
+      });
+    }, observerOptions);
+
+    // Observe application cards for animation
+    document.querySelectorAll(".application-card").forEach((card) => {
+      card.style.opacity = "0";
+      card.style.transform = "translateY(20px)";
+      card.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+      observer.observe(card);
+    });
+  });
+
+  // Add CSS animations
+  const style = document.createElement("style");
+  style.textContent = `
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .timeline-steps::before {
+        content: '';
+        position: absolute;
+        left: 15px;
+        top: 40px;
+        bottom: 40px;
+        width: 2px;
+        background: linear-gradient(to bottom, #28a745, #007bff, #e9ecef);
+    }
+    
+    .timeline-steps {
+        position: relative;
+    }
+`;
+  document.head.appendChild(style);
 </script>
 {% endblock body %}

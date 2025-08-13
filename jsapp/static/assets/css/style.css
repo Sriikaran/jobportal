@@ -106,11 +106,8 @@
 /* === Import template variables === */
 /*-------------------------------------------------------------------*/
 /* === SCSS Compass Functions === */
-<<<<<<< HEAD
-=======
 
 
->>>>>>> d0a70a6 (responsive-issue#27)
 @-moz-keyframes flash {
   0% {
     opacity: 1; }
@@ -20330,7 +20327,6 @@ div.tagsinput {
 /* Sidebar */
 .sidebar {
   min-height: calc(100vh - 70px);
-  background: #191c24;
   font-weight: normal;
   padding: 0;
   width: 244px;
@@ -20344,7 +20340,6 @@ div.tagsinput {
     -webkit-transition: width 0.25s ease, background 0.25s ease;
     -moz-transition: width 0.25s ease, background 0.25s ease;
     -ms-transition: width 0.25s ease, background 0.25s ease;
-    background: #191c24;
     width: 244px;
     height: 70px; }
     @media (max-width: 991px) {

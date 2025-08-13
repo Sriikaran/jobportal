@@ -1,38 +1,210 @@
 {% extends "jsparent.html" %}
 {% block body %}
-    <div class="row">
-        <div class="col-sm-12">
-            <h1 style="text-align:center;">View Jobs</h1> 
-            <div class="table-responsive">  
-            <table class="table table-bordered" style="margin: auto; color: black;">
-            <tr>
-                <th>Firm Name</th>
-                <th>Job Title</th>
-                <th>Post</th>
-                <th>Job Description</th>
-                <th>Qualification</th>
-                <th>Experience</th>
-                <th>Location</th>
-                <th>Salary</th>
-                <th>Email</th>
-                <th>Apply Now</th>
-                </tr>
-        {% for p in pjobs %}
-        <tr>
-            <td>{{p.firmname}}</td>
-            <td>{{p.jobtitle}}</td>
-            <td>{{p.post}}</td>
-            <td>{{p.jobdesc}}</td>
-            <td>{{p.qualification}}</td>
-            <td>{{p.experience}}</td>
-            <td>{{p.location}}</td>
-            <td>{{p.salarypa}}</td>
-            <td>{{p.emailaddress}}</td>
-            <td><a href="{% url 'jsapp:jsapply' id=p.id %}" class="btn btn-success" >Apply Now</a></td>
-        </tr>
-        {% endfor %}
-        </table>
-    </div>
+
+<div class="container-fluid py-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh;">
+    <div class="container">
+        <!-- Header Section -->
+        <div class="text-center mb-5">
+            <h1 class="display-4 text-white fw-bold mb-3">
+                <i class="fas fa-briefcase me-3"></i>Available Jobs
+            </h1>
+            <p class="lead text-white-50">Discover your next career opportunity</p>
         </div>
+
+        <!-- Jobs Container -->
+        <div class="row">
+            {% for p in pjobs %}
+            <div class="col-12 col-lg-6 col-xl-4 mb-4">
+                <div class="card h-100 shadow-lg border-0" style="border-radius: 20px; backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.95); transition: transform 0.3s ease;">
+                    <div class="card-body p-4 d-flex flex-column">
+                        <!-- Company Header -->
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center me-3" 
+                                 style="width: 50px; height: 50px;">
+                                <i class="fas fa-building text-white"></i>
+                            </div>
+                            <div>
+                                <h5 class="card-title mb-1 text-primary fw-bold">{{p.firmname}}</h5>
+                                <p class="text-muted mb-0 small">
+                                    <i class="fas fa-map-marker-alt me-1"></i>{{p.location}}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Job Title -->
+                        <h4 class="text-dark mb-3 fw-semibold">{{p.jobtitle}}</h4>
+                        
+                        <!-- Job Details -->
+                        <div class="mb-4 flex-grow-1">
+                            <div class="row g-3 mb-3">
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-user-tie text-primary me-2"></i>
+                                        <small class="text-muted">Position</small>
+                                    </div>
+                                    <p class="mb-0 fw-semibold">{{p.post}}</p>
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-dollar-sign text-success me-2"></i>
+                                        <small class="text-muted">Salary</small>
+                                    </div>
+                                    <p class="mb-0 fw-semibold text-success">₹{{p.salarypa}}</p>
+                                </div>
+                            </div>
+
+                            <div class="row g-3 mb-3">
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-graduation-cap text-primary me-2"></i>
+                                        <small class="text-muted">Education</small>
+                                    </div>
+                                    <p class="mb-0 fw-semibold">{{p.qualification}}</p>
+                                </div>
+                                <div class="col-6">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-chart-line text-primary me-2"></i>
+                                        <small class="text-muted">Experience</small>
+                                    </div>
+                                    <p class="mb-0 fw-semibold">{{p.experience}}</p>
+                                </div>
+                            </div>
+
+                            <!-- Job Description -->
+                            <div class="mb-3">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-file-alt text-primary me-2"></i>
+                                    <small class="text-muted fw-semibold">Job Description</small>
+                                </div>
+                                <p class="text-secondary small mb-0" style="text-align: justify; line-height: 1.5;">
+                                    {{p.jobdesc|truncatewords:25}}
+                                </p>
+                            </div>
+
+                            <!-- Contact Email -->
+                            <div class="mb-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-envelope text-primary me-2"></i>
+                                    <small class="text-muted me-2">Contact:</small>
+                                    <small class="text-primary">{{p.emailaddress}}</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Apply Button -->
+                        <div class="mt-auto">
+                            <a href="{% url 'jsapp:jsapply' id=p.id %}" 
+                               class="btn btn-lg w-100"
+                               style="background: linear-gradient(45deg, #28a745, #20c997); border: none; border-radius: 15px; color: white; font-weight: 600; box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);">
+                                <i class="fas fa-paper-plane me-2"></i>Apply Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <!-- No Jobs Available -->
+            <div class="col-12">
+                <div class="card shadow-lg border-0 text-center py-5" style="border-radius: 20px; backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.95);">
+                    <div class="card-body">
+                        <i class="fas fa-search text-muted mb-3" style="font-size: 4rem;"></i>
+                        <h3 class="text-muted mb-3">No Jobs Available</h3>
+                        <p class="text-muted">Check back later for new opportunities!</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Back to Top Button -->
+        <button onclick="topFunction()" id="backToTopBtn" class="btn position-fixed" 
+                style="bottom: 30px; right: 30px; background: linear-gradient(45deg, #667eea, #764ba2); border: none; border-radius: 50%; width: 60px; height: 60px; color: white; box-shadow: 0 4px 15px rgba(0,0,0,0.3); display: none; z-index: 1000;">
+            <i class="fas fa-arrow-up"></i>
+        </button>
     </div>
+</div>
+
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1) !important;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3) !important;
+}
+
+#backToTopBtn:hover {
+    transform: translateY(-3px) scale(1.05);
+}
+
+.bg-primary {
+    background: linear-gradient(45deg, #667eea, #764ba2) !important;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(45deg, #5a67d8, #6b46c1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    .card-body {
+        padding: 1.5rem !important;
+    }
+}
+</style>
+
+<script>
+// Back to top button functionality
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+    var backToTopBtn = document.getElementById("backToTopBtn");
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        backToTopBtn.style.display = "block";
+    } else {
+        backToTopBtn.style.display = "none";
+    }
+}
+
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+
+// Add loading animation to apply buttons
+document.addEventListener('DOMContentLoaded', function() {
+    const applyButtons = document.querySelectorAll('a[href*="jsapply"]');
+    applyButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            this.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+            this.style.pointerEvents = 'none';
+        });
+    });
+});
+</script>
+
 {% endblock body %}

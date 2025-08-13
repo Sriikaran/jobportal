@@ -1,7 +1,10 @@
 from django.urls import path
 from . import views
 
+app_name = 'adminapp'
+
 urlpatterns=[
+    path('', views.adminhome, name='adminhome'),
     path('adminhome/',views.adminhome,name='adminhome'),
     path('news/',views.news,name='news'),
     path('delnews/<newsdate>',views.delnews,name='delnews'),
