@@ -416,6 +416,15 @@
                 valid = false;
             }
 
+            const password = document.getElementById('password');
+            if (password.value.trim().length < 6) {
+                password.nextElementSibling.textContent = "Password must be at least 6 characters.";
+                password.nextElementSibling.style.display = 'block';
+                valid = false;
+            } else {
+                password.nextElementSibling.style.display = 'none';
+            }
+
             const termsCheckbox = document.getElementById('terms-checkbox');
             if (!termsCheckbox.checked) {
                 document.querySelector('.form-check .error-message').style.display = 'block';
