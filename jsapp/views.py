@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from employer.models import Jobs, Post
 from jsapp.models import Response, SavedJob
 from django.contrib import messages
-from jobapp.models import JobSeeker,Employer
+from jobapp.models import JobSeeker,Employer, Login
 from .models import AppliedJobs
 import datetime
 from django.shortcuts import get_object_or_404
@@ -23,6 +23,8 @@ def blog(request):
     return render(request, "blog.html")
 
 def login(request):
+    if request.session.pop('password_changed', False):
+        messages.success(request, "Password changed successfully. Please log in again.")
     return render(request, "login.html")
 
 def employer(request):
@@ -149,33 +151,34 @@ def logout(request):
     return redirect("index")
 def changepassword(request):
     if "username" not in request.session:
-        return redirect("login")
+        return redirect("jobapp:login")
 
     if request.method == "POST":
-        current_password = request.POST.get("current_password")
-        new_password = request.POST.get("new_password")
-        confirm_password = request.POST.get("confirm_password")
+        current_password = request.POST.get("oldpassword")
+        new_password = request.POST.get("newpassword")
+        confirm_password = request.POST.get("cnfpassword")
         email = request.session["username"]
 
         try:
-            user = Response.objects.get(emailaddress=email)
+            user = Login.objects.get(username=email)
 
             if user.password != current_password:
                 messages.error(request, "Current password is incorrect.")
-                return redirect("changepassword")
+                return redirect("jsapp:changepassword")
 
             if new_password != confirm_password:
-                messages.error(request, "New passwords do not match.")
-                return redirect("changepassword")
+                messages.error(request, "New password & confirm password do not match.")
+                return redirect("jsapp:changepassword")
 
             user.password = new_password
             user.save()
-            messages.success(request, "Password changed successfully.")
-            return redirect("index")
+            
+            request.session['password_changed'] = True
+            return redirect("jobapp:login")
 
-        except Response.DoesNotExist:
+        except Login.DoesNotExist:
             messages.error(request, "User not found.")
-            return redirect("login")
+            return redirect("jobapp:login")
 
     return render(request, "changepassword.html")
 # NEW FEATURE: Save Job
