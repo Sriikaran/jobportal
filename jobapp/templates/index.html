@@ -94,6 +94,28 @@
     }
   }
 
+  /* Fix dropdown z-index issue */
+  .navbar .dropdown-menu {
+    z-index: 9999 !important;
+    position: absolute !important;
+  }
+
+  .navbar .dropdown {
+    position: relative;
+    z-index: 1000;
+  }
+
+  /* Ensure dropdown appears above other content */
+  .hero-section {
+    position: relative;
+    z-index: 1; /* Lower than navbar */
+  }
+
+  .jobs-section {
+    position: relative;
+    z-index: 1; /* Lower than navbar */
+  }
+
   /* Hero Section Styles */
   .hero-section {
     background: var(--gradient-hero);
@@ -817,6 +839,9 @@
   function login() {
     alert("Please login to continue");
   }
+  function apply() {
+    alert("Please login to apply for the job");
+  }
 </script>
 
 {% block body %}
@@ -894,7 +919,7 @@
           <li><strong>Skills:</strong> HTML, CSS, JSX, React</li>
         </ul>
         <div class="text-center">
-          <a href="{% url 'jobapp:login' %}" onclick="login()" class="apply-btn"
+          <a href="{% url 'jobapp:apply' %}" onclick="login()" class="apply-btn"
             >Apply Now</a
           >
         </div>
@@ -913,7 +938,7 @@
           <li><strong>Experience:</strong> Experience in digital marketing</li>
         </ul>
         <div class="text-center">
-          <a href="{% url 'jobapp:login' %}" onclick="login()" class="apply-btn"
+          <a href="{% url 'jobapp:apply' %}" onclick="login()" class="apply-btn"
             >Apply Now</a
           >
         </div>
@@ -933,7 +958,7 @@
           <li><strong>Category:</strong> DBA / Data warehousing</li>
         </ul>
         <div class="text-center">
-          <a href="{% url 'jobapp:login' %}" onclick="login()" class="apply-btn"
+          <a href="{% url 'jobapp:apply' %}" onclick="login()" class="apply-btn"
             >Apply Now</a
           >
         </div>
@@ -953,7 +978,7 @@
           <li><strong>Salary:</strong> Based On Skill Set</li>
         </ul>
         <div class="text-center">
-          <a href="{% url 'jobapp:login' %}" onclick="login()" class="apply-btn"
+          <a href="{% url 'jobapp:apply' %}" onclick="apply()" class="apply-btn"
             >Apply Now</a
           >
         </div>
@@ -973,7 +998,7 @@
           <li><strong>Salary:</strong> Based On Skill Set</li>
         </ul>
         <div class="text-center">
-          <a href="{% url 'jobapp:login' %}" onclick="login()" class="apply-btn"
+          <a href="{% url 'jobapp:apply' %}" onclick="login()" class="apply-btn"
             >Apply Now</a
           >
         </div>
@@ -993,7 +1018,7 @@
           <li><strong>Salary:</strong> Based On Skill Set</li>
         </ul>
         <div class="text-center">
-          <a href="{% url 'jobapp:login' %}" onclick="login()" class="apply-btn"
+          <a href="{% url 'jobapp:apply' %}" onclick="login()" class="apply-btn"
             >Apply Now</a
           >
         </div>
@@ -1014,7 +1039,7 @@
           <li><strong>Salary:</strong> 6 LPA</li>
         </ul>
         <div class="text-center">
-          <a href="{% url 'jobapp:login' %}" onclick="login()" class="apply-btn"
+          <a href="{% url 'jobapp:apply' %}" onclick="login()" class="apply-btn"
             >Apply Now</a
           >
         </div>
@@ -1042,7 +1067,7 @@
           </li>
         </ul>
         <div class="text-center">
-          <a href="{% url 'jobapp:login' %}" onclick="login()" class="apply-btn"
+          <a href="{% url 'jobapp:apply' %}" onclick="login()" class="apply-btn"
             >Apply Now</a
           >
         </div>
@@ -1265,7 +1290,7 @@
                           <li><strong>Email:</strong> <a href="mailto:${job.emailaddress}" style="color: #7db9f6;">${job.emailaddress}</a></li>
                         </ul>
                         <div class="d-flex justify-content-center">
-                          <a href="{% url 'jobapp:login' %}" class="apply-btn" onclick="login()">Apply Now</a>
+                          <a href="{% url 'jobapp:apply' %}" class="apply-btn" onclick="apply()">Apply Now</a>
                         </div>
                       </div>
                     </div>

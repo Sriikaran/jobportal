@@ -1,54 +1,388 @@
-{% extends "employerparent.html" %}
-{% block body %}
+{% extends "employerparent.html" %} {% block body %}
 
-    <div class="row w-75">
-        <div class="col-sm-12">
-            <h1 style="text-align:center;">View Your Profile</h1>
-            <form method="post" class="form-group">
-                {% csrf_token %}
-                <table class="table text-dark" style="width:60%;margin:auto; border: transparent;">
-                <tr>
-                    <td>Firm Name</td>
-                    <td>
-                        <input type="text" name="firmname" value="{{empreg.firmname}}" class="form-control text-light"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Firm Work</td>
-                    <td>
-                        <input type="text" name="firmwork" value="{{empreg.firmwork}}" class="form-control text-light"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Firm Address</td>
-                    <td><textarea name="firmaddress" class="form-control text-light">{{empreg.firmaddress}}</textarea></td>
-                </tr>
-                <tr>
-                    <td>Company Name</td>
-                    <td>
-                    <input type="text" name="cpname" value="{{empreg.cpname}}" class="form-control text-light"/>  
-                    </td>
-                </tr>
-                <tr>
-                    <td>Company contactno</td>
-                    <td>
-                    <input type="number" name="cpcontactno" value="{{empreg.cpcontactno}}" class="form-control text-light" />  
-                    </td>
-                </tr>
-                <tr>
-                    <td>Company email address</td>
-                    <td>
-                    <input type="email" name="cpemailaddress" value="{{empreg.cpemailaddress}}" class="form-control text-dark" readonly />  
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                   <button type="submit" class="btn" style="background-color: rgb(8, 8, 151); color: white; font-weight: 500;">Update</button> 
-                    </td>
-                </tr>
-                </table>
-            </form>
-        </div>
+<style>
+  :root {
+    --primary-blue: #093f75;
+    --secondary-blue: #0c3056;
+    --accent-blue: #56a8fa;
+    --light-blue: #1c5aa6;
+    --text-dark: #2c3e50;
+    --text-light: #6c757d;
+    --bg-light: #f8fafc;
+    --shadow-light: 0 4px 20px rgba(9, 63, 117, 0.08);
+    --shadow-medium: 0 8px 32px rgba(9, 63, 117, 0.12);
+    --gradient-primary: linear-gradient(
+      135deg,
+      #0c3056 0%,
+      #1c5aa6 50%,
+      #56a8fa 100%
+    );
+    --gradient-accent: linear-gradient(45deg, #56a8fa, #a1d0ff);
+    --border-radius: 12px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .profile-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+
+  .profile-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .profile-header h1 {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .profile-subtitle {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    font-weight: 400;
+  }
+
+  .profile-card {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-medium);
+    overflow: hidden;
+    border: 1px solid rgba(86, 168, 250, 0.1);
+  }
+
+  .card-header {
+    background: var(--gradient-primary);
+    padding: 1.5rem;
+    color: white;
+  }
+
+  .card-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+
+  .card-body {
+    padding: 2rem;
+  }
+
+  .form-section {
+    margin-bottom: 2rem;
+  }
+
+  .section-title {
+    color: var(--primary-blue);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--accent-blue);
+    display: inline-block;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 1.5rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .form-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+
+  .form-label {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .form-label::before {
+    content: "";
+    width: 4px;
+    height: 20px;
+    background: var(--gradient-accent);
+    border-radius: 2px;
+    margin-right: 0.75rem;
+  }
+
+  .form-control-enhanced {
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    transition: var(--transition);
+    background: #fff;
+    color: var(--text-dark);
+    width: 100%;
+  }
+
+  .form-control-enhanced:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 3px rgba(86, 168, 250, 0.1);
+    transform: translateY(-1px);
+  }
+
+  .form-control-enhanced:hover {
+    border-color: var(--light-blue);
+  }
+
+  .form-control-enhanced[readonly] {
+    background-color: #f8fafc;
+    color: var(--text-light);
+    cursor: not-allowed;
+  }
+
+  .textarea-enhanced {
+    min-height: 100px;
+    resize: vertical;
+    font-family: inherit;
+  }
+
+  .btn-section {
+    margin-top: 2.5rem;
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid #f1f5f9;
+  }
+
+  .btn-primary-enhanced {
+    background: var(--gradient-primary);
+    border: none;
+    color: white;
+    padding: 0.875rem 2.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow-light);
+    letter-spacing: 0.02em;
+    min-width: 140px;
+  }
+
+  .btn-primary-enhanced:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(9, 63, 117, 0.2);
+  }
+
+  .btn-primary-enhanced:active {
+    transform: translateY(0);
+  }
+
+  .icon-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: var(--gradient-accent);
+    border-radius: 50%;
+    margin-right: 0.5rem;
+    font-size: 0.8rem;
+    color: white;
+  }
+
+  @media (max-width: 768px) {
+    .profile-container {
+      margin: 1rem auto;
+      padding: 0 0.5rem;
+    }
+
+    .profile-header h1 {
+      font-size: 2rem;
+    }
+
+    .card-body {
+      padding: 1.5rem;
+    }
+
+    .form-row {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+      text-align: left;
+    }
+
+    .form-label {
+      margin-bottom: 0.5rem;
+    }
+
+    .form-label::before {
+      width: 3px;
+      height: 16px;
+    }
+  }
+
+  .fade-in {
+    animation: fadeIn 0.6s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<div class="profile-container fade-in">
+  <div class="profile-header">
+    <h1>Company Profile</h1>
+    <p class="profile-subtitle">Manage and update your company information</p>
+  </div>
+
+  <div class="profile-card">
+    <div class="card-header">
+      <h3>
+        <span class="icon-wrapper">🏢</span>
+        Profile Information
+      </h3>
     </div>
+
+    <div class="card-body">
+      <form method="post">
+        {% csrf_token %}
+
+        <div class="form-section">
+          <h4 class="section-title">Company Details</h4>
+
+          <div class="form-row">
+            <label class="form-label">Firm Name</label>
+            <input
+              type="text"
+              name="firmname"
+              value="{{empreg.firmname}}"
+              class="form-control-enhanced"
+              placeholder="Enter your firm name"
+            />
+          </div>
+
+          <div class="form-row">
+            <label class="form-label">Firm Work</label>
+            <input
+              type="text"
+              name="firmwork"
+              value="{{empreg.firmwork}}"
+              class="form-control-enhanced"
+              placeholder="Describe your firm's work"
+            />
+          </div>
+
+          <div class="form-row">
+            <label class="form-label">Firm Address</label>
+            <textarea
+              name="firmaddress"
+              class="form-control-enhanced textarea-enhanced"
+              placeholder="Enter complete firm address"
+            >
+{{empreg.firmaddress}}</textarea
+            >
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h4 class="section-title">Contact Information</h4>
+
+          <div class="form-row">
+            <label class="form-label">Company Name</label>
+            <input
+              type="text"
+              name="cpname"
+              value="{{empreg.cpname}}"
+              class="form-control-enhanced"
+              placeholder="Enter company name"
+            />
+          </div>
+
+          <div class="form-row">
+            <label class="form-label">Contact Number</label>
+            <input
+              type="tel"
+              name="cpcontactno"
+              value="{{empreg.cpcontactno}}"
+              class="form-control-enhanced"
+              placeholder="Enter contact number"
+            />
+          </div>
+
+          <div class="form-row">
+            <label class="form-label">Email Address</label>
+            <input
+              type="email"
+              name="cpemailaddress"
+              value="{{empreg.cpemailaddress}}"
+              class="form-control-enhanced"
+              readonly
+              title="Email cannot be changed"
+            />
+          </div>
+        </div>
+
+        <div class="btn-section">
+          <button type="submit" class="btn-primary-enhanced">
+            <span class="icon-wrapper" style="margin-right: 0.5rem">✓</span>
+            Update Profile
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Add some interactive enhancements
+  document.addEventListener("DOMContentLoaded", function () {
+    // Add focus states for better accessibility
+    const inputs = document.querySelectorAll(".form-control-enhanced");
+
+    inputs.forEach((input) => {
+      input.addEventListener("focus", function () {
+        this.parentElement.classList.add("focused");
+      });
+
+      input.addEventListener("blur", function () {
+        this.parentElement.classList.remove("focused");
+      });
+    });
+
+    // Form validation feedback
+    const form = document.querySelector("form");
+    const button = document.querySelector(".btn-primary-enhanced");
+
+    if (form && button) {
+      form.addEventListener("submit", function (e) {
+        button.innerHTML =
+          '<span class="icon-wrapper" style="margin-right: 0.5rem;">⟳</span>Updating...';
+        button.disabled = true;
+
+        // Re-enable after 3 seconds (in case of validation errors)
+        setTimeout(() => {
+          button.innerHTML =
+            '<span class="icon-wrapper" style="margin-right: 0.5rem;">✓</span>Update Profile';
+          button.disabled = false;
+        }, 3000);
+      });
+    }
+  });
+</script>
+
 {% endblock body %}

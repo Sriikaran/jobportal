@@ -4,8 +4,9 @@ from . import views
 app_name = 'employer'
 
 urlpatterns=[
-    path('', views.employerhome, name='employerhome'),
+    #path("test/", views.test_template, name="test_template"),
     path('employerhome/',views.employerhome,name='employerhome'),
+    path('employer/', views.employerhome, name='employer'),
     path('jobs/',views.jobs,name='jobs'),
     path('postedjobs/',views.postedjobs,name='postedjobs'),
     path('deljob/<post>',views.deljob,name='deljob'),

@@ -1,101 +1,888 @@
-{% extends "employerparent.html" %}
-{% block body %}
+{% extends "employerparent.html" %} 
+{% block body %} 
 {% load static %}
+
 <style>
-    #sec1{
-        background-image: url("{%static 'img4.jpg' %}");
+  :root {
+    --primary-blue: #093f75;
+    --secondary-blue: #0c3056;
+    --accent-blue: #56a8fa;
+    --light-blue: #1c5aa6;
+    --text-dark: #2c3e50;
+    --text-light: #6c757d;
+    --bg-light: #f8fafc;
+    --shadow-light: 0 4px 20px rgba(9, 63, 117, 0.08);
+    --shadow-medium: 0 8px 32px rgba(9, 63, 117, 0.12);
+    --gradient-primary: linear-gradient(
+      135deg,
+      var(--secondary-blue) 0%,
+      var(--light-blue) 50%,
+      var(--accent-blue) 100%
+    );
+    --gradient-accent: linear-gradient(45deg, var(--accent-blue), #a1d0ff);
+  }
+
+  /* Hero Section Styles */
+  .hero-section {
+    background: linear-gradient(
+        135deg,
+        rgba(9, 63, 117, 0.95) 0%,
+        rgba(12, 48, 86, 0.9) 50%,
+        rgba(28, 90, 166, 0.85) 100%
+      ),
+      url("{% static 'img4.jpg' %}");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    margin-top: 1.5rem;
+  }
+
+  .hero-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        45deg,
+        rgba(9, 63, 117, 0.1) 25%,
+        transparent 25%,
+        transparent 75%,
+        rgba(9, 63, 117, 0.1) 75%,
+        rgba(9, 63, 117, 0.1)
+      ),
+      linear-gradient(
+        45deg,
+        rgba(9, 63, 117, 0.1) 25%,
+        transparent 25%,
+        transparent 75%,
+        rgba(9, 63, 117, 0.1) 75%,
+        rgba(9, 63, 117, 0.1)
+      );
+    background-size: 60px 60px;
+    background-position: 0 0, 30px 30px;
+    animation: moveBackground 20s linear infinite;
+  }
+
+  @keyframes moveBackground {
+    0% {
+      background-position: 0 0, 30px 30px;
     }
-    @media only screen and (max-width:600px){
-        .col-sm-6 img{
-          display: none;
-        }
+    100% {
+      background-position: 60px 60px, 90px 90px;
     }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .row mt-4{
+    margin-top: 8rem !important;
+  }
+
+  .content-wrapper{
+    padding: 1rem !important;
+  }
+
+  .hero-title {
+    font-size: clamp(28px, 5vw, 55px);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    animation: slideInUp 1s ease-out;
+    color: white;
+  }
+
+  .hero-highlight {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    color: var(--primary-blue) !important;
+    padding: 0.5rem 2rem;
+    border-radius: 50px;
+    border: none;
+    font-weight: 700;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: inline-block;
+    margin: 0 0.5rem;
+  }
+
+  .hero-highlight:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+  }
+
+  .hero-subtitle {
+    color: var(--accent-blue) !important;
+    font-size: clamp(18px, 3vw, 24px);
+    font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    margin-top: 1rem;
+    animation: slideInUp 1s ease-out 0.3s both;
+  }
+
+  .cta-button {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    color: var(--primary-blue) !important;
+    border: none;
+    padding: 1rem 3rem;
+    font-size: clamp(18px, 2.5vw, 28px);
+    font-weight: 700;
+    border-radius: 50px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 2rem;
+    position: relative;
+    overflow: hidden;
+    animation: slideInUp 1s ease-out 0.6s both;
+  }
+
+  .cta-button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
+    transition: left 0.5s;
+  }
+
+  .cta-button:hover::before {
+    left: 100%;
+  }
+
+  .cta-button:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    color: var(--primary-blue) !important;
+  }
+
+  /* Feature Sections */
+  .feature-section {
+    padding: 5rem 0;
+    position: relative;
+  }
+
+  .feature-section:nth-child(even) {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  }
+
+  .feature-content {
+    padding: 2rem 0;
+  }
+
+  .feature-title {
+    color: var(--primary-blue);
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 700;
+    margin-bottom: 2rem;
+    position: relative;
+    display: inline-block;
+  }
+
+  .feature-title::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: var(--gradient-primary);
+    border-radius: 2px;
+  }
+
+  .feature-description {
+    font-size: clamp(18px, 2.5vw, 24px);
+    line-height: 1.6;
+    color: var(--text-dark);
+    margin-bottom: 2rem;
+  }
+
+  .feature-image {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    box-shadow: var(--shadow-light);
+    transition: all 0.4s ease;
+  }
+
+  .feature-image:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-medium);
+  }
+
+  .feature-image img {
+    transition: all 0.4s ease;
+    border-radius: 20px;
+  }
+
+  .feature-image:hover img {
+    transform: scale(1.05);
+  }
+
+  /* Job Cards Section */
+  .jobs-section {
+    padding: 5rem 0;
+    background: var(--gradient-primary);
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .jobs-section::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.1) 1px,
+      transparent 1px
+    );
+    background-size: 50px 50px;
+    animation: floatBackground 30s linear infinite;
+  }
+
+  @keyframes floatBackground {
+    0% {
+      transform: translate(0, 0) rotate(0deg);
+    }
+    100% {
+      transform: translate(-50px, -50px) rotate(360deg);
+    }
+  }
+
+  .jobs-title {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 4rem;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 2;
+  }
+
+  .job-card {
+    background: rgba(255, 255, 255, 0.95);
+    border: none;
+    border-radius: 20px;
+    box-shadow: var(--shadow-light);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+    position: relative;
+    backdrop-filter: blur(10px);
+    margin-bottom: 2rem;
+    height: 100%;
+  }
+
+  .job-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: var(--gradient-primary);
+  }
+
+  .job-card:hover {
+    transform: translateY(-15px) scale(1.02);
+    box-shadow: var(--shadow-medium);
+  }
+
+  .job-card .card-body {
+    padding: 2rem;
+    position: relative;
+  }
+
+  .job-title {
+    color: var(--primary-blue) !important;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .job-card:hover .job-title {
+    color: var(--light-blue) !important;
+  }
+
+  .job-company {
+    color: var(--text-light) !important;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+  }
+
+  .job-company::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: var(--gradient-primary);
+    border-radius: 50%;
+    margin-right: 0.5rem;
+  }
+
+  .job-description {
+    color: var(--text-dark);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+  }
+
+  .job-link {
+    background: var(--gradient-primary);
+    color: white !important;
+    text-decoration: none;
+    padding: 0.75rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .job-link::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: left 0.5s;
+  }
+
+  .job-link:hover::before {
+    left: 100%;
+  }
+
+  .job-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 139, 0.3);
+    color: white !important;
+  }
+
+  /* Animations */
+  @keyframes slideInUp {
+    from {
+      opacity: 0;
+      transform: translateY(60px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-60px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes fadeInRight {
+    from {
+      opacity: 0;
+      transform: translateX(60px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* Responsive Design */
+  @media only screen and (max-width: 768px) {
+    .col-sm-6 img {
+      display: none;
+    }
+
+    .hero-section {
+      min-height: 60vh;
+      padding: 2rem 0;
+    }
+
+    .feature-section {
+      padding: 3rem 0;
+    }
+
+    .jobs-section {
+      padding: 3rem 0;
+    }
+
+    .job-card {
+      margin-bottom: 2rem;
+    }
+
+    .feature-content {
+      padding: 1rem 0;
+      text-align: center;
+    }
+  }
+
+  @media only screen and (max-width: 600px) {
+    .col-sm-6 img {
+      display: none;
+    }
+  }
+
+  /* Loading Animation */
+  .fade-in {
+    animation: slideInUp 0.8s ease-out forwards;
+  }
+
+  .fade-in-left {
+    animation: fadeInLeft 0.8s ease-out forwards;
+  }
+
+  .fade-in-right {
+    animation: fadeInRight 0.8s ease-out forwards;
+  }
 </style>
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+<!-- AOS Animation Library -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="hero-content text-center text-light">
+          <h1 class="hero-title">
+            Around 12 million Recruiters found the best candidates using
+            <span class="hero-highlight">dreamjobs</span>
+          </h1>
+          <p class="hero-subtitle">
+            Trusted By Top MNCs, FAANG and other top companies
+          </p>
+          <a href="{% url 'employer:jobs' %}" class="cta-button">
+            <i class="mdi mdi-plus-circle me-2"></i>Post a new job
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Feature Section 1: Company Culture -->
+<section class="feature-section">
+  <div class="container">
+    <div class="row align-items-center">
+      <div
+        class="col-lg-6 col-12 mb-4 mb-lg-0"
+        data-aos="fade-right"
+        data-aos-duration="1000"
+      >
+        <div class="feature-image">
+          <img
+            src="{% static 'first.svg' %}"
+            alt="Company Culture"
+            class="img-fluid"
+          />
+        </div>
+      </div>
+      <div
+        class="col-lg-6 col-12"
+        data-aos="fade-left"
+        data-aos-duration="1000"
+        data-aos-delay="200"
+      >
+        <div class="feature-content">
+          <h2 class="feature-title">Show off your company culture</h2>
+          <p class="feature-description">
+            Photos and videos are great ways to help candidates best understand
+            what it's like to work at your company. Easily upload compelling
+            media and showcase what's unique about your company culture and
+            values.
+          </p>
+          <div class="feature-stats">
+            <div class="d-flex align-items-center mb-3">
+              <div class="stat-icon me-3">
+                <i
+                  class="mdi mdi-account-multiple"
+                  style="font-size: 2rem; color: navy"
+                ></i>
+              </div>
+              <div>
+                <strong style="color: navy">12M+</strong><br />
+                <span style="color: #6c757d">Active Recruiters</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Feature Section 2: Give Chance to Freshers -->
+<section class="feature-section">
+  <div class="container">
+    <div class="row align-items-center">
+      <div
+        class="col-lg-6 col-12 order-lg-2 mb-4 mb-lg-0"
+        data-aos="fade-left"
+        data-aos-duration="1000"
+      >
+        <div class="feature-image">
+          <img
+            src="{% static 'second.svg' %}"
+            alt="Fresh Talent"
+            class="img-fluid"
+          />
+        </div>
+      </div>
+      <div
+        class="col-lg-6 col-12 order-lg-1"
+        data-aos="fade-right"
+        data-aos-duration="1000"
+        data-aos-delay="200"
+      >
+        <div class="feature-content">
+          <h2 class="feature-title">Give Chance To Freshers</h2>
+          <p class="feature-description">
+            Attracting the best talent is essential for any company's growth.
+            Fresh graduates bring a unique blend of enthusiasm, creativity, and
+            a fresh perspective to the table. By giving freshers an opportunity,
+            you're not just filling a position – you're investing in the future
+            of your organization.
+          </p>
+          <p class="feature-description">
+            Freshers are eager to learn, adaptable, and can be molded into the
+            perfect fit for your company culture.
+          </p>
+          <div class="feature-highlights mt-4">
+            <div class="row">
+              <div class="col-6">
+                <div class="text-center">
+                  <i
+                    class="mdi mdi-lightbulb"
+                    style="font-size: 3rem; color: #4169e1"
+                  ></i>
+                  <p class="mt-2 mb-0"><strong>Fresh Ideas</strong></p>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="text-center">
+                  <i
+                    class="mdi mdi-trending-up"
+                    style="font-size: 3rem; color: #4169e1"
+                  ></i>
+                  <p class="mt-2 mb-0"><strong>High Energy</strong></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Feature Section 3: Showcase Jobs -->
+<section class="feature-section">
+  <div class="container">
+    <div class="row align-items-center">
+      <div
+        class="col-lg-6 col-12 mb-4 mb-lg-0"
+        data-aos="fade-right"
+        data-aos-duration="1000"
+      >
+        <div class="feature-image">
+          <img
+            src="{% static 'third.svg' %}"
+            alt="Showcase Jobs"
+            class="img-fluid"
+          />
+        </div>
+      </div>
+      <div
+        class="col-lg-6 col-12"
+        data-aos="fade-left"
+        data-aos-duration="1000"
+        data-aos-delay="200"
+      >
+        <div class="feature-content">
+          <h2 class="feature-title">Showcase your jobs</h2>
+          <p class="feature-description">
+            With a dedicated tab for your jobs, visitors will easily know where
+            to view open roles. This section automatically shows every visitor's
+            personalized job recommendations and insights so that they can best
+            assess fit for the role and your company.
+          </p>
+          <div class="feature-benefits mt-4">
+            <div class="d-flex align-items-center mb-3">
+              <i
+                class="mdi mdi-check-circle me-3"
+                style="color: #28a745; font-size: 1.5rem"
+              ></i>
+              <span>Personalized job recommendations</span>
+            </div>
+            <div class="d-flex align-items-center mb-3">
+              <i
+                class="mdi mdi-check-circle me-3"
+                style="color: #28a745; font-size: 1.5rem"
+              ></i>
+              <span>Advanced matching algorithms</span>
+            </div>
+            <div class="d-flex align-items-center">
+              <i
+                class="mdi mdi-check-circle me-3"
+                style="color: #28a745; font-size: 1.5rem"
+              ></i>
+              <span>Easy job management dashboard</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Job Cards Section -->
+<section class="jobs-section">
+  <div class="container">
+    <h2 class="jobs-title" data-aos="fade-up" data-aos-duration="1000">
+      Explore Other Companies' Job Listings
+    </h2>
+    <div class="row">
+      <div
+        class="col-lg-3 col-md-6 col-12"
+        data-aos="fade-up"
+        data-aos-duration="1000"
+        data-aos-delay="100"
+      >
+        <div class="card job-card">
+          <div class="card-body">
+            <h5 class="job-title">Business Analyst</h5>
+            <h6 class="job-company">Amazon</h6>
+            <p class="job-description">
+              Join our dynamic team to analyze business processes, identify
+              opportunities for improvement, and drive strategic initiatives
+              that shape the future of e-commerce.
+            </p>
+            <a href="#" class="job-link">
+              <i class="mdi mdi-eye me-2"></i>View Job Description
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col-lg-3 col-md-6 col-12"
+        data-aos="fade-up"
+        data-aos-duration="1000"
+        data-aos-delay="200"
+      >
+        <div class="card job-card">
+          <div class="card-body">
+            <h5 class="job-title">System Engineer</h5>
+            <h6 class="job-company">Wipro</h6>
+            <p class="job-description">
+              Design, implement, and maintain complex system infrastructures
+              while ensuring optimal performance, security, and scalability for
+              enterprise solutions.
+            </p>
+            <a href="#" class="job-link">
+              <i class="mdi mdi-eye me-2"></i>View Job Description
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col-lg-3 col-md-6 col-12"
+        data-aos="fade-up"
+        data-aos-duration="1000"
+        data-aos-delay="300"
+      >
+        <div class="card job-card">
+          <div class="card-body">
+            <h5 class="job-title">Data Scientist</h5>
+            <h6 class="job-company">Google</h6>
+            <p class="job-description">
+              Leverage advanced analytics and machine learning to extract
+              insights from large datasets and drive data-driven decision making
+              across the organization.
+            </p>
+            <a href="#" class="job-link">
+              <i class="mdi mdi-eye me-2"></i>View Job Description
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col-lg-3 col-md-6 col-12"
+        data-aos="fade-up"
+        data-aos-duration="1000"
+        data-aos-delay="400"
+      >
+        <div class="card job-card">
+          <div class="card-body">
+            <h5 class="job-title">Product Manager</h5>
+            <h6 class="job-company">Microsoft</h6>
+            <p class="job-description">
+              Lead product strategy and development lifecycle, working closely
+              with cross-functional teams to deliver innovative solutions that
+              delight customers.
+            </p>
+            <a href="#" class="job-link">
+              <i class="mdi mdi-eye me-2"></i>View Job Description
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional Row for More Cards -->
+    <div class="row mt-4">
+      <div
+        class="col-lg-3 col-md-6 col-12"
+        data-aos="fade-up"
+        data-aos-duration="1000"
+        data-aos-delay="500"
+      >
+        <div class="card job-card">
+          <div class="card-body">
+            <h5 class="job-title">DevOps Engineer</h5>
+            <h6 class="job-company">Netflix</h6>
+            <p class="job-description">
+              Build and maintain CI/CD pipelines, automate infrastructure
+              deployment, and ensure seamless collaboration between development
+              and operations teams.
+            </p>
+            <a href="#" class="job-link">
+              <i class="mdi mdi-eye me-2"></i>View Job Description
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col-lg-3 col-md-6 col-12"
+        data-aos="fade-up"
+        data-aos-duration="1000"
+        data-aos-delay="600"
+      >
+        <div class="card job-card">
+          <div class="card-body">
+            <h5 class="job-title">UX Designer</h5>
+            <h6 class="job-company">Apple</h6>
+            <p class="job-description">
+              Create intuitive and engaging user experiences through research,
+              prototyping, and iterative design processes that put users at the
+              center of everything we do.
+            </p>
+            <a href="#" class="job-link">
+              <i class="mdi mdi-eye me-2"></i>View Job Description
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col-lg-3 col-md-6 col-12"
+        data-aos="fade-up"
+        data-aos-duration="1000"
+        data-aos-delay="700"
+      >
+        <div class="card job-card">
+          <div class="card-body">
+            <h5 class="job-title">Software Engineer</h5>
+            <h6 class="job-company">Tesla</h6>
+            <p class="job-description">
+              Develop cutting-edge software solutions for next-generation
+              electric vehicles and energy systems, pushing the boundaries of
+              automotive technology.
+            </p>
+            <a href="#" class="job-link">
+              <i class="mdi mdi-eye me-2"></i>View Job Description
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col-lg-3 col-md-6 col-12"
+        data-aos="fade-up"
+        data-aos-duration="1000"
+        data-aos-delay="800"
+      >
+        <div class="card job-card">
+          <div class="card-body">
+            <h5 class="job-title">Marketing Manager</h5>
+            <h6 class="job-company">Meta</h6>
+            <p class="job-description">
+              Drive marketing strategies and campaigns that connect people and
+              communities worldwide, leveraging data insights and creative
+              storytelling.
+            </p>
+            <a href="#" class="job-link">
+              <i class="mdi mdi-eye me-2"></i>View Job Description
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Initialize AOS -->
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
-  AOS.init();
+  AOS.init({
+    duration: 1000,
+    easing: "ease-out-cubic",
+    once: true,
+    offset: 100,
+  });
+
+  // Enhanced scroll animations
+  window.addEventListener("scroll", function () {
+    const scrolled = window.pageYOffset;
+    const parallax = document.querySelector(".hero-section");
+    if (parallax) {
+      const speed = scrolled * 0.5;
+      parallax.style.transform = "translateY(" + speed + "px)";
+    }
+  });
+
+  // Add loading animation to job cards
+  document.addEventListener("DOMContentLoaded", function () {
+    const jobCards = document.querySelectorAll(".job-card");
+    jobCards.forEach((card, index) => {
+      card.style.animationDelay = `${index * 0.1}s`;
+    });
+  });
 </script>
-    <section>
-    <div class="row p-4 text-align" style="background-color: navy;">
-        <div class="col-sm-12"> 
-               <h1 style="font-size: 45px;" class="text-bold m-5 text-light">Around 12 million Recruiters found the best candidates using <button style="background-color: white; color: navy; border-radius: 30px; border: transparent;" >dreamjobs</button>
-               <br><span style="color: skyblue;">Trusted By Top MNCs, FAANG and other top companies</span> 
-               </h1>
-               <a href="{%url 'employer:jobs' %}" class="btn rounded p-3 mx-5 text-align" style="font-size: 25px; background-color: white; font-weight: 500; color: navy;">Post a new job</a>
-            
-        </div>
-    </div>
-    </section>
-   <div class="row mx-auto p-4">
-        <div class="col-sm-6 col-12 mb-3">
-            <img src="{% static 'first.svg' %}" alt="" class="img-fluid">
-        </div>
-        <div class="col-sm-6 col-12">
-            <h1 class="p-4 px-0" style="color: navy;">Show off your company culture</h1>
-            <p style="font-size: 23px;">Photos and videos are great ways to help candidates best understand what it's like to work at your company. Easily upload compelling media and showcase what's unique about your company.</p>
-        </div>
-    </div>
-    <div class="row mx-auto p-4">
-        <div class="col-sm-6 col-12">
-            <h1 class="p-4 px-0 " style="color: navy;">Give Chance To Freshers</h1>
-            <p style="font-size: 23px;">Attracting the best talent is essential for any company’s growth. Fresh graduates bring a unique blend of enthusiasm, creativity, and a fresh perspective to the table. By giving freshers an opportunity, you’re not just filling a position – you’re investing in the future of your organization. Freshers are eager to learn, adaptable, and can be molded into the perfect fit for your company culture.</p>
-        </div>
-        <div class="col-sm-6 col-12 mb-3">
-            <img src="{% static 'second.svg' %}" alt="" class="img-fluid">
-        </div>
-    </div>
-    <div class="row mx-auto p-4">
-        <div class="col-sm-6 col-12 mb-3">
-            <img src="{% static 'third.svg' %}" alt="" class="img-fluid">
-        </div>
-        <div class="col-sm-6 col-12">
-            <h1 class="p-4 px-0" style="color: navy;">Showcase your jobs.</h1>
-            <p style="font-size: 25px;">With a dedicated tab for your jobs, visitors will easily know where to view open roles. This section automatically shows every visitor’s personalized job recommendations and insights so that they can best assess fit for the role and your company.</p>
-        </div>
-    </div>
-    <div class="row p-4">
-        <h1 class="text-center pb-4">View Other Companies Job Listings</h1>
-        <div class="col-sm-3">
-            <div class="card bg-light" style="width: 18rem;">
-                <div class="card-body text-dark">
-                  <h5 class="card-title text-dark">Business Analyst</h5>
-                  <h6 class="card-subtitle mb-2 text-body-secondary">Amazon</h6>
-                  <h6 class="card-subtitle mb-2 text-body-secondary"></h6>
-                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" class="card-link">View Job Description</a>
-                </div>
-              </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="card bg-light" style="width: 18rem;">
-                <div class="card-body text-dark">
-                  <h5 class="card-title text-dark">System Engineer</h5>
-                  <h6 class="card-subtitle mb-2 text-body-secondary">Wipro</h6>
-                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" class="card-link">View Job Description</a>
-                </div>
-              </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="card bg-light" style="width: 18rem;">
-                <div class="card-body text-dark">
-                  <h5 class="card-title text-dark">Business Analyst</h5>
-                  <h6 class="card-subtitle mb-2 text-body-secondary">Amazon</h6>
-                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" class="card-link">View Job Description</a>
-                </div>
-              </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="card bg-light" style="width: 18rem;">
-                <div class="card-body text-dark">
-                  <h5 class="card-title text-dark">Business Analyst</h5>
-                  <h6 class="card-subtitle mb-2 text-body-secondary">Amazon</h6>
-                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" class="card-link">View Job Description</a>
-                </div>
-              </div>
-        </div>
-    </div>
+
 {% endblock body %}

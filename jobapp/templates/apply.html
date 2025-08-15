@@ -1,111 +1,493 @@
 {% extends "parent.html" %}
+
+{% block head %}
+<style>
+    :root {
+        --primary-blue: #093f75;
+        --secondary-blue: #1e5a96;
+        --light-blue: #e3f2fd;
+        --dark-blue: #0d47a1;
+    }
+    
+    .application-container {
+        background: linear-gradient(135deg, var(--light-blue) 0%, #f8f9fa 100%);
+        min-height: 100vh;
+        padding: 2rem 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .form-container {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(9, 63, 117, 0.1);
+        overflow: hidden;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    
+    .form-header {
+        background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+        color: white;
+        padding: 3rem 2rem 2rem;
+        text-align: center;
+        position: relative;
+    }
+    
+    .form-header::before {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 20px solid transparent;
+        border-right: 20px solid transparent;
+        border-top: 20px solid var(--secondary-blue);
+    }
+    
+    .form-header h1 {
+        font-weight: 700;
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .form-header p {
+        opacity: 0.9;
+        font-size: 1.1rem;
+        margin: 0;
+    }
+    
+    .form-body {
+        padding: 3rem 2rem 2rem;
+    }
+    
+    .form-section {
+        margin-bottom: 2.5rem;
+    }
+    
+    .section-title {
+        color: var(--primary-blue);
+        font-weight: 600;
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--light-blue);
+        display: flex;
+        align-items: center;
+    }
+    
+    .section-title i {
+        margin-right: 0.5rem;
+        font-size: 1.1rem;
+        width: 20px;
+        text-align: center;
+    }
+    
+    .form-label {
+        color: #2c3e50;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+    }
+    
+    .form-control, .form-select {
+        border: 2px solid #e9ecef;
+        border-radius: 12px;
+        padding: 0.8rem 1rem;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background-color: #f8f9fa;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-blue);
+        box-shadow: 0 0 0 0.2rem rgba(9, 63, 117, 0.25);
+        background-color: white;
+        outline: none;
+    }
+    
+    .form-control::placeholder {
+        color: #6c757d;
+        opacity: 0.8;
+    }
+    
+    .gender-section {
+        background: var(--light-blue);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        border: 1px solid rgba(9, 63, 117, 0.1);
+    }
+    
+    .gender-section h6 {
+        color: var(--primary-blue);
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+    
+    .form-check {
+        margin-bottom: 0.75rem;
+    }
+    
+    .form-check-input {
+        margin-top: 0.125rem;
+    }
+    
+    .form-check-input:checked {
+        background-color: var(--primary-blue);
+        border-color: var(--primary-blue);
+    }
+    
+    .form-check-input:focus {
+        box-shadow: 0 0 0 0.2rem rgba(9, 63, 117, 0.25);
+    }
+    
+    .form-check-label {
+        font-weight: 500;
+        color: #495057;
+        cursor: pointer;
+    }
+    
+    .form-check-label i {
+        margin-right: 0.5rem;
+        width: 16px;
+        text-align: center;
+    }
+    
+    .submit-btn {
+        background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+        border: none;
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 25px rgba(9, 63, 117, 0.3);
+        color: white;
+        min-width: 200px;
+    }
+    
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 35px rgba(9, 63, 117, 0.4);
+        background: linear-gradient(135deg, var(--secondary-blue) 0%, var(--primary-blue) 100%);
+    }
+    
+    .submit-btn:focus {
+        box-shadow: 0 0 0 0.2rem rgba(9, 63, 117, 0.25);
+    }
+    
+    .terms-check {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        border: 1px solid #e9ecef;
+    }
+    
+    .terms-check .form-check-input {
+        margin-top: 0.25rem;
+    }
+    
+    .terms-check a {
+        color: var(--primary-blue);
+        text-decoration: none;
+        font-weight: 600;
+    }
+    
+    .terms-check a:hover {
+        text-decoration: underline;
+    }
+    
+    .input-group-icon {
+        position: relative;
+    }
+    
+    .input-group-icon i {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6c757d;
+        z-index: 3;
+    }
+    
+    .input-group-icon .form-control {
+        padding-left: 45px;
+    }
+    
+    .progress-indicator {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 2rem;
+    }
+    
+    .progress-step {
+        width: 30px;
+        height: 4px;
+        background-color: #e9ecef;
+        margin: 0 2px;
+        border-radius: 2px;
+    }
+    
+    .progress-step.active {
+        background-color: var(--primary-blue);
+    }
+    
+    @media (max-width: 768px) {
+        .application-container {
+            padding: 1rem 0;
+        }
+        
+        .form-body {
+            padding: 2rem 1rem;
+        }
+        
+        .form-header {
+            padding: 2rem 1rem 1.5rem;
+        }
+        
+        .form-header h1 {
+            font-size: 2rem;
+        }
+        
+        .section-title {
+            font-size: 1.1rem;
+        }
+    }
+    
+    /* Animation for form sections */
+    .form-section {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: slideInUp 0.6s ease forwards;
+    }
+    
+    .form-section:nth-child(1) { animation-delay: 0.1s; }
+    .form-section:nth-child(2) { animation-delay: 0.2s; }
+    .form-section:nth-child(3) { animation-delay: 0.3s; }
+    .form-section:nth-child(4) { animation-delay: 0.4s; }
+    .form-section:nth-child(5) { animation-delay: 0.5s; }
+    
+    @keyframes slideInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+{% endblock %}
+
 {% block body %}
-<div class="row mt-5 w-75 mx-auto pb-5 fs-6">
-  <form class="bg-light rounded-4 shadow-sm p-5">
-    <h1 class="text-center text-dark fw-semibold mb-4">Apply Now</h1>
-    
-    <div class="mb-4">
-      <label for="empemailaddress" class="form-label fw-semibold">Enter Emp Email Address</label>
-      <input type="email" class="form-control form-control-lg rounded-3" name="empemailaddress" placeholder="Enter Email" required>
+<div class="application-container">
+    <div class="container">
+        <div class="form-container">
+            <div class="form-header">
+                <h1><i class="fas fa-briefcase"></i> Apply Now</h1>
+                <p>Join our team and build your dream career with us</p>
+            </div>
+            
+            <div class="form-body">
+                <div class="progress-indicator">
+                    <div class="progress-step active"></div>
+                    <div class="progress-step active"></div>
+                    <div class="progress-step active"></div>
+                    <div class="progress-step"></div>
+                </div>
+                
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    
+                    <!-- Company Information Section -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-building"></i>
+                            Company Information
+                        </h3>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="empemailaddress" class="form-label">Employee Email Address</label>
+                                <div class="input-group-icon">
+                                    <i class="fas fa-envelope"></i>
+                                    <input type="email" class="form-control" name="empemailaddress" id="empemailaddress" placeholder="Enter company email" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="jobtitle" class="form-label">Job Title</label>
+                                <div class="input-group-icon">
+                                    <i class="fas fa-tag"></i>
+                                    <input type="text" class="form-control" name="jobtitle" id="jobtitle" placeholder="Enter job title" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="post" class="form-label">Position Applying For</label>
+                            <select class="form-select" name="post" id="post" required>
+                                <option selected disabled>Select Position</option>
+                                <option value="Associate Analyst">Associate Analyst</option>
+                                <option value="Data Analyst">Data Analyst</option>
+                                <option value="Data Scientist">Data Scientist</option>
+                                <option value="Nutrition Officer">Nutrition Officer</option>
+                                <option value="System Analyst">System Analyst</option>
+                                <option value="Full Stack Developer">Full Stack Developer</option>
+                                <option value="UI/UX Designer">UI/UX Designer</option>
+                                <option value="Software Developer">Software Developer</option>
+                                <option value="Web Developer">Web Developer</option>
+                                <option value="Software Engineer">Software Engineer</option>
+                                <option value="Human Resource Manager">Human Resource Manager</option>
+                                <option value="React Native Web Developer">React Native Web Developer</option>
+                                <option value="Digital Marketing Manager">Digital Marketing Manager</option>
+                                <option value="Customer Care Executive">Customer Care Executive</option>
+                                <option value="IIB Developer">IIB Developer</option>
+                                <option value="Senior System Engineer">Senior System Engineer</option>
+                                <option value="Java Developer">Java Developer</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Personal Information Section -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-user"></i>
+                            Personal Information
+                        </h3>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label">Full Name</label>
+                                <div class="input-group-icon">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" class="form-control" name="name" id="name" placeholder="Enter your full name" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="dob" class="form-label">Date of Birth</label>
+                                <div class="input-group-icon">
+                                    <i class="fas fa-calendar"></i>
+                                    <input type="date" class="form-control" name="dob" id="dob" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="gender-section">
+                            <h6><i class="fas fa-venus-mars me-2"></i>Gender</h6>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="gender" id="genderFemale" value="female" checked>
+                                        <label class="form-check-label" for="genderFemale">
+                                            <i class="fas fa-venus"></i> Female
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="gender" id="genderMale" value="male">
+                                        <label class="form-check-label" for="genderMale">
+                                            <i class="fas fa-mars"></i> Male
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="gender" id="genderOther" value="other">
+                                        <label class="form-check-label" for="genderOther">
+                                            <i class="fas fa-genderless"></i> Other
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address</label>
+                            <textarea class="form-control" rows="3" placeholder="Enter your complete address" name="address" id="address" required></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Contact Information Section -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-phone"></i>
+                            Contact Information
+                        </h3>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="contactno" class="form-label">Contact Number</label>
+                                <div class="input-group-icon">
+                                    <i class="fas fa-phone"></i>
+                                    <input type="tel" class="form-control" name="contactno" id="contactno" placeholder="Enter contact number" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="emailaddress" class="form-label">Email Address</label>
+                                <div class="input-group-icon">
+                                    <i class="fas fa-envelope"></i>
+                                    <input type="email" class="form-control" name="emailaddress" id="emailaddress" placeholder="Enter your email" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Professional Information Section -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-graduation-cap"></i>
+                            Professional Information
+                        </h3>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="qualification" class="form-label">Highest Qualification</label>
+                                <div class="input-group-icon">
+                                    <i class="fas fa-graduation-cap"></i>
+                                    <input type="text" class="form-control" name="qualification" id="qualification" placeholder="e.g., Bachelor's in Computer Science" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="experience" class="form-label">Work Experience</label>
+                                <div class="input-group-icon">
+                                    <i class="fas fa-briefcase"></i>
+                                    <input type="text" class="form-control" name="experience" id="experience" placeholder="e.g., 2 years" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="keyskills" class="form-label">Key Skills</label>
+                            <textarea class="form-control" name="keyskills" id="keyskills" rows="4" placeholder="Enter your key skills (e.g., JavaScript, Python, Project Management)" required></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Terms and Submit Section -->
+                    <div class="form-section">
+                        <div class="terms-check">
+                            <div class="form-check d-flex align-items-start">
+                                <input class="form-check-input me-3 mt-1" type="checkbox" value="Termsandconditions" id="termsCheck" required>
+                                <label class="form-check-label" for="termsCheck">
+                                    <strong>I agree to all statements in <a href="#" target="_blank">Terms of Service</a></strong>
+                                    <br>
+                                    <small class="text-muted">By submitting this application, you consent to the processing of your personal data in accordance with our privacy policy.</small>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary submit-btn">
+                                <i class="fas fa-paper-plane me-2"></i>
+                                Submit Application
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-    
-    <div class="mb-4">
-      <label for="jobtitle" class="form-label fw-semibold">Job Title</label>
-      <input type="text" class="form-control form-control-lg rounded-3" name="jobtitle" placeholder="Enter Job Title" required>
-    </div>
-    
-    <div class="mb-4">
-      <label for="post" class="form-label fw-semibold">Post</label>
-      <select class="form-select form-select-lg rounded-3" name="post" required>
-        <option selected disabled>Position Applying For</option>
-        <option value="Associate Analyst">Associate Analyst</option>
-        <option value="Data Analyst">Data Analyst</option>
-        <option value="Data Scientist">Data Scientist</option>
-        <option value="Nutrition Officer">Nutrition Officer</option>
-        <option value="System Analyst">System Analyst</option>
-        <option value="Full Stack Developer">Full Stack Developer</option>
-        <option value="UI/UX Designer">UI/UX Designer</option>
-        <option value="Software Developer">Software Developer</option>
-        <option value="Web Developer">Web Developer</option>
-        <option value="Software Engineer">Software Engineer</option>
-        <option value="Human Resource Manager">Human Resource Manager</option>
-        <option value="React Native Web Developer">React Native Web Developer</option>
-        <option value="Digital Marketing Manager">Digital Marketing Manager</option>
-        <option value="Customer Care Executive">Customer Care Executive</option>
-        <option value="IIB Developer">IIB Developer</option>
-        <option value="Senior System Engineer">Senior System Engineer</option>
-        <option value="Java Developer">Java Developer</option>
-        <option value="Other">Other</option>
-      </select>
-    </div>
-        <div class="mb-3">
-        <div class="mb-4">
-  <label for="name" class="form-label fw-semibold">Name</label>
-  <input type="text" class="form-control form-control-lg rounded-3" name="name" placeholder="Enter Your Full Name" required>
 </div>
-        <div class="col-md-6 mb-4">
-
-            <h6 class="mb-2 pb-1">Gender: </h6>
-
-            <div class="form-check form-check-inline mb-3">
-  <input class="form-check-input" type="radio" name="gender" id="genderFemale" value="female" checked>
-  <label class="form-check-label" for="genderFemale">Female</label>
-</div>
-<div class="form-check form-check-inline mb-3">
-  <input class="form-check-input" type="radio" name="gender" id="genderMale" value="male">
-  <label class="form-check-label" for="genderMale">Male</label>
-</div>
-<div class="form-check form-check-inline mb-4">
-  <input class="form-check-input" type="radio" name="gender" id="genderOther" value="other">
-  <label class="form-check-label" for="genderOther">Other</label>
-</div>
-
-<div class="mb-4">
-  <label for="address" class="form-label fw-semibold">Enter Address</label>
-  <textarea class="form-control rounded-3" rows="3" placeholder="Enter Address" name="address" required></textarea>
-</div>
-
-<div class="mb-4">
-  <label for="phone" class="form-label fw-semibold">Enter Contact Number</label>
-  <input type="tel" class="form-control rounded-3" name="contactno" placeholder="Enter Contact No." required>
-</div>
-
-<div class="mb-4">
-  <label for="emailaddress" class="form-label fw-semibold">Email Address</label>
-  <input type="email" class="form-control rounded-3" name="emailaddress" placeholder="Enter Email" required>
-</div>
-
-<div class="mb-4">
-  <label for="dob" class="form-label fw-semibold">Date of Birth</label>
-  <input type="date" class="form-control rounded-3" name="dob" required>
-</div>
-
-<div class="mb-4">
-  <label for="qualification" class="form-label fw-semibold">Enter Your Highest Qualification</label>
-  <input type="text" class="form-control rounded-3" name="qualification" required>
-</div>
-
-<div class="mb-4">
-  <label for="experience" class="form-label fw-semibold">Work Experience</label>
-  <input type="text" class="form-control rounded-3" name="experience" required>
-</div>
-
-<div class="mb-4">
-  <label for="skills" class="form-label fw-semibold">Skills</label>
-  <textarea class="form-control rounded-3" name="keyskills" rows="3" placeholder="Enter Your Skills" required></textarea>
-</div>
-
-<div class="form-check d-flex align-items-center mb-4">
-  <input class="form-check-input me-2" type="checkbox" value="Termsandconditions" id="termsCheck" required>
-  <label class="form-check-label" for="termsCheck">
-    I agree to all statements in <a href="#">Terms of Service</a>
-  </label>
-</div>
-
-<button type="submit" class="btn btn-primary w-100 rounded-pill py-2 fs-5" style="background-color: #093f75;">
-  Submit
-</button>
-
-      </form>
-</div>
-{% endblock body %}
+{% endblock %}

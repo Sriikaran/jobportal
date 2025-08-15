@@ -4,7 +4,7 @@ from . import views
 app_name = 'adminapp'
 
 urlpatterns=[
-    path('', views.adminhome, name='adminhome'),
+    path("test/", views.test_template, name="test_template"),
     path('adminhome/',views.adminhome,name='adminhome'),
     path('news/',views.news,name='news'),
     path('delnews/<newsdate>',views.delnews,name='delnews'),

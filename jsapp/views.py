@@ -33,7 +33,7 @@ def employer(request):
         Employer(companyname=companyname, emailaddress=emailaddress, password=password).save()
         messages.success(request, "Employer account created successfully.")
         return redirect('login')
-    return render(request, "employer.html")
+    return render(request, "employerhome.html")
 
 def appliedjobs(request):
     if "username" not in request.session:
@@ -119,7 +119,7 @@ def parent(request):
 
 def admin_dashboard(request):
     jobs = Jobs.objects.all()
-    return render(request, "admin.html", {"jobs": jobs, #"profile_completion": profile_completion
+    return render(request, "adminhome.html", {"jobs": jobs, #"profile_completion": profile_completion
                                           })
 
 
@@ -243,3 +243,8 @@ def jshome(request):
     if request.session.get("usertype") != "jobseeker":
         return redirect("jobapp:login")
     return render(request, 'jshome.html')
+
+def employerhome(request):
+    if request.session.get("usertype") != "employer":
+        return redirect("jobapp:login")
+    return render(request, 'employerhome.html')

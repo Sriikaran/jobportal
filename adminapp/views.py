@@ -5,6 +5,10 @@ from employer.models import Jobs
 from jsapp.models import Response
 from . models import News
 import datetime
+
+def test_template(request):
+    return render(request, "adminhome.html")
+
 # Create your views here.
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
 def adminhome(request):

@@ -21,7 +21,7 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="shortcut icon" href="{% static 'images/img2.png' %}" />
-    
+
     <!-- Google Fonts for better typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -39,7 +39,7 @@
         --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
         --sidebar-bg: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
         --navbar-bg: rgba(255, 255, 255, 0.95);
-        
+
         /* Enhanced Colors */
         --primary-blue: #667eea;
         --secondary-blue: #764ba2;
@@ -52,9 +52,9 @@
         --bg-main: #f8fafc;
         --bg-card: #ffffff;
         --border-light: #e3f2fd;
-        --shadow-light: 0 2px 20px rgba(0,0,0,0.08);
-        --shadow-medium: 0 8px 30px rgba(0,0,0,0.12);
-        --shadow-heavy: 0 20px 60px rgba(0,0,0,0.15);
+        --shadow-light: 0 2px 20px rgba(0, 0, 0, 0.08);
+        --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.12);
+        --shadow-heavy: 0 20px 60px rgba(0, 0, 0, 0.15);
 
         /* Layout */
         --sidebar-width: 300px;
@@ -116,13 +116,17 @@
       }
 
       .sidebar::before {
-        content: '';
+        content: "";
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(180deg, rgba(102, 126, 234, 0.1) 0%, rgba(52, 73, 94, 0.05) 100%);
+        background: linear-gradient(
+          180deg,
+          rgba(102, 126, 234, 0.1) 0%,
+          rgba(52, 73, 94, 0.05) 100%
+        );
         pointer-events: none;
       }
 
@@ -140,13 +144,18 @@
       }
 
       .sidebar-brand-wrapper::before {
-        content: '';
+        content: "";
         position: absolute;
         top: 0;
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.1),
+          transparent
+        );
         transition: var(--transition);
       }
 
@@ -196,7 +205,7 @@
         font-weight: 700;
         color: #ffffff;
         margin: 0;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
       }
 
       .brand-subtitle {
@@ -270,9 +279,15 @@
       }
 
       @keyframes pulse-status {
-        0% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7); }
-        70% { box-shadow: 0 0 0 6px rgba(0, 255, 136, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0); }
+        0% {
+          box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7);
+        }
+        70% {
+          box-shadow: 0 0 0 6px rgba(0, 255, 136, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(0, 255, 136, 0);
+        }
       }
 
       .profile-info h5 {
@@ -355,7 +370,7 @@
       }
 
       .nav .nav-item .nav-link::before {
-        content: '';
+        content: "";
         position: absolute;
         left: 0;
         top: 0;
@@ -774,14 +789,30 @@
       }
 
       /* Stagger animation delays */
-      .nav-item:nth-child(1) { animation-delay: 0.1s; }
-      .nav-item:nth-child(2) { animation-delay: 0.2s; }
-      .nav-item:nth-child(3) { animation-delay: 0.3s; }
-      .nav-item:nth-child(4) { animation-delay: 0.4s; }
-      .nav-item:nth-child(5) { animation-delay: 0.5s; }
-      .nav-item:nth-child(6) { animation-delay: 0.6s; }
-      .nav-item:nth-child(7) { animation-delay: 0.7s; }
-      .nav-item:nth-child(8) { animation-delay: 0.8s; }
+      .nav-item:nth-child(1) {
+        animation-delay: 0.1s;
+      }
+      .nav-item:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .nav-item:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+      .nav-item:nth-child(4) {
+        animation-delay: 0.4s;
+      }
+      .nav-item:nth-child(5) {
+        animation-delay: 0.5s;
+      }
+      .nav-item:nth-child(6) {
+        animation-delay: 0.6s;
+      }
+      .nav-item:nth-child(7) {
+        animation-delay: 0.7s;
+      }
+      .nav-item:nth-child(8) {
+        animation-delay: 0.8s;
+      }
 
       /* Scrollbar Enhancement */
       ::-webkit-scrollbar {
@@ -790,12 +821,20 @@
       }
 
       ::-webkit-scrollbar-thumb {
-        background: linear-gradient(45deg, var(--primary-blue), var(--accent-blue));
+        background: linear-gradient(
+          45deg,
+          var(--primary-blue),
+          var(--accent-blue)
+        );
         border-radius: 10px;
       }
 
       ::-webkit-scrollbar-thumb:hover {
-        background: linear-gradient(45deg, var(--accent-blue), var(--primary-blue));
+        background: linear-gradient(
+          45deg,
+          var(--accent-blue),
+          var(--primary-blue)
+        );
       }
 
       ::-webkit-scrollbar-track {
@@ -813,17 +852,29 @@
     </style>
 
     <!-- Cache busting meta -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
   </head>
   <body>
     <div class="container-scroller">
       <!-- Enhanced Premium Sidebar -->
-      <nav class="sidebar sidebar-offcanvas" id="sidebar" role="navigation" aria-label="Main Navigation">
+      <nav
+        class="sidebar sidebar-offcanvas"
+        id="sidebar"
+        role="navigation"
+        aria-label="Main Navigation"
+      >
         <!-- Enhanced Brand Section -->
         <div class="sidebar-brand-wrapper">
-          <a href="{% url 'jsapp:jshome' %}" class="brand-logo-container" title="DreamJobs - Your Career Partner">
+          <a
+            href="{% url 'jsapp:jshome' %}"
+            class="brand-logo-container"
+            title="DreamJobs - Your Career Partner"
+          >
             <img
               src="{% static 'images/logo.png' %}"
               alt="DreamJobs Logo"
@@ -838,38 +889,101 @@
 
         <!-- Enhanced Profile Section -->
         <li class="nav-item profile">
-          <div class="profile-card">
-            <div class="profile-header">
-              <div class="profile-avatar-container">
+          <div class="profile-desc">
+            <div class="profile-pic">
+              <div class="count-indicator">
                 {% if jobseek.profilepic %}
                 <img
-                  class="profile-avatar"
+                  class="img-xs rounded-circle"
                   src="{{ jobseek.profilepic.url }}"
                   alt="{{ jobseek.name }} profile photo"
                   loading="lazy"
                 />
                 {% else %}
-                <div
-                  class="profile-avatar bg-gradient d-flex align-items-center justify-content-center"
-                  style="background: var(--primary-gradient);"
-                  aria-label="Default profile avatar"
-                >
-                  <i class="fas fa-user text-white" style="font-size: 1.5rem;"></i>
-                </div>
+                <img
+                  class="img-xs rounded-circle"
+                  src="{% static 'images/default-avatar.png' %}"
+                  alt="Default Avatar"
+                />
                 {% endif %}
-                <span class="status-indicator" title="Online"></span>
+                <span class="count bg-success" title="Online"></span>
               </div>
-              <div class="profile-info flex-grow-1">
-                <h5>{{ jobseek.name|default:"User" }}</h5>
-                <p class="profile-role">Job Seeker</p>
+              <div class="profile-name">
+                <h5 class="mb-0 font-weight-normal">
+                  {{ jobseek.name|default:"User" }}
+                </h5>
+                <p class="text-muted mb-0" style="font-size: 0.85rem">
+                  Job Seeker
+                </p>
               </div>
             </div>
-            <div class="profile-actions">
-              <a href="{% url 'jsapp:viewprofile' %}" class="profile-action-btn">
-                <i class="fas fa-user-edit me-1"></i> Profile
+
+            <a
+              href="#"
+              id="profile-dropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="mdi mdi-dots-vertical" style="color: white"></i>
+            </a>
+
+            <div
+              class="dropdown-menu dropdown-menu-right sidebar-dropdown preview-list"
+              aria-labelledby="profile-dropdown"
+            >
+              <a
+                href="{% url 'jsapp:viewprofile' %}"
+                class="dropdown-item preview-item"
+              >
+                <div class="preview-thumbnail">
+                  <div class="preview-icon bg-primary rounded-circle">
+                    <i class="mdi mdi-account-settings text-white"></i>
+                  </div>
+                </div>
+                <div class="preview-item-content">
+                  <p class="preview-subject ellipsis mb-1 text-small">
+                    Profile Management
+                  </p>
+                  <p class="text-muted mb-0">Update your profile settings</p>
+                </div>
               </a>
-              <a href="{% url 'jsapp:changepassword' %}" class="profile-action-btn">
-                <i class="fas fa-key me-1"></i> Security
+
+              <div class="dropdown-divider"></div>
+
+              <a
+                href="{% url 'jsapp:changepassword' %}"
+                class="dropdown-item preview-item"
+              >
+                <div class="preview-thumbnail">
+                  <div class="preview-icon bg-warning rounded-circle">
+                    <i class="mdi mdi-lock text-white"></i>
+                  </div>
+                </div>
+                <div class="preview-item-content">
+                  <p class="preview-subject ellipsis mb-1 text-small">
+                    Change Password
+                  </p>
+                  <p class="text-muted mb-0">
+                    Update your security credentials
+                  </p>
+                </div>
+              </a>
+
+              <div class="dropdown-divider"></div>
+
+              <a
+                href="{% url 'jsapp:logout' %}"
+                class="dropdown-item preview-item"
+              >
+                <div class="preview-thumbnail">
+                  <div class="preview-icon bg-danger rounded-circle">
+                    <i class="mdi mdi-logout text-white"></i>
+                  </div>
+                </div>
+                <div class="preview-item-content">
+                  <p class="preview-subject ellipsis mb-1 text-small">Logout</p>
+                  <p class="text-muted mb-0">Sign out of your account</p>
+                </div>
               </a>
             </div>
           </div>
@@ -882,7 +996,11 @@
             <div class="nav-section">
               <div class="nav-section-title">Dashboard</div>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'jsapp:appliedjobs' %}" title="View Your Job Applications">
+                <a
+                  class="nav-link"
+                  href="{% url 'jsapp:appliedjobs' %}"
+                  title="View Your Job Applications"
+                >
                   <div class="menu-icon-wrapper">
                     <i class="fas fa-file-alt"></i>
                   </div>
@@ -895,7 +1013,11 @@
             <div class="nav-section">
               <div class="nav-section-title">Profile & Settings</div>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'jsapp:viewprofile' %}" title="View and Edit Your Profile">
+                <a
+                  class="nav-link"
+                  href="{% url 'jsapp:viewprofile' %}"
+                  title="View and Edit Your Profile"
+                >
                   <div class="menu-icon-wrapper">
                     <i class="fas fa-user-circle"></i>
                   </div>
@@ -903,7 +1025,11 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'jsapp:changepassword' %}" title="Change Your Password">
+                <a
+                  class="nav-link"
+                  href="{% url 'jsapp:changepassword' %}"
+                  title="Change Your Password"
+                >
                   <div class="menu-icon-wrapper">
                     <i class="fas fa-lock"></i>
                   </div>
@@ -916,7 +1042,11 @@
             <div class="nav-section">
               <div class="nav-section-title">Support</div>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'jsapp:response' %}" title="Send Feedback or Report Issues">
+                <a
+                  class="nav-link"
+                  href="{% url 'jsapp:response' %}"
+                  title="Send Feedback or Report Issues"
+                >
                   <div class="menu-icon-wrapper">
                     <i class="fas fa-comment-dots"></i>
                   </div>
@@ -924,8 +1054,16 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'jsapp:logout' %}" title="Sign Out" style="color: rgba(255, 107, 107, 0.9);">
-                  <div class="menu-icon-wrapper" style="background: rgba(255, 107, 107, 0.2);">
+                <a
+                  class="nav-link"
+                  href="{% url 'jsapp:logout' %}"
+                  title="Sign Out"
+                  style="color: rgba(255, 107, 107, 0.9)"
+                >
+                  <div
+                    class="menu-icon-wrapper"
+                    style="background: rgba(255, 107, 107, 0.2)"
+                  >
                     <i class="fas fa-sign-out-alt"></i>
                   </div>
                   <span class="menu-title">Logout</span>
@@ -941,8 +1079,14 @@
         <!-- Enhanced Premium Navbar -->
         <nav class="navbar p-0 d-flex flex-row">
           <!-- Mobile Brand -->
-          <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
-            <a class="navbar-brand-mobile" href="{% url 'jsapp:jshome' %}" title="DreamJobs">
+          <div
+            class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center"
+          >
+            <a
+              class="navbar-brand-mobile"
+              href="{% url 'jsapp:jshome' %}"
+              title="DreamJobs"
+            >
               DreamJobs
             </a>
           </div>
@@ -976,7 +1120,12 @@
             <!-- Navbar Actions -->
             <div class="navbar-actions">
               <!-- Notifications -->
-              <button class="notification-btn" title="Notifications" data-bs-toggle="dropdown" aria-expanded="false">
+              <button
+                class="notification-btn"
+                title="Notifications"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
                 <i class="fas fa-bell"></i>
                 <span class="notification-badge">3</span>
               </button>
@@ -1034,7 +1183,7 @@
                   {% else %}
                   <div
                     class="navbar-profile-avatar bg-gradient d-flex align-items-center justify-content-center"
-                    style="background: var(--primary-gradient);"
+                    style="background: var(--primary-gradient)"
                     aria-label="Default profile avatar"
                   >
                     <i class="fas fa-user text-white"></i>
@@ -1046,13 +1195,16 @@
                   </div>
                 </a>
 
-                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                <div
+                  class="dropdown-menu dropdown-menu-end"
+                  aria-labelledby="profileDropdown"
+                >
                   <div class="dropdown-header">
                     <h6>{{ jobseek.name|default:"User" }}</h6>
                     <p>{{ jobseek.emailaddress|default:"user@example.com" }}</p>
                   </div>
                   <div class="dropdown-divider"></div>
-                  
+
                   <a class="dropdown-item" href="{% url 'jsapp:viewprofile' %}">
                     <div class="dropdown-item-icon bg-primary text-white">
                       <i class="fas fa-user"></i>
@@ -1073,7 +1225,10 @@
                     </div>
                   </a>
 
-                  <a class="dropdown-item" href="{% url 'jsapp:changepassword' %}">
+                  <a
+                    class="dropdown-item"
+                    href="{% url 'jsapp:changepassword' %}"
+                  >
                     <div class="dropdown-item-icon bg-warning text-white">
                       <i class="fas fa-key"></i>
                     </div>
@@ -1095,7 +1250,11 @@
 
                   <div class="dropdown-divider"></div>
 
-                  <a href="{% url 'jsapp:logout' %}" class="dropdown-item" style="color: #dc3545;">
+                  <a
+                    href="{% url 'jsapp:logout' %}"
+                    class="dropdown-item"
+                    style="color: #dc3545"
+                  >
                     <div class="dropdown-item-icon bg-danger text-white">
                       <i class="fas fa-sign-out-alt"></i>
                     </div>
@@ -1120,17 +1279,24 @@
 
           <!-- Enhanced Footer -->
           <footer class="footer">
-            <div class="d-flex justify-content-between align-items-center w-100 flex-wrap">
+            <div
+              class="d-flex justify-content-between align-items-center w-100 flex-wrap"
+            >
               <span class="text-muted">
                 Copyright © 2025 DreamJobs. All rights reserved.
               </span>
               <div class="d-flex align-items-center gap-4">
                 <small class="text-muted">
-                  Made with <i class="fas fa-heart text-danger"></i> for job seekers
+                  Made with <i class="fas fa-heart text-danger"></i> for job
+                  seekers
                 </small>
                 <div class="d-flex gap-3">
-                  <a href="#" class="text-muted" title="Privacy Policy">Privacy</a>
-                  <a href="#" class="text-muted" title="Terms of Service">Terms</a>
+                  <a href="#" class="text-muted" title="Privacy Policy"
+                    >Privacy</a
+                  >
+                  <a href="#" class="text-muted" title="Terms of Service"
+                    >Terms</a
+                  >
                   <a href="#" class="text-muted" title="Support">Support</a>
                 </div>
               </div>
@@ -1150,7 +1316,10 @@
     <script src="{% static 'assets/vendors/jvectormap/jquery-jvectormap.min.js' %}"></script>
     <script src="{% static 'assets/vendors/jvectormap/jquery-jvectormap-world-mill-en.js' %}"></script>
     <script src="{% static 'assets/vendors/owl-carousel-2/owl.carousel.min.js' %}"></script>
-    <script src="{% static 'assets/js/jquery.cookie.js' %}" type="text/javascript"></script>
+    <script
+      src="{% static 'assets/js/jquery.cookie.js' %}"
+      type="text/javascript"
+    ></script>
     <script src="{% static 'assets/js/off-canvas.js' %}"></script>
     <script src="{% static 'assets/js/hoverable-collapse.js' %}"></script>
     <script src="{% static 'assets/js/misc.js' %}"></script>
@@ -1173,7 +1342,9 @@
         });
 
         // Enhanced mobile sidebar toggle with smooth animations
-        const sidebarToggle = document.querySelector('[data-toggle="minimize"]');
+        const sidebarToggle = document.querySelector(
+          '[data-toggle="minimize"]'
+        );
         const sidebar = document.getElementById("sidebar");
         const sidebarOverlay = document.getElementById("sidebar-overlay");
 
@@ -1208,7 +1379,7 @@
           searchInput.addEventListener("input", function () {
             clearTimeout(searchTimeout);
             const query = this.value.trim();
-            
+
             if (query.length > 2) {
               searchTimeout = setTimeout(() => {
                 // Add search functionality here
@@ -1225,14 +1396,18 @@
               const query = this.value.trim();
               if (query) {
                 // Redirect to search results
-                window.location.href = `{% url 'jsapp:viewjobs' %}?q=${encodeURIComponent(query)}`;
+                window.location.href = `{% url 'jsapp:viewjobs' %}?q=${encodeURIComponent(
+                  query
+                )}`;
               }
             }
           });
         }
 
         // Enhanced dropdown behavior with better UX
-        const dropdownToggles = document.querySelectorAll('[data-bs-toggle="dropdown"]');
+        const dropdownToggles = document.querySelectorAll(
+          '[data-bs-toggle="dropdown"]'
+        );
         dropdownToggles.forEach((toggle) => {
           toggle.addEventListener("show.bs.dropdown", function () {
             // Add active state
@@ -1261,7 +1436,11 @@
 
         // Auto-hide mobile sidebar when clicking outside or resizing
         function closeMobileSidebar() {
-          if (window.innerWidth <= 991 && sidebar && sidebar.classList.contains("show")) {
+          if (
+            window.innerWidth <= 991 &&
+            sidebar &&
+            sidebar.classList.contains("show")
+          ) {
             sidebar.classList.remove("show");
             if (sidebarOverlay) {
               sidebarOverlay.classList.remove("show");
@@ -1274,8 +1453,15 @@
 
         // Close sidebar on outside click
         document.addEventListener("click", function (e) {
-          if (window.innerWidth <= 991 && sidebar && sidebar.classList.contains("show")) {
-            if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+          if (
+            window.innerWidth <= 991 &&
+            sidebar &&
+            sidebar.classList.contains("show")
+          ) {
+            if (
+              !sidebar.contains(e.target) &&
+              !sidebarToggle.contains(e.target)
+            ) {
               closeMobileSidebar();
             }
           }
@@ -1297,7 +1483,9 @@
           // ESC key closes dropdowns and mobile sidebar
           if (e.key === "Escape") {
             // Close all open dropdowns
-            const openDropdowns = document.querySelectorAll(".dropdown-menu.show");
+            const openDropdowns = document.querySelectorAll(
+              ".dropdown-menu.show"
+            );
             openDropdowns.forEach((dropdown) => {
               const toggle = dropdown.previousElementSibling;
               if (toggle) {
@@ -1329,16 +1517,19 @@
         // Loading states for navigation with better visual feedback
         navLinks.forEach((link) => {
           link.addEventListener("click", function (e) {
-            if (this.getAttribute("href") !== currentPath && !this.getAttribute("href").startsWith("#")) {
+            if (
+              this.getAttribute("href") !== currentPath &&
+              !this.getAttribute("href").startsWith("#")
+            ) {
               // Add loading state
               const iconWrapper = this.querySelector(".menu-icon-wrapper");
               const icon = iconWrapper.querySelector("i");
               const originalIcon = icon.className;
-              
+
               // Show loading spinner
               icon.className = "fas fa-spinner fa-spin";
               iconWrapper.style.background = "var(--accent-blue)";
-              
+
               // Reset after a delay if page doesn't load
               setTimeout(() => {
                 if (icon.classList.contains("fa-spinner")) {
@@ -1366,7 +1557,8 @@
                     const fallback = document.createElement("div");
                     fallback.className = img.className;
                     fallback.style.background = "var(--primary-gradient)";
-                    fallback.innerHTML = '<i class="fas fa-user text-white"></i>';
+                    fallback.innerHTML =
+                      '<i class="fas fa-user text-white"></i>';
                     img.parentNode.replaceChild(fallback, img);
                   });
                   imageObserver.unobserve(img);
@@ -1399,7 +1591,9 @@
 
         // Initialize tooltips if Bootstrap tooltips are available
         if (typeof bootstrap !== "undefined" && bootstrap.Tooltip) {
-          const tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+          const tooltipTriggerList = [].slice.call(
+            document.querySelectorAll("[title]")
+          );
           tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl);
           });
@@ -1426,4 +1620,5 @@
     <!-- Allow child templates to add custom scripts -->
     {% block extra_scripts %}{% endblock %}
   </body>
-</html>">
+</html>
+">

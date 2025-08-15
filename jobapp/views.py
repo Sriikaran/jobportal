@@ -7,6 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 import datetime
 from django.db.models import Q
+from django.contrib import messages
 
 def index(request):
     jobs = Jobs.objects.all()
@@ -86,29 +87,9 @@ def jobseekerreg(request):
 
     return render(request, "jobseeker.html")
 
-def login(request):
-    if request.method=="POST":  
-        username=request.POST["username"]
-        password=request.POST["password"]
-        try:
-            obj = Login.objects.get(username=username, password=password)
-            usertype = obj.usertype 
-            request.session["username"] = username
-            request.session["usertype"] = usertype
-            if usertype == 'jobseeker':
-                request.session["usertype"] = usertype
-                return redirect("jsapp:jshome")
-            elif usertype == 'administrator':
-                request.session["usertype"] = username
-                return redirect("adminapp:adminhome")
-            elif usertype == 'employer':
-                request.session["usertype"] = usertype
-                return redirect("employer:employerhome")
-            else:
-                return render(request, 'login.html', {"msg": "Invalid user type"})
-        except ObjectDoesNotExist:
-            return render(request, 'login.html', {"msg": "Invalid user"}) 
-    return render(request, "login.html")
+from django.contrib import messages
+from jobapp.models import Employer, Login
+import datetime
 
 def employerreg(request):
     if request.method == "POST":
@@ -140,13 +121,49 @@ def employerreg(request):
         )
         empreg.save()
 
-        log = Login(username=cpemailaddress, password=password, usertype="employer")
-        log.save()
+        Login.objects.create(username=cpemailaddress, password=password, usertype="employer")
 
-        messages.success(request, "Employer registration successful! Please log in.")
-        return render(request, "employer.html", {"show_modal": True})
+        # 🔹 Set session for auto-login
+        request.session["username"] = cpemailaddress
+        request.session["usertype"] = "employer"
+
+        messages.success(request, "Employer registration successful! You are now logged in.")
+        return redirect("employer:employerhome")  # ✅ Go straight to employer home
 
     return render(request, "employer.html")
+
+
+
+def login(request):
+    print("AFTER LOGIN:", username, obj.usertype)
+    print("SESSION NOW:", dict(request.session))
+
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+
+        try:
+            obj = Login.objects.get(username=username, password=password)
+            request.session["username"] = username
+            request.session["usertype"] = obj.usertype 
+            print("SESSION:", request.session.items())
+ 
+
+            if obj.usertype == 'jobseeker':
+                return redirect("jsapp:jshome")
+            elif obj.usertype == 'administrator':
+                return redirect("adminapp:adminhome")
+            elif obj.usertype == 'employer':
+                return redirect("employer:employerhome")
+            else:
+                return render(request, 'login.html', {"msg": "Invalid user type"})
+
+        except Login.DoesNotExist:
+            return render(request, 'login.html', {"msg": "Invalid username or password"})
+
+    return render(request, "login.html")
+
+
 
 def contactus(request):
     if request.method=="POST": 

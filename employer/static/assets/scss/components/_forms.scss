@@ -17,12 +17,12 @@
   }
 }
 .form-control {
-  border: 1px solid $border-color;
+  border: 1px solid white;
   height: calc(2.25rem + 2px);
   font-weight: normal;
   font-size: $input-font-size; 
   padding: 0.625rem 0.6875rem;
-  background-color: $input-bg;
+  background-color: white;
   border-radius: 2px;
   color: #ffffff;
   &:focus {
