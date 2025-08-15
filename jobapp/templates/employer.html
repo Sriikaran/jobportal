@@ -70,6 +70,60 @@
   input[type="file"].form-input::file-selector-button:hover {
     background-color: #072f5c;
   }
+  /* From Jobseeker TOS modal styles */
+/* From Jobseeker TOS modal styles */
+@keyframes modalIn {
+    from {
+        transform: translateY(-40px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-close {
+    position: absolute;
+    top: 12px;
+    right: 18px;
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    color: #093f75;
+    cursor: pointer;
+}
+
+.modal-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #093f75;
+    margin-bottom: 0.7rem;
+    text-align: center;
+}
+
+.modal-content {
+    font-size: 0.98rem;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Size adjustments */
+#termsOfServiceModal .modal-dialog {
+    max-width: 70vw; /* 70% width */
+}
+#termsOfServiceModal .modal-content {
+    height: 60vh;       /* 60% height */
+    overflow-y: auto;   /* scroll if needed */
+}
+.modal-body {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+
+
+
 </style>
 
 <div class="container inter-font" style="background: linear-gradient(135deg, #f6fafd 0%, #e8f2ff 100%);">
@@ -147,7 +201,10 @@
         <div class="form-check d-flex mb-5">
           <input class="form-check-input me-2" type="checkbox" required />
           <label class="form-check-label">
-            I agree all statements in <a href="#">Terms of service<span class="required-asterisk">*</span></a>
+            I agree all statements in 
+  <a href="#" data-bs-toggle="modal" data-bs-target="#termsOfServiceModal">
+    Terms of Service<span class="required-asterisk">*</span>
+  </a>
           </label>
         </div>
         </div>
@@ -190,5 +247,31 @@
     </form>
   </div>
 </div>
+<!-- Terms of Service Modal -->
+<div class="modal fade" id="termsOfServiceModal" tabindex="-1" aria-labelledby="termsOfServiceModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <button type="button" class="modal-close" data-bs-dismiss="modal">&times;</button>
+      <h5 class="modal-title" id="termsOfServiceModalLabel">Terms of Service</h5>
+      <div class="modal-body">
+       <div class="modal-content">
+                <ul style="padding-left: 1.2em;">
+                    <li>You must be at least 18 years old to use Dream Jobs.</li>
+                    <li>All information provided must be accurate and up to date.</li>
+                    <li>Do not share your account credentials with others.</li>
+                    <li>Dream Jobs is not responsible for third-party content or job listings.</li>
+                    <li>Any misuse of the platform may result in account suspension.</li>
+                    <li>Respect all users and employers on the platform.</li>
+                    <li>By using Dream Jobs, you agree to receive occasional emails and notifications.</li>
+                    <li>These terms may be updated at any time without prior notice.</li>
+                </ul>
+                <p style="margin-top:1em; color:#888; font-size:0.93em;">For more details, contact our support team.</p>
+            </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 {% endblock body %}
