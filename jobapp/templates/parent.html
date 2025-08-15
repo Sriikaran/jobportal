@@ -1,343 +1,243 @@
-
 <html>
   <head>
     {% load static %}
     <title>Dream Jobs</title>
     <link rel="icon" href="{% static 'images/img2.png' %}">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" />
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script defer src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-QGgKq4u5asJ5AZt0pOEtpJR/YWZLxE+nobVhtSGcVwqDAVBBusfvEvF5aYlXgWLa" crossorigin="anonymous"></script>
     {% block head %}{% endblock %}
-</head>
-
-<style>
-  header {
-    background: linear-gradient(to right, #0c3056, #1c5aa6);
-    color: white;
-    padding: 20px 0;
-    text-align: center;
-    font-size: 30px;
-    font-weight: bold;
-    border-bottom: 5px solid #56a8fa;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  .navbar {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-  }
-
-  .nav-link {
-    position: relative;
-    font-weight: 500;
-    color: #0c3056 !important;
-  }
-
-  .nav-link::after {
-    content: "";
-    position: absolute;
-    width: 0%;
-    height: 2px;
-    bottom: 0;
-    left: 0;
-    background-color: #0c3056;
-    transition: width 0.3s;
-  }
-
-  .nav-link:hover::after {
-    width: 100%;
-  }
-
-  .nav-link:hover {
-    font-weight: 600;
-    color: #093f75 !important;
-  }
-
-  .navbar-collapse {
-    justify-content: center;
-  }
-
-  .navbar-nav {
-    gap: 20px;
-  }
-
-  .auth-buttons {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-  }
-
-  .container {
-    max-width: 100%;
-  }
-
-  footer {
-    background-color: #0c3056;
-    color: white;
-    text-align: center;
-    padding: 40px 20px;
-    border-top: 4px solid #56a8fa;
-    font-size: 20px;
-    line-height: 1.6;
-    position: relative;
-  }
-
-  footer::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background: url('https://www.transparenttextures.com/patterns/diamond-upholstery.png');
-    opacity: 0.04;
-    z-index: 0;
-  }
-
-  footer .container {
-    position: relative;
-    z-index: 1;
-  }
-
-  footer a {
-    color: whitesmoke;
-    text-decoration: none;
-    margin: 0 15px;
-    transition: color 0.3s ease, text-shadow 0.3s ease;
-  }
-
-  footer a:hover {
-    text-decoration: underline;
-    color: whitesmoke;
-    text-shadow: 0 0 5px #56a8fa;
-  }
-
-  footer .footer-links {
-    margin-top: 10px;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-
-  .nav-item li a {
-        text-decoration: none;
-      }
-      .container {
-        max-width: 100%;
-      }
-      .footer {
-        max-width: 100%;
-        background-color: #e8f3f8;
-      }
-      .footer a {
-        text-decoration: none;
-      }
-      .footer a:hover {
-        color: #0b447e;
-      }
-      .collapse li a:hover {
-        font-weight: 600;
-        color: #0b447e;
-      }
-      
-    #backToTopBtn {
-      display: none;
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      z-index: 1000;
-      width: 50px;
-      height: 50px;
-      border: none;
-      outline: none;
-      background-color: #0c3056;
-      color: white;
-      cursor: pointer;
-      border-radius: 50%;
-      font-size: 20px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-      text-align: center;
-      line-height: 50px; /* vertical centering */
-      transition: opacity 0.3s;
-    }
-
-    #backToTopBtn:hover {
-      background-color: #093f75;
-    }
-</style>
-</head>
-
-<body>
-  <div class="container">
-    <!-- top row -->
-    <!-- <div class="row py-3" style="background-color: rgba(0, 0, 0, 0.05);">
-      <div class="col-sm-6 text-center">
-        <i class="fa-solid fa-envelope" style="color: #093f75;"></i>
-        <span><a href="mailto:info@dreamjobs.com" style="text-decoration: none; color: #444545;">Email : info@dreamjobs.com</a></span>
-      </div>
-      <div class="col-sm-6 text-center">
-        <i class="fa-solid fa-location-dot" style="color: #093f75;"></i>
-        <span style="color: #444545;"> Office Address : 501, Cyber Heights, Lucknow</span>
-      </div>
-    </div> -->
-
-    <!-- navbar -->
-    <nav class="navbar navbar-expand-lg shadow-sm" style="background-color: #ffffff;">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="{% url 'jobapp:index' %}">
-      <img src="{% static 'images/logo.png' %}" height="60" width="120" style="border-radius: 20px 20px 0 20px;" alt="Logo" />
-    </a>
-    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
-      <ul class="navbar-nav gap-3 align-items-center">
-        <li class="nav-item">
-          <a class="nav-link fw-semibold px-3 py-2 rounded-pill" href="{% url 'jobapp:index' %}">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link fw-semibold px-3 py-2 rounded-pill" href="{% url 'jobapp:aboutus' %}">About Us</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link fw-semibold px-3 py-2 rounded-pill" href="{% url 'jobapp:services' %}">Services</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link fw-semibold px-3 py-2 rounded-pill" href="{% url 'jobapp:blog' %}">Blog</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link fw-semibold px-3 py-2 rounded-pill" href="{% url 'jobapp:contactus' %}">Contact</a>
-        </li>
-      </ul>
+    <style>
+      header { background: linear-gradient(to right, #0c3056, #1c5aa6); color: white; padding: 20px 0; text-align: center; font-size: 30px; font-weight: bold; border-bottom: 5px solid #56a8fa; box-shadow: 0 4px 8px rgba(0,0,0,0.1);}    
+      .navbar { position: sticky; top: 0; z-index: 1000; }
+      .nav-link { position: relative; font-weight: 500; color: #0c3056 !important; }
+      .nav-link:hover { font-weight: 600; color: #093f75 !important; }
+      .navbar-collapse { justify-content: center; }
+      .navbar-nav { gap: 20px; }
+      .auth-buttons { display:flex; align-items:center; gap:15px; }
+      .container { max-width:100%; }
+      footer { background-color:#0c3056; color:white; text-align:center; padding:40px 20px; border-top:4px solid #56a8fa; font-size:20px; line-height:1.6; position:relative; }
+      footer::before { content:""; position:absolute; top:0; left:0; height:100%; width:100%; background:url('https://www.transparenttextures.com/patterns/diamond-upholstery.png'); opacity:0.04; z-index:0; }
+      footer .container { position:relative; z-index:1; }
+      footer a { color:whitesmoke; text-decoration:none; margin:0 15px; transition:color .3s ease, text-shadow .3s ease; }
+      footer a:hover { text-decoration:underline; text-shadow:0 0 5px #56a8fa; }
+      footer .footer-links { margin-top:10px; display:flex; justify-content:center; flex-wrap:wrap; gap:20px; }
+      .nav-item li a { text-decoration:none; }
+      .footer { max-width:100%; background-color:#e8f3f8; }
+      .footer a { text-decoration:none; }
+      .footer a:hover { color:#0b447e; }
+      .collapse li a:hover { font-weight:600; color:#0b447e; }
+      #backToTopBtn { display:none; position:fixed; bottom:30px; right:30px; z-index:1000; width:50px; height:50px; border:none; background-color:#0c3056; color:white; cursor:pointer; border-radius:50%; font-size:20px; box-shadow:0 2px 6px rgba(0,0,0,0.3); line-height:50px; transition:opacity .3s; }
+      #backToTopBtn:hover { background-color:#093f75; }
+      .glass-nav { background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(50,130,220,0.22)) !important; backdrop-filter: blur(16px) saturate(160%); -webkit-backdrop-filter: blur(16px) saturate(160%); border:1px solid rgba(120,180,240,0.45); border-radius:22px; padding:.6rem 1rem; margin:12px auto 24px; box-shadow:0 8px 24px -8px rgba(0,0,0,0.25); transition:background .4s, box-shadow .4s; position:sticky; top:0; z-index:1200; }
+      .glass-nav:hover { box-shadow:0 12px 32px -10px rgba(0,0,0,0.35); background: linear-gradient(135deg, rgba(255,255,255,0.20), rgba(40,120,215,0.30)) !important; }
+      .glass-nav .navbar-brand img { border-radius:18px; border:1px solid rgba(255,255,255,0.4); box-shadow:0 4px 14px -4px rgba(0,0,0,.35); }
+      .glass-nav .nav-link { color:#0a2f52 !important; border-radius:18px; padding:.55rem 1rem !important; transition:background .3s,color .3s; }
+      .glass-nav .nav-link:hover { background:rgba(255,255,255,0.28); color:#093f75 !important; }
+      .glass-nav .nav-link.active { background:rgba(255,255,255,0.4); font-weight:600; }
+      .glass-nav .btn { background:linear-gradient(135deg,#0c4d8c,#0b79d0); border:none; color:#fff; border-radius:30px; padding:.55rem 1.2rem; position:relative; overflow:hidden; transition:transform .25s, box-shadow .25s; }
+      .glass-nav .btn::before { content:""; position:absolute; top:0; left:-40%; width:40%; height:100%; background:rgba(255,255,255,0.35); transform:skewX(-25deg); transition:transform .6s; }
+      .glass-nav .btn:hover::before { transform:skewX(-25deg) translateX(250%); }
+      .glass-nav .btn:hover { transform:translateY(-3px); box-shadow:0 8px 22px -6px rgba(0,0,0,0.35); }
+      .glass-nav .dropdown-menu { background:rgba(255,255,255,0.55); backdrop-filter: blur(18px) saturate(180%); border:1px solid rgba(255,255,255,0.4); box-shadow:0 10px 28px -8px rgba(0,0,0,.35); margin-top:.65rem; border-radius:22px; }
+      .glass-nav .dropdown-item { color:#0a2f52; font-weight:500; }
+      .glass-nav .dropdown-item:hover { background:rgba(255,255,255,0.4); }
+      .glass-footer { position:relative; background: linear-gradient(135deg, rgba(255,255,255,0.10), rgba(35,115,205,0.26)) !important; backdrop-filter: blur(20px) saturate(170%); border-top:1px solid rgba(140,190,245,0.50); border-left:1px solid rgba(140,190,245,0.30); border-right:1px solid rgba(140,190,245,0.30); border-radius:34px 34px 0 0; padding-top:3rem; box-shadow:0 -8px 28px -6px rgba(0,0,0,0.25); }
+      .glass-footer::before { content:""; position:absolute; inset:0; background: radial-gradient(circle at 18% 22%, rgba(180,220,255,0.45), transparent 60%), linear-gradient(135deg, rgba(255,255,255,0.15), rgba(60,140,230,0.25)); pointer-events:none; border-radius:inherit; }
+      .glass-footer .footer-link, .glass-footer a { color:#0b4f86; font-weight:500; transition:color .3s, text-shadow .3s; }
+      .glass-footer .footer-link:hover, .glass-footer a:hover { color:#0a6ac0; text-shadow:0 0 6px rgba(255,255,255,0.65); text-decoration:none; }
+      .glass-footer .footer-section-title { font-size:.8rem; text-transform:uppercase; letter-spacing:.6px; font-weight:700; display:flex; align-items:center; gap:.25rem; color:#0a2f52; position:relative; margin-bottom:.85rem; }
+      .glass-footer .footer-section-title i { font-size:.85rem; color:#0b6fbf; }
+      .glass-footer .footer-section-title:after { content:""; position:absolute; left:0; bottom:-6px; width:42px; height:2px; background:linear-gradient(90deg,#0b6fbf,#56a8fa); border-radius:2px; opacity:.9; }
+      .glass-footer .brand-text { font-family:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans',sans-serif; font-size:.86rem; line-height:1.6; color:#0a2f52; font-weight:600; letter-spacing:.2px; position:relative; padding-left:14px; margin:.25rem 0 0; }
+      .glass-footer .brand-text::before { content:""; position:absolute; left:0; top:.15rem; bottom:.15rem; width:4px; border-radius:6px; background:linear-gradient(180deg,#56a8fa,#0b6fbf); box-shadow:0 4px 12px -6px rgba(11,111,191,.6); }
+      .glass-footer .trust-points { color:#0a4d83; opacity:.9; }
+      .glass-footer .trust-points i { color:#0b6fbf !important; }
+      .clean-list { list-style:none; margin:0; padding:0; }
+      .clean-list li { margin:.4rem 0; }
+      .glass-footer .footer-list a { position:relative; font-size:.75rem; font-weight:500; padding:.15rem 0; color:#0b4f86; display:inline-flex; align-items:center; gap:.35rem; transition:color .35s ease; }
+      .glass-footer .footer-list a span { position:relative; z-index:2; }
+      .glass-footer .footer-list a::after { content:""; position:absolute; left:0; bottom:0; height:2px; width:100%; background:linear-gradient(90deg,#0b6fbf,#56a8fa); transform:scaleX(0); transform-origin:left; transition:transform .45s cubic-bezier(.22,.68,.34,1); opacity:.85; }
+      .glass-footer .footer-list a:hover::after, .glass-footer .footer-list a:focus-visible::after { transform:scaleX(1); }
+      .glass-footer .footer-list a:hover { color:#0a6ac0; }
+      .glass-footer .contact-list li { display:flex; gap:.6rem; font-size:.72rem; line-height:1.3; color:#0a2f52; }
+      .glass-footer .contact-list li i { color:#0b6fbf; font-size:.75rem; margin-top:2px; }
+      .newsletter-box.modern { background:rgba(255,255,255,0.42); border:1px solid rgba(255,255,255,0.55); border-radius:20px; padding:1.1rem 1rem 1.2rem; position:relative; overflow:hidden; }
+      .newsletter-box.modern:before { content:""; position:absolute; inset:0; background:linear-gradient(140deg, rgba(255,255,255,.45), rgba(180,220,255,.15)); }
+      .newsletter-form { display:flex; flex-wrap:wrap; gap:.65rem; }
+      .newsletter-form .input-wrapper { position:relative; flex:1 1 220px; }
+      .newsletter-form .input-wrapper i { position:absolute; left:.75rem; top:50%; transform:translateY(-50%); font-size:.8rem; color:#0b6fbf; }
+      .newsletter-form input[type=email] { width:100%; background:rgba(255,255,255,0.72); border:1px solid rgba(11,111,191,0.35); border-radius:14px; padding:.55rem .75rem .55rem 2rem; font-size:.75rem; color:#0a2f52; outline:none; transition:border .3s, box-shadow .3s, background .3s; }
+      .newsletter-form input[type=email]:focus { border-color:#0b6fbf; box-shadow:0 0 0 3px rgba(11,111,191,0.25); background:rgba(255,255,255,0.88); }
+      .subscribe-btn { border:none; background:linear-gradient(135deg,#0b6fbf,#0c3056); color:#fff; font-size:.7rem; letter-spacing:.5px; font-weight:600; padding:.62rem 1rem; border-radius:14px; display:inline-flex; align-items:center; justify-content:center; gap:.35rem; position:relative; overflow:hidden; min-width:140px; transition:transform .3s, box-shadow .3s; }
+      .subscribe-btn:before { content:""; position:absolute; top:0; left:-30%; height:100%; width:30%; background:rgba(255,255,255,0.45); transform:skewX(-25deg); transition:transform .7s; }
+      .subscribe-btn:hover:before { transform:skewX(-25deg) translateX(300%); }
+      .subscribe-btn:hover { transform:translateY(-3px); box-shadow:0 10px 20px -7px rgba(0,0,0,.45); }
+      .text-note { font-size:.63rem; display:block; margin-top:.5rem; color:#0a4d83; opacity:.85; }
+      .social-inline { display:flex; flex-wrap:wrap; gap:.55rem; padding:0; margin:0; }
+      .social-inline li { list-style:none; }
+      .social-btn { --glass-bg:rgba(255,255,255,0.48); width:42px; height:42px; display:flex; align-items:center; justify-content:center; border-radius:14px; background:var(--glass-bg); border:1px solid rgba(255,255,255,0.55); backdrop-filter:blur(10px) saturate(170%); position:relative; overflow:hidden; font-size:.85rem; color:#0c3056; transition:transform .4s, background .4s, box-shadow .4s, color .4s; }
+      .social-btn:before { content:""; position:absolute; inset:0; background:linear-gradient(145deg, rgba(255,255,255,0.55), rgba(180,220,255,0.2)); opacity:0; transition:opacity .45s; }
+      .social-btn:hover { transform:translateY(-5px); box-shadow:0 10px 22px -8px rgba(0,0,0,.45); color:#0a2f52; }
+      .social-btn:hover:before { opacity:1; }
+      .social-btn.fb:hover { color:#1877f2; } .social-btn.tw:hover { color:#1da1f2; } .social-btn.ig:hover { color:#e1306c; } .social-btn.li:hover { color:#0a66c2; } .social-btn.gh:hover { color:#24292e; }
+      .footer-divider { height:1px; background:linear-gradient(90deg, rgba(11,111,191,0), rgba(11,111,191,.5), rgba(11,111,191,0)); margin:2.1rem 0 1.4rem; position:relative; }
+      .footer-divider:after { content:""; position:absolute; top:-4px; left:40%; width:20%; height:1px; background:linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.65), rgba(255,255,255,0)); filter:blur(1px); }
+      .creator-link { position:relative; color:#0b4f86; font-weight:600; }
+      .creator-link:after { content:""; position:absolute; left:0; bottom:-2px; height:2px; width:100%; background:linear-gradient(90deg,#0b6fbf,#56a8fa); transform:scaleX(0); transition:transform .45s; }
+      .creator-link:hover:after { transform:scaleX(1); }
+      .creator-link:hover { color:#0a6ac0; }
+      .footer-links-col .footer-list a { position:relative; padding:.18rem .65rem .22rem; border-radius:14px; overflow:hidden; isolation:isolate; }
+      .footer-links-col .footer-list a::after { display:none !important; }
+      .footer-links-col .footer-list a::before { content:""; position:absolute; inset:0; background:linear-gradient(135deg, rgba(11,111,191,0.18), rgba(86,168,250,0.30)); border:1px solid rgba(255,255,255,0.55); box-shadow:0 4px 14px -6px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,0.4); opacity:0; transform:translateY(12px) scale(.92); filter:blur(8px); transition:opacity .55s, transform .55s, filter .55s; border-radius:inherit; z-index:-1; }
+      .footer-links-col .footer-list a:hover::before, .footer-links-col .footer-list a:focus-visible::before { opacity:1; transform:translateY(0) scale(1); filter:blur(0); }
+      .footer-links-col .footer-list a:hover, .footer-links-col .footer-list a:focus-visible { color:#0a2f52; transform:translateY(-2px); text-shadow:0 2px 6px rgba(0,0,0,.18); }
+      .footer-links-col .footer-list a span { transition:letter-spacing .45s; }
+      .footer-links-col .footer-list a:hover span, .footer-links-col .footer-list a:focus-visible span { letter-spacing:.5px; }
+      .glass-footer { margin-top:2rem; }
+      @media (max-width:991px){ .glass-nav { border-radius:18px; } }
+      @media (max-width:576px){ .glass-nav { margin:8px auto 18px; } .glass-nav .navbar-nav { gap:6px; } }
+      .glass-nav, .glass-nav .container-fluid { overflow:visible !important; }
+      .glass-nav .dropdown-menu { display:none; z-index:3000; }
+      .glass-nav .dropdown-menu.show { display:block; }
+      .glass-nav .nav-link::after { display:none !important; }
+      .glass-nav .nav-link { position:relative; overflow:hidden; background:transparent !important; border-radius:16px; font-weight:500; transition:color .35s ease; }
+      .glass-nav .nav-link::before { content:""; position:absolute; inset:0; background:linear-gradient(110deg, rgba(11,111,191,0.85), rgba(86,168,250,0.9)); transform:translateX(-105%); transition:transform .55s cubic-bezier(.19,.72,.29,1); z-index:-1; }
+      .glass-nav .nav-link:hover::before, .glass-nav .nav-link:focus-visible::before { transform:translateX(0); }
+      .glass-nav .nav-link:hover, .glass-nav .nav-link:focus-visible { color:#fff !important; }
+      .glass-nav .nav-link.active { color:#fff !important; font-weight:600; }
+      .glass-nav .nav-link.active::before { transform:translateX(0); }
+      .glass-nav .nav-link.active::after, .glass-nav .nav-link:hover::after { content:""; position:absolute; inset:0; box-shadow:inset 0 0 0 1px rgba(255,255,255,0.35), 0 4px 12px -6px rgba(0,0,0,0.35); border-radius:16px; pointer-events:none; }
+      @media (prefers-reduced-motion:reduce){ .glass-nav .nav-link::before { transition:none; } }
+      .glass-nav { background: rgba(190,225,255,0.32) !important; }
+      .glass-nav:hover { background: rgba(190,225,255,0.45) !important; }
+      .glass-footer { background: rgba(190,225,255,0.22) !important; }
+      .glass-footer::before { background: radial-gradient(circle at 18% 22%, rgba(255,255,255,0.38), transparent 55%), radial-gradient(circle at 82% 78%, rgba(190,225,255,0.28), transparent 62%); }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <nav class="navbar navbar-expand-lg shadow-sm glass-nav">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="{% url 'jobapp:index' %}"><img src="{% static 'images/logo.png' %}" height="60" width="120" alt="Logo" /></a>
+          <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
+            <ul class="navbar-nav gap-3 align-items-center">
+              <li class="nav-item"><a class="nav-link fw-semibold px-3 py-2" href="{% url 'jobapp:index' %}">Home</a></li>
+              <li class="nav-item"><a class="nav-link fw-semibold px-3 py-2" href="{% url 'jobapp:aboutus' %}">About Us</a></li>
+              <li class="nav-item"><a class="nav-link fw-semibold px-3 py-2" href="{% url 'jobapp:services' %}">Services</a></li>
+              <li class="nav-item"><a class="nav-link fw-semibold px-3 py-2" href="{% url 'jobapp:blog' %}">Blog</a></li>
+              <li class="nav-item"><a class="nav-link fw-semibold px-3 py-2" href="{% url 'jobapp:contactus' %}">Contact</a></li>
+            </ul>
+            <div class="auth-buttons ms-auto d-flex align-items-center gap-3">
+              {% if request and request.resolver_match and request.resolver_match.url_name == 'login' %}
+              {% else %}
+                <a href="{% url 'jobapp:login' %}" class="btn fw-semibold">Login</a>
+              {% endif %}
+              <div class="dropdown" id="registerDropdownWrapper">
+                <button type="button" class="btn fw-semibold dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false" id="registerDropdown">Register</button>
+                <ul class="dropdown-menu rounded-4 overflow-hidden" aria-labelledby="registerDropdown" role="menu">
+                  <li><a class="dropdown-item fw-semibold" role="menuitem" href="{% url 'jobapp:employerreg' %}">Employer</a></li>
+                  <li><a class="dropdown-item fw-semibold" role="menuitem" href="{% url 'jobapp:jobseekerreg' %}">Job Seeker</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      {% block body %}{% endblock body %}
+      <footer class="glass-footer text-center text-lg-start" role="contentinfo">
+        <div class="footer-top container pt-4">
+          <div class="row g-4 align-items-start">
+            <div class="col-12 col-md-5 col-lg-4 footer-brand text-start">
+              <a href="{% url 'jobapp:index' %}" class="d-inline-flex align-items-center mb-3 text-decoration-none footer-logo">
+                <img src="{% static 'images/logo.png' %}" alt="Dream Jobs" class="img-fluid" style="max-width:170px; border-radius:16px; border:1px solid rgba(255,255,255,.45);">
+              </a>
+              <p class="brand-text">Connecting ambitious talent with forward-thinking employers through a refined, transparent, and human‑centric platform.</p>
+              <ul class="list-inline small mt-3 trust-points">
+                <li class="list-inline-item"><i class="fa-solid fa-shield-halved me-1 text-primary"></i>Secure</li>
+                <li class="list-inline-item"><i class="fa-solid fa-bolt me-1 text-primary"></i>Fast</li>
+                <li class="list-inline-item"><i class="fa-solid fa-award me-1 text-primary"></i>Trusted</li>
+              </ul>
+            </div>
+            <div class="col-6 col-md-3 col-lg-2 footer-links-col">
+              <h6 class="footer-section-title"><i class="fa-solid fa-link me-2"></i>Important</h6>
+              <ul class="footer-list clean-list">
+                <li><a href="{% url 'jobapp:aboutus' %}"><span>About Us</span></a></li>
+                <li><a href="{% url 'jobapp:services' %}"><span>Services</span></a></li>
+                <li><a href="{% url 'jobapp:blog' %}"><span>Blog</span></a></li>
+                <li><a href="{% url 'jobapp:contactus' %}"><span>Contact</span></a></li>
+                <li><a href="{% url 'jobapp:index' %}"><span>Privacy Policy</span></a></li>
+                <li><a href="{% url 'jobapp:index' %}"><span>Terms</span></a></li>
+              </ul>
+            </div>
+            <div class="col-6 col-md-4 col-lg-2 footer-contact-col">
+              <h6 class="footer-section-title"><i class="fa-solid fa-address-card me-2"></i>Contact</h6>
+              <ul class="contact-list clean-list">
+                <li><i class="fa-solid fa-location-dot"></i><span>501, Cyber Heights, Lucknow</span></li>
+                <li><i class="fa-solid fa-envelope"></i><span>info@dreamjobs.com</span></li>
+                <li><i class="fa-solid fa-phone"></i><span>+91 9889106834</span></li>
+              </ul>
+            </div>
+            <div class="col-12 col-md-7 col-lg-4">
+              <h6 class="footer-section-title"><i class="fa-solid fa-envelope-open-text me-2"></i>Newsletter</h6>
+              <div class="newsletter-box modern">
+                <form action="#" method="post" novalidate class="newsletter-form">
+                  <div class="input-wrapper"><i class="fa-solid fa-at"></i><input type="email" name="email" placeholder="Email address" aria-label="Email address"></div>
+                  <button type="submit" class="subscribe-btn"><span>Subscribe</span><i class="fa-solid fa-paper-plane ms-2"></i></button>
+                </form>
+                <small class="text-note">We respect your inbox. Only relevant updates.</small>
+              </div>
+              <div class="social-group mt-4">
+                <h6 class="footer-section-title mb-3"><i class="fa-solid fa-share-nodes me-2"></i>Social</h6>
+                <ul class="social-inline clean-list" aria-label="Social media links">
+                  <li><a href="https://www.facebook.com/" aria-label="Facebook" class="social-btn fb"><i class="fab fa-facebook-f"></i></a></li>
+                  <li><a href="https://twitter.com/" aria-label="Twitter" class="social-btn tw"><i class="fab fa-twitter"></i></a></li>
+                  <li><a href="https://www.instagram.com/" aria-label="Instagram" class="social-btn ig"><i class="fab fa-instagram"></i></a></li>
+                  <li><a href="https://www.linkedin.com/" aria-label="LinkedIn" class="social-btn li"><i class="fab fa-linkedin-in"></i></a></li>
+                  <li><a href="https://github.com/" aria-label="GitHub" class="social-btn gh"><i class="fab fa-github"></i></a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="footer-divider"></div>
+          <div class="footer-bottom d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 pb-3">
+            <div class="small mb-1 mb-md-0">&copy; 2024 Dream Jobs. All rights reserved.</div>
+            <div class="small">Crafted by <a href="#" class="creator-link">Khushi Nigam</a></div>
+          </div>
+        </div>
+      </footer>
     </div>
-  </div>
-
-         <div class="auth-buttons ms-auto mt-3 mt-lg-0 d-flex align-items-center gap-3">
-  <a href="{% url 'jobapp:login' %}" class="btn fw-semibold px-4 py-2 rounded-pill" style="background-color: #093f75; color: white; transition: all 0.3s;">
-    Login
-  </a>
-  <div class="dropdown">
-    <button class="btn fw-semibold px-4 py-2 rounded-pill dropdown-toggle" style="background-color: #093f75; color: white; transition: all 0.3s;" data-bs-toggle="dropdown">
-      Register
-    </button>
-    <ul class="dropdown-menu shadow-sm rounded-3">
-      <li><a class="dropdown-item fw-semibold" href="{% url 'jobapp:employerreg' %}">Employer</a></li>
-      <li><a class="dropdown-item fw-semibold" href="{% url 'jobapp:jobseekerreg' %}">Job Seeker</a></li>
-    </ul>
-  </div>
-</div>
-
-    </nav>
-
-    {% block body %}
-    {% endblock body %}
-
-    <!-- Footer -->
-    <footer class="text-center text-lg-start bg-body-light">
-  <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
-    <div class="me-5 d-none d-lg-block">
-      <span style="color: whitesmoke; font-weight: 600; font-size: 1.5rem;">
-        Get connected with us on social networks :
-      </span>
-    </div>
-    <div class="d-flex align-items-center gap-3">
-      <a href="https://www.facebook.com/" class="social-link">
-        <i class="fab fa-facebook-f" style="color: #c9d4de;font-size: 28px"></i>
-      </a>
-      <a href="https://twitter.com/" class="social-link">
-        <i class="fab fa-twitter" style="color: #47bde4;font-size: 28px"></i>
-      </a>
-      <a href="https://www.gmail.com/" class="social-link">
-        <i class="fa-regular fa-envelope" style="color: #e03c31;font-size: 28px"></i>
-      </a>
-      <a href="https://www.instagram.com/" class="social-link">
-        <i class="fab fa-instagram" style="color: #e5397b;font-size: 28px"></i>
-      </a>
-      <a href="https://www.linkedin.com/" class="social-link">
-        <i class="fab fa-linkedin" style="color: #364ade;font-size: 28px"></i>
-      </a>
-      <a href="https://github.com/" class="social-link">
-        <i class="fab fa-github" style="color: #0b0c0d;font-size: 28px"></i>
-      </a>
-    </div>
-  </section>
-
-
-
-  <section>
-  <div class="container text-center text-md-start mt-5">
-    <div class="row mt-3">
-      <!-- Company Info -->
-      <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-        <h6 class="fw-bold mb-4">
-          <img src="{% static 'images/logo.png' %}" width="50%" alt="Dream Jobs Logo">
-        </h6>
-        <p style="color: whitesmoke; font-size: 1rem;">
-          At Dream Jobs, we believe in the power of human potential...
-        </p>
-      </div>
-
-      <!-- Company Links -->
-      <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-        <h6 class="fw-bold mb-4" style="color:whitesmoke">COMPANY</h6>
-        <p><a href="{% url 'jobapp:aboutus' %}" class="footer-link">About us</a></p>
-        <p><a href="{% url 'jobapp:index' %}" class="footer-link">Privacy Policy</a></p>
-        <p><a href="{% url 'jobapp:index' %}" class="footer-link">Terms</a></p>
-        <p><a href="{% url 'jobapp:services' %}" class="footer-link">Services</a></p>
-      </div>
-
-      <!-- Services Links -->
-      <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-        <h6 class="fw-bold mb-4" style="color:whitesmoke">SERVICES</h6>
-        <p><a href="{% url 'jobapp:services' %}" class="footer-link">Internships</a></p>
-        <p><a href="{% url 'jobapp:services' %}" class="footer-link">Apprenticeship</a></p>
-        <p><a href="{% url 'jobapp:services' %}" class="footer-link">Dream Jobs</a></p>
-        <p><a href="{% url 'jobapp:services' %}" class="footer-link">Work from Home</a></p>
-      </div>
-
-      <!-- Contact Info -->
-      <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-4">
-        <h6 class="fw-bold mb-4" style="color:whitesmoke">CONTACT</h6>
-        <p><i class="fas fa-home me-3"></i> 501, Cyber Heights, Lucknow</p>
-        <p><i class="fas fa-envelope me-3"></i> info@dreamjobs.com</p>
-        <p><i class="fas fa-phone me-3"></i> 9889106834</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-      <div class="text-center p-3" style="background-color: #041b55; color: #ffffff; font-size: 0.9rem;">
-  &copy; 2024 Dream Jobs. Developed by <a href="#" style="color: #ffffff; text-decoration: underline;">Khushi Nigam</a>.
-</div>
-    </footer>
-  </div>
-  <button id="backToTopBtn" title="Back to Top">↑</button>
-  <script>
-    const backToTopBtn = document.getElementById("backToTopBtn");
-
-    window.onscroll = function () {
-      if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-        backToTopBtn.style.display = "block";
-      } else {
-        backToTopBtn.style.display = "none";
+    <button id="backToTopBtn" title="Back to Top">↑</button>
+    <script>
+      document.addEventListener('DOMContentLoaded', function(){
+        if (window.bootstrap && bootstrap.Dropdown) {
+          document.querySelectorAll('[data-bs-toggle="dropdown"]').forEach(btn=>{ try { bootstrap.Dropdown.getOrCreateInstance(btn); } catch(e) { console.warn('Dropdown init error', e); } });
+        }
+      });
+      const backToTopBtn = document.getElementById('backToTopBtn');
+      if(backToTopBtn){
+        window.addEventListener('scroll', () => { if (document.documentElement.scrollTop > 300) backToTopBtn.style.display = 'block'; else backToTopBtn.style.display = 'none'; });
+        backToTopBtn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
       }
-    };
-
-    backToTopBtn.onclick = function () {
-      window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  };
-</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-</body>
+      (function(){
+        const trigger = document.getElementById('registerDropdown');
+        const menu = trigger ? trigger.nextElementSibling : null;
+        if(!trigger || !menu) return;
+        function bootstrapActive(){ return !!(window.bootstrap && bootstrap.Dropdown && bootstrap.Dropdown.getInstance(trigger)); }
+        trigger.addEventListener('click', function(e){ if(bootstrapActive()) return; e.preventDefault(); menu.classList.toggle('show'); trigger.setAttribute('aria-expanded', menu.classList.contains('show')); });
+        document.addEventListener('click', function(e){ if(bootstrapActive()) return; if(menu.classList.contains('show') && !e.target.closest('#registerDropdownWrapper')) { menu.classList.remove('show'); trigger.setAttribute('aria-expanded','false'); } });
+        menu.addEventListener('keydown', function(e){ if(e.key==='Escape'){ menu.classList.remove('show'); trigger.focus(); trigger.setAttribute('aria-expanded','false'); }});
+      })();
+      (function(){
+        const current = location.pathname.replace(/\/$/, "");
+        document.querySelectorAll('.glass-nav .nav-link').forEach(a=>{ try { const path = new URL(a.href, location.origin).pathname.replace(/\/$/, ""); if(path === current) { a.classList.add('active'); } } catch(e){} });
+      })();
+      console.log('Bootstrap present:', !!window.bootstrap, 'Dropdown element:', document.getElementById('registerDropdown'));
+    </script>
+  </body>
 </html>
-
