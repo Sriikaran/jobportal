@@ -7,6 +7,9 @@ from .models import AppliedJobs
 import datetime
 from django.shortcuts import get_object_or_404
 
+def test_template(request):
+    return render(request, "response.html")  # Ensure you have a test_template.html in your templates directory
+
 def index(request):
     return render(request, "index.html")
 
@@ -46,7 +49,7 @@ def appliedjobs(request):
 
 def viewprofile(request):
     if "username" not in request.session:
-        return redirect("login")
+        return redirect("jobapp:login")
 
 
     seeker_email = request.session["username"]

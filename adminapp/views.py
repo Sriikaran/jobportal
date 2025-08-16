@@ -22,13 +22,10 @@ def test_template(request):
 # Create your views here.
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
 def adminhome(request):
-    try:
-        if request.session["adminid"]!=None:
-            adminid=request.session["adminid"]
-            msg="Welcome Admin"
-            return render(request,"adminhome.html",locals())
-    except KeyError:
-        return redirect("jobapp:login")
+    if 'username' not in request.session or request.session.get('usertype') != 'administrator':
+        return redirect('jobapp:login')
+    return render(request, 'adminapp/adminhome.html')
+
 def logout(request):
     try:
         del request.session["adminid"]

@@ -3,7 +3,7 @@
 {% block body %}
 
 <style>
-    /* Dashboard-specific variables only */
+    /* Enhanced Dashboard-specific variables */
     :root {
         --space-1: 0.25rem;
         --space-2: 0.5rem;
@@ -16,13 +16,34 @@
         --space-12: 3rem;
         --space-16: 4rem;
         --space-20: 5rem;
-        --shadow-blue: 0 10px 25px -5px rgba(9, 63, 117, 0.25), 0 4px 6px -2px rgba(9, 63, 117, 0.05);
-        --gradient-primary: linear-gradient(135deg, #0c3056 0%, #1c5aa6 50%, #56a8fa 100%);
-        --gradient-accent: linear-gradient(135deg, #56a8fa 0%, #3182ce 100%);
+        --shadow-blue: 0 10px 25px -5px rgba(37, 99, 235, 0.15), 0 4px 6px -2px rgba(37, 99, 235, 0.05);
+        --gradient-primary: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%);
+        --gradient-accent: linear-gradient(135deg, var(--accent-blue) 0%, var(--primary-blue) 100%);
+        --gradient-success: linear-gradient(135deg, #059669 0%, #047857 100%);
+        --gradient-warning: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+        --gradient-danger: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+        --gradient-info: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+        --radius-sm: var(--border-radius-sm);
+        --radius-md: var(--border-radius-md);
+        --radius-lg: var(--border-radius-lg);
+        --radius-xl: var(--border-radius-xl);
+        --radius-2xl: 20px;
+        --radius-full: 9999px;
+        --transition-normal: var(--transition-medium);
+        --bg-white: var(--bg-primary);
+        --bg-light: var(--bg-tertiary);
+        --border-light: var(--border-light);
+        --text-dark: var(--text-dark);
+        --text-medium: var(--text-medium);
+        --text-light: var(--text-light);
+        --success-color: #059669;
+        --error-color: #dc2626;
+        --warning-color: #d97706;
+        --info-color: #0ea5e9;
     }
 
     body {
-        background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+        background: var(--bg-secondary);
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         line-height: 1.6;
         color: var(--text-dark);
@@ -53,6 +74,16 @@
         pointer-events: none;
     }
 
+    .dashboard-header::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    }
+
     .header-content {
         position: relative;
         z-index: 2;
@@ -72,6 +103,16 @@
         color: white;
         text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         line-height: 1.1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-4);
+        flex-wrap: wrap;
+    }
+
+    .welcome-title i {
+        font-size: 2.5rem;
+        opacity: 0.9;
     }
 
     .welcome-subtitle {
@@ -80,13 +121,16 @@
         font-weight: 400;
         margin-bottom: var(--space-10);
         line-height: 1.6;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .header-stats {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: var(--space-8);
-        max-width: 700px;
+        max-width: 800px;
         margin: 0 auto;
     }
 
@@ -95,14 +139,16 @@
         padding: var(--space-6);
         background: rgba(255,255,255,0.1);
         border-radius: var(--radius-xl);
-        backdrop-filter: blur(10px);
+        backdrop-filter: blur(20px);
         border: 1px solid rgba(255,255,255,0.2);
         transition: var(--transition-normal);
+        cursor: pointer;
     }
 
     .header-stat:hover {
         background: rgba(255,255,255,0.15);
-        transform: translateY(-2px);
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
     }
 
     .header-stat-number {
@@ -130,7 +176,7 @@
     /* Enhanced Dashboard Cards */
     .stats-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: var(--space-6);
         margin-bottom: var(--space-10);
     }
@@ -144,6 +190,7 @@
         transition: var(--transition-normal);
         position: relative;
         overflow: hidden;
+        cursor: pointer;
     }
 
     .stat-card::before {
@@ -159,9 +206,9 @@
     }
 
     .stat-card:hover {
-        transform: translateY(-4px);
+        transform: translateY(-6px);
         box-shadow: var(--shadow-blue);
-        border-color: rgba(86, 168, 250, 0.2);
+        border-color: rgba(37, 99, 235, 0.2);
     }
 
     .stat-card:hover::before {
@@ -186,22 +233,27 @@
         color: white;
         position: relative;
         flex-shrink: 0;
+        transition: var(--transition-normal);
+    }
+
+    .stat-card:hover .stat-icon {
+        transform: scale(1.1) rotate(-5deg);
     }
 
     .stat-icon.jobs {
-        background: linear-gradient(135deg, #3b82f6, #1e40af);
+        background: var(--gradient-primary);
     }
 
     .stat-icon.applications {
-        background: linear-gradient(135deg, #10b981, #047857);
+        background: var(--gradient-success);
     }
 
     .stat-icon.profile {
-        background: linear-gradient(135deg, #f59e0b, #d97706);
+        background: var(--gradient-warning);
     }
 
     .stat-icon.messages {
-        background: linear-gradient(135deg, #ef4444, #dc2626);
+        background: var(--gradient-danger);
     }
 
     .stat-content {
@@ -253,12 +305,12 @@
 
     .trend-up {
         color: var(--success-color);
-        background: rgba(56, 161, 105, 0.1);
+        background: rgba(5, 150, 105, 0.1);
     }
 
     .trend-down {
         color: var(--error-color);
-        background: rgba(229, 62, 62, 0.1);
+        background: rgba(220, 38, 38, 0.1);
     }
 
     .trend-neutral {
@@ -281,6 +333,12 @@
         box-shadow: var(--shadow-md);
         border: 1px solid var(--border-light);
         height: fit-content;
+        transition: var(--transition-normal);
+    }
+
+    .content-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
     }
 
     .card-title {
@@ -294,7 +352,7 @@
     }
 
     .card-title i {
-        color: var(--accent-blue);
+        color: var(--primary-blue);
         font-size: 1.125rem;
     }
 
@@ -330,9 +388,9 @@
     }
 
     .action-item:hover {
-        transform: translateY(-2px);
+        transform: translateY(-3px) translateX(4px);
         box-shadow: var(--shadow-lg);
-        border-color: var(--accent-blue);
+        border-color: var(--primary-blue);
         color: white;
     }
 
@@ -349,11 +407,11 @@
         width: 48px;
         height: 48px;
         border-radius: var(--radius-md);
-        background: rgba(86, 168, 250, 0.1);
+        background: rgba(37, 99, 235, 0.1);
         display: flex;
         align-items: center;
         justify-content: center;
-        color: var(--accent-blue);
+        color: var(--primary-blue);
         font-size: 1.25rem;
         transition: var(--transition-normal);
         flex-shrink: 0;
@@ -362,6 +420,7 @@
     .action-item:hover .action-icon {
         background: rgba(255,255,255,0.2);
         color: white;
+        transform: scale(1.1);
     }
 
     .action-content h6 {
@@ -390,11 +449,13 @@
         border-radius: var(--radius-lg);
         transition: var(--transition-normal);
         border: 1px solid transparent;
+        cursor: pointer;
     }
 
     .activity-item:hover {
         background: var(--bg-light);
         border-color: var(--border-light);
+        transform: translateX(4px);
     }
 
     .activity-icon {
@@ -408,6 +469,11 @@
         color: white;
         font-size: 0.875rem;
         flex-shrink: 0;
+        transition: var(--transition-normal);
+    }
+
+    .activity-item:hover .activity-icon {
+        transform: scale(1.1);
     }
 
     .activity-content {
@@ -438,6 +504,12 @@
         box-shadow: var(--shadow-md);
         border: 1px solid var(--border-light);
         margin-bottom: var(--space-10);
+        transition: var(--transition-normal);
+    }
+
+    .jobs-section:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
     }
 
     .section-header {
@@ -467,6 +539,7 @@
         font-size: 0.8125rem;
         font-weight: 600;
         letter-spacing: 0.25px;
+        animation: pulse 2s infinite;
     }
 
     .jobs-grid {
@@ -485,6 +558,7 @@
         transition: var(--transition-normal);
         position: relative;
         overflow: hidden;
+        cursor: pointer;
     }
 
     .job-card::before {
@@ -497,12 +571,13 @@
         background: var(--gradient-primary);
         transform: scaleX(0);
         transition: var(--transition-normal);
+        transform-origin: left;
     }
 
     .job-card:hover {
-        transform: translateY(-3px);
+        transform: translateY(-4px) scale(1.02);
         box-shadow: var(--shadow-lg);
-        border-color: rgba(86, 168, 250, 0.3);
+        border-color: rgba(37, 99, 235, 0.3);
     }
 
     .job-card:hover::before {
@@ -566,8 +641,8 @@
     }
 
     .job-btn:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(86, 168, 250, 0.4);
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
     }
 
     .view-all-btn {
@@ -588,7 +663,7 @@
     }
 
     .view-all-btn:hover {
-        transform: translateY(-2px);
+        transform: translateY(-3px) scale(1.05);
         box-shadow: var(--shadow-lg);
         color: white;
     }
@@ -659,25 +734,26 @@
         transition: var(--transition-normal);
         position: relative;
         overflow: hidden;
+        cursor: pointer;
     }
 
     .notification-item.success {
-        background: rgba(56, 161, 105, 0.05);
-        border-color: rgba(56, 161, 105, 0.2);
+        background: rgba(5, 150, 105, 0.05);
+        border-color: rgba(5, 150, 105, 0.2);
     }
 
     .notification-item.info {
-        background: rgba(49, 130, 206, 0.05);
-        border-color: rgba(49, 130, 206, 0.2);
+        background: rgba(37, 99, 235, 0.05);
+        border-color: rgba(37, 99, 235, 0.2);
     }
 
     .notification-item.warning {
-        background: rgba(237, 137, 54, 0.05);
-        border-color: rgba(237, 137, 54, 0.2);
+        background: rgba(217, 119, 6, 0.05);
+        border-color: rgba(217, 119, 6, 0.2);
     }
 
     .notification-item:hover {
-        transform: translateY(-1px);
+        transform: translateY(-2px) translateX(4px);
         box-shadow: var(--shadow-md);
     }
 
@@ -696,20 +772,25 @@
         justify-content: center;
         font-size: 0.875rem;
         flex-shrink: 0;
+        transition: var(--transition-normal);
+    }
+
+    .notification-item:hover .notification-icon {
+        transform: scale(1.1);
     }
 
     .notification-item.success .notification-icon {
-        background: rgba(56, 161, 105, 0.15);
+        background: rgba(5, 150, 105, 0.15);
         color: var(--success-color);
     }
 
     .notification-item.info .notification-icon {
-        background: rgba(49, 130, 206, 0.15);
+        background: rgba(37, 99, 235, 0.15);
         color: var(--info-color);
     }
 
     .notification-item.warning .notification-icon {
-        background: rgba(237, 137, 54, 0.15);
+        background: rgba(217, 119, 6, 0.15);
         color: var(--warning-color);
     }
 
@@ -751,6 +832,7 @@
         font-size: 0.6875rem;
         font-weight: 600;
         border: 2px solid var(--bg-white);
+        animation: bounce 2s infinite;
     }
 
     /* Responsive Design */
@@ -777,6 +859,8 @@
         
         .welcome-title {
             font-size: 2.25rem;
+            flex-direction: column;
+            gap: var(--space-2);
         }
         
         .stats-grid {
@@ -831,7 +915,7 @@
         }
     }
 
-    /* Animation and Loading States */
+    /* Enhanced Animations */
     .fade-in {
         animation: fadeIn 0.6s ease-out forwards;
     }
@@ -843,9 +927,11 @@
     @keyframes fadeIn {
         from {
             opacity: 0;
+            transform: translateY(10px);
         }
         to {
             opacity: 1;
+            transform: translateY(0);
         }
     }
 
@@ -857,6 +943,30 @@
         to {
             opacity: 1;
             transform: translateY(0);
+        }
+    }
+
+    @keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.8;
+        }
+    }
+
+    @keyframes bounce {
+        0%, 20%, 53%, 80%, 100% {
+            transform: translate3d(0,0,0);
+        }
+        40%, 43% {
+            transform: translate3d(0,-5px,0);
+        }
+        70% {
+            transform: translate3d(0,-3px,0);
+        }
+        90% {
+            transform: translate3d(0,-2px,0);
         }
     }
 
@@ -892,6 +1002,42 @@
     .fw-semibold {
         font-weight: 600;
     }
+
+    /* Loading states */
+    .loading {
+        position: relative;
+        pointer-events: none;
+        opacity: 0.7;
+    }
+
+    .loading::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        margin: -10px 0 0 -10px;
+        border: 2px solid transparent;
+        border-top: 2px solid var(--primary-blue);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* Interactive hover effects */
+    .interactive-card {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .interactive-card:hover {
+        transform: translateY(-8px) scale(1.02);
+        filter: brightness(1.05);
+    }
 </style>
 
 <div class="dashboard-header">
@@ -899,24 +1045,25 @@
         <div class="header-content">
             <div class="welcome-section">
                 <h1 class="welcome-title">
-                    <i class="fas fa-user-circle me-3"></i>Welcome back!
+                    <i class="fas fa-user-circle me-3"></i>
+                    Welcome back, {{ jobseek.name|default:"User" }}!
                 </h1>
                 <p class="welcome-subtitle">
                     Ready to find your dream job? Let's explore new opportunities together and take your career to the next level.
                 </p>
                 
                 <div class="header-stats">
-                    <div class="header-stat">
-                        <span class="header-stat-number">1,247</span>
+                    <div class="header-stat" onclick="window.location.href='{% url 'jsapp:viewjobs' %}'">
+                        <span class="header-stat-number" data-target="1247">0</span>
                         <span class="header-stat-label">Jobs Available</span>
                     </div>
-                    <div class="header-stat">
-                        <span class="header-stat-number">{{ applications_count|default:8 }}</span>
+                    <div class="header-stat" onclick="window.location.href='{% url 'jsapp:appliedjobs' %}'">
+                        <span class="header-stat-number" data-target="{{ applications_count|default:8 }}">0</span>
                         <span class="header-stat-label">Applications</span>
                     </div>
-                    <div class="header-stat">
-                        <span class="header-stat-number">{{ profile_completion|default:85 }}%</span>
-                        <span class="header-stat-label">Profile Complete</span>
+                    <div class="header-stat" onclick="window.location.href='{% url 'jsapp:viewprofile' %}'">
+                        <span class="header-stat-number" data-target="{{ profile_completion|default:85 }}">0</span>
+                        <span class="header-stat-label">% Complete</span>
                     </div>
                 </div>
             </div>
@@ -928,14 +1075,14 @@
     <div class="container">
         <!-- Dashboard Statistics -->
         <div class="stats-grid">
-            <div class="stat-card fade-in">
+            <div class="stat-card fade-in interactive-card" onclick="window.location.href='{% url 'jsapp:viewjobs' %}'">
                 <div class="stat-header">
                     <div class="stat-icon jobs">
                         <i class="fas fa-briefcase"></i>
                     </div>
                     <div class="stat-content">
                         <div class="stat-label">Available Jobs</div>
-                        <div class="stat-value">1,247</div>
+                        <div class="stat-value" data-target="1247">0</div>
                         <div class="stat-meta">
                             <span class="stat-description">Active postings</span>
                             <span class="trend-indicator trend-up">
@@ -947,7 +1094,7 @@
                 </div>
             </div>
 
-            <div class="stat-card fade-in">
+            <div class="stat-card fade-in interactive-card" onclick="window.location.href='{% url 'jsapp:appliedjobs' %}'">
                 <div class="stat-header">
                     <div class="stat-icon applications" style="position: relative;">
                         <i class="fas fa-file-alt"></i>
@@ -957,7 +1104,7 @@
                     </div>
                     <div class="stat-content">
                         <div class="stat-label">My Applications</div>
-                        <div class="stat-value">{{ applications_count|default:8 }}</div>
+                        <div class="stat-value" data-target="{{ applications_count|default:8 }}">0</div>
                         <div class="stat-meta">
                             <span class="stat-description">Jobs applied to</span>
                             <span class="trend-indicator trend-up">
@@ -969,14 +1116,14 @@
                 </div>
             </div>
 
-            <div class="stat-card fade-in">
+            <div class="stat-card fade-in interactive-card" onclick="window.location.href='{% url 'jsapp:viewprofile' %}'">
                 <div class="stat-header">
                     <div class="stat-icon profile">
                         <i class="fas fa-user-edit"></i>
                     </div>
                     <div class="stat-content">
                         <div class="stat-label">Profile Score</div>
-                        <div class="stat-value">{{ profile_completion|default:85 }}%</div>
+                        <div class="stat-value" data-target="{{ profile_completion|default:85 }}">0</div>
                         <div class="stat-meta">
                             <span class="stat-description">Completion rate</span>
                             {% if profile_completion|default:85 < 90 %}
@@ -995,7 +1142,7 @@
                 </div>
             </div>
 
-            <div class="stat-card fade-in">
+            <div class="stat-card fade-in interactive-card">
                 <div class="stat-header">
                     <div class="stat-icon messages" style="position: relative;">
                         <i class="fas fa-envelope"></i>
@@ -1003,7 +1150,7 @@
                     </div>
                     <div class="stat-content">
                         <div class="stat-label">Messages</div>
-                        <div class="stat-value">3</div>
+                        <div class="stat-value" data-target="3">0</div>
                         <div class="stat-meta">
                             <span class="stat-description">Unread messages</span>
                             <span class="trend-indicator trend-up">
@@ -1174,7 +1321,7 @@
                     </div>
                     <div class="job-footer">
                         <div class="job-salary">$70k - $90k</div>
-                        <button class="job-btn">View Details</button>
+                        <button class="job-btn" onclick="window.location.href='{% url 'jsapp:viewjobs' %}'">View Details</button>
                     </div>
                 </div>
 
@@ -1200,7 +1347,7 @@
                     </div>
                     <div class="job-footer">
                         <div class="job-salary">$80k - $120k</div>
-                        <button class="job-btn">View Details</button>
+                        <button class="job-btn" onclick="window.location.href='{% url 'jsapp:viewjobs' %}'">View Details</button>
                     </div>
                 </div>
 
@@ -1226,7 +1373,7 @@
                     </div>
                     <div class="job-footer">
                         <div class="job-salary">$60k - $85k</div>
-                        <button class="job-btn">View Details</button>
+                        <button class="job-btn" onclick="window.location.href='{% url 'jsapp:viewjobs' %>'">View Details</button>
                     </div>
                 </div>
 
@@ -1252,7 +1399,7 @@
                     </div>
                     <div class="job-footer">
                         <div class="job-salary">$85k - $110k</div>
-                        <button class="job-btn">View Details</button>
+                        <button class="job-btn" onclick="window.location.href='{% url 'jsapp:viewjobs' %}'">View Details</button>
                     </div>
                 </div>
 
@@ -1278,7 +1425,7 @@
                     </div>
                     <div class="job-footer">
                         <div class="job-salary">$95k - $130k</div>
-                        <button class="job-btn">View Details</button>
+                        <button class="job-btn" onclick="window.location.href='{% url 'jsapp:viewjobs' %}'">View Details</button>
                     </div>
                 </div>
 
@@ -1304,7 +1451,7 @@
                     </div>
                     <div class="job-footer">
                         <div class="job-salary">$75k - $105k</div>
-                        <button class="job-btn">View Details</button>
+                        <button class="job-btn" onclick="window.location.href='{% url 'jsapp:viewjobs' %}'">View Details</button>
                     </div>
                 </div>
             </div>
@@ -1320,70 +1467,6 @@
 
         <!-- Bottom Section -->
         <div class="bottom-grid">
-            <!-- Profile Progress & Insights
-            <div class="content-card slide-up">
-                <h5 class="card-title">
-                    <i class="fas fa-chart-line"></i>
-                    Career Progress
-                </h5>
-                
-                <div class="progress-item">
-                    <div class="progress-header">
-                        <span class="progress-label">Profile Completion</span>
-                        <span class="progress-value">{{ profile_completion|default:85 }}%</span>
-                    </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" style="width: {{ profile_completion|default:85 }}%" data-width="{{ profile_completion|default:85 }}"></div>
-                    </div>
-                    <div class="progress-description">
-                        {% if profile_completion|default:85 < 90 %}
-                        Add portfolio and skills to reach 100% completion
-                        {% else %}
-                        Your profile is well-optimized for job matching
-                        {% endif %}
-                    </div>
-                </div>
-
-                <div class="progress-item">
-                    <div class="progress-header">
-                        <span class="progress-label">Profile Views This Week</span>
-                        <span class="progress-value">127</span>
-                    </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" style="width: 75%" data-width="75"></div>
-                    </div>
-                    <div class="progress-description">
-                        +23% increase from last week
-                    </div>
-                </div>
-
-                <div class="progress-item">
-                    <div class="progress-header">
-                        <span class="progress-label">Job Match Score</span>
-                        <span class="progress-value">8.4/10</span>
-                    </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" style="width: 84%" data-width="84"></div>
-                    </div>
-                    <div class="progress-description">
-                        Excellent matching with current skill set
-                    </div>
-                </div>
-
-                <div class="progress-item">
-                    <div class="progress-header">
-                        <span class="progress-label">Application Success Rate</span>
-                        <span class="progress-value">92%</span>
-                    </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar" style="width: 92%" data-width="92"></div>
-                    </div>
-                    <div class="progress-description">
-                        Above average success rate - keep it up!
-                    </div>
-                </div>
-            </div> -->
-
             <!-- Smart Notifications -->
             <div class="content-card slide-up">
                 <h5 class="card-title">
@@ -1457,6 +1540,70 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Career Progress -->
+            <div class="content-card slide-up">
+                <h5 class="card-title">
+                    <i class="fas fa-chart-line"></i>
+                    Career Progress
+                </h5>
+                
+                <div class="progress-item">
+                    <div class="progress-header">
+                        <span class="progress-label">Profile Completion</span>
+                        <span class="progress-value">{{ profile_completion|default:85 }}%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 0%" data-width="{{ profile_completion|default:85 }}"></div>
+                    </div>
+                    <div class="progress-description">
+                        {% if profile_completion|default:85 < 90 %}
+                        Add portfolio and skills to reach 100% completion
+                        {% else %}
+                        Your profile is well-optimized for job matching
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="progress-item">
+                    <div class="progress-header">
+                        <span class="progress-label">Profile Views This Week</span>
+                        <span class="progress-value">127</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 0%" data-width="75"></div>
+                    </div>
+                    <div class="progress-description">
+                        +23% increase from last week
+                    </div>
+                </div>
+
+                <div class="progress-item">
+                    <div class="progress-header">
+                        <span class="progress-label">Job Match Score</span>
+                        <span class="progress-value">8.4/10</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 0%" data-width="84"></div>
+                    </div>
+                    <div class="progress-description">
+                        Excellent matching with current skill set
+                    </div>
+                </div>
+
+                <div class="progress-item">
+                    <div class="progress-header">
+                        <span class="progress-label">Application Success Rate</span>
+                        <span class="progress-value">92%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 0%" data-width="92"></div>
+                    </div>
+                    <div class="progress-description">
+                        Above average success rate - keep it up!
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -1477,50 +1624,76 @@
             });
         }
 
+        // Enhanced number counter animation
+        function animateNumbers() {
+            const numberElements = document.querySelectorAll('[data-target]');
+            
+            numberElements.forEach((element, index) => {
+                const target = parseInt(element.getAttribute('data-target'));
+                const duration = 2000 + (index * 200); // Stagger the animations
+                const increment = target / (duration / 16);
+                let current = 0;
+                
+                setTimeout(() => {
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= target) {
+                            current = target;
+                            clearInterval(timer);
+                        }
+                        element.textContent = Math.floor(current);
+                    }, 16);
+                }, index * 200);
+            });
+        }
+
         // Animate progress bars with realistic timing
         function animateProgressBars() {
             const progressBars = document.querySelectorAll('.progress-bar[data-width]');
             
             progressBars.forEach((bar, index) => {
                 const targetWidth = bar.getAttribute('data-width') + '%';
-                bar.style.width = '0%';
                 
                 setTimeout(() => {
                     bar.style.width = targetWidth;
-                }, 500 + (index * 200));
+                }, 1000 + (index * 300));
             });
         }
 
         // Enhanced interaction effects
         function setupInteractions() {
-            // Stat cards hover effects
-            const statCards = document.querySelectorAll('.stat-card');
+            // Stat cards click handlers
+            const statCards = document.querySelectorAll('.stat-card[onclick]');
             statCards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-4px)';
-                    this.style.boxShadow = 'var(--shadow-blue)';
-                });
-                
-                card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0)';
-                    this.style.boxShadow = 'var(--shadow-md)';
+                card.addEventListener('click', function() {
+                    // Add loading state
+                    this.classList.add('loading');
+                    
+                    // Execute the onclick after a brief delay for visual feedback
+                    setTimeout(() => {
+                        const onclickCode = this.getAttribute('onclick');
+                        if (onclickCode) {
+                            eval(onclickCode);
+                        }
+                    }, 300);
                 });
             });
 
-            // Job cards hover effects
+            // Job cards hover effects with enhanced animation
             const jobCards = document.querySelectorAll('.job-card');
             jobCards.forEach(card => {
                 card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-3px)';
+                    this.style.transform = 'translateY(-4px) scale(1.02)';
+                    this.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
                 });
                 
                 card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0)';
+                    this.style.transform = 'translateY(0) scale(1)';
                 });
             });
 
-            // Button click ripple effect
-            const buttons = document.querySelectorAll('.action-item, .job-btn, .view-all-btn');
+            // Enhanced button click ripple effect
+            const buttons = document.querySelectorAll('.action-item, .job-btn, .view-all-btn, .header-stat');
             buttons.forEach(button => {
                 button.addEventListener('click', function(e) {
                     const ripple = document.createElement('span');
@@ -1535,7 +1708,7 @@
                         height: ${size}px;
                         left: ${x}px;
                         top: ${y}px;
-                        background: rgba(255, 255, 255, 0.3);
+                        background: rgba(255, 255, 255, 0.4);
                         border-radius: 50%;
                         transform: scale(0);
                         animation: ripple 0.6s ease-out;
@@ -1563,11 +1736,22 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('animate-in');
+                        
+                        // Trigger number animations when stats come into view
+                        if (entry.target.classList.contains('stats-grid')) {
+                            animateNumbers();
+                        }
+                        
+                        // Trigger progress bar animations
+                        if (entry.target.querySelector('.progress-bar')) {
+                            animateProgressBars();
+                        }
                     }
                 });
             }, observerOptions);
 
-            document.querySelectorAll('.job-card, .notification-item, .activity-item').forEach(el => {
+            // Observe key sections
+            document.querySelectorAll('.stats-grid, .job-card, .notification-item, .activity-item, .content-card').forEach(el => {
                 observer.observe(el);
             });
         }
@@ -1580,8 +1764,14 @@
                 badges.forEach(badge => {
                     const currentCount = parseInt(badge.textContent);
                     if (Math.random() < 0.1) { // 10% chance to update
-                        badge.textContent = Math.max(0, currentCount + (Math.random() < 0.5 ? 1 : -1));
-                        badge.style.animation = 'pulse 0.5s ease-in-out';
+                        const newCount = Math.max(0, currentCount + (Math.random() < 0.5 ? 1 : -1));
+                        badge.textContent = newCount;
+                        badge.style.animation = 'bounce 0.5s ease-in-out';
+                        
+                        // Reset animation
+                        setTimeout(() => {
+                            badge.style.animation = '';
+                        }, 500);
                     }
                 });
             }, 30000); // Every 30 seconds
@@ -1604,7 +1794,7 @@
                 z-index: 10000;
                 transform: translateX(450px);
                 transition: var(--transition-normal);
-                border-left: 4px solid var(--accent-blue);
+                border-left: 4px solid var(--primary-blue);
             `;
             
             const iconMap = {
@@ -1647,77 +1837,261 @@
             }, duration);
         }
 
+        // Enhanced loading states for navigation
+        function setupNavigationLoading() {
+            const navLinks = document.querySelectorAll('a[href]:not([href^="#"])');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href && href !== window.location.pathname) {
+                        // Add loading spinner to the clicked element
+                        const originalContent = this.innerHTML;
+                        this.style.pointerEvents = 'none';
+                        this.style.opacity = '0.7';
+                        
+                        // Add spinner if it's a button or similar
+                        if (this.classList.contains('job-btn') || this.classList.contains('view-all-btn')) {
+                            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+                        }
+                        
+                        // Reset after timeout (in case navigation fails)
+                        setTimeout(() => {
+                            this.innerHTML = originalContent;
+                            this.style.pointerEvents = '';
+                            this.style.opacity = '';
+                        }, 3000);
+                    }
+                });
+            });
+        }
+
         // Add custom CSS animations
-        const animationStyles = document.createElement('style');
-        animationStyles.textContent = `
-            @keyframes ripple {
-                0% {
-                    transform: scale(0);
-                    opacity: 1;
+        function addCustomAnimations() {
+            const animationStyles = document.createElement('style');
+            animationStyles.textContent = `
+                @keyframes ripple {
+                    0% {
+                        transform: scale(0);
+                        opacity: 1;
+                    }
+                    100% {
+                        transform: scale(4);
+                        opacity: 0;
+                    }
                 }
-                100% {
-                    transform: scale(4);
-                    opacity: 0;
+                
+                @keyframes slideInFromLeft {
+                    from {
+                        opacity: 0;
+                        transform: translateX(-30px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateX(0);
+                    }
                 }
-            }
-            
-            @keyframes pulse {
-                0%, 100% {
-                    transform: scale(1);
+                
+                @keyframes slideInFromRight {
+                    from {
+                        opacity: 0;
+                        transform: translateX(30px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateX(0);
+                    }
                 }
-                50% {
-                    transform: scale(1.05);
+                
+                @keyframes scaleIn {
+                    from {
+                        opacity: 0;
+                        transform: scale(0.9);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: scale(1);
+                    }
                 }
-            }
-            
-            .animate-in {
-                animation: slideUpFade 0.6s ease-out forwards;
-            }
-            
-            @keyframes slideUpFade {
-                from {
+                
+                .animate-in {
+                    animation: slideInFromLeft 0.6s ease-out forwards;
+                }
+                
+                .animate-in:nth-child(even) {
+                    animation: slideInFromRight 0.6s ease-out forwards;
+                }
+                
+                .scale-in {
+                    animation: scaleIn 0.5s ease-out forwards;
+                }
+
+                /* Smooth page transitions */
+                .page-transition {
                     opacity: 0;
                     transform: translateY(20px);
+                    transition: all 0.3s ease-out;
                 }
-                to {
+                
+                .page-transition.loaded {
                     opacity: 1;
                     transform: translateY(0);
                 }
+            `;
+            document.head.appendChild(animationStyles);
+        }
+
+        // Performance optimizations
+        function optimizePerformance() {
+            // Debounced resize handler
+            let resizeTimeout;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    // Recalculate any layout-dependent features
+                    console.log('Dashboard layout optimized for viewport:', window.innerWidth);
+                }, 250);
+            });
+
+            // Lazy load images with better error handling
+            const images = document.querySelectorAll('img[loading="lazy"]');
+            if ('IntersectionObserver' in window) {
+                const imageObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            img.addEventListener('load', () => {
+                                img.style.opacity = '1';
+                                img.classList.add('loaded');
+                            });
+                            img.addEventListener('error', () => {
+                                const fallback = document.createElement('div');
+                                fallback.className = img.className;
+                                fallback.style.cssText = `
+                                    background: var(--gradient-primary);
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    color: white;
+                                    font-size: 1.2rem;
+                                `;
+                                fallback.innerHTML = '<i class="fas fa-user"></i>';
+                                img.parentNode.replaceChild(fallback, img);
+                            });
+                            imageObserver.unobserve(img);
+                        }
+                    });
+                }, { threshold: 0.1 });
+
+                images.forEach(img => {
+                    img.style.opacity = '0';
+                    img.style.transition = 'opacity 0.3s ease';
+                    imageObserver.observe(img);
+                });
             }
-        `;
-        document.head.appendChild(animationStyles);
+        }
+
+        // Keyboard shortcuts and accessibility
+        function setupAccessibility() {
+            document.addEventListener('keydown', function(e) {
+                // ESC key functionality
+                if (e.key === 'Escape') {
+                    // Close any open modals or notifications
+                    const toasts = document.querySelectorAll('.toast');
+                    toasts.forEach(toast => toast.remove());
+                }
+
+                // Quick navigation shortcuts
+                if (e.altKey) {
+                    switch(e.key.toLowerCase()) {
+                        case 'h':
+                            e.preventDefault();
+                            window.location.href = "{% url 'jsapp:jshome' %}";
+                            break;
+                        case 'j':
+                            e.preventDefault();
+                            window.location.href = "{% url 'jsapp:viewjobs' %}";
+                            break;
+                        case 'a':
+                            e.preventDefault();
+                            window.location.href = "{% url 'jsapp:appliedjobs' %}";
+                            break;
+                        case 'p':
+                            e.preventDefault();
+                            window.location.href = "{% url 'jsapp:viewprofile' %}";
+                            break;
+                    }
+                }
+            });
+
+            // Add focus management for better accessibility
+            const focusableElements = document.querySelectorAll('button, a, input, select, textarea, [tabindex]:not([tabindex="-1"])');
+            focusableElements.forEach(el => {
+                el.addEventListener('focus', function() {
+                    this.style.outline = '2px solid var(--primary-blue)';
+                    this.style.outlineOffset = '2px';
+                });
+                
+                el.addEventListener('blur', function() {
+                    this.style.outline = '';
+                    this.style.outlineOffset = '';
+                });
+            });
+        }
+
+        // Page transition effect
+        function initPageTransition() {
+            document.body.classList.add('page-transition');
+            
+            setTimeout(() => {
+                document.body.classList.add('loaded');
+            }, 100);
+        }
 
         // Initialize all functionality
+        initPageTransition();
+        addCustomAnimations();
         initializeAnimations();
         
-        // Delay progress bar animation to ensure smooth page load
+        // Delay certain animations for better performance
+        setTimeout(() => {
+            animateNumbers();
+        }, 500);
+        
         setTimeout(() => {
             animateProgressBars();
-        }, 800);
+        }, 1200);
         
         setupInteractions();
         setupScrollAnimations();
+        setupNavigationLoading();
         simulateRealTimeUpdates();
+        optimizePerformance();
+        setupAccessibility();
 
-        // Welcome back notification
+        // Welcome back notification with personalization
         setTimeout(() => {
+            const userName = "{{ jobseek.name|default:'User' }}";
             showToast(
-                'Welcome back!', 
+                `Welcome back, ${userName}!`, 
                 'Your dashboard has been updated with new job recommendations and insights.',
                 'info',
                 4000
             );
         }, 2000);
 
-        // Performance optimization - debounced resize handler
-        let resizeTimeout;
-        window.addEventListener('resize', function() {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(() => {
-                // Re-initialize animations on resize if needed
-                console.log('Dashboard layout adjusted for new viewport');
-            }, 250);
-        });
+        // Feature discovery tips (show occasionally)
+        if (Math.random() < 0.3) { // 30% chance
+            setTimeout(() => {
+                showToast(
+                    'Pro Tip!', 
+                    'Use Alt+J to quickly jump to job search, or Alt+P for your profile.',
+                    'info',
+                    6000
+                );
+            }, 8000);
+        }
+
+        console.log('✨ Enhanced Dashboard Ready! Welcome to your career hub.');
     });
 </script>
 

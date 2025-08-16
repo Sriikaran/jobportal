@@ -3,6 +3,7 @@ from . import views
 from django.contrib.auth import views as auth_views  # ✅ This must be included once
 
 urlpatterns = [
+    path('test/', views.test_template, name='test_template'),  # ✅ Test template path
     path('', views.index, name="index"),
     path('search-jobs/', views.search_jobs, name='search_jobs'),
     path('aboutus/', views.aboutus, name="aboutus"),

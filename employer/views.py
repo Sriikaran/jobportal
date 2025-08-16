@@ -49,14 +49,14 @@ def employer_login_required(view_func):
 @employer_login_required
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def employerhome(request):
-    print("ON EMPLOYERHOME:", dict(request.session))
-    if request.session.get("usertype") != "employer":
-        return redirect("jobapp:login")
+    if 'username' not in request.session or request.session.get('usertype') != 'employer':
+        return redirect('jobapp:login')
+    return render(request, 'employer/employerhome.html')
     
-    employer_email = request.session.get("username")
+"""    employer_email = request.session.get("username")
     employer = Employer.objects.get(cpemailaddress=employer_email)
     return render(request, "employerhome.html", {"employer": employer})
-
+"""
 
 
 def jshome(request):

@@ -9,6 +9,9 @@ import datetime
 from django.db.models import Q
 from django.contrib import messages
 
+def test_template(request):
+    return render(request, ".html")
+
 def index(request):
     jobs = Jobs.objects.all()
     q = request.GET.get('q')
@@ -121,11 +124,8 @@ def employerreg(request):
         )
         empreg.save()
 
-        Login.objects.create(username=cpemailaddress, password=password, usertype="employer")
-
-        # 🔹 Set session for auto-login
-        request.session["username"] = cpemailaddress
-        request.session["usertype"] = "employer"
+        log = Login(username=cpemailaddress, password=password, usertype="employer")
+        log.save()
 
         messages.success(request, "Employer registration successful! You are now logged in.")
         return redirect("employer:employerhome")  # ✅ Go straight to employer home
@@ -133,10 +133,7 @@ def employerreg(request):
     return render(request, "employer.html")
 
 
-
 def login(request):
-    print("AFTER LOGIN:", username, obj.usertype)
-    print("SESSION NOW:", dict(request.session))
 
     if request.method == "POST":
         username = request.POST["username"]
