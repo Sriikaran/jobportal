@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views  # ✅ This must be included once
 
@@ -15,6 +15,7 @@ urlpatterns = [
     path('jobseekerreg/', views.jobseekerreg, name="jobseekerreg"),
     path('employerreg/', views.employerreg, name="employerreg"),
     path('adminreg/', views.adminreg, name="adminreg"),
+    path('resumeats/', views.resumeats, name="resumeats"),
     
     # ✅ Password reset URLs
     path('forgot-password/', auth_views.PasswordResetView.as_view(), name='forgot_password'),
