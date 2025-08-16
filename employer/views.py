@@ -15,7 +15,7 @@ from jsapp.models import AppliedJobs
 
 
 def test_template(request):
-    return render(request, "viewpjobs.html")
+    return render(request, "viewmyprofile.html")
 
 # Create your views here.
 
