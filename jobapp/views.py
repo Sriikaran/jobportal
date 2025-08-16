@@ -5,6 +5,7 @@ from adminapp.models import News
 from employer.models import Jobs
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
+from django.urls import reverse
 import datetime
 from django.db.models import Q
 from django.contrib import messages
@@ -128,7 +129,7 @@ def adminreg(request):
 
 def jobseekerreg(request):
     if request.method == "POST":
-        profilepic = request.POST["profilepic"]
+        profilepic = request.FILES.get("profilepic")
         name = request.POST["name"]
         gender = request.POST["gender"]
         address = request.POST["address"]
@@ -158,9 +159,33 @@ def jobseekerreg(request):
 
     return render(request, "jobseeker.html")
 
-from django.contrib import messages
-from jobapp.models import Employer, Login
-import datetime
+def login(request):
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        try:
+            obj = Login.objects.get(username=username)
+        except ObjectDoesNotExist:
+            return render(request, 'login.html', {"msg": "No user found with this username."})
+
+        if obj.password.strip() != password.strip():
+            return render(request, 'login.html', {"msg": "Incorrect password."})
+
+        usertype = obj.usertype
+        request.session["username"] = username
+        request.session["usertype"] = usertype
+
+        if usertype == 'jobseeker':
+            return redirect("jsapp:jshome")
+        elif usertype == 'administrator':
+            request.session["adminid"] = username
+            return redirect("adminapp:adminhome")
+        elif usertype == 'employer':
+            return redirect("employer:employerhome")
+        else:
+            return render(request, 'login.html', {"msg": "Invalid user type."})
+
+    return render(request, "login.html")
 
 def employerreg(request):
     if request.method == "POST":

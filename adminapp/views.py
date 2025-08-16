@@ -100,12 +100,13 @@ def viewjobseekers(request):
             return render(request,"viewjobseekers.html",locals())
     except KeyError:
         return redirect("jobapp:login")
-@cache_control(no_cache=True, must_revalidate=True,no_store=True)
-def viewjobs(request):
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def terms_page(request):
     try:
-        if request.session["adminid"]!=None:
-            adminid=request.session["adminid"]
-            job=Jobs.objects.all()
-            return render(request,"viewjobs.html",locals())
+        # Optional: only allow logged-in admin to view
+        if request.session.get("adminid") is not None:
+            adminid = request.session["adminid"]
+            return render(request, "terms.html", locals())
     except KeyError:
+        # Redirect to login if not logged in
         return redirect("jobapp:login")

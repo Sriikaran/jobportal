@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from employer.models import Jobs, Post
 from jsapp.models import Response, SavedJob
 from django.contrib import messages
-from jobapp.models import JobSeeker,Employer
+from jobapp.models import JobSeeker,Employer, Login
 from .models import AppliedJobs
 import datetime
 from django.shortcuts import get_object_or_404
@@ -26,7 +26,9 @@ def blog(request):
     return render(request, "blog.html")
 
 def login(request):
-    return redirect("jobapp:login")
+    if request.session.pop('password_changed', False):
+        messages.success(request, "Password changed successfully. Please log in again.")
+    return render(request, "login.html")
 
 def employer(request):
     if request.method == "POST":
@@ -43,9 +45,10 @@ def appliedjobs(request):
         return redirect("jobapp:login")
 
     seeker_email = request.session["username"]
+    jobseeker = JobSeeker.objects.get(emailaddress = seeker_email)
     jobs = AppliedJobs.objects.filter(emailaddress=seeker_email)
 
-    return render(request, "appliedjobs.html", {"jobs": jobs})
+    return render(request, "appliedjobs.html", {"jobs": jobs,"jobseek": jobseeker})
 
 def viewprofile(request):
     if "username" not in request.session:
@@ -56,6 +59,9 @@ def viewprofile(request):
 
     if request.method == "POST":
         jobseeker = JobSeeker.objects.get(emailaddress = seeker_email)
+        profile_pic = request.FILES.get("profilepic")
+        if profile_pic:
+            jobseeker.profilepic = profile_pic
         jobseeker.name= request.POST.get("name")
         jobseeker.gender = request.POST.get("gender")
         jobseeker.address = request.POST.get('address')
@@ -85,9 +91,10 @@ def response(request):
         return redirect("login")
 
     email = request.session["username"]
+    jobseeker = JobSeeker.objects.get(emailaddress = email)
     responses = Response.objects.filter(emailaddress=email).order_by("-posteddate")
 
-    return render(request, "response.html", {"responses": responses})
+    return render(request, "response.html", {"responses": responses,"jobseek": jobseeker})
 
 def jobseeker(request):
     if request.method == "POST":
@@ -149,33 +156,34 @@ def logout(request):
     return redirect("index")
 def changepassword(request):
     if "username" not in request.session:
-        return redirect("login")
+        return redirect("jobapp:login")
 
     if request.method == "POST":
-        current_password = request.POST.get("current_password")
-        new_password = request.POST.get("new_password")
-        confirm_password = request.POST.get("confirm_password")
+        current_password = request.POST.get("oldpassword")
+        new_password = request.POST.get("newpassword")
+        confirm_password = request.POST.get("cnfpassword")
         email = request.session["username"]
 
         try:
-            user = Response.objects.get(emailaddress=email)
+            user = Login.objects.get(username=email)
 
             if user.password != current_password:
                 messages.error(request, "Current password is incorrect.")
-                return redirect("changepassword")
+                return redirect("jsapp:changepassword")
 
             if new_password != confirm_password:
-                messages.error(request, "New passwords do not match.")
-                return redirect("changepassword")
+                messages.error(request, "New password & confirm password do not match.")
+                return redirect("jsapp:changepassword")
 
             user.password = new_password
             user.save()
-            messages.success(request, "Password changed successfully.")
-            return redirect("index")
+            
+            request.session['password_changed'] = True
+            return redirect("jobapp:login")
 
-        except Response.DoesNotExist:
+        except Login.DoesNotExist:
             messages.error(request, "User not found.")
-            return redirect("login")
+            return redirect("jobapp:login")
 
     return render(request, "changepassword.html")
 # NEW FEATURE: Save Job
@@ -224,13 +232,15 @@ def jsapply(request, id):
 
 def jshome(request):
     # return render(request, 'jshome.html')  # create jsapp/templates/jsapp/home.html if needed
-    print("hi")
+
     if request.session.get("usertype") != "jobseeker":
         return redirect("jobapp:login")
-    seeker_email = request.session["username"]
+    seeker_email = request.session.get("username")
     jobseeker = JobSeeker.objects.get(emailaddress = seeker_email)
-    print(jobseeker)
+ 
     return render(request, 'jshome.html',{"jobseek": jobseeker})
+
+
 
 
 def viewjobs(request):
@@ -242,12 +252,7 @@ def logout(request):
     except KeyError:
         return redirect("jobapp:login")
     return redirect("jobapp:login")
-def jshome(request):
-    if request.session.get("usertype") != "jobseeker":
-        return redirect("jobapp:login")
-    return render(request, 'jshome.html')
-
-def employerhome(request):
-    if request.session.get("usertype") != "employer":
-        return redirect("jobapp:login")
-    return render(request, 'employerhome.html')
+# def jshome(request):
+#     if request.session.get("usertype") != "jobseeker":
+#         return redirect("jobapp:login")
+#     return render(request, 'jshome.html')

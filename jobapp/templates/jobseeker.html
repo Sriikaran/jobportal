@@ -1,5 +1,4 @@
 {% extends "index.html" %}
-{% block body %}
 {% load static %}
 
 <style>
@@ -992,17 +991,42 @@
     </div>
 </div>
 
-{% if show_modal %}
-<script>
-    window.addEventListener('DOMContentLoaded', (event) => {
-        var myModal = new bootstrap.Modal(document.getElementById('registerSuccessModal'), {
-            backdrop: 'static',
-            keyboard: false
+    {% if show_modal %}
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            var myModal = new bootstrap.Modal(document.getElementById('registerSuccessModal'), {
+                backdrop: 'static',
+                keyboard: false
+            });
+            myModal.show();
         });
-        myModal.show();
-    });
-</script>
-{% endif %}
+    </script>
+    {% endif %}
+    <!-- Terms & Conditions Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 style="text-align: center;" class="modal-title" id="termsModalLabel">Terms of Service</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" style="max-height: 350px; overflow-y: auto;">
+         <ul style="padding-left: 1.2em;">
+                    <li>You must be at least 18 years old to use Dream Jobs.</li>
+                    <li>All information provided must be accurate and up to date.</li>
+                    <li>Do not share your account credentials with others.</li>
+                    <li>Dream Jobs is not responsible for third-party content or job listings.</li>
+                    <li>Any misuse of the platform may result in account suspension.</li>
+                    <li>Respect all users and employers on the platform.</li>
+                    <li>By using Dream Jobs, you agree to receive occasional emails and notifications.</li>
+                    <li>These terms may be updated at any time without prior notice.</li>
+                </ul>
+                 <p style="margin-top:1em; color:#888; font-size:0.93em;">For more details, contact our support team.</p>
+      </div>
+      
+    </div>
+  </div>
+</div>
 
 <script>
     // Enhanced JavaScript for better UX

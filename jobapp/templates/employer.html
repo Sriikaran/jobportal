@@ -239,218 +239,62 @@
   }
 
   input[type="file"].form-input::file-selector-button:hover {
-    background: linear-gradient(135deg, #072f5c, #093f75);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(9, 63, 117, 0.3);
+    background-color: #072f5c;
   }
+  /* From Jobseeker TOS modal styles */
+/* From Jobseeker TOS modal styles */
+@keyframes modalIn {
+    from {
+        transform: translateY(-40px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
 
-  .form-group {
-    margin-bottom: 1.75rem;
-  }
-
-  .form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    margin-bottom: 1.75rem;
-  }
-
-  .checkbox-container {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    margin: 2rem 0;
-    padding: 1.5rem;
-    background: linear-gradient(135deg, #f8fbff, #f0f7ff);
-    border-radius: 16px;
-    border: 2px solid #e8f2ff;
-    transition: all 0.3s ease;
-  }
-
-  .checkbox-container:hover {
-    border-color: #093f75;
-    box-shadow: 0 4px 16px rgba(9, 63, 117, 0.08);
-  }
-
-  .form-check-input {
-    width: 20px;
-    height: 20px;
-    border: 2px solid #093f75;
-    border-radius: 6px;
-    margin-top: 2px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
-  .form-check-input:checked {
-    background-color: #093f75;
-    border-color: #093f75;
-  }
-
-  .form-check-input:focus {
-    box-shadow: 0 0 0 3px rgba(9, 63, 117, 0.2);
-  }
-
-  .form-check-label {
-    font-size: 0.95rem;
-    line-height: 1.5;
-    color: #495057;
-    cursor: pointer;
-  }
-
-  .form-check-label a {
-    color: #093f75;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.2s ease;
-  }
-
-  .form-check-label a:hover {
-    color: #072f5c;
-    text-decoration: underline;
-  }
-
-  .submit-btn {
-    background: linear-gradient(135deg, #093f75 0%, #0d5aa7 50%, #1e6bb8 100%);
-    color: white;
-    border: none;
-    padding: 18px 32px;
-    border-radius: 16px;
-    font-size: 1rem;
-    font-weight: 600;
-    font-family: "Inter", sans-serif;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    width: 100%;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    box-shadow: 0 6px 20px rgba(9, 63, 117, 0.3),
-      0 2px 4px rgba(9, 63, 117, 0.1);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .submit-btn::before {
-    content: "";
+.modal-close {
     position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.2),
-      transparent
-    );
-    transition: left 0.5s ease;
-  }
-
-  .submit-btn:hover {
-    background: linear-gradient(135deg, #072f5c 0%, #093f75 50%, #0d5aa7 100%);
-    transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(9, 63, 117, 0.4),
-      0 4px 8px rgba(9, 63, 117, 0.2);
-  }
-
-  .submit-btn:hover::before {
-    left: 100%;
-  }
-
-  .submit-btn:active {
-    transform: translateY(-1px);
-  }
-
-  /* Section dividers */
-  .section-divider {
+    top: 12px;
+    right: 18px;
+    background: none;
     border: none;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, #e8f2ff, transparent);
-    margin: 2.5rem 0;
-    opacity: 0.7;
-  }
+    font-size: 1.3rem;
+    color: #093f75;
+    cursor: pointer;
+}
 
-  /* Enhanced modal styles */
-  .modal-content {
-    border-radius: 20px;
-    border: none;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15),
-      0 0 0 1px rgba(255, 255, 255, 0.1);
-    overflow: hidden;
-  }
-
-  .modal-header {
-    background: linear-gradient(135deg, #093f75, #0d5aa7);
-    color: white;
-    border-bottom: none;
-    padding: 2rem 2rem 1.5rem;
+.modal-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #093f75;
+    margin-bottom: 0.7rem;
     text-align: center;
-  }
+}
 
-  .modal-title {
-    font-weight: 600;
-    font-size: 1.5rem;
-    margin: 0;
-  }
+.modal-content {
+    font-size: 0.98rem;
+    color: #333;
+    line-height: 1.6;
+}
 
-  .modal-body {
-    padding: 2rem;
-    text-align: center;
-    color: #6c757d;
-    font-size: 1rem;
-  }
+/* Size adjustments */
+#termsOfServiceModal .modal-dialog {
+    max-width: 70vw; /* 70% width */
+}
+#termsOfServiceModal .modal-content {
+    height: 60vh;       /* 60% height */
+    overflow-y: auto;   /* scroll if needed */
+}
+.modal-body {
+    border: none !important;
+    box-shadow: none !important;
+}
 
-  .modal-footer {
-    border-top: none;
-    padding: 0 2rem 2rem;
-    justify-content: center;
-  }
 
-  .modal .btn-primary {
-    background: linear-gradient(135deg, #093f75, #0d5aa7);
-    border: none;
-    padding: 12px 32px;
-    border-radius: 12px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-  }
 
-  .modal .btn-primary:hover {
-    background: linear-gradient(135deg, #072f5c, #093f75);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(9, 63, 117, 0.4);
-  }
 
-  /* Responsive design */
-  @media (max-width: 768px) {
-    .registration-form {
-      margin: 1rem;
-      padding: 2rem;
-    }
-
-    .form-row {
-      grid-template-columns: 1fr;
-      gap: 1rem;
-    }
-
-    .form-title {
-      font-size: 1.875rem;
-    }
-
-    .container {
-      padding: 1rem;
-    }
-  }
-
-  @media (max-width: 576px) {
-    .form-title {
-      font-size: 1.5rem;
-    }
-
-    .registration-form {
-      padding: 1.5rem;
-    }
-  }
 </style>
 
 <div class="registration-form mx-auto col-md-8 col-lg-6 inter-font">
@@ -628,61 +472,24 @@
         />
         <div class="error-message">State is required.</div>
       </div>
-    </div>
-
-    <div class="form-group">
-      <label class="form-label" for="country">
-        <i class="fas fa-globe me-2"></i>Country
-        <span class="required-asterisk">*</span>
-      </label>
-      <input
-        type="text"
-        class="form-control"
-        id="country"
-        name="country"
-        autocomplete="country-name"
-        placeholder="Enter country"
-        required
-      />
-      <div class="error-message">Country is required.</div>
-    </div>
-
-    <hr class="section-divider" />
-
-    <!-- Aadhaar Number -->
-    <div class="form-group">
-      <label class="form-label" for="aadharNo">
-        <i class="fas fa-id-card me-2"></i>Aadhaar Number
-        <span class="required-asterisk">*</span>
-      </label>
-      <input
-        type="text"
-        class="form-control"
-        id="aadharNo"
-        name="aadharNo"
-        placeholder="Enter your 12-digit Aadhaar number"
-        pattern="\d{12}"
-        required
-      />
-      <div class="error-message">Aadhaar number must be 12 digits.</div>
-    </div>
-
-    <!-- GST Number -->
-    <div class="form-group">
-      <label class="form-label" for="gstNo">
-        <i class="fas fa-file-invoice me-2"></i>GST Number
-        <span class="required-asterisk">*</span>
-      </label>
-      <input
-        type="text"
-        class="form-control"
-        id="gstNo"
-        name="gstNo"
-        placeholder="Enter your GST number"
-        style="text-transform: uppercase"
-        required
-      />
-      <div class="error-message">GST number is required.</div>
+      <div class="mb-3">
+        <label for="gstno" class="form-label">GST No.<span class="required-asterisk">*</span></label>
+        <input type="text" class="form-control" name="gstno" placeholder="Enter GST No." required>
+        <span class="error-message">GST number is required.</span>
+      </div>
+      <div class="mb-3 form-check pt-3">
+        <div class="form-check d-flex mb-5">
+          <input class="form-check-input me-2" type="checkbox" required />
+          <label class="form-check-label">
+            I agree all statements in 
+  <a href="#" data-bs-toggle="modal" data-bs-target="#termsOfServiceModal">
+    Terms of Service<span class="required-asterisk">*</span>
+  </a>
+          </label>
+        </div>
+        </div>
+        <button type="submit" class="btn btn-primary w-100" style="background-color: #093f75; color:white;">Submit</button>
+      </form>
     </div>
 
     <!-- PAN Number -->
@@ -739,5 +546,37 @@
     myModal.show();
   });
 </script>
-{% endif %} 
+{% endif %}
+      </div>
+      <button type="submit" class="btn btn-primary w-100" style="background-color: #093f75; color:white;">Submit</button>
+    </form>
+  </div>
+</div>
+<!-- Terms of Service Modal -->
+<div class="modal fade" id="termsOfServiceModal" tabindex="-1" aria-labelledby="termsOfServiceModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <button type="button" class="modal-close" data-bs-dismiss="modal">&times;</button>
+      <h5 class="modal-title" id="termsOfServiceModalLabel">Terms of Service</h5>
+      <div class="modal-body">
+       <div class="modal-content">
+                <ul style="padding-left: 1.2em;">
+                    <li>You must be at least 18 years old to use Dream Jobs.</li>
+                    <li>All information provided must be accurate and up to date.</li>
+                    <li>Do not share your account credentials with others.</li>
+                    <li>Dream Jobs is not responsible for third-party content or job listings.</li>
+                    <li>Any misuse of the platform may result in account suspension.</li>
+                    <li>Respect all users and employers on the platform.</li>
+                    <li>By using Dream Jobs, you agree to receive occasional emails and notifications.</li>
+                    <li>These terms may be updated at any time without prior notice.</li>
+                </ul>
+                <p style="margin-top:1em; color:#888; font-size:0.93em;">For more details, contact our support team.</p>
+            </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 {% endblock body %}
