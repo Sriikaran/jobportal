@@ -13,10 +13,10 @@ from jobapp.models import Employer, JobSeeker
 from .models import Jobs, Post
 from jsapp.models import AppliedJobs
 
-"""
+
 def test_template(request):
     return render(request, "viewpjobs.html")
-"""
+
 # Create your views here.
 
 # from jobapp.utils import send_notification_email

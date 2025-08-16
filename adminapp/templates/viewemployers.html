@@ -1,20 +1,619 @@
-{% extends 'adminparent.html' %}
+{% extends "adminparent.html" %} 
+{% block title %}View Employers - AdminDashboard{% endblock %} 
+{% block nav_employers %}active{% endblock %} 
 {% block body %}
-<div class="row text-dark">
-    <h1 class="text-center">
-        View Employers
-    </h1>
-    <table class="table table-bordered">
-        <tr>
-            <th>Firm Name</th>
-            <th>Email address</th>
-        </tr>
-        {% for e in emp %}
-        <tr>
-            <td>{{e.firmname}}</td>
-            <td>{{e.emailaddress}}</td>
-        </tr>
-        {% endfor %}
-    </table>
+<div class="admin-home-container">
+  <div class="row">
+    <div class="col-12">
+      <!-- Enhanced Page Header -->
+      <div class="page-header animate-fade-in">
+        <div class="page-header-content">
+          <h1 class="page-title">View Employers</h1>
+          <p class="page-subtitle">
+            Manage and monitor registered employers on your platform
+          </p>
+        </div>
+      </div>
+
+      <!-- Statistics Cards -->
+      <div
+        class="stats-grid animate-fade-in"
+        style="
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          margin-bottom: 24px;
+        "
+      >
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon success">
+              <i class="fas fa-building"></i>
+            </div>
+          </div>
+          <div class="stat-number">{{ emp|length }}</div>
+          <div class="stat-label">Total Employers</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon primary">
+              <i class="fas fa-check-circle"></i>
+            </div>
+          </div>
+          <div class="stat-number">{{ emp|length }}</div>
+          <div class="stat-label">Active Employers</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon info">
+              <i class="fas fa-briefcase"></i>
+            </div>
+          </div>
+          <div class="stat-number">156</div>
+          <div class="stat-label">Posted Jobs</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon warning">
+              <i class="fas fa-clock"></i>
+            </div>
+          </div>
+          <div class="stat-number">12</div>
+          <div class="stat-label">Pending Approval</div>
+        </div>
+      </div>
+
+      <!-- Search and Filter Section -->
+      <div
+        class="quick-actions animate-fade-in"
+        style="padding: 20px; margin-bottom: 24px"
+      >
+        <div
+          class="d-flex justify-content-between align-items-center flex-wrap gap-3"
+        >
+          <h3 style="margin: 0">
+            <i class="fas fa-search me-2"></i>
+            Search & Filter
+          </h3>
+          <div class="d-flex gap-2">
+            <div class="input-group" style="width: 300px">
+              <span
+                class="input-group-text"
+                style="
+                  background: var(--bg-light);
+                  border: 2px solid var(--bg-light);
+                "
+              >
+                <i class="fas fa-search" style="color: var(--text-light)"></i>
+              </span>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Search by firm name or email..."
+                style="border: 2px solid var(--bg-light); border-left: none"
+                id="employerSearch"
+              />
+            </div>
+            <button
+              class="btn btn-custom"
+              style="
+                background: var(--primary-blue);
+                color: white;
+                padding: 8px 16px;
+              "
+            >
+              <i class="fas fa-filter me-1"></i> Filter
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Employers Table -->
+      <div class="quick-actions animate-fade-in">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 style="margin: 0">
+            <i class="fas fa-list-alt me-2"></i>
+            Employers Directory
+          </h3>
+          <div class="d-flex gap-2">
+            <button
+              class="btn btn-custom"
+              style="
+                background: var(--success);
+                color: white;
+                padding: 8px 16px;
+              "
+            >
+              <i class="fas fa-plus me-1"></i> Add Employer
+            </button>
+            <button
+              class="btn btn-custom"
+              style="background: var(--info); color: white; padding: 8px 16px"
+            >
+              <i class="fas fa-download me-1"></i> Export
+            </button>
+          </div>
+        </div>
+
+        {% if emp %}
+        <div
+          class="table-responsive"
+          style="
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+          "
+        >
+          <table
+            class="table table-hover mb-0"
+            style="background: white"
+            id="employersTable"
+          >
+            <thead
+              style="
+                background: linear-gradient(
+                  135deg,
+                  var(--primary-blue),
+                  var(--light-blue)
+                );
+                color: white;
+              "
+            >
+              <tr>
+                <th
+                  style="
+                    padding: 16px;
+                    font-weight: 600;
+                    border: none;
+                    width: 60px;
+                  "
+                >
+                  <i class="fas fa-hashtag me-2"></i>#
+                </th>
+                <th
+                  style="
+                    padding: 16px;
+                    font-weight: 600;
+                    border: none;
+                    cursor: pointer;
+                  "
+                  onclick="sortTable(1)"
+                >
+                  <i class="fas fa-building me-2"></i>Firm Name
+                  <i
+                    class="fas fa-sort ms-2"
+                    style="font-size: 12px; opacity: 0.7"
+                  ></i>
+                </th>
+                <th
+                  style="
+                    padding: 16px;
+                    font-weight: 600;
+                    border: none;
+                    cursor: pointer;
+                  "
+                  onclick="sortTable(2)"
+                >
+                  <i class="fas fa-envelope me-2"></i>Email Address
+                  <i
+                    class="fas fa-sort ms-2"
+                    style="font-size: 12px; opacity: 0.7"
+                  ></i>
+                </th>
+                <th
+                  style="
+                    padding: 16px;
+                    font-weight: 600;
+                    border: none;
+                    width: 120px;
+                  "
+                >
+                  <i class="fas fa-signal me-2"></i>Status
+                </th>
+                <th
+                  style="
+                    padding: 16px;
+                    font-weight: 600;
+                    border: none;
+                    width: 150px;
+                  "
+                >
+                  <i class="fas fa-cogs me-2"></i>Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for e in emp %}
+              <tr style="transition: var(--transition)" class="employer-row">
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-light);
+                    font-weight: 500;
+                  "
+                >
+                  {{ forloop.counter }}
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                    font-weight: 600;
+                  "
+                >
+                  <div class="d-flex align-items-center">
+                    <div
+                      class="employer-avatar me-3"
+                      style="
+                        width: 40px;
+                        height: 40px;
+                        background: linear-gradient(
+                          135deg,
+                          var(--primary-blue),
+                          var(--accent-blue)
+                        );
+                        border-radius: 8px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: white;
+                        font-weight: 700;
+                        font-size: 14px;
+                      "
+                    >
+                      {{ e.firmname|first|upper }}
+                    </div>
+                    <div>
+                      <div style="font-weight: 600; color: var(--text-dark)">
+                        {{ e.firmname }}
+                      </div>
+                      <div style="font-size: 12px; color: var(--text-light)">
+                        Employer
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                  "
+                >
+                  <a
+                    href="mailto:{{ e.emailaddress }}"
+                    style="
+                      color: var(--primary-blue);
+                      text-decoration: none;
+                      display: flex;
+                      align-items: center;
+                    "
+                  >
+                    <i class="fas fa-envelope me-2" style="font-size: 14px"></i>
+                    {{ e.emailaddress }}
+                  </a>
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                  "
+                >
+                  <span
+                    class="badge"
+                    style="
+                      background: var(--success);
+                      color: white;
+                      padding: 6px 12px;
+                      border-radius: 20px;
+                      font-size: 12px;
+                      font-weight: 500;
+                    "
+                  >
+                    <i class="fas fa-check-circle me-1"></i>
+                    Active
+                  </span>
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                  "
+                >
+                  <div class="d-flex gap-1">
+                    <button
+                      class="btn btn-sm"
+                      style="
+                        background: var(--info);
+                        color: white;
+                        padding: 6px 10px;
+                        border-radius: 6px;
+                        border: none;
+                      "
+                      title="View Details"
+                    >
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button
+                      class="btn btn-sm"
+                      style="
+                        background: var(--warning);
+                        color: white;
+                        padding: 6px 10px;
+                        border-radius: 6px;
+                        border: none;
+                      "
+                      title="Edit"
+                    >
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button
+                      class="btn btn-sm"
+                      style="
+                        background: var(--danger);
+                        color: white;
+                        padding: 6px 10px;
+                        border-radius: 6px;
+                        border: none;
+                      "
+                      title="Delete"
+                    >
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="d-flex justify-content-between align-items-center mt-3">
+          <div style="color: var(--text-light); font-size: 14px">
+            Showing {{ emp|length }} of {{ emp|length }} employers
+          </div>
+          <nav>
+            <ul class="pagination mb-0" style="gap: 5px">
+              <li class="page-item">
+                <a
+                  class="page-link"
+                  href="#"
+                  style="
+                    border: 1px solid var(--bg-light);
+                    color: var(--primary-blue);
+                    padding: 8px 12px;
+                    border-radius: 6px;
+                  "
+                  >Previous</a
+                >
+              </li>
+              <li class="page-item active">
+                <a
+                  class="page-link"
+                  href="#"
+                  style="
+                    background: var(--primary-blue);
+                    border: 1px solid var(--primary-blue);
+                    color: white;
+                    padding: 8px 12px;
+                    border-radius: 6px;
+                  "
+                  >1</a
+                >
+              </li>
+              <li class="page-item">
+                <a
+                  class="page-link"
+                  href="#"
+                  style="
+                    border: 1px solid var(--bg-light);
+                    color: var(--primary-blue);
+                    padding: 8px 12px;
+                    border-radius: 6px;
+                  "
+                  >Next</a
+                >
+              </li>
+            </ul>
+          </nav>
+        </div>
+
+        {% else %}
+        <!-- No Employers State -->
+        <div
+          style="
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
+          "
+        >
+          <div
+            style="
+              width: 80px;
+              height: 80px;
+              background: var(--bg-light);
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin: 0 auto 20px;
+            "
+          >
+            <i
+              class="fas fa-building"
+              style="font-size: 32px; color: var(--info)"
+            ></i>
+          </div>
+          <h4 style="color: var(--text-dark); margin-bottom: 12px">
+            No Employers Found
+          </h4>
+          <p style="color: var(--text-light); font-size: 16px">
+            No employers have registered yet. Start promoting your platform to
+            attract businesses!
+          </p>
+          <button
+            class="btn btn-custom mt-3"
+            style="
+              background: var(--primary-blue);
+              color: white;
+              padding: 12px 24px;
+            "
+          >
+            <i class="fas fa-plus me-2"></i>Add First Employer
+          </button>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
 </div>
-{% endblock body %}
+
+<style>
+  .table-responsive {
+    background: white;
+  }
+
+  .table tbody tr:hover {
+    background-color: var(--bg-light) !important;
+    transform: scale(1.01);
+    box-shadow: var(--shadow-light);
+  }
+
+  .table tbody tr {
+    border: none;
+  }
+
+  .table thead th {
+    border: none;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+  }
+
+  .table thead th:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .stat-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .btn-sm:hover {
+    transform: scale(1.1);
+  }
+
+  .page-link:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-light);
+  }
+
+  .employer-avatar {
+    transition: var(--transition);
+  }
+
+  .employer-row:hover .employer-avatar {
+    transform: scale(1.1);
+  }
+
+  .input-group-text {
+    border-top-left-radius: var(--border-radius);
+    border-bottom-left-radius: var(--border-radius);
+  }
+
+  .form-control {
+    border-top-right-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+  }
+
+  .form-control:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 0.2rem rgba(3, 3, 114, 0.25);
+  }
+
+  @media (max-width: 768px) {
+    .table-responsive {
+      font-size: 14px;
+    }
+
+    .table th,
+    .table td {
+      padding: 12px 8px !important;
+    }
+
+    .page-title {
+      font-size: 28px;
+    }
+
+    .employer-avatar {
+      width: 32px !important;
+      height: 32px !important;
+      font-size: 12px !important;
+    }
+
+    .d-flex.gap-3,
+    .d-flex.gap-2 {
+      flex-direction: column;
+      gap: 10px !important;
+    }
+
+    .input-group {
+      width: 100% !important;
+    }
+  }
+</style>
+
+<script>
+  // Search functionality
+  document
+    .getElementById("employerSearch")
+    .addEventListener("keyup", function () {
+      const searchValue = this.value.toLowerCase();
+      const rows = document.querySelectorAll(".employer-row");
+
+      rows.forEach((row) => {
+        const firmName = row.cells[1].textContent.toLowerCase();
+        const email = row.cells[2].textContent.toLowerCase();
+
+        if (firmName.includes(searchValue) || email.includes(searchValue)) {
+          row.style.display = "";
+        } else {
+          row.style.display = "none";
+        }
+      });
+    });
+
+  // Sort table functionality
+  function sortTable(columnIndex) {
+    const table = document.getElementById("employersTable");
+    const tbody = table.getElementsByTagName("tbody")[0];
+    const rows = Array.from(tbody.getElementsByTagName("tr"));
+
+    rows.sort((a, b) => {
+      const aValue = a.cells[columnIndex].textContent.trim();
+      const bValue = b.cells[columnIndex].textContent.trim();
+      return aValue.localeCompare(bValue);
+    });
+
+    // Clear and rebuild tbody
+    tbody.innerHTML = "";
+    rows.forEach((row) => tbody.appendChild(row));
+  }
+
+  // Add hover effects for action buttons
+  document.querySelectorAll(".btn-sm").forEach((btn) => {
+    btn.addEventListener("mouseenter", function () {
+      this.style.transform = "scale(1.1)";
+    });
+
+    btn.addEventListener("mouseleave", function () {
+      this.style.transform = "scale(1)";
+    });
+  });
+</script>
+{% endblock %}

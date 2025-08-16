@@ -4,10 +4,20 @@ from jobapp.models import JobSeeker,Enquiry,Login
 from employer.models import Jobs
 from jsapp.models import Response
 from . models import News
-import datetime
+from datetime import date
+
+def calculate_age(born):
+    today = date.today()
+    return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
+
+def my_view(request):
+    js = JobSeeker.objects.get(...)  # or your queryset
+    age = calculate_age(js.dateofbirth)
+    return render(request, "template.html", {"js": js, "age": age})
+
 
 def test_template(request):
-    return render(request, "adminhome.html")
+    return render(request, "viewnews.html")
 
 # Create your views here.
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
@@ -91,5 +101,14 @@ def viewjobseekers(request):
             adminid=request.session["adminid"]
             jobseek=JobSeeker.objects.all()
             return render(request,"viewjobseekers.html",locals())
+    except KeyError:
+        return redirect("jobapp:login")
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+def viewjobs(request):
+    try:
+        if request.session["adminid"]!=None:
+            adminid=request.session["adminid"]
+            job=Jobs.objects.all()
+            return render(request,"viewjobs.html",locals())
     except KeyError:
         return redirect("jobapp:login")

@@ -1,29 +1,343 @@
-{% extends 'adminparent.html' %}
+{% extends "adminparent.html" %} 
+{% block title %}View Complaints - AdminDashboard{% endblock %} 
+{% block nav_complaints %}active{% endblock %} 
 {% block body %}
-    <div class="row">
-        <div class="col-sm-12 text-dark">
-            <h1 style="text-align: center;">View All Complaints</h1>
-            <table class="table table-bordered text-dark">
-                <tr>
-                    <th>Name</th>
-                    <th>Contact No.</th>
-                    <th>Email address</th>
-                    <th>Subject</th>
-                    <th>Responsetext</th>
-                    <th>Posted Date</th>
-                </tr>
-                {% for c in comp %}
-                <tr>
-                    <td>{{c.name}}</td>
-                    <td>{{c.contactno}}</td>
-                    <td>{{c.emailaddress}}</td>
-                    <td>{{c.subject}}</td>
-                    <td>{{c.responsetext}}</td>
-                    <td>{{c.posteddate}}</td>
-                    
-                </tr>
-                    {% endfor %}
-            </table>
+<div class="admin-home-container">
+  <div class="row">
+    <div class="col-12">
+      <!-- Enhanced Page Header -->
+      <div class="page-header animate-fade-in">
+        <div class="page-header-content">
+          <h1 class="page-title">View All Complaints</h1>
+          <p class="page-subtitle">
+            Monitor and manage user complaints efficiently
+          </p>
         </div>
+      </div>
+
+      <!-- Statistics Cards -->
+      <div
+        class="stats-grid animate-fade-in"
+        style="
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          margin-bottom: 24px;
+        "
+      >
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon danger">
+              <i class="fas fa-exclamation-triangle"></i>
+            </div>
+          </div>
+          <div class="stat-number">{{ comp|length }}</div>
+          <div class="stat-label">Total Complaints</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon warning">
+              <i class="fas fa-clock"></i>
+            </div>
+          </div>
+          <div class="stat-number">{{ comp|length }}</div>
+          <div class="stat-label">Pending Review</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon info">
+              <i class="fas fa-chart-line"></i>
+            </div>
+          </div>
+          <div class="stat-number">85%</div>
+          <div class="stat-label">Resolution Rate</div>
+        </div>
+      </div>
+
+      <!-- Complaints Table -->
+      <div class="quick-actions animate-fade-in">
+        <h3>
+          <i class="fas fa-list-alt me-2"></i>
+          Complaints Overview
+        </h3>
+
+        {% if comp %}
+        <div
+          class="table-responsive"
+          style="
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+          "
+        >
+          <table class="table table-hover mb-0" style="background: white">
+            <thead
+              style="
+                background: linear-gradient(
+                  135deg,
+                  var(--primary-blue),
+                  var(--light-blue)
+                );
+                color: white;
+              "
+            >
+              <tr>
+                <th style="padding: 16px; font-weight: 600; border: none">
+                  <i class="fas fa-user me-2"></i>Name
+                </th>
+                <th style="padding: 16px; font-weight: 600; border: none">
+                  <i class="fas fa-phone me-2"></i>Contact No.
+                </th>
+                <th style="padding: 16px; font-weight: 600; border: none">
+                  <i class="fas fa-envelope me-2"></i>Email Address
+                </th>
+                <th style="padding: 16px; font-weight: 600; border: none">
+                  <i class="fas fa-tag me-2"></i>Subject
+                </th>
+                <th style="padding: 16px; font-weight: 600; border: none">
+                  <i class="fas fa-comment me-2"></i>Response Text
+                </th>
+                <th style="padding: 16px; font-weight: 600; border: none">
+                  <i class="fas fa-calendar me-2"></i>Posted Date
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for c in comp %}
+              <tr style="transition: var(--transition)">
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                    font-weight: 500;
+                  "
+                >
+                  {{ c.name }}
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                  "
+                >
+                  <span
+                    style="
+                      background: var(--bg-light);
+                      padding: 4px 8px;
+                      border-radius: 6px;
+                      font-size: 14px;
+                    "
+                  >
+                    {{ c.contactno }}
+                  </span>
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                  "
+                >
+                  <a
+                    href="mailto:{{ c.emailaddress }}"
+                    style="color: var(--primary-blue); text-decoration: none"
+                  >
+                    {{ c.emailaddress }}
+                  </a>
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                    font-weight: 500;
+                  "
+                >
+                  {{ c.subject }}
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                    max-width: 250px;
+                  "
+                >
+                  <div
+                    style="
+                      max-height: 60px;
+                      overflow-y: auto;
+                      font-size: 14px;
+                      line-height: 1.4;
+                    "
+                  >
+                    {{ c.responsetext }}
+                  </div>
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-light);
+                    font-size: 14px;
+                  "
+                >
+                  <span
+                    style="
+                      background: var(--success);
+                      color: white;
+                      padding: 4px 8px;
+                      border-radius: 6px;
+                      font-size: 12px;
+                    "
+                  >
+                    {{ c.posteddate|date:"M d, Y" }}
+                  </span>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <!-- No Complaints State -->
+        <div
+          style="
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
+          "
+        >
+          <div
+            style="
+              width: 80px;
+              height: 80px;
+              background: var(--bg-light);
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin: 0 auto 20px;
+            "
+          >
+            <i
+              class="fas fa-smile"
+              style="font-size: 32px; color: var(--success)"
+            ></i>
+          </div>
+          <h4 style="color: var(--text-dark); margin-bottom: 12px">
+            No Complaints Found
+          </h4>
+          <p style="color: var(--text-light); font-size: 16px">
+            Great news! There are currently no complaints to review.
+          </p>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Quick Actions Footer -->
+      <div class="recent-activity animate-fade-in">
+        <h3>
+          <i class="fas fa-tools me-2"></i>
+          Quick Actions
+        </h3>
+        <div
+          class="action-grid"
+          style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))"
+        >
+          <a href="#" class="action-btn">
+            <div class="action-icon">
+              <i class="fas fa-download"></i>
+            </div>
+            <div class="action-content">
+              <h4>Export Data</h4>
+              <p>Download complaints report</p>
+            </div>
+          </a>
+
+          <a href="#" class="action-btn">
+            <div class="action-icon">
+              <i class="fas fa-filter"></i>
+            </div>
+            <div class="action-content">
+              <h4>Filter Results</h4>
+              <p>Sort by date or status</p>
+            </div>
+          </a>
+
+          <a href="#" class="action-btn">
+            <div class="action-icon">
+              <i class="fas fa-envelope-open"></i>
+            </div>
+            <div class="action-content">
+              <h4>Bulk Actions</h4>
+              <p>Mark multiple as resolved</p>
+            </div>
+          </a>
+        </div>
+      </div>
     </div>
-{% endblock body %}
+  </div>
+</div>
+
+<style>
+  .table-responsive {
+    background: white;
+  }
+
+  .table tbody tr:hover {
+    background-color: var(--bg-light) !important;
+    transform: scale(1.01);
+    box-shadow: var(--shadow-light);
+  }
+
+  .table tbody tr {
+    border: none;
+  }
+
+  .table thead th {
+    border: none;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-4px);
+  }
+
+  /* Scrollbar styling for response text */
+  .table td div::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .table td div::-webkit-scrollbar-track {
+    background: var(--bg-light);
+    border-radius: 2px;
+  }
+
+  .table td div::-webkit-scrollbar-thumb {
+    background: var(--text-light);
+    border-radius: 2px;
+  }
+
+  @media (max-width: 768px) {
+    .table-responsive {
+      font-size: 14px;
+    }
+
+    .table th,
+    .table td {
+      padding: 12px 8px !important;
+    }
+
+    .page-title {
+      font-size: 28px;
+    }
+  }
+</style>
+{% endblock %}

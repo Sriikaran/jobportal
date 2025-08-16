@@ -1,0 +1,569 @@
+{% extends "adminparent.html" %} 
+{% block title %}View Jobs - Admin Dashboard{% endblock %} 
+{% block nav_jobs %}active{% endblock %} 
+{% block body %}
+<div class="admin-home-container">
+  <div class="row">
+    <div class="col-12">
+      <!-- Enhanced Page Header -->
+      <div class="page-header animate-fade-in">
+        <div class="page-header-content">
+          <h1 class="page-title">View All Jobs</h1>
+          <p class="page-subtitle">
+            Monitor and manage job postings across the platform
+          </p>
+        </div>
+      </div>
+
+      <!-- Statistics Cards -->
+      <div
+        class="stats-grid animate-fade-in"
+        style="
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          margin-bottom: 24px;
+        "
+      >
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon primary">
+              <i class="fas fa-briefcase"></i>
+            </div>
+          </div>
+          <div class="stat-number">{{ jobs|length }}</div>
+          <div class="stat-label">Total Jobs</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon success">
+              <i class="fas fa-check-circle"></i>
+            </div>
+          </div>
+          <div class="stat-number">{{ active_jobs|length|default:0 }}</div>
+          <div class="stat-label">Active Jobs</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon warning">
+              <i class="fas fa-clock"></i>
+            </div>
+          </div>
+          <div class="stat-number">{{ recent_jobs|length|default:0 }}</div>
+          <div class="stat-label">Recent Postings</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon info">
+              <i class="fas fa-users"></i>
+            </div>
+          </div>
+          <div class="stat-number">{{ total_applications|default:0 }}</div>
+          <div class="stat-label">Total Applications</div>
+        </div>
+      </div>
+
+      <!-- Jobs Table -->
+      <div class="quick-actions animate-fade-in">
+        <h3>
+          <i class="fas fa-list-alt me-2"></i>
+          Jobs Overview
+        </h3>
+
+        {% if jobs %}
+        <div
+          class="table-responsive"
+          style="
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+          "
+        >
+          <table class="table table-hover mb-0" style="background: white">
+            <thead
+              style="
+                background: linear-gradient(
+                  135deg,
+                  var(--primary-blue),
+                  var(--light-blue)
+                );
+                color: white;
+              "
+            >
+              <tr>
+                <th style="padding: 16px; font-weight: 600; border: none">
+                  <i class="fas fa-briefcase me-2"></i>Job Title
+                </th>
+                <th style="padding: 16px; font-weight: 600; border: none">
+                  <i class="fas fa-building me-2"></i>Company
+                </th>
+                <th style="padding: 16px; font-weight: 600; border: none">
+                  <i class="fas fa-map-marker-alt me-2"></i>Location
+                </th>
+                <th style="padding: 16px; font-weight: 600; border: none">
+                  <i class="fas fa-tag me-2"></i>Job Type
+                </th>
+                <th style="padding: 16px; font-weight: 600; border: none">
+                  <i class="fas fa-dollar-sign me-2"></i>Salary
+                </th>
+                <th style="padding: 16px; font-weight: 600; border: none">
+                  <i class="fas fa-calendar me-2"></i>Posted Date
+                </th>
+                <th style="padding: 16px; font-weight: 600; border: none">
+                  <i class="fas fa-eye me-2"></i>Status
+                </th>
+                <th style="padding: 16px; font-weight: 600; border: none">
+                  <i class="fas fa-cogs me-2"></i>Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for job in jobs %}
+              <tr style="transition: var(--transition)">
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                    font-weight: 500;
+                  "
+                >
+                  <div style="max-width: 200px;">
+                    <div style="font-weight: 600; margin-bottom: 4px;">{{ job.title }}</div>
+                    <div style="font-size: 12px; color: var(--text-light);">
+                      {{ job.category|default:"General" }}
+                    </div>
+                  </div>
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                  "
+                >
+                  <div style="display: flex; align-items: center;">
+                    <div style="
+                      width: 32px;
+                      height: 32px;
+                      background: var(--primary-blue);
+                      border-radius: 6px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      margin-right: 10px;
+                      color: white;
+                      font-size: 12px;
+                      font-weight: bold;
+                    ">
+                      {{ job.company.name|first|upper }}
+                    </div>
+                    <div>
+                      <div style="font-weight: 500;">{{ job.company.name }}</div>
+                      <div style="font-size: 12px; color: var(--text-light);">
+                        {{ job.company.industry|default:"Technology" }}
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                  "
+                >
+                  <span
+                    style="
+                      background: var(--bg-light);
+                      padding: 4px 8px;
+                      border-radius: 6px;
+                      font-size: 14px;
+                      display: inline-flex;
+                      align-items: center;
+                    "
+                  >
+                    <i class="fas fa-map-marker-alt me-1" style="font-size: 10px;"></i>
+                    {{ job.location }}
+                  </span>
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                  "
+                >
+                  {% if job.job_type == 'Full-time' %}
+                  <span
+                    style="
+                      background: var(--success);
+                      color: white;
+                      padding: 4px 8px;
+                      border-radius: 6px;
+                      font-size: 12px;
+                      font-weight: 500;
+                    "
+                  >
+                    {{ job.job_type }}
+                  </span>
+                  {% elif job.job_type == 'Part-time' %}
+                  <span
+                    style="
+                      background: var(--warning);
+                      color: white;
+                      padding: 4px 8px;
+                      border-radius: 6px;
+                      font-size: 12px;
+                      font-weight: 500;
+                    "
+                  >
+                    {{ job.job_type }}
+                  </span>
+                  {% elif job.job_type == 'Contract' %}
+                  <span
+                    style="
+                      background: var(--info);
+                      color: white;
+                      padding: 4px 8px;
+                      border-radius: 6px;
+                      font-size: 12px;
+                      font-weight: 500;
+                    "
+                  >
+                    {{ job.job_type }}
+                  </span>
+                  {% else %}
+                  <span
+                    style="
+                      background: var(--text-light);
+                      color: white;
+                      padding: 4px 8px;
+                      border-radius: 6px;
+                      font-size: 12px;
+                      font-weight: 500;
+                    "
+                  >
+                    {{ job.job_type|default:"Not Specified" }}
+                  </span>
+                  {% endif %}
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                  "
+                >
+                  {% if job.salary_min and job.salary_max %}
+                  <div style="font-weight: 600; color: var(--success);">
+                    ${{ job.salary_min|floatformat:0 }} - ${{ job.salary_max|floatformat:0 }}
+                  </div>
+                  <div style="font-size: 12px; color: var(--text-light);">
+                    {{ job.salary_period|default:"per year" }}
+                  </div>
+                  {% elif job.salary_min %}
+                  <div style="font-weight: 600; color: var(--success);">
+                    From ${{ job.salary_min|floatformat:0 }}
+                  </div>
+                  {% else %}
+                  <span style="color: var(--text-light); font-style: italic;">
+                    Negotiable
+                  </span>
+                  {% endif %}
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-light);
+                    font-size: 14px;
+                  "
+                >
+                  <div style="display: flex; flex-direction: column;">
+                    <span
+                      style="
+                        background: var(--primary-blue);
+                        color: white;
+                        padding: 4px 8px;
+                        border-radius: 6px;
+                        font-size: 12px;
+                        text-align: center;
+                      "
+                    >
+                      {{ job.posted_date|date:"M d, Y" }}
+                    </span>
+                    <span style="font-size: 11px; margin-top: 4px; text-align: center;">
+                      {{ job.posted_date|timesince }} ago
+                    </span>
+                  </div>
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                  "
+                >
+                  {% if job.is_active %}
+                  <span
+                    style="
+                      background: var(--success);
+                      color: white;
+                      padding: 6px 12px;
+                      border-radius: 20px;
+                      font-size: 12px;
+                      font-weight: 500;
+                      display: inline-flex;
+                      align-items: center;
+                    "
+                  >
+                    <i class="fas fa-check-circle me-1" style="font-size: 10px;"></i>
+                    Active
+                  </span>
+                  {% else %}
+                  <span
+                    style="
+                      background: var(--danger);
+                      color: white;
+                      padding: 6px 12px;
+                      border-radius: 20px;
+                      font-size: 12px;
+                      font-weight: 500;
+                      display: inline-flex;
+                      align-items: center;
+                    "
+                  >
+                    <i class="fas fa-times-circle me-1" style="font-size: 10px;"></i>
+                    Inactive
+                  </span>
+                  {% endif %}
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                  "
+                >
+                  <div style="display: flex; gap: 8px;">
+                    <a
+                      href="#"
+                      style="
+                        padding: 6px 10px;
+                        background: var(--info);
+                        color: white;
+                        text-decoration: none;
+                        border-radius: 6px;
+                        font-size: 12px;
+                        transition: var(--transition);
+                      "
+                      onmouseover="this.style.background='#2563eb'"
+                      onmouseout="this.style.background='var(--info)'"
+                    >
+                      <i class="fas fa-eye"></i>
+                    </a>
+                    <a
+                      href="#"
+                      style="
+                        padding: 6px 10px;
+                        background: var(--warning);
+                        color: white;
+                        text-decoration: none;
+                        border-radius: 6px;
+                        font-size: 12px;
+                        transition: var(--transition);
+                      "
+                      onmouseover="this.style.background='#d97706'"
+                      onmouseout="this.style.background='var(--warning)'"
+                    >
+                      <i class="fas fa-edit"></i>
+                    </a>
+                    <a
+                      href="#"
+                      style="
+                        padding: 6px 10px;
+                        background: var(--danger);
+                        color: white;
+                        text-decoration: none;
+                        border-radius: 6px;
+                        font-size: 12px;
+                        transition: var(--transition);
+                      "
+                      onmouseover="this.style.background='#dc2626'"
+                      onmouseout="this.style.background='var(--danger)'"
+                      onclick="return confirm('Are you sure you want to delete this job?')"
+                    >
+                      <i class="fas fa-trash"></i>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <!-- No Jobs State -->
+        <div
+          style="
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
+          "
+        >
+          <div
+            style="
+              width: 80px;
+              height: 80px;
+              background: var(--bg-light);
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin: 0 auto 20px;
+            "
+          >
+            <i
+              class="fas fa-briefcase"
+              style="font-size: 32px; color: var(--primary-blue)"
+            ></i>
+          </div>
+          <h4 style="color: var(--text-dark); margin-bottom: 12px">
+            No Jobs Found
+          </h4>
+          <p style="color: var(--text-light); font-size: 16px">
+            There are currently no job postings to display. New jobs will appear here once they are posted.
+          </p>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Quick Actions Footer -->
+      <div class="recent-activity animate-fade-in">
+        <h3>
+          <i class="fas fa-tools me-2"></i>
+          Quick Actions
+        </h3>
+        <div
+          class="action-grid"
+          style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))"
+        >
+          <a href="#" class="action-btn">
+            <div class="action-icon">
+              <i class="fas fa-plus"></i>
+            </div>
+            <div class="action-content">
+              <h4>Add New Job</h4>
+              <p>Create a new job posting</p>
+            </div>
+          </a>
+
+          <a href="#" class="action-btn">
+            <div class="action-icon">
+              <i class="fas fa-download"></i>
+            </div>
+            <div class="action-content">
+              <h4>Export Data</h4>
+              <p>Download jobs report</p>
+            </div>
+          </a>
+
+          <a href="#" class="action-btn">
+            <div class="action-icon">
+              <i class="fas fa-filter"></i>
+            </div>
+            <div class="action-content">
+              <h4>Filter Jobs</h4>
+              <p>Sort by category or status</p>
+            </div>
+          </a>
+
+          <a href="#" class="action-btn">
+            <div class="action-icon">
+              <i class="fas fa-chart-bar"></i>
+            </div>
+            <div class="action-content">
+              <h4>Analytics</h4>
+              <p>View job performance stats</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .table-responsive {
+    background: white;
+  }
+
+  .table tbody tr:hover {
+    background-color: var(--bg-light) !important;
+    transform: scale(1.01);
+    box-shadow: var(--shadow-light);
+  }
+
+  .table tbody tr {
+    border: none;
+  }
+
+  .table thead th {
+    border: none;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-4px);
+  }
+
+  /* Action buttons hover effects */
+  .table td a:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .table-responsive {
+      font-size: 12px;
+    }
+
+    .table th,
+    .table td {
+      padding: 10px 6px !important;
+    }
+
+    .page-title {
+      font-size: 28px;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    /* Hide some columns on mobile */
+    .table th:nth-child(3),
+    .table td:nth-child(3),
+    .table th:nth-child(5),
+    .table td:nth-child(5),
+    .table th:nth-child(6),
+    .table td:nth-child(6) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+{% endblock %}
