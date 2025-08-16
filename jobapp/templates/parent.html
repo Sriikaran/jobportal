@@ -439,11 +439,12 @@
             <a href="{% url 'jobapp:login' %}" class="btn">Login</a>
 
             <div class="dropdown">
-                <a class="btn dropdown-toggle" href="javascript:void(0)" data-bs-toggle="dropdown">Register</a>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="{% url 'jobapp:employerreg' %}">Employer</a></li>
-                    <li><a class="dropdown-item" href="{% url 'jobapp:jobseekerreg' %}">Job Seeker</a></li>
-                </ul>
+              <a class="btn dropdown-toggle" href="javascript:void(0)" data-bs-toggle="dropdown">Register</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'jobapp:employerreg' %}">Employer</a></li>
+                <li><a class="dropdown-item" href="{% url 'jobapp:jobseekerreg' %}">Job Seeker</a></li>
+                <li><a class="dropdown-item" href="{% url 'jobapp:adminreg' %}">Administrator</a></li>
+              </ul>
             </div>
           </div>
         </div>

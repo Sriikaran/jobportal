@@ -1,0 +1,861 @@
+{% extends "index.html" %} 
+{% block body %} 
+{% load static %}
+<style>
+  :root {
+    --primary-blue: #093f75;
+    --secondary-blue: #0c3056;
+    --accent-blue: #56a8fa;
+    --light-blue: #1c5aa6;
+    --text-dark: #2c3e50;
+    --text-light: #6c757d;
+    --bg-light: #f8fafc;
+    --shadow-light: 0 4px 20px rgba(9, 63, 117, 0.08);
+    --shadow-medium: 0 8px 32px rgba(9, 63, 117, 0.12);
+    --gradient-primary: linear-gradient(
+      135deg,
+      #0c3056 0%,
+      #1c5aa6 50%,
+      #56a8fa 100%
+    );
+    --gradient-accent: linear-gradient(45deg, #56a8fa, #a1d0ff);
+  }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  html {
+    height: 100%;
+    scroll-behavior: smooth;
+  }
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-dark);
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
+  .required-asterisk {
+    color: #dc3545;
+    margin-left: 2px;
+  }
+
+  .error-message {
+    color: #dc3545;
+    display: none;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    font-weight: 400;
+  }
+
+  input:invalid {
+    border-color: initial;
+  }
+
+  .inter-font {
+    font-family: "Inter", sans-serif;
+  }
+
+  .form-container {
+    background: linear-gradient(135deg, #f6fafd 0%, #e8f2ff 100%);
+    min-height: 100vh;
+    padding: 2rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Floating background elements */
+  .floating-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .floating-circle {
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(
+      135deg,
+      rgba(9, 63, 117, 0.05),
+      rgba(9, 63, 117, 0.1)
+    );
+    animation: float 8s ease-in-out infinite;
+  }
+
+  .floating-circle:nth-child(1) {
+    width: 80px;
+    height: 80px;
+    top: 15%;
+    left: 10%;
+    animation-delay: 0s;
+  }
+
+  .floating-circle:nth-child(2) {
+    width: 60px;
+    height: 60px;
+    top: 70%;
+    right: 15%;
+    animation-delay: 3s;
+  }
+
+  .floating-circle:nth-child(3) {
+    width: 40px;
+    height: 40px;
+    bottom: 25%;
+    left: 85%;
+    animation-delay: 6s;
+  }
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0px) rotate(0deg);
+      opacity: 0.3;
+    }
+    50% {
+      transform: translateY(-30px) rotate(180deg);
+      opacity: 0.6;
+    }
+  }
+
+  .registration-form {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(25px);
+    border-radius: 28px;
+    box-shadow: var(--shadow-medium),
+      0 0 0 1px rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 3rem;
+    margin: 2rem auto;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .registration-form::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-primary);
+    border-radius: 28px 28px 0 0;
+  }
+
+  .form-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    position: relative;
+  }
+
+  .form-title {
+    color: var(--primary-blue);
+    font-weight: 700;
+    font-size: 2.25rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .form-subtitle {
+    color: var(--text-light);
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 0;
+  }
+
+  .form-label {
+    display: block;
+    font-weight: 600;
+    color: var(--primary-blue);
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+    letter-spacing: 0.01em;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 16px 20px;
+    border: 2px solid #ede7f6;
+    border-radius: 14px;
+    background: var(--bg-light);
+    font-size: 0.95rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    box-shadow: var(--shadow-light);
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    background: #ffffff;
+    box-shadow: var(--shadow-medium),
+      0 0 0 3px rgba(9, 63, 117, 0.1);
+    transform: translateY(-1px);
+  }
+
+  .form-control:valid:not(:placeholder-shown) {
+    border-color: #28a745;
+    background: #f8fff8;
+  }
+
+  .form-control::placeholder {
+    color: #9ca3af;
+    font-weight: 400;
+  }
+
+  .form-input,
+  .form-select {
+    width: 100%;
+    padding: 16px 20px;
+    border: 2px solid #ede7f6;
+    border-radius: 14px;
+    background: var(--bg-light);
+    font-size: 0.95rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    box-shadow: var(--shadow-light);
+  }
+
+  .form-input:focus,
+  .form-select:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    background: #ffffff;
+    box-shadow: var(--shadow-medium),
+      0 0 0 3px rgba(9, 63, 117, 0.1);
+    transform: translateY(-1px);
+  }
+
+  input[type="file"].form-input {
+    padding: 14px 18px;
+    background-color: var(--bg-light);
+    border: 2px solid #ede7f6;
+    border-radius: 14px;
+    font-family: "Inter", sans-serif;
+    font-size: 0.95rem;
+    color: var(--primary-blue);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  input[type="file"].form-input:hover {
+    border-color: var(--primary-blue);
+    background-color: #ffffff;
+    box-shadow: var(--shadow-light);
+  }
+
+  input[type="file"].form-input::file-selector-button {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 10px;
+    font-family: "Inter", sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-right: 12px;
+  }
+
+  input[type="file"].form-input::file-selector-button:hover {
+    background: linear-gradient(135deg, var(--secondary-blue), var(--primary-blue));
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-medium);
+  }
+
+  .form-group {
+    margin-bottom: 1.75rem;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .checkbox-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: #e8f2ff;
+    border-radius: 16px;
+    border: 2px solid #ede7f6;
+    transition: all 0.3s ease;
+  }
+
+  .checkbox-container:hover {
+    border-color: var(--primary-blue);
+    box-shadow: var(--shadow-light);
+  }
+
+  .form-check-input {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--primary-blue);
+    border-radius: 6px;
+    margin-top: 2px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .form-check-input:checked {
+    background-color: var(--primary-blue);
+    border-color: var(--primary-blue);
+  }
+
+  .form-check-input:focus {
+    box-shadow: 0 0 0 3px rgba(9, 63, 117, 0.2);
+  }
+
+  .form-check-label {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #495057;
+    cursor: pointer;
+  }
+
+  .form-check-label a {
+    color: var(--primary-blue);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+
+  .form-check-label a:hover {
+    color: var(--secondary-blue);
+    text-decoration: underline;
+  }
+
+  .submit-btn {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    padding: 18px 32px;
+    border-radius: 16px;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: "Inter", sans-serif;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: var(--shadow-medium),
+      0 2px 4px rgba(9, 63, 117, 0.1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .submit-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: left 0.5s ease;
+  }
+
+  .submit-btn:hover {
+    background: linear-gradient(135deg, var(--secondary-blue) 0%, var(--primary-blue) 50%, var(--light-blue) 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(9, 63, 117, 0.4),
+      0 4px 8px rgba(9, 63, 117, 0.2);
+  }
+
+  .submit-btn:hover::before {
+    left: 100%;
+  }
+
+  .submit-btn:active {
+    transform: translateY(-1px);
+  }
+
+  /* Section dividers */
+  .section-divider {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #ede7f6, transparent);
+    margin: 2.5rem 0;
+    opacity: 0.7;
+  }
+
+  /* Enhanced modal styles */
+  .modal-content {
+    border-radius: 20px;
+    border: none;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15),
+      0 0 0 1px rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+  }
+
+  .modal-header {
+    background: var(--gradient-primary);
+    color: white;
+    border-bottom: none;
+    padding: 2rem 2rem 1.5rem;
+    text-align: center;
+  }
+
+  .modal-title {
+    font-weight: 600;
+    font-size: 1.5rem;
+    margin: 0;
+  }
+
+  .modal-body {
+    padding: 2rem;
+    text-align: center;
+    color: var(--text-light);
+    font-size: 1rem;
+  }
+
+  .modal-footer {
+    border-top: none;
+    padding: 0 2rem 2rem;
+    justify-content: center;
+  }
+
+  .modal .btn-primary {
+    background: var(--gradient-primary);
+    border: none;
+    padding: 12px 32px;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .modal .btn-primary:hover {
+    background: linear-gradient(135deg, var(--secondary-blue), var(--primary-blue));
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+  }
+
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .registration-form {
+      margin: 1rem;
+      padding: 2rem;
+    }
+
+    .form-row {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .form-title {
+      font-size: 1.875rem;
+    }
+
+    .container {
+      padding: 1rem;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .form-title {
+      font-size: 1.5rem;
+    }
+
+    .registration-form {
+      padding: 1.5rem;
+    }
+  }
+</style>
+
+<div class="form-container">
+  <!-- Floating background elements -->
+  <div class="floating-elements">
+    <div class="floating-circle"></div>
+    <div class="floating-circle"></div>
+    <div class="floating-circle"></div>
+  </div>
+
+  <div class="registration-form mx-auto col-md-8 col-lg-6 inter-font">
+    <div class="form-header">
+      <h1 class="form-title">Administrator Registration</h1>
+      <p class="form-subtitle">
+        Create an admin account to manage the platform.
+      </p>
+    </div>
+
+    {% if msg %}
+    <div class="alert alert-danger" role="alert">{{ msg }}</div>
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <!-- Profile Picture -->
+      <div class="form-group">
+        <label class="form-label" for="profilepic">
+          <i class="fas fa-camera me-2"></i>Profile Picture
+          <span class="required-asterisk">*</span>
+        </label>
+        <input
+          type="file"
+          class="form-input"
+          id="profilepic"
+          name="profilepic"
+          accept="image/*"
+          required
+        />
+        <div class="error-message">Profile picture is required.</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="fullName">
+          <i class="fas fa-user me-2"></i>Full Name
+          <span class="required-asterisk">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          id="fullName"
+          name="fullName"
+          autocomplete="name"
+          placeholder="Enter your full name"
+          required
+        />
+        <div class="error-message">Full name is required.</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="username">
+          <i class="fas fa-user-circle me-2"></i>Username
+          <span class="required-asterisk">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          id="username"
+          name="username"
+          autocomplete="username"
+          placeholder="Choose a unique username"
+          required
+        />
+        <div class="error-message">Username is required.</div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="password">
+            <i class="fas fa-lock me-2"></i>Password
+            <span class="required-asterisk">*</span>
+          </label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            name="password"
+            autocomplete="new-password"
+            placeholder="Enter your password"
+            required
+            minlength="8"
+          />
+          <div class="error-message">
+            Password is required and must be at least 8 characters.
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="confirmPassword">
+            <i class="fas fa-lock me-2"></i>Confirm Password
+            <span class="required-asterisk">*</span>
+          </label>
+          <input
+            type="password"
+            class="form-control"
+            id="confirmPassword"
+            name="confirmPassword"
+            autocomplete="new-password"
+            placeholder="Re-enter your password"
+            required
+          />
+          <div class="error-message">Passwords do not match.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="email">
+          <i class="fas fa-envelope me-2"></i>Email Address
+          <span class="required-asterisk">*</span>
+        </label>
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          name="email"
+          autocomplete="email"
+          placeholder="Enter your email address"
+          required
+        />
+        <div class="error-message">A valid email address is required.</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="phone">
+          <i class="fas fa-phone-alt me-2"></i>Contact Number
+          <span class="required-asterisk">*</span>
+        </label>
+        <input
+          type="tel"
+          class="form-control"
+          id="phone"
+          name="phone"
+          autocomplete="tel"
+          placeholder="Enter your contact number (e.g., +1234567890)"
+          required
+          pattern="^\+?\d{10,15}$"
+          title="Please enter a valid phone number (e.g., +1234567890)"
+        />
+        <div class="error-message">A valid contact number is required.</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="gender">
+          <i class="fas fa-venus-mars me-2"></i>Gender
+          <span class="required-asterisk">*</span>
+        </label>
+        <select
+          class="form-control"
+          id="gender"
+          name="gender"
+          required
+        >
+          <option value="">Select Gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+          <option value="prefer_not_to_say">Prefer not to say</option>
+        </select>
+        <div class="error-message">Please select your gender.</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="dob">
+          <i class="fas fa-calendar-alt me-2"></i>Date of Birth
+          <span class="required-asterisk">*</span>
+        </label>
+        <input
+          type="date"
+          class="form-control"
+          id="dob"
+          name="dob"
+          required
+        />
+        <div class="error-message">Date of birth is required.</div>
+      </div>
+
+      <hr class="section-divider" />
+
+      <div class="form-group">
+        <label class="form-label" for="address">
+          <i class="fas fa-map-marker-alt me-2"></i>Address
+          <span class="required-asterisk">*</span>
+        </label>
+        <textarea
+          class="form-control"
+          id="address"
+          name="address"
+          rows="3"
+          placeholder="Enter your complete address"
+          required
+        ></textarea>
+        <div class="error-message">Address is required.</div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="city">
+            <i class="fas fa-city me-2"></i>City
+            <span class="required-asterisk">*</span>
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            id="city"
+            name="city"
+            placeholder="Enter city"
+            required
+          />
+          <div class="error-message">City is required.</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="state">
+            <i class="fas fa-map-marked-alt me-2"></i>State
+            <span class="required-asterisk">*</span>
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            id="state"
+            name="state"
+            placeholder="Enter state"
+            required
+          />
+          <div class="error-message">State is required.</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="country">
+          <i class="fas fa-globe me-2"></i>Country
+          <span class="required-asterisk">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          id="country"
+          name="country"
+          placeholder="Enter country"
+          value="India"
+          required
+        />
+        <div class="error-message">Country is required.</div>
+      </div>
+
+      <hr class="section-divider" />
+
+      <!-- Admin Specific Fields -->
+      <div class="form-group">
+        <label class="form-label" for="employeeId">
+          <i class="fas fa-id-badge me-2"></i>Employee ID
+          <span class="required-asterisk">*</span>
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          id="employeeId"
+          name="employeeId"
+          placeholder="Enter your employee ID"
+          required
+        />
+        <div class="error-message">Employee ID is required.</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="department">
+          <i class="fas fa-building me-2"></i>Department
+          <span class="required-asterisk">*</span>
+        </label>
+        <select
+          class="form-control"
+          id="department"
+          name="department"
+          required
+        >
+          <option value="">Select Department</option>
+          <option value="hr">Human Resources</option>
+          <option value="it">Information Technology</option>
+          <option value="finance">Finance</option>
+          <option value="operations">Operations</option>
+          <option value="management">Management</option>
+        </select>
+        <div class="error-message">Please select your department.</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="accessLevel">
+          <i class="fas fa-shield-alt me-2"></i>Access Level
+          <span class="required-asterisk">*</span>
+        </label>
+        <select
+          class="form-control"
+          id="accessLevel"
+          name="accessLevel"
+          required
+        >
+          <option value="">Select Access Level</option>
+          <option value="super_admin">Super Administrator</option>
+          <option value="admin">Administrator</option>
+          <option value="moderator">Moderator</option>
+        </select>
+        <div class="error-message">Please select access level.</div>
+      </div>
+
+      <div class="checkbox-container">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="termsCheckbox"
+          name="termsCheckbox"
+          required
+        />
+        <label class="form-check-label" for="termsCheckbox">
+          I agree to the <a href="#">Terms & Conditions</a>,
+          <a href="#">Privacy Policy</a>, and <a href="#">Admin Guidelines</a>
+          <span class="required-asterisk">*</span>
+        </label>
+        <div class="error-message">
+          You must agree to the terms and conditions.
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn">Register as Administrator</button>
+    </form>
+  </div>
+</div>
+
+<!-- Success Modal -->
+<div class="modal fade" id="registerSuccessModal" tabindex="-1" aria-labelledby="registerSuccessModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="registerSuccessModalLabel">
+          <i class="fas fa-check-circle me-2"></i>Registration Successful!
+        </h5>
+      </div>
+      <div class="modal-body">
+        <p>Your administrator account has been created successfully. You can now log in to access the admin panel.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="window.location.href='/login/'">
+          Go to Login
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if show_modal %}
+<script>
+  window.addEventListener("DOMContentLoaded", () => {
+    var myModal = new bootstrap.Modal(
+      document.getElementById("registerSuccessModal"),
+      {
+        backdrop: "static",
+        keyboard: false,
+      }
+    );
+    myModal.show();
+  });
+</script>
+{% endif %} 
+{% endblock body %}

@@ -58,6 +58,74 @@ def search_jobs(request):
 def aboutus(request):
     return render(request, "aboutus.html")
 
+from django.shortcuts import render
+from django.contrib import messages
+import datetime
+
+def adminreg(request):
+    if request.method == "POST":
+        profilepic = request.FILES.get("profilepic")
+        fullName = request.POST["fullName"]
+        username = request.POST["username"]
+        password = request.POST["password"]
+        confirmPassword = request.POST["confirmPassword"]
+        email = request.POST["email"]
+        phone = request.POST["phone"]
+        gender = request.POST["gender"]
+        dob = request.POST["dob"]
+        address = request.POST["address"]
+        city = request.POST["city"]
+        state = request.POST["state"]
+        country = request.POST["country"]
+        employeeId = request.POST["employeeId"]
+        department = request.POST["department"]
+        accessLevel = request.POST["accessLevel"]
+        regdate = datetime.datetime.today()
+
+        # Validate password confirmation
+        if password != confirmPassword:
+            messages.error(request, "Passwords do not match!")
+            return render(request, "admin_registration.html", {"msg": "Passwords do not match!"})
+
+        try:
+            # Create Administrator record
+            admin = Administrator(
+                profilepic=profilepic,
+                fullName=fullName,
+                username=username,
+                email=email,
+                phone=phone,
+                gender=gender,
+                dob=dob,
+                address=address,
+                city=city,
+                state=state,
+                country=country,
+                employeeId=employeeId,
+                department=department,
+                accessLevel=accessLevel,
+                regdate=regdate
+            )
+            admin.save()
+
+            # Create Login record
+            log = Login(
+                username=username, 
+                password=password, 
+                usertype="administrator"
+            )
+            log.save()
+
+            messages.success(request, "Administrator registration successful! You can now log in.")
+            return render(request, "admin_registration.html", {"show_modal": True})
+
+        except Exception as e:
+            messages.error(request, f"Registration failed: {str(e)}")
+            return render(request, "admin_registration.html", {"msg": f"Registration failed: {str(e)}"})
+
+    return render(request, "administrator.html")
+
+
 def jobseekerreg(request):
     if request.method == "POST":
         profilepic = request.POST["profilepic"]
