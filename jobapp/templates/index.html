@@ -1077,42 +1077,79 @@
   </div>
 </section>
 
-<section class="ats-section">
-  <div class="container">
-    <div class="text-center mb-4">
-      <h2>Is Your Resume ATS Friendly?</h2>
-      <p>Check It Out here...</p>
-      <div class="upload-container">
-        <a href="{% url 'jobapp:resumeats' %}" class="btn upload-btn">Upload Resume</a>
-      </div>
-    </div>
 
-    <div class="ats-benefits">
-      <h2>Why an ATS-Friendly Resume is Important?</h2>
-      <h3>Only 2% of resumes make it past the first round. Be in the top 2%</h3>
-      <p>
-        Many companies use Applicant Tracking Systems (ATS) to filter resumes.
-        If your resume isn't ATS-optimized, it might never reach a recruiter.
-        Here's why an ATS-friendly resume matters:
-      </p>
-      <ul>
-        <li>
-          <strong>Keyword Matching:</strong> ATS scans for job-related keywords,
-          so including them increases your chances of being noticed.
-        </li>
-        <li>
-          <strong>Simple Formatting:</strong> Complex designs can confuse ATS. A
-          clean, structured resume ensures it's read correctly.
-        </li>
-        <li>
-          <strong>More Interviews:</strong> An ATS-friendly resume boosts your
-          chances of being shortlisted for interviews.
-        </li>
-      </ul>
-      <div class="text-center">
-        <a href="resume-sample.pdf">View Top Resume Samples</a>
+<section style="padding: 4rem 0; background: #f9f9f9;">
+  <div style="max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
+    <div style="text-align: center; margin-bottom: 2rem; animation: fadeIn 1s ease;">
+      <h2 style="font-size: 2.5rem; font-weight: 700; color: #093f75; margin-bottom: 0.5rem;">Is Your Resume ATS Friendly?</h2>
+      <p style="font-size: 1.1rem; color: #555;">Check It Out here...</p>
+      <div style="margin-top: 1.5rem;">
+        
+        {% if user.is_authenticated %}
+          <a href="{% url 'upload_resume' %}">
+            <button class="btn fw-semibold px-4 py-2 rounded-pill" 
+                    style="background: #093f75; color: #fff; padding: 0.8rem 2rem; 
+                           font-size: 1rem; font-weight: 600; border: none; border-radius: 8px; 
+                           cursor: pointer; animation: pulse 1.5s infinite;">
+              Upload Resume
+            </button>
+          </a>
+        {% else %}
+          <button id="uploadBtn" 
+                  class="btn fw-semibold px-4 py-2 rounded-pill" 
+                  style="background: #093f75; color: #fff; padding: 0.8rem 2rem; 
+                         font-size: 1rem; font-weight: 600; border: none; border-radius: 8px; 
+                         cursor: pointer; animation: pulse 1.5s infinite;">
+            Upload Resume
+          </button>
+        {% endif %}
+
       </div>
     </div>
+  </div>
+</section>
+
+<!-- Top Popup -->
+<div id="popupMessage" 
+     style="position: fixed; top: -80px; left: 50%; transform: translateX(-50%);
+            background: #ff4d4d; color: #fff; padding: 1rem 2rem; border-radius: 8px;
+            font-weight: 600; font-size: 1rem; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: top 0.5s ease, opacity 0.5s ease; opacity: 0; z-index: 9999;">
+  Please log in to upload your resume.
+</div>
+    
+ <div style="background: #fff; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-top: 2rem;">
+  <h2 style="text-align: center; font-weight: 700; font-size: 2.2rem; color: #05284a; margin-bottom: 1rem;">
+    Why an ATS-Friendly Resume is Important?
+  </h2>
+  <h3 style="text-align: center; font-size: 1.5rem; color: #333; margin-bottom: 1.5rem;">
+    Only 2% of resumes make it past the first round. Be in the top 2%
+  </h3>
+  <p style="text-align: center; font-size: 1.1rem; color: #05488b; max-width: 800px; margin: 0 auto 2rem;">
+    Many companies use Applicant Tracking Systems (ATS) to filter resumes. If your resume isn't ATS-optimized, 
+    it might never reach a recruiter. Here's why an ATS-friendly resume matters:
+  </p>
+  <ul style="list-style: none; padding: 0; font-size: 1rem; color: #444; max-width: 800px; margin: 0 auto 2rem;">
+    <li style="margin-bottom: 0.8rem;"><strong>Keyword Matching:</strong> ATS scans for job-related keywords, so including them increases your chances of being noticed.</li>
+    <li style="margin-bottom: 0.8rem;"><strong>Simple Formatting:</strong> Complex designs can confuse ATS. A clean, structured resume ensures it's read correctly.</li>
+    <li><strong>More Interviews:</strong> An ATS-friendly resume boosts your chances of being shortlisted for interviews.</li>
+  </ul>
+  <div style="text-align: center;">
+    <a href="resume-sample.pdf" class="btn fw-semibold px-4 py-2 rounded-pill" style="background: linear-gradient(135deg, #093f75, #093f75); color: #fff; padding: 0.8rem 2rem; font-weight: 600; border-radius: 10px; text-decoration: none;">
+      View Top Resume Samples
+    </a>
+  </div>
+</div>
+
+</section>
+
+<section style="margin-top: 3rem;">
+  <div style="max-width: 900px; margin: 0 auto; padding: 2rem; background: #fff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center;">
+    <h3 style="font-size: 2rem; font-weight: 700; color: #05284a; margin-bottom: 1rem;">Our Clients Say !!</h3>
+    <p style="font-size: 1.1rem; color: #444; line-height: 1.6; margin-bottom: 1.5rem;">
+      The experiences of our clients with us are truly commendable. DreamJobs helped them to get their <br>
+      <span style="color: #093f75; font-style: italic; font-weight: 800; font-size: 1.3rem;">Dream job.</span>
+    </p>
   </div>
 </section>
 
@@ -1312,82 +1349,23 @@
       });
     }
   });
-  
-    // Job cards hover effects
-    const jobCards = document.querySelectorAll('.job-card');
-    jobCards.forEach(card => {
-      card.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-5px)';
-        this.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)';
-      });
-      card.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0)';
-        this.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-      });
-    });
 
-    // Testimonial cards hover effects
-    const testimonialCards = document.querySelectorAll('.testimonial-card');
-    testimonialCards.forEach(card => {
-      card.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-5px)';
-      });
-      card.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0)';
-      });
-    });
+// Show popup + redirect if user clicks upload without login
+document.getElementById("uploadBtn")?.addEventListener("click", function() {
+    const popup = document.getElementById("popupMessage");
 
-    // Smooth scrolling for anchor links
-    const links = document.querySelectorAll('a[href^="#"]');
-    links.forEach(link => {
-      link.addEventListener('click', function(e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
-      });
-    });
+    popup.style.top = "20px";
+    popup.style.opacity = "1";
 
-    // Search functionality (if needed)
-    const searchForm = document.querySelector('.search-container');
-    if (searchForm) {
-      searchForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const query = document.querySelector('#search-input').value;
-        if (query.trim()) {
-          // Add your search logic here
-          console.log('Searching for:', query);
-        }
-      });
-    }
+    setTimeout(function() {
+        popup.style.top = "-80px";
+        popup.style.opacity = "0";
+    }, 2500);
 
-    // Add scroll animations
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-        }
-      });
-    }, observerOptions);
-
-    // Observe job cards and testimonial cards for animation
-    document.querySelectorAll('.job-card, .testimonial-card').forEach(card => {
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(30px)';
-      card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-      observer.observe(card);
-    });
-    
+    setTimeout(function() {
+        window.location.href = "/login/";
+    }, 3000);
+});
 </script>
 
 {% endblock body %}
