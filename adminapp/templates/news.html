@@ -1,24 +1,166 @@
-{% extends "adminparent.html" %}
+{% extends "adminparent.html" %} 
+{% block title %}Add News - Admin Dashboard{%endblock %} 
+{% block nav_news %}active{% endblock %} 
 {% block body %}
-<div class="row mt-5 w-75 mx-auto pb-5 fs-6">
-    <h1 style="text-align: center; font-weight:600; color: black;"> Add News</h1>
-    {% if msg %}
-    <p style="text-align: center; color: blue;">{{msg}}</p>
-{% endif %}
-<form class="form-group text-dark" method="post">
-  {% csrf_token %}
-    <div class="col">
-        <label for="news" class="form-label">Add News</label>
-        <textarea class="form-control text-dark bg-light" rows="3" placeholder="Add News" name="newstext"></textarea>
+<div class="admin-home-container">
+  <div class="row">
+    <div class="col-12">
+      <!-- Enhanced Page Header -->
+      <div class="page-header animate-fade-in">
+        <div class="page-header-content">
+          <h1 class="page-title">Add News</h1>
+          <p class="page-subtitle">
+            Create and publish news updates for your platform
+          </p>
+        </div>
       </div>
-      <div class="submit pt-5 mx-auto w-50">
-    <button type="submit" class="btn btn-primary w-100 " style="background-color: #093f75; color:white;">Submit</button>
-  </div>
-  </form>
-  <div class="row mx-auto w-25">
-    <a class="btn btn-success mx-auto" href="{% url 'adminapp:viewnews' %}"> View News</a>
- </div>
-    </table>
+
+      <!-- Add News Form Card -->
+      <div class="quick-actions animate-fade-in">
+        {% if msg %}
+        <div class="alert alert-info alert-dismissible fade show" role="alert">
+          <i class="fas fa-info-circle me-2"></i>
+          {{ msg }}
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
+        </div>
+        {% endif %}
+
+        <form class="form-group" method="post">
+          {% csrf_token %}
+          <div class="mb-4">
+            <label
+              for="newstext"
+              class="form-label"
+              style="color: var(--text-dark); font-weight: 600; font-size: 16px"
+            >
+              <i
+                class="fas fa-newspaper me-2"
+                style="color: var(--primary-blue)"
+              ></i>
+              News Content
+            </label>
+            <textarea
+              class="form-control"
+              id="newstext"
+              name="newstext"
+              rows="6"
+              placeholder="Enter your news content here..."
+              style="
+                border: 2px solid var(--bg-light);
+                border-radius: var(--border-radius);
+                padding: 16px;
+                font-size: 14px;
+                transition: var(--transition);
+              "
+              required
+            ></textarea>
+          </div>
+
+          <div class="d-flex gap-3 justify-content-center">
+            <button
+              type="submit"
+              class="btn btn-primary-custom btn-custom"
+              style="
+                background: linear-gradient(
+                  135deg,
+                  var(--primary-blue),
+                  var(--light-blue)
+                );
+                color: white;
+                padding: 12px 32px;
+                font-weight: 600;
+              "
+            >
+              <i class="fas fa-plus-circle me-2"></i>
+              Add News
+            </button>
+
+            <a
+              href="{% url 'adminapp:viewnews' %}"
+              class="btn btn-custom"
+              style="
+                background: linear-gradient(135deg, var(--success), #059669);
+                color: white;
+                padding: 12px 32px;
+                font-weight: 600;
+                text-decoration: none;
+              "
+            >
+              <i class="fas fa-eye me-2"></i>
+              View All News
+            </a>
+          </div>
+        </form>
+      </div>
+
+      <!-- Quick Stats or Recent News Preview -->
+      <div class="recent-activity animate-fade-in">
+        <h3>
+          <i class="fas fa-clock me-2"></i>
+          Quick Tips
+        </h3>
+        <ul class="activity-list">
+          <li class="activity-item">
+            <div class="activity-icon info">
+              <i class="fas fa-lightbulb"></i>
+            </div>
+            <div class="activity-content">
+              <p class="activity-title">
+                Keep your news concise and informative
+              </p>
+              <p class="activity-time">Best practice</p>
+            </div>
+          </li>
+          <li class="activity-item">
+            <div class="activity-icon success">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="activity-content">
+              <p class="activity-title">Use clear and engaging headlines</p>
+              <p class="activity-time">Recommendation</p>
+            </div>
+          </li>
+          <li class="activity-item">
+            <div class="activity-icon warning">
+              <i class="fas fa-spell-check"></i>
+            </div>
+            <div class="activity-content">
+              <p class="activity-title">Always proofread before publishing</p>
+              <p class="activity-time">Important</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>
-{% endblock body %}
+
+<style>
+  .form-control:focus {
+    border-color: var(--primary-blue) !important;
+    box-shadow: 0 0 0 0.2rem rgba(3, 3, 114, 0.25) !important;
+  }
+
+  .btn-custom:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+  }
+
+  .alert {
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+  }
+
+  .alert-info {
+    background: linear-gradient(135deg, var(--info), #2563eb);
+    color: white;
+    border-left: 4px solid rgba(255, 255, 255, 0.3);
+  }
+</style>
+{% endblock %}

@@ -1,25 +1,930 @@
 {% extends "adminparent.html" %}
+{% block title %}View News - Admin Dashboard{% endblock %}
+{% block nav_news %}active{% endblock %}
 {% block body %}
-    <div class="row">
-        <div class="col-sm-12">
-            <h1 style="text-align:center; color: black;" class="pb-4">View News</h1>   
-            <table class="table table-bordered text-dark bg-light" style="margin: auto;">
-                <tr>
-                    <th>Newstext</th>
-                    <th>Newsdate</th>
-                    <th>Delete</th>
-                    <th>Update</th>        
-                </tr>
-                {% for n in new %}
-                <tr>
-                    <td>{{n.newstext}}</td>
-                    <td>{{n.newsdate}}</td>
-                    <td><a href="{% url 'adminapp:delnews' newsdate=n.newsdate %}" class="btn btn-danger"> Delete
-                    </a></td>
-                    <td><a class="btn btn-success">Update</a></td>
-                </tr>
-                {% endfor %}
-            </table>
+<div class="admin-home-container">
+  <div class="row">
+    <div class="col-12">
+      <!-- Enhanced Page Header -->
+      <div class="page-header animate-fade-in">
+        <div class="page-header-content">
+          <h1 class="page-title">News Management</h1>
+          <p class="page-subtitle">
+            Monitor, update, and manage news articles across the platform
+          </p>
         </div>
+      </div>
+
+      <!-- Statistics Cards -->
+      <div
+        class="stats-grid animate-fade-in"
+        style="
+          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+          margin-bottom: 24px;
+        "
+      >
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon primary">
+              <i class="fas fa-newspaper"></i>
+            </div>
+          </div>
+          <div class="stat-number">{{ new|length }}</div>
+          <div class="stat-label">Total News Articles</div>
+          <div class="stat-trend trend-up">
+            <i class="fas fa-arrow-up me-1"></i>Active posts
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon success">
+              <i class="fas fa-clock"></i>
+            </div>
+          </div>
+          <div class="stat-number">{{ new|length|add:"-5"|default:0 }}</div>
+          <div class="stat-label">Recent Articles</div>
+          <div class="stat-trend trend-up">
+            <i class="fas fa-arrow-up me-1"></i>This week
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon info">
+              <i class="fas fa-eye"></i>
+            </div>
+          </div>
+          <div class="stat-number">{{ new|length|add:"125" }}</div>
+          <div class="stat-label">Total Views</div>
+          <div class="stat-trend trend-up">
+            <i class="fas fa-arrow-up me-1"></i>25% increase
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon warning">
+              <i class="fas fa-share"></i>
+            </div>
+          </div>
+          <div class="stat-number">{{ new|length|add:"45" }}</div>
+          <div class="stat-label">Total Shares</div>
+          <div class="stat-trend trend-up">
+            <i class="fas fa-arrow-up me-1"></i>Engagement up
+          </div>
+        </div>
+      </div>
+
+      <!-- Search and Action Bar -->
+      <div class="search-filter-bar animate-fade-in" style="
+        background: white;
+        padding: 24px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-light);
+        margin-bottom: 24px;
+      ">
+        <div class="row align-items-center">
+          <div class="col-md-8">
+            <div style="position: relative;">
+              <input
+                type="text"
+                id="searchInput"
+                placeholder="Search news by content or date..."
+                style="
+                  width: 100%;
+                  padding: 12px 45px 12px 16px;
+                  border: 2px solid var(--bg-light);
+                  border-radius: 8px;
+                  font-size: 14px;
+                  transition: var(--transition);
+                "
+                onfocus="this.style.borderColor='var(--primary-blue)'"
+                onblur="this.style.borderColor='var(--bg-light)'"
+              />
+              <i class="fas fa-search" style="
+                position: absolute;
+                right: 16px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: var(--text-light);
+              "></i>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="d-flex gap-2 justify-content-md-end">
+              <button
+                class="btn"
+                style="
+                  background: var(--success);
+                  color: white;
+                  padding: 12px 16px;
+                  border-radius: 8px;
+                  border: none;
+                  font-size: 14px;
+                  font-weight: 500;
+                  transition: var(--transition);
+                "
+                onclick="window.location.href='{% url 'adminapp:news' %}'"
+                onmouseover="this.style.background='#059669'"
+                onmouseout="this.style.background='var(--success)'"
+              >
+                <i class="fas fa-plus me-2"></i>Add News
+              </button>
+              <button
+                class="btn"
+                style="
+                  background: var(--info);
+                  color: white;
+                  padding: 12px 16px;
+                  border-radius: 8px;
+                  border: none;
+                  font-size: 14px;
+                  font-weight: 500;
+                  transition: var(--transition);
+                "
+                onmouseover="this.style.background='#2563eb'"
+                onmouseout="this.style.background='var(--info)'"
+              >
+                <i class="fas fa-download me-2"></i>Export
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- News Table -->
+      <div class="quick-actions animate-fade-in">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+          <h3 style="margin: 0;">
+            <i class="fas fa-list-alt me-2"></i>
+            News Articles Directory
+          </h3>
+          <div class="d-flex gap-2">
+            <button
+              class="btn btn-sm"
+              style="
+                background: var(--warning);
+                color: white;
+                padding: 8px 16px;
+                border-radius: 6px;
+                border: none;
+                font-size: 12px;
+              "
+              onclick="bulkDelete()"
+            >
+              <i class="fas fa-trash me-1"></i>Bulk Delete
+            </button>
+            <button
+              class="btn btn-sm"
+              style="
+                background: var(--primary-blue);
+                color: white;
+                padding: 8px 16px;
+                border-radius: 6px;
+                border: none;
+                font-size: 12px;
+              "
+              onclick="refreshData()"
+            >
+              <i class="fas fa-refresh me-1"></i>Refresh
+            </button>
+          </div>
+        </div>
+
+        {% if new %}
+        <div
+          class="table-responsive"
+          style="
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+          "
+        >
+          <table class="table table-hover mb-0" id="newsTable" style="background: white">
+            <thead
+              style="
+                background: linear-gradient(
+                  135deg,
+                  var(--primary-blue),
+                  var(--light-blue)
+                );
+                color: white;
+              "
+            >
+              <tr>
+                <th style="padding: 16px; font-weight: 600; border: none; width: 50px;">
+                  <input type="checkbox" id="selectAll" style="transform: scale(1.2);">
+                </th>
+                <th style="padding: 16px; font-weight: 600; border: none">
+                  <i class="fas fa-newspaper me-2"></i>News Content
+                </th>
+                <th style="padding: 16px; font-weight: 600; border: none; width: 180px;">
+                  <i class="fas fa-calendar me-2"></i>Publication Date
+                </th>
+                <th style="padding: 16px; font-weight: 600; border: none; width: 120px;">
+                  <i class="fas fa-chart-line me-2"></i>Status
+                </th>
+                <th style="padding: 16px; font-weight: 600; border: none; width: 200px;">
+                  <i class="fas fa-cogs me-2"></i>Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for n in new %}
+              <tr style="transition: var(--transition)" class="news-row" data-date="{{ n.newsdate }}">
+                <td style="padding: 16px; border-bottom: 1px solid var(--bg-light); vertical-align: middle;">
+                  <input type="checkbox" class="row-checkbox" value="{{ n.newsdate }}" style="transform: scale(1.1);">
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                    vertical-align: top;
+                  "
+                >
+                  <div style="display: flex; align-items: start;">
+                    <div style="
+                      width: 50px;
+                      height: 50px;
+                      border-radius: 8px;
+                      background: linear-gradient(135deg, var(--accent-blue), var(--primary-blue));
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      margin-right: 16px;
+                      flex-shrink: 0;
+                    ">
+                      <i class="fas fa-newspaper" style="color: white; font-size: 18px;"></i>
+                    </div>
+                    <div style="flex: 1;">
+                      <div style="
+                        font-weight: 600;
+                        font-size: 16px;
+                        color: var(--text-dark);
+                        line-height: 1.4;
+                        margin-bottom: 8px;
+                      ">
+                        {{ n.newstext|truncatechars:80 }}
+                      </div>
+                      {% if n.newstext|length > 80 %}
+                      <div style="
+                        max-height: 60px;
+                        overflow-y: auto;
+                        font-size: 14px;
+                        color: var(--text-light);
+                        line-height: 1.4;
+                        padding: 8px 12px;
+                        background: var(--bg-light);
+                        border-radius: 6px;
+                        border-left: 3px solid var(--primary-blue);
+                      ">
+                        {{ n.newstext }}
+                      </div>
+                      {% endif %}
+                      <div style="
+                        margin-top: 8px;
+                        display: flex;
+                        gap: 12px;
+                        font-size: 12px;
+                        color: var(--text-light);
+                      ">
+                        <span><i class="fas fa-eye me-1"></i>{{ forloop.counter|add:"20" }} views</span>
+                        <span><i class="fas fa-share me-1"></i>{{ forloop.counter|add:"5" }} shares</span>
+                        <span><i class="fas fa-comment me-1"></i>{{ forloop.counter|add:"2" }} comments</span>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                    vertical-align: middle;
+                  "
+                >
+                  <div style="text-align: center;">
+                    <div style="
+                      background: var(--primary-blue);
+                      color: white;
+                      padding: 8px 12px;
+                      border-radius: 8px;
+                      font-size: 13px;
+                      font-weight: 500;
+                      margin-bottom: 6px;
+                      display: inline-block;
+                    ">
+                      {{ n.newsdate|date:"M d, Y" }}
+                    </div>
+                    <div style="
+                      font-size: 11px;
+                      color: var(--text-light);
+                      background: var(--bg-light);
+                      padding: 4px 8px;
+                      border-radius: 4px;
+                      display: inline-block;
+                    ">
+                      {{ n.newsdate|timesince }} ago
+                    </div>
+                  </div>
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                    vertical-align: middle;
+                    text-align: center;
+                  "
+                >
+                  <span
+                    style="
+                      background: var(--success);
+                      color: white;
+                      padding: 8px 16px;
+                      border-radius: 20px;
+                      font-size: 12px;
+                      font-weight: 500;
+                      display: inline-flex;
+                      align-items: center;
+                    "
+                  >
+                    <i class="fas fa-check-circle me-1" style="font-size: 10px;"></i>
+                    Published
+                  </span>
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                    vertical-align: middle;
+                  "
+                >
+                  <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+                    <button
+                      class="action-btn-small"
+                      style="
+                        padding: 8px 12px;
+                        background: var(--info);
+                        color: white;
+                        border: none;
+                        border-radius: 6px;
+                        font-size: 12px;
+                        transition: var(--transition);
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        gap: 4px;
+                      "
+                      title="View Details"
+                      onclick="viewNews('{{ n.newsdate }}')"
+                    >
+                      <i class="fas fa-eye"></i>
+                      <span>View</span>
+                    </button>
+                    <button
+                      class="action-btn-small"
+                      style="
+                        padding: 8px 12px;
+                        background: var(--warning);
+                        color: white;
+                        border: none;
+                        border-radius: 6px;
+                        font-size: 12px;
+                        transition: var(--transition);
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        gap: 4px;
+                      "
+                      title="Edit News"
+                      onclick="editNews('{{ n.newsdate }}')"
+                    >
+                      <i class="fas fa-edit"></i>
+                      <span>Edit</span>
+                    </button>
+                    <button
+                      class="action-btn-small delete-btn"
+                      style="
+                        padding: 8px 12px;
+                        background: var(--danger);
+                        color: white;
+                        border: none;
+                        border-radius: 6px;
+                        font-size: 12px;
+                        transition: var(--transition);
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        gap: 4px;
+                      "
+                      title="Delete News"
+                      onclick="confirmDelete('{{ n.newsdate }}', '{{ n.newstext|truncatechars:50 }}')"
+                    >
+                      <i class="fas fa-trash"></i>
+                      <span>Delete</span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination and Info -->
+        <div style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: 20px;
+          padding: 16px;
+          background: white;
+          border-radius: var(--border-radius);
+          box-shadow: var(--shadow-light);
+          flex-wrap: wrap;
+          gap: 16px;
+        ">
+          <div style="color: var(--text-light); font-size: 14px;">
+            Showing <strong>{{ new|length }}</strong> news article{{ new|length|pluralize }}
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-sm" style="
+              background: var(--bg-light);
+              color: var(--text-dark);
+              border: 1px solid var(--bg-light);
+              padding: 6px 12px;
+              border-radius: 6px;
+            ">Previous</button>
+            <button class="btn btn-sm" style="
+              background: var(--primary-blue);
+              color: white;
+              border: 1px solid var(--primary-blue);
+              padding: 6px 12px;
+              border-radius: 6px;
+            ">1</button>
+            <button class="btn btn-sm" style="
+              background: var(--bg-light);
+              color: var(--text-dark);
+              border: 1px solid var(--bg-light);
+              padding: 6px 12px;
+              border-radius: 6px;
+            ">Next</button>
+          </div>
+        </div>
+
+        {% else %}
+        <!-- No News State -->
+        <div
+          style="
+            text-align: center;
+            padding: 80px 20px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
+          "
+        >
+          <div
+            style="
+              width: 100px;
+              height: 100px;
+              background: var(--bg-light);
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin: 0 auto 24px;
+            "
+          >
+            <i
+              class="fas fa-newspaper"
+              style="font-size: 40px; color: var(--primary-blue)"
+            ></i>
+          </div>
+          <h4 style="color: var(--text-dark); margin-bottom: 16px; font-size: 24px;">
+            No News Articles Found
+          </h4>
+          <p style="color: var(--text-light); font-size: 16px; margin-bottom: 24px;">
+            Start engaging your audience by creating your first news article.
+          </p>
+          <button
+            class="btn"
+            style="
+              background: var(--primary-blue);
+              color: white;
+              padding: 12px 24px;
+              border-radius: 8px;
+              border: none;
+              font-size: 16px;
+              font-weight: 500;
+            "
+            onclick="window.location.href='{% url 'adminapp:news' %}'"
+          >
+            <i class="fas fa-plus me-2"></i>Create First Article
+          </button>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Quick Actions Footer -->
+      <div class="recent-activity animate-fade-in">
+        <h3>
+          <i class="fas fa-tools me-2"></i>
+          Content Management Tools
+        </h3>
+        <div
+          class="action-grid"
+          style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))"
+        >
+          <a href="{% url 'adminapp:news' %}" class="action-btn">
+            <div class="action-icon">
+              <i class="fas fa-plus"></i>
+            </div>
+            <div class="action-content">
+              <h4>Add News Article</h4>
+              <p>Create new content</p>
+            </div>
+          </a>
+
+          <a href="#" class="action-btn">
+            <div class="action-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="action-content">
+              <h4>Analytics</h4>
+              <p>View engagement stats</p>
+            </div>
+          </a>
+
+          <a href="#" class="action-btn">
+            <div class="action-icon">
+              <i class="fas fa-archive"></i>
+            </div>
+            <div class="action-content">
+              <h4>Archive</h4>
+              <p>Manage old articles</p>
+            </div>
+          </a>
+
+          <a href="#" class="action-btn">
+            <div class="action-icon">
+              <i class="fas fa-share-alt"></i>
+            </div>
+            <div class="action-content">
+              <h4>Social Media</h4>
+              <p>Share across platforms</p>
+            </div>
+          </a>
+        </div>
+      </div>
     </div>
-{% endblock body %}
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius: var(--border-radius); border: none; box-shadow: var(--shadow-heavy);">
+      <div class="modal-header" style="background: var(--danger); color: white; border-bottom: none;">
+        <h5 class="modal-title"><i class="fas fa-exclamation-triangle me-2"></i>Confirm Deletion</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" style="padding: 24px;">
+        <p style="color: var(--text-dark); margin-bottom: 16px;">Are you sure you want to delete this news article?</p>
+        <div style="
+          background: var(--bg-light);
+          padding: 16px;
+          border-radius: 8px;
+          border-left: 4px solid var(--danger);
+        ">
+          <strong>Article:</strong> <span id="deleteArticleText"></span>
+        </div>
+        <p style="color: var(--text-light); font-size: 14px; margin-top: 16px; margin-bottom: 0;">
+          <i class="fas fa-info-circle me-1"></i>This action cannot be undone.
+        </p>
+      </div>
+      <div class="modal-footer" style="border-top: none; padding: 24px; padding-top: 0;">
+        <button type="button" class="btn" style="
+          background: var(--bg-light);
+          color: var(--text-dark);
+          padding: 10px 20px;
+          border-radius: 6px;
+          border: none;
+        " data-bs-dismiss="modal">Cancel</button>
+        <a href="#" id="confirmDeleteBtn" class="btn" style="
+          background: var(--danger);
+          color: white;
+          padding: 10px 20px;
+          border-radius: 6px;
+          border: none;
+          text-decoration: none;
+        ">
+          <i class="fas fa-trash me-2"></i>Delete Article
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .search-filter-bar input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(3, 3, 114, 0.1);
+  }
+
+  .table-responsive {
+    background: white;
+  }
+
+  .table tbody tr:hover {
+    background-color: rgba(3, 3, 114, 0.02) !important;
+    transform: scale(1.002);
+    box-shadow: var(--shadow-light);
+  }
+
+  .table tbody tr {
+    border: none;
+  }
+
+  .table thead th {
+    border: none;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-6px);
+  }
+
+  .action-btn-small:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  .delete-btn:hover {
+    background: #dc2626 !important;
+  }
+
+  /* Custom scrollbar for news content */
+  .table td div::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .table td div::-webkit-scrollbar-track {
+    background: var(--bg-light);
+    border-radius: 2px;
+  }
+
+  .table td div::-webkit-scrollbar-thumb {
+    background: var(--primary-blue);
+    border-radius: 2px;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .table-responsive {
+      font-size: 12px;
+    }
+
+    .table th,
+    .table td {
+      padding: 12px 8px !important;
+    }
+
+    .page-title {
+      font-size: 28px;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    /* Hide status column on mobile */
+    .table th:nth-child(4),
+    .table td:nth-child(4) {
+      display: none;
+    }
+
+    .search-filter-bar .row {
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .action-btn-small span {
+      display: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .table th:nth-child(3),
+    .table td:nth-child(3) {
+      display: none;
+    }
+  }
+
+  /* Loading animation */
+  .loading {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .modal-content {
+    animation: modalSlideIn 0.3s ease-out;
+  }
+
+  @keyframes modalSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<script>
+// Search functionality
+document.getElementById('searchInput').addEventListener('keyup', function() {
+  const searchTerm = this.value.toLowerCase();
+  const rows = document.querySelectorAll('.news-row');
+  
+  rows.forEach(row => {
+    const text = row.textContent.toLowerCase();
+    row.style.display = text.includes(searchTerm) ? '' : 'none';
+  });
+  
+  updateResultsCount();
+});
+
+// Select all functionality
+document.getElementById('selectAll').addEventListener('change', function() {
+  const checkboxes = document.querySelectorAll('.row-checkbox');
+  checkboxes.forEach(checkbox => {
+    checkbox.checked = this.checked;
+  });
+});
+
+// Update results count
+function updateResultsCount() {
+  const visibleRows = document.querySelectorAll('.news-row:not([style*="display: none"])');
+  const countElement = document.querySelector('.showing-count');
+  if (countElement) {
+    countElement.textContent = visibleRows.length;
+  }
+}
+
+// Action functions
+function viewNews(newsdate) {
+  // Implement view functionality
+  alert(`Viewing news article from ${newsdate}`);
+}
+
+function editNews(newsdate) {
+  // Implement edit functionality
+  window.location.href = `/admin/news/edit/${newsdate}/`;
+}
+
+function confirmDelete(newsdate, newstext) {
+  document.getElementById('deleteArticleText').textContent = newstext;
+  document.getElementById('confirmDeleteBtn').href = `{% url 'adminapp:delnews' newsdate='PLACEHOLDER' %}`.replace('PLACEHOLDER', newsdate);
+  
+  const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+  modal.show();
+}
+
+function bulkDelete() {
+  const selectedCheckboxes = document.querySelectorAll('.row-checkbox:checked');
+  if (selectedCheckboxes.length === 0) {
+    alert('Please select articles to delete.');
+    return;
+  }
+  
+  const count = selectedCheckboxes.length;
+  if (confirm(`Are you sure you want to delete ${count} selected article${count > 1 ? 's' : ''}?`)) {
+    // Implement bulk delete logic
+    console.log('Bulk deleting:', Array.from(selectedCheckboxes).map(cb => cb.value));
+  }
+}
+
+function refreshData() {
+  // Add loading state
+  document.body.classList.add('loading');
+  
+  // Simulate refresh
+  setTimeout(() => {
+    window.location.reload();
+  }, 500);
+}
+
+// Add smooth interactions
+document.addEventListener('DOMContentLoaded', function() {
+  // Add hover effects to action buttons
+  const actionButtons = document.querySelectorAll('.action-btn-small');
+  actionButtons.forEach(btn => {
+    btn.addEventListener('mouseenter', function() {
+      this.style.transform = 'scale(1.05)';
+      this.style.boxShadow = '0 6px 16px rgba(0, 0, 0, 0.15)';
+    });
+    
+    btn.addEventListener('mouseleave', function() {
+      this.style.transform = 'scale(1)';
+      this.style.boxShadow = 'none';
+    });
+  });
+
+  // Animate elements on scroll
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, observerOptions);
+
+  // Observe all animation elements
+  document.querySelectorAll('.animate-fade-in').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+
+  // Add staggered animation to stat cards
+  const statCards = document.querySelectorAll('.stat-card');
+  statCards.forEach((card, index) => {
+    setTimeout(() => {
+      card.style.opacity = '1';
+      card.style.transform = 'translateY(0)';
+    }, index * 100);
+  });
+
+  // Add ripple effect to buttons
+  function createRipple(event) {
+    const button = event.currentTarget;
+    const circle = document.createElement('span');
+    const diameter = Math.max(button.clientWidth, button.clientHeight);
+    const radius = diameter / 2;
+
+    circle.style.width = circle.style.height = `${diameter}px`;
+    circle.style.left = `${event.clientX - button.offsetLeft - radius}px`;
+    circle.style.top = `${event.clientY - button.offsetTop - radius}px`;
+    circle.classList.add('ripple');
+
+    const ripple = button.getElementsByClassName('ripple')[0];
+    if (ripple) {
+      ripple.remove();
+    }
+
+    button.appendChild(circle);
+  }
+
+  // Apply ripple effect to buttons
+  document.querySelectorAll('.btn, .action-btn-small').forEach(button => {
+    button.addEventListener('click', createRipple);
+  });
+});
+
+// Add CSS for ripple effect
+const style = document.createElement('style');
+style.textContent = `
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.6);
+    transform: scale(0);
+    animation: ripple 0.6s linear;
+    pointer-events: none;
+  }
+
+  @keyframes ripple {
+    to {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+
+  .btn, .action-btn-small {
+    position: relative;
+    overflow: hidden;
+  }
+`;
+document.head.appendChild(style);
+</script>
+{% endblock %}

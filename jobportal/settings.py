@@ -16,7 +16,6 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -26,29 +25,33 @@ SECRET_KEY = 'django-insecure-k5f#34a1shm_1r#6)@h_eao6d!=)m*59o0)c%-zqrkeli7a0j)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# Updated ALLOWED_HOSTS for both development and production
 ALLOWED_HOSTS = [
-    'jobportal-2-zc7l.onrender.com','dreamjobsltd.onrender.com', 'dreamjobs-9pmg.onrender.com', 'localhost', '127.0.0.1'
+    'jobportal-2-zc7l.onrender.com',
+    'dreamjobsltd.onrender.com', 
+    'dreamjobs-9pmg.onrender.com',
+    'localhost', 
+    '127.0.0.1'
 ]
 
-
-
 # Application definition
-
 INSTALLED_APPS = [
-    'jobapp',
-    'adminapp',
-    'jsapp',
-    'employer',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    # Your custom apps
+    'jobapp',
+    'adminapp',
+    'jsapp',
+    'employer',
 ]
 
 MIDDLEWARE = [
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # For serving static files in production
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -56,6 +59,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
+    # Custom middleware for user type checking (optional - uncomment to enable)
+    # 'jobapp.views.check_user_type_middleware',
 ]
 
 ROOT_URLCONF = 'jobportal.urls'
@@ -63,7 +69,13 @@ ROOT_URLCONF = 'jobportal.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [
+            BASE_DIR / 'templates',  # Global templates directory
+            BASE_DIR / 'jobapp' / 'templates',
+            BASE_DIR / 'jsapp' / 'templates', 
+            BASE_DIR / 'employer' / 'templates',
+            BASE_DIR / 'adminapp' / 'templates',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -71,6 +83,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                
+                # Custom context processor for user type (create this if needed)
+                # 'jobapp.context_processors.user_type_context',
             ],
         },
     },
@@ -78,10 +93,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'jobportal.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -89,10 +102,8 @@ DATABASES = {
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -108,43 +119,212 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
-
-# For static files (like CSS, JS, logo images)
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # For production
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # For development
 
-# For uploaded media files (e.g., profile pics)
+# Static files directories for development
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  # Global static files
+    BASE_DIR / 'jobapp' / 'static',
+    BASE_DIR / 'jsapp' / 'static',
+    BASE_DIR / 'employer' / 'static',
+    BASE_DIR / 'adminapp' / 'static',
+]
+
+# For uploaded media files (e.g., profile pics, documents)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-# Email settings (example for Gmail)
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+# Session configuration
+SESSION_COOKIE_AGE = 86400  # 24 hours
+SESSION_SAVE_EVERY_REQUEST = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+# Login/Logout URLs
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/login/'
+
+# Message tags for Bootstrap alerts
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+    messages.DEBUG: 'info',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'danger',
+}
+
+# File upload settings
+FILE_UPLOAD_MAX_MEMORY_SIZE = 10485760  # 10MB
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760  # 10MB
+
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # For development
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # Uncomment for production
+
+# Gmail SMTP settings (for production)
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'your_email@gmail.com'      # Replace with your email
 EMAIL_HOST_PASSWORD = 'your_app_password'     # Use App Password, not your main password
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+# Logging configuration
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'debug.log',
+            'formatter': 'verbose',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file', 'console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'jobapp': {
+            'handlers': ['file', 'console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'jsapp': {
+            'handlers': ['file', 'console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'employer': {
+            'handlers': ['file', 'console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'adminapp': {
+            'handlers': ['file', 'console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
+# Security settings
+# These will be applied based on DEBUG setting
+if not DEBUG:
+    # Production security settings
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    
+    # Use SMTP backend for production emails
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    
+    # Additional production settings
+    SECURE_REFERRER_POLICY = 'same-origin'
+    SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'
+
+# Cache configuration (optional - uncomment if using cache)
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+#         'LOCATION': 'unique-snowflake',
+#     }
+# }
+
+# Custom user authentication backends (if needed)
+# AUTHENTICATION_BACKENDS = [
+#     'django.contrib.auth.backends.ModelBackend',
+#     'jobapp.backends.CustomAuthBackend',  # Custom backend if you create one
+# ]
+
+# Internationalization options
+# LOCALE_PATHS = [
+#     BASE_DIR / 'locale',
+# ]
+
+# Time zone choices for users (if implementing timezone selection)
+# USE_TZ = True
+# TIME_ZONE = 'UTC'  # Default timezone
+
+# Additional app-specific settings
+JOB_SEARCH_RESULTS_PER_PAGE = 10
+MAX_UPLOAD_SIZE = 5242880  # 5MB for file uploads
+ALLOWED_IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif']
+ALLOWED_DOCUMENT_EXTENSIONS = ['.pdf', '.doc', '.docx']
+
+# Pagination settings
+PAGINATE_BY = 20
+
+# Custom settings for the job portal
+COMPANY_NAME = "Dream Jobs Ltd"
+SUPPORT_EMAIL = "support@dreamjobs.com"
+ADMIN_EMAIL = "admin@dreamjobs.com"
+
+# Social media links (for templates)
+SOCIAL_MEDIA = {
+    'facebook': 'https://facebook.com/dreamjobs',
+    'twitter': 'https://twitter.com/dreamjobs',
+    'linkedin': 'https://linkedin.com/company/dreamjobs',
+    'instagram': 'https://instagram.com/dreamjobs',
+}
+
+# Job categories (can be moved to database later)
+JOB_CATEGORIES = [
+    'Information Technology',
+    'Healthcare',
+    'Finance',
+    'Education',
+    'Sales & Marketing',
+    'Engineering',
+    'Human Resources',
+    'Customer Service',
+    'Manufacturing',
+    'Other'
+]
+
+# Employment types
+EMPLOYMENT_TYPES = [
+    ('full-time', 'Full Time'),
+    ('part-time', 'Part Time'),
+    ('contract', 'Contract'),
+    ('internship', 'Internship'),
+    ('remote', 'Remote'),
+    ('freelance', 'Freelance'),
+]

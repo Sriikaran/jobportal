@@ -1,223 +1,1085 @@
 <!DOCTYPE html>
 <html lang="en">
-    {% load static %}
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Portal</title>
-    <link rel="stylesheet" href="{% static 'assets/vendors/mdi/css/materialdesignicons.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/vendors/css/vendor.bundle.base.css' %}">
-    
-    <link rel="stylesheet" href="{% static 'assets/vendors/jvectormap/jquery-jvectormap.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/vendors/flag-icon-css/css/flag-icon.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/vendors/owl-carousel-2/owl.carousel.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/vendors/owl-carousel-2/owl.theme.default.min.css' %}">
-    
-    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
-    
-    <link rel="shortcut icon" href="{% static 'assets/images/favicon.png' %}" />
-</head>
-<body>
-    <div class="container-scroller" style="background-color:  rgb(3, 3, 114);">
-      <nav class="sidebar sidebar-offcanvas" id="sidebar" style="background-color:  rgb(3, 3, 114);">
-          <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top" style="background-color:  white; color:rgb(3, 3, 114);">
-            <span style="color: rgb(8, 8, 151); font-size: 30px; font-weight: 600;">DreamJobs</span>
-          </div>
-          <ul class="nav">
-            <li class="nav-item profile">
-              <div class="profile-desc">
-                <div class="profile-pic">
-                  <div class="count-indicator">
-                    <img class="img-xs rounded-circle " src="{% static 'assets/images/faces/face15.jpg' %}" alt="">
-                    <span class="count bg-success"></span>
-                  </div>
-                  <div class="profile-name">
-                    <h5 class="mb-0 font-weight-normal">Admin</h5>                    
-                  </div>
-                </div>
-                <a href="#" id="profile-dropdown" data-bs-toggle="dropdown"><i class="mdi mdi-dots-vertical text-light"></i></a>
-                <div class="dropdown-menu dropdown-menu-right sidebar-dropdown preview-list" aria-labelledby="profile-dropdown">
-                  <a href="#" class="dropdown-item preview-item">
-                    <div class="preview-thumbnail">
-                      <div class="preview-icon bg-dark rounded-circle">
-                        <i class="mdi mdi-settings text-primary"></i>
-                      </div>
-                    </div>
-                    <div class="preview-item-content">
-                      <p class="preview-subject ellipsis mb-1 text-small">Profile Management</p>
-                    </div>
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a href="#" class="dropdown-item preview-item">
-                    <div class="preview-thumbnail">
-                      <div class="preview-icon bg-dark rounded-circle">
-                        <i class="mdi mdi-onepassword  text-info"></i>
-                      </div>
-                    </div>
-                    <div class="preview-item-content">
-                      <p class="preview-subject ellipsis mb-1 text-small">Change Password</p>
-                    </div>
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a href="{% url 'adminapp:logout' %}" class="dropdown-item preview-item">
-                    <div class="preview-thumbnail">
-                      <div class="preview-icon bg-dark rounded-circle">
-                        <i class="mdi mdi-calendar-today text-success"></i>
-                      </div>
-                    </div>
-                    <div class="preview-item-content">
-                      <p class="preview-subject ellipsis mb-1 text-small">Logout</p>
-                    </div>
-                  </a>
-                </div>
-              </div>
-            </li>            
-            <li class="nav-item menu-items">
-              <a class="nav-link" href="{%url 'adminapp:adminhome' %}">
-                <span class="menu-icon bg-light">
-                  <i class="mdi mdi-home"></i>
-                </span>
-                <span class="menu-title text-light">Home</span>
-              </a>
-            </li>
-            <li class="nav-item menu-items">
-              <a class="nav-link" href="{%url 'adminapp:news' %}">
-                <span class="menu-icon bg-light">
-                  <i class="mdi mdi-speedometer"></i>
-                </span>
-                <span class="menu-title text-light">Add News</span>
-              </a>
-            </li>
-           <li class="nav-item menu-items">
-              <a class="nav-link" href="{% url 'adminapp:viewenquiries' %}">
-                <span class="menu-icon bg-light">
-                  <i class="mdi mdi-playlist-play"></i>
-                </span>
-                <span class="menu-title text-light">View Enquiries</span>
-              </a>
-            </li>    
-            <li class="nav-item menu-items">
-              <a class="nav-link" href="{% url 'adminapp:viewemployers' %}">
-                <span class="menu-icon bg-light">
-                  <i class="mdi mdi-playlist-play"></i>
-                </span>
-                <span class="menu-title text-light">View Employers</span>
-              </a>
-            </li>            
-            <li class="nav-item menu-items">
-              <a class="nav-link" href="{% url 'adminapp:viewjobseekers' %}">
-                <span class="menu-icon bg-light">
-                  <i class="mdi mdi-playlist-play"></i>
-                </span>
-                <span class="menu-title text-light">View Jobseekers</span>
-              </a>
-            </li>    
-            <li class="nav-item menu-items">
-              <a class="nav-link" href="{% url 'adminapp:viewcomplaints' %}">
-                <span class="menu-icon bg-light">
-                  <i class="mdi mdi-playlist-play"></i>
-                </span>
-                <span class="menu-title text-light">View Complaints</span>
-              </a>
-            </li>       
-            <li class="nav-item menu-items">
-              <a class="nav-link" href="{% url 'adminapp:viewfeedback' %}">
-                <span class="menu-icon bg-light">
-                  <i class="mdi mdi-playlist-play "></i>
-                </span>
-                <span class="menu-title text-light">View Feedbacks</span>
-              </a>
-            </li>       
-          </ul>
-        </nav>
-        
-        <div class="container-fluid page-body-wrapper">
-        
-          <nav class="navbar p-0 fixed-top d-flex flex-row" style="background-color: white;">
-            <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
-              <a class="navbar-brand brand-logo-mini" href="#"><img src="{% static 'assets/images/logo-mini.svg' %}" alt="logo" /></a>
-            </div>
-            <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
-              <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
-                <span class="mdi mdi-menu"></span>
-              </button>
-              <ul class="navbar-nav navbar-nav-right">
-                <li class="nav-item dropdown">
-                  <a class="nav-link" id="profileDropdown" href="#" data-bs-toggle="dropdown">
-                    <div class="navbar-profile">
-                      <img class="img-xs rounded-circle" src="{% static 'assets/images/faces/face15.jpg' %}" alt="">
-                      <p class="mb-0 d-none d-sm-block navbar-profile-name">Admin</p>
-                      <i class="mdi mdi-menu-down d-none d-sm-block"></i>
-                    </div>
-                  </a>
-                  <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="profileDropdown">
-                    <h6 class="p-3 mb-0">Profile</h6>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item preview-item">
-                      <div class="preview-thumbnail">
-                        <div class="preview-icon bg-dark rounded-circle">
-                          <i class="mdi mdi-settings text-success"></i>
-                        </div>
-                      </div>
-                      <div class="preview-item-content">
-                        <p class="preview-subject mb-1">Settings</p>
-                      </div>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="{% url 'adminapp:logout' %}" class="dropdown-item preview-item">
-                      <div class="preview-thumbnail">
-                        <div class="preview-icon bg-dark rounded-circle">
-                          <i class="mdi mdi-logout text-danger"></i>
-                        </div>
-                      </div>
-                      <div class="preview-item-content">
-                        <p class="preview-subject mb-1">Log out</p>
-                      </div>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <p class="p-3 mb-0 text-center">Advanced settings</p>
-                  </div>
-                </li>
-              </ul>
-              <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
-                <span class="mdi mdi-format-line-spacing"></span>
-              </button>
-            </div>
-          </nav>
-          
-          <div class="main-panel" style="background-color: white;">
-            <div class="content-wrapper" style="background-color: white;">
-              {% block body %}              
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Admin Portal - DreamJobs{% endblock %}</title>
 
-              {% endblock body %}
-            </div>
-          
-            <footer class="footer" style="background-color: white;">
-              <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright ©DreamJobs</span>              
-              </div>
-            </footer>
-          
-          </div>
-          
+    <!-- External CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/7.2.96/css/materialdesignicons.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+
+    <style>
+      :root {
+        --primary-blue: #030372;
+        --secondary-blue: #0c3056;
+        --accent-blue: #56a8fa;
+        --light-blue: #1c5aa6;
+        --text-dark: #2c3e50;
+        --text-light: #6c757d;
+        --bg-light: #f8fafc;
+        --white: #ffffff;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --info: #3b82f6;
+        --shadow-light: 0 2px 8px rgba(3, 3, 114, 0.08);
+        --shadow-medium: 0 4px 16px rgba(3, 3, 114, 0.12);
+        --shadow-heavy: 0 8px 32px rgba(3, 3, 114, 0.16);
+        --border-radius: 12px;
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--bg-light);
+        color: var(--text-dark);
+        line-height: 1.6;
+      }
+
+      /* Container Styles */
+      .container-scroller {
+        background: linear-gradient(
+          135deg,
+          var(--primary-blue) 0%,
+          var(--secondary-blue) 100%
+        );
+        min-height: 100vh;
+        position: relative;
+      }
+
+      /* Sidebar Styles */
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 260px;
+        background: var(--primary-blue);
+        z-index: 1000;
+        transition: var(--transition);
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+      }
+
+      .sidebar::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      .sidebar::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .sidebar::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 2px;
+      }
+
+      .sidebar-brand-wrapper {
+        padding: 20px;
+        text-align: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        position: sticky;
+        top: 0;
+        z-index: 1001;
+      }
+
+      .brand-logo {
+        max-height: 55px;
+        width: auto;
+        object-fit: contain;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        border-radius: 10px;
+      }
+
+      /* Navigation Styles */
+      .nav {
+        padding: 20px 0;
+      }
+
+      .nav-item {
+        margin: 0;
+      }
+
+      .profile {
+        padding: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 20px;
+      }
+
+      .profile-desc {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .profile-pic {
+        display: flex;
+        align-items: center;
+      }
+
+      .profile-pic img {
+        width: 40px;
+        height: 40px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        transition: var(--transition);
+      }
+
+      .profile-pic:hover img {
+        border-color: var(--white);
+      }
+
+      .profile-name {
+        margin-left: 12px;
+      }
+
+      .profile-name h5 {
+        color: var(--white);
+        font-weight: 500;
+        margin: 0;
+      }
+
+      .nav-link {
+        display: flex;
+        align-items: center;
+        padding: 12px 20px;
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        transition: var(--transition);
+        border-left: 3px solid transparent;
+        position: relative;
+        margin: 2px 0;
+      }
+
+      .nav-link:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--white);
+        border-left-color: var(--white);
+        transform: translateX(5px);
+        text-decoration: none;
+      }
+
+      .nav-link.active {
+        background: rgba(255, 255, 255, 0.15);
+        color: var(--white);
+        border-left-color: var(--white);
+      }
+
+      .menu-icon {
+        width: 36px;
+        height: 36px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: var(--border-radius);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        transition: var(--transition);
+      }
+
+      .nav-link:hover .menu-icon {
+        background: rgba(255, 255, 255, 0.2);
+        transform: scale(1.1);
+      }
+
+      .menu-icon i {
+        font-size: 18px;
+        color: var(--white);
+      }
+
+      .menu-title {
+        font-weight: 500;
+        font-size: 14px;
+      }
+
+      /* Top Navigation */
+      .navbar {
+        position: fixed;
+        top: 0;
+        left: 260px;
+        right: 0;
+        height: 70px;
+        background: white;
+        border-bottom: 1px solid #e9ecef;
+        z-index: 999;
+        box-shadow: var(--shadow-light);
+      }
+
+      .navbar-menu-wrapper {
+        padding: 0 30px;
+        height: 100%;
+      }
+
+      .navbar-toggler {
+        background: none;
+        border: none;
+        color: var(--primary-blue);
+        font-size: 20px;
+        padding: 0;
+      }
+
+      .navbar-profile {
+        display: flex;
+        align-items: center;
+      }
+
+      .navbar-profile img {
+        width: 36px;
+        height: 36px;
+        margin-right: 10px;
+      }
+
+      .navbar-profile-name {
+        font-weight: 500;
+        color: var(--text-dark);
+      }
+
+      /* Main Content Area */
+      .main-panel {
+        margin-left: 260px;
+        min-height: 100vh;
+        background: var(--bg-light);
+      }
+
+      .content-wrapper {
+        padding: 90px 30px 30px;
+        min-height: calc(100vh - 60px);
+      }
+
+      /* Dashboard Specific Styles */
+      .admin-home-container {
+        background: transparent;
+        min-height: calc(100vh - 200px);
+        padding: 0;
+        margin: 0;
+      }
+
+      .page-header {
+        background: linear-gradient(
+          135deg,
+          var(--primary-blue) 0%,
+          var(--light-blue) 50%,
+          var(--accent-blue) 100%
+        );
+        color: var(--white);
+        padding: 40px 0;
+        border-radius: var(--border-radius);
+        margin-bottom: 32px;
+        box-shadow: var(--shadow-heavy);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .page-header::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="white" opacity="0.1"><polygon points="0,0 1000,0 1000,100 0,80"/></svg>');
+        background-size: cover;
+      }
+
+      .page-header-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+      }
+
+      .page-title {
+        font-size: 48px;
+        font-weight: 700;
+        margin: 0;
+        letter-spacing: -1px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .page-subtitle {
+        font-size: 18px;
+        opacity: 0.9;
+        margin-top: 8px;
+        font-weight: 400;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+        margin-bottom: 32px;
+      }
+
+      .stat-card {
+        background: var(--white);
+        padding: 32px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-light);
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+        border-left: 4px solid var(--primary-blue);
+      }
+
+      .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-heavy);
+      }
+
+      .stat-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100px;
+        height: 100px;
+        background: linear-gradient(135deg, var(--accent-blue), transparent);
+        border-radius: 50%;
+        opacity: 0.1;
+        transform: translate(30px, -30px);
+      }
+
+      .stat-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+
+      .stat-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        color: var(--white);
+      }
+
+      .stat-icon.primary {
+        background: linear-gradient(
+          135deg,
+          var(--primary-blue),
+          var(--light-blue)
+        );
+      }
+      .stat-icon.success {
+        background: linear-gradient(135deg, var(--success), #059669);
+      }
+      .stat-icon.warning {
+        background: linear-gradient(135deg, var(--warning), #d97706);
+      }
+      .stat-icon.danger {
+        background: linear-gradient(135deg, var(--danger), #dc2626);
+      }
+      .stat-icon.info {
+        background: linear-gradient(135deg, var(--info), #2563eb);
+      }
+
+      .stat-number {
+        font-size: 36px;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 8px;
+        line-height: 1;
+      }
+
+      .stat-label {
+        color: var(--text-light);
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      .stat-trend {
+        font-size: 14px;
+        margin-top: 8px;
+      }
+
+      .trend-up {
+        color: var(--success);
+      }
+
+      .trend-down {
+        color: var(--danger);
+      }
+
+      .quick-actions {
+        background: var(--white);
+        padding: 32px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-light);
+        margin-bottom: 32px;
+      }
+
+      .quick-actions h3 {
+        color: var(--text-dark);
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+      }
+
+      .quick-actions h3::before {
+        content: "";
+        width: 4px;
+        height: 24px;
+        background: linear-gradient(
+          135deg,
+          var(--primary-blue),
+          var(--accent-blue)
+        );
+        border-radius: 2px;
+        margin-right: 12px;
+      }
+
+      .action-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 16px;
+      }
+
+      .action-btn {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        background: var(--bg-light);
+        border: none;
+        border-radius: var(--border-radius);
+        text-decoration: none;
+        color: var(--text-dark);
+        transition: var(--transition);
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .action-btn:hover {
+        background: var(--white);
+        box-shadow: var(--shadow-medium);
+        transform: translateY(-2px);
+        text-decoration: none;
+        color: var(--primary-blue);
+      }
+
+      .action-btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.8),
+          transparent
+        );
+        transition: left 0.5s ease;
+      }
+
+      .action-btn:hover::before {
+        left: 100%;
+      }
+
+      .action-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 10px;
+        background: linear-gradient(
+          135deg,
+          var(--accent-blue),
+          var(--primary-blue)
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 16px;
+        font-size: 20px;
+        color: var(--white);
+      }
+
+      .action-content h4 {
+        margin: 0 0 4px 0;
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      .action-content p {
+        margin: 0;
+        font-size: 14px;
+        color: var(--text-light);
+      }
+
+      .recent-activity {
+        background: var(--white);
+        padding: 32px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-light);
+      }
+
+      .recent-activity h3 {
+        color: var(--text-dark);
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+      }
+
+      .recent-activity h3::before {
+        content: "";
+        width: 4px;
+        height: 24px;
+        background: linear-gradient(135deg, var(--success), var(--info));
+        border-radius: 2px;
+        margin-right: 12px;
+      }
+
+      .activity-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .activity-item {
+        display: flex;
+        align-items: center;
+        padding: 16px 0;
+        border-bottom: 1px solid var(--bg-light);
+      }
+
+      .activity-item:last-child {
+        border-bottom: none;
+      }
+
+      .activity-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 16px;
+        font-size: 16px;
+        color: var(--white);
+      }
+
+      .activity-content {
+        flex: 1;
+      }
+
+      .activity-title {
+        font-weight: 500;
+        color: var(--text-dark);
+        margin: 0 0 4px 0;
+      }
+
+      .activity-time {
+        font-size: 14px;
+        color: var(--text-light);
+      }
+
+      /* Dropdown Styles */
+      .dropdown-menu {
+        border: none;
+        box-shadow: var(--shadow-medium);
+        border-radius: var(--border-radius);
+        overflow: hidden;
+      }
+
+      .dropdown-item {
+        padding: 12px 20px;
+        transition: var(--transition);
+      }
+
+      .dropdown-item:hover {
+        background: var(--bg-light);
+      }
+
+      .preview-item {
+        display: flex;
+        align-items: center;
+      }
+
+      .preview-thumbnail {
+        margin-right: 15px;
+      }
+
+      .preview-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .preview-subject {
+        font-weight: 500;
+        margin: 0;
+      }
+
+      /* Footer */
+      .footer {
+        padding: 20px 30px;
+        background: white;
+        border-top: 1px solid #e9ecef;
+        color: var(--text-light);
+      }
+
+      /* Responsive Design */
+      @media (max-width: 991px) {
+        .sidebar {
+          transform: translateX(-100%);
+        }
+
+        .sidebar.show {
+          transform: translateX(0);
+        }
+
+        .main-panel {
+          margin-left: 0;
+        }
+
+        .navbar {
+          left: 0;
+        }
+
+        .footer {
+          margin-left: 0;
+        }
+
+        .content-wrapper {
+          padding: 90px 15px 30px;
+        }
+
+        .page-title {
+          font-size: 32px;
+        }
+
+        .page-subtitle {
+          font-size: 16px;
+        }
+
+        .stats-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .action-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .stat-card,
+        .quick-actions,
+        .recent-activity {
+          padding: 24px;
+        }
+      }
+
+      /* Animation Utilities */
+      .fade-in {
+        animation: fadeIn 0.5s ease-in;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .animate-fade-in {
+        animation: fadeInUp 0.6s ease-out;
+      }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+  </head>
+
+  <body>
+    <div class="container-scroller">
+      <!-- Sidebar -->
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <div
+          class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center"
+        >
+          <img
+            src="{% load static %}{% static 'images/logo.png' %}"
+            alt="DreamJobs Logo"
+            class="brand-logo"
+          />
         </div>
-        
+
+        <ul class="nav">
+          <!-- Profile Section -->
+          <li class="nav-item profile">
+            <div class="profile-desc">
+              <div class="profile-pic">
+                <div class="count-indicator">
+                  <img
+                    class="img-xs rounded-circle"
+                    src="https://via.placeholder.com/40x40/4169e1/ffffff?text=A"
+                    alt="Admin"
+                  />
+                </div>
+                <div class="profile-name">
+                  <h5 class="mb-0 font-weight-normal">Admin</h5>
+                </div>
+              </div>
+              <div class="dropdown">
+                <a
+                  href="#"
+                  id="profile-dropdown"
+                  data-bs-toggle="dropdown"
+                  class="text-light"
+                >
+                  <i class="mdi mdi-dots-vertical"></i>
+                </a>
+                <div
+                  class="dropdown-menu dropdown-menu-end"
+                  aria-labelledby="profile-dropdown"
+                >
+                  <a href="#" class="dropdown-item preview-item">
+                    <div class="preview-thumbnail">
+                      <div class="preview-icon bg-primary rounded-circle">
+                        <i class="mdi mdi-settings text-white"></i>
+                      </div>
+                    </div>
+                    <div class="preview-item-content">
+                      <p class="preview-subject mb-1">Profile Management</p>
+                    </div>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a href="#" class="dropdown-item preview-item">
+                    <div class="preview-thumbnail">
+                      <div class="preview-icon bg-info rounded-circle">
+                        <i class="mdi mdi-onepassword text-white"></i>
+                      </div>
+                    </div>
+                    <div class="preview-item-content">
+                      <p class="preview-subject mb-1">Change Password</p>
+                    </div>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a href="#" class="dropdown-item preview-item">
+                    <div class="preview-thumbnail">
+                      <div class="preview-icon bg-danger rounded-circle">
+                        <i class="mdi mdi-logout text-white"></i>
+                      </div>
+                    </div>
+                    <div class="preview-item-content">
+                      <p class="preview-subject mb-1">Logout</p>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </li>
+
+          <!-- Navigation Items -->
+          <li class="nav-item menu-items">
+            <a
+              class="nav-link {% block nav_dashboard %}{% endblock %}"
+              href="{% url 'adminapp:adminhome' %}"
+            >
+              <div class="menu-icon">
+                <i class="mdi mdi-home"></i>
+              </div>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+
+          <li class="nav-item menu-items">
+            <a
+              class="nav-link {% block nav_news %}{% endblock %}"
+              href="{% url 'adminapp:news' %}"
+            >
+              <div class="menu-icon">
+                <i class="mdi mdi-newspaper"></i>
+              </div>
+              <span class="menu-title">Add News</span>
+            </a>
+          </li>
+
+          <li class="nav-item menu-items">
+            <a
+              class="nav-link {% block nav_enquiries %}{% endblock %}"
+              href="{% url 'adminapp:viewenquiries' %}"
+            >
+              <div class="menu-icon">
+                <i class="mdi mdi-help-circle-outline"></i>
+              </div>
+              <span class="menu-title">View Enquiries</span>
+            </a>
+          </li>
+
+          <li class="nav-item menu-items">
+            <a
+              class="nav-link {% block nav_employers %}{% endblock %}"
+              href="{% url 'adminapp:viewemployers' %}"
+            >
+              <div class="menu-icon">
+                <i class="mdi mdi-account-tie"></i>
+              </div>
+              <span class="menu-title">View Employers</span>
+            </a>
+          </li>
+
+          <li class="nav-item menu-items">
+            <a
+              class="nav-link {% block nav_jobseekers %}{% endblock %}"
+              href="{% url 'adminapp:viewjobseekers' %}"
+            >
+              <div class="menu-icon">
+                <i class="mdi mdi-account-group"></i>
+              </div>
+              <span class="menu-title">View Jobseekers</span>
+            </a>
+          </li>
+
+          <li class="nav-item menu-items">
+            <a
+              class="nav-link {% block nav_complaints %}{% endblock %}"
+              href="{% url 'adminapp:viewcomplaints' %}"
+            >
+              <div class="menu-icon">
+                <i class="mdi mdi-alert-circle-outline"></i>
+              </div>
+              <span class="menu-title">View Complaints</span>
+            </a>
+          </li>
+
+          <li class="nav-item menu-items">
+            <a
+              class="nav-link {% block nav_feedbacks %}{% endblock %}"
+              href="{% url 'adminapp:viewfeedback' %}"
+            >
+              <div class="menu-icon">
+                <i class="mdi mdi-message-text-outline"></i>
+              </div>
+              <span class="menu-title">View Feedbacks</span>
+            </a>
+          </li>
+
+          <li class="nav-item menu-items">
+            <a
+              class="nav-link {% block nav_jobs %}{% endblock %}"
+              href="{% url 'adminapp:viewjobs' %}"
+            >
+              <div class="menu-icon">
+                <i class="mdi mdi-briefcase-outline"></i>
+              </div>
+              <span class="menu-title">View Jobs</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Top Navigation -->
+      <nav class="navbar p-0 d-flex flex-row">
+        <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
+          <button
+            class="navbar-toggler navbar-toggler align-self-center d-lg-none"
+            type="button"
+            onclick="toggleSidebar()"
+          >
+            <span class="mdi mdi-menu"></span>
+          </button>
+
+          <ul class="navbar-nav navbar-nav-right ms-auto">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link"
+                id="profileDropdown"
+                href="#"
+                data-bs-toggle="dropdown"
+              >
+                <div class="navbar-profile">
+                  <img
+                    class="rounded-circle"
+                    src="https://via.placeholder.com/36x36/4169e1/ffffff?text=A"
+                    alt=""
+                  />
+                  <p class="mb-0 d-none d-sm-block navbar-profile-name">
+                    Admin
+                  </p>
+                  <i class="mdi mdi-menu-down d-none d-sm-block"></i>
+                </div>
+              </a>
+              <div
+                class="dropdown-menu dropdown-menu-end"
+                aria-labelledby="profileDropdown"
+              >
+                <h6 class="p-3 mb-0 border-bottom">Profile</h6>
+                <a class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <div class="preview-icon bg-success rounded-circle">
+                      <i class="mdi mdi-settings text-white"></i>
+                    </div>
+                  </div>
+                  <div class="preview-item-content">
+                    <p class="preview-subject mb-1">Settings</p>
+                  </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="#" class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <div class="preview-icon bg-danger rounded-circle">
+                      <i class="mdi mdi-logout text-white"></i>
+                    </div>
+                  </div>
+                  <div class="preview-item-content">
+                    <p class="preview-subject mb-1">Log out</p>
+                  </div>
+                </a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <!-- Main Content -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+          {% block body %}
+          <!-- Default content if no specific body block is provided -->
+          <div class="fade-in">
+            <div class="row">
+              <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                  <div class="card-body p-4">
+                    <h4 class="card-title mb-4">Welcome to Admin Dashboard</h4>
+                    <p class="text-muted">
+                      Manage your DreamJobs platform efficiently with our
+                      comprehensive admin tools.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endblock %}
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+          <div
+            class="d-sm-flex justify-content-center justify-content-sm-between align-items-center"
+          >
+            <span
+              class="text-muted d-block text-center text-sm-left d-sm-inline-block"
+            >
+              Copyright ©
+              <script>
+                document.write(new Date().getFullYear());
+              </script>
+              DreamJobs. All rights reserved.
+            </span>
+            <span class="text-muted d-none d-sm-block">
+              Crafted with <i class="mdi mdi-heart text-danger"></i> for
+              excellence
+            </span>
+          </div>
+        </footer>
       </div>
-      <script src="{% static 'assets/vendors/js/vendor.bundle.base.js' %}"></script>
-    
-    <script src="{% static 'assets/vendors/chart.js/Chart.min.js' %}"></script>
-    <script src="{% static 'assets/vendors/progressbar.js/progressbar.min.js' %}"></script>
-    <script src="{% static 'assets/vendors/jvectormap/jquery-jvectormap.min.js' %}"></script>
-    <script src="{% static 'assets/vendors/jvectormap/jquery-jvectormap-world-mill-en.js' %}"></script>
-    <script src="{% static 'assets/vendors/owl-carousel-2/owl.carousel.min.js' %}"></script>
-    <script src="{% static 'assets/js/jquery.cookie.js' %}" type="text/javascript"></script>
-    
-    <script src="{% static 'assets/js/off-canvas.js' %}"></script>
-    <script src="{% static 'assets/js/hoverable-collapse.js' %}"></script>
-    <script src="{% static 'assets/js/misc.js' %}"></script>
-    <script src="{% static 'assets/js/settings.js' %}"></script>
-    <script src="{% static 'assets/js/todolist.js' %}"></script>
-    
-    <script src="{% static 'assets/js/dashboard.js'%}"></script>
-</body>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // Toggle sidebar for mobile
+      function toggleSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        sidebar.classList.toggle("show");
+      }
+
+      // Add smooth scrolling and animations
+      document.addEventListener("DOMContentLoaded", function () {
+        // Add loading animation
+        const elements = document.querySelectorAll(".animate-fade-in");
+        elements.forEach((el, index) => {
+          el.style.animationDelay = `${index * 0.1}s`;
+        });
+
+        // Add interactivity to stat cards
+        document.querySelectorAll(".stat-card").forEach((card) => {
+          card.addEventListener("mouseenter", function () {
+            this.style.transform = "translateY(-8px) scale(1.02)";
+          });
+
+          card.addEventListener("mouseleave", function () {
+            this.style.transform = "translateY(0) scale(1)";
+          });
+        });
+
+        // Add hover effects to navigation
+        const navLinks = document.querySelectorAll(".nav-link");
+        navLinks.forEach((link) => {
+          link.addEventListener("mouseenter", function () {
+            if (!this.classList.contains("active")) {
+              this.style.transform = "translateX(5px)";
+            }
+          });
+
+          link.addEventListener("mouseleave", function () {
+            if (!this.classList.contains("active")) {
+              this.style.transform = "translateX(0)";
+            }
+          });
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener("click", function (event) {
+          const sidebar = document.getElementById("sidebar");
+          const toggleBtn = document.querySelector(".navbar-toggler");
+
+          if (
+            window.innerWidth <= 991 &&
+            !sidebar.contains(event.target) &&
+            !toggleBtn.contains(event.target)
+          ) {
+            sidebar.classList.remove("show");
+          }
+        });
+      });
+    </script>
+
+    {% block extra_js %}{% endblock %}
+  </body>
 </html>

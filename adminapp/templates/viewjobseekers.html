@@ -1,20 +1,826 @@
-{% extends 'adminparent.html' %}
+{% extends "adminparent.html" %} 
+{% block title %}View Job Seekers - Admin Dashboard{% endblock %} 
+{% block nav_jobseekers %}active{% endblock %} 
 {% block body %}
-<div class="row text-dark">
-    <h1 class="text-center">
-        Jobseekers
-    </h1>
-    <table class="table table-bordered">
-        <tr>
-            <th> Name</th>
-            <th>Email address</th>
-        </tr>
-        {% for j in jobseek %}
-        <tr>
-            <td>{{j.name}}</td>
-            <td>{{j.emailaddress}}</td>
-        </tr>
-        {% endfor %}
-    </table>
+<div class="admin-home-container">
+  <div class="row">
+    <div class="col-12">
+      <!-- Enhanced Page Header -->
+      <div class="page-header animate-fade-in">
+        <div class="page-header-content">
+          <h1 class="page-title">Job Seekers Management</h1>
+          <p class="page-subtitle">
+            Monitor and manage job seeker profiles across the platform
+          </p>
+        </div>
+      </div>
+
+      <!-- Statistics Cards -->
+      <div
+        class="stats-grid animate-fade-in"
+        style="
+          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+          margin-bottom: 24px;
+        "
+      >
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon primary">
+              <i class="fas fa-users"></i>
+            </div>
+          </div>
+          <div class="stat-number">{{ jobseek|length }}</div>
+          <div class="stat-label">Total Job Seekers</div>
+          <div class="stat-trend trend-up">
+            <i class="fas fa-arrow-up me-1"></i>12% from last month
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon success">
+              <i class="fas fa-user-check"></i>
+            </div>
+          </div>
+          <div class="stat-number">{{ jobseek|length|add:"-15" }}</div>
+          <div class="stat-label">Active Profiles</div>
+          <div class="stat-trend trend-up">
+            <i class="fas fa-arrow-up me-1"></i>8% increase
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon info">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+          </div>
+          <div class="stat-number">{{ jobseek|length|add:"-8" }}</div>
+          <div class="stat-label">With Resumes</div>
+          <div class="stat-trend trend-up">
+            <i class="fas fa-arrow-up me-1"></i>15% complete
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon warning">
+              <i class="fas fa-clock"></i>
+            </div>
+          </div>
+          <div class="stat-number">{{ jobseek|length|add:"-25" }}</div>
+          <div class="stat-label">Recent Signups</div>
+          <div class="stat-trend trend-up">
+            <i class="fas fa-arrow-up me-1"></i>This week
+          </div>
+        </div>
+      </div>
+
+      <!-- Search and Filter Bar -->
+      <div class="search-filter-bar animate-fade-in" style="
+        background: white;
+        padding: 24px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow-light);
+        margin-bottom: 24px;
+      ">
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <div style="position: relative;">
+              <input
+                type="text"
+                id="searchInput"
+                placeholder="Search job seekers by name, email, or phone..."
+                style="
+                  width: 100%;
+                  padding: 12px 45px 12px 16px;
+                  border: 2px solid var(--bg-light);
+                  border-radius: 8px;
+                  font-size: 14px;
+                  transition: var(--transition);
+                "
+                onfocus="this.style.borderColor='var(--primary-blue)'"
+                onblur="this.style.borderColor='var(--bg-light)'"
+              />
+              <i class="fas fa-search" style="
+                position: absolute;
+                right: 16px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: var(--text-light);
+              "></i>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="d-flex gap-3 justify-content-md-end">
+              <select
+                id="statusFilter"
+                style="
+                  padding: 12px 16px;
+                  border: 2px solid var(--bg-light);
+                  border-radius: 8px;
+                  font-size: 14px;
+                  min-width: 120px;
+                "
+              >
+                <option value="">All Status</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+              <button
+                class="btn"
+                style="
+                  background: var(--primary-blue);
+                  color: white;
+                  padding: 12px 20px;
+                  border-radius: 8px;
+                  border: none;
+                  font-size: 14px;
+                  font-weight: 500;
+                  transition: var(--transition);
+                "
+                onmouseover="this.style.background='var(--secondary-blue)'"
+                onmouseout="this.style.background='var(--primary-blue)'"
+              >
+                <i class="fas fa-filter me-2"></i>Filter
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Job Seekers Table -->
+      <div class="quick-actions animate-fade-in">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+          <h3 style="margin: 0;">
+            <i class="fas fa-list-alt me-2"></i>
+            Job Seekers Directory
+          </h3>
+          <div class="d-flex gap-2">
+            <button
+              class="btn btn-sm"
+              style="
+                background: var(--success);
+                color: white;
+                padding: 8px 16px;
+                border-radius: 6px;
+                border: none;
+                font-size: 12px;
+              "
+            >
+              <i class="fas fa-download me-1"></i>Export
+            </button>
+            <button
+              class="btn btn-sm"
+              style="
+                background: var(--info);
+                color: white;
+                padding: 8px 16px;
+                border-radius: 6px;
+                border: none;
+                font-size: 12px;
+              "
+            >
+              <i class="fas fa-envelope me-1"></i>Bulk Email
+            </button>
+          </div>
+        </div>
+
+        {% if jobseek %}
+        <div
+          class="table-responsive"
+          style="
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+          "
+        >
+          <table class="table table-hover mb-0" id="jobSeekersTable" style="background: white">
+            <thead
+              style="
+                background: linear-gradient(
+                  135deg,
+                  var(--primary-blue),
+                  var(--light-blue)
+                );
+                color: white;
+              "
+            >
+              <tr>
+                <th style="padding: 16px; font-weight: 600; border: none">
+                  <input type="checkbox" id="selectAll" style="margin-right: 8px;">
+                  <i class="fas fa-user me-2"></i>Profile
+                </th>
+                <th style="padding: 16px; font-weight: 600; border: none">
+                  <i class="fas fa-envelope me-2"></i>Contact Info
+                </th>
+                <th style="padding: 16px; font-weight: 600; border: none">
+                  <i class="fas fa-map-marker-alt me-2"></i>Location
+                </th>
+                <th style="padding: 16px; font-weight: 600; border: none">
+                  <i class="fas fa-briefcase me-2"></i>Experience
+                </th>
+                <th style="padding: 16px; font-weight: 600; border: none">
+                  <i class="fas fa-graduation-cap me-2"></i>Education
+                </th>
+                <th style="padding: 16px; font-weight: 600; border: none">
+                  <i class="fas fa-calendar me-2"></i>Joined Date
+                </th>
+                <th style="padding: 16px; font-weight: 600; border: none">
+                  <i class="fas fa-chart-line me-2"></i>Status
+                </th>
+                <th style="padding: 16px; font-weight: 600; border: none">
+                  <i class="fas fa-cogs me-2"></i>Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for js in jobseek %}
+              <tr style="transition: var(--transition)" class="jobseeker-row">
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                  "
+                >
+                  <div style="display: flex; align-items: center;">
+                    <input type="checkbox" class="row-checkbox" style="margin-right: 12px;">
+                    <div style="
+                      width: 45px;
+                      height: 45px;
+                      border-radius: 50%;
+                      background: linear-gradient(135deg, var(--primary-blue), var(--accent-blue));
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      margin-right: 12px;
+                      font-weight: bold;
+                      color: white;
+                      font-size: 16px;
+                    ">
+                      {{ js.fullname|first|upper }}
+                    </div>
+                    <div>
+                      <div style="font-weight: 600; margin-bottom: 2px;">
+                        {{ js.fullname|title }}
+                      </div>
+                      <div style="font-size: 12px; color: var(--text-light);">
+                        ID: #JS{{ js.id|stringformat:"04d" }}
+                      </div>
+                      {% if js.gender %}
+                        <div style="font-size: 11px; color: var(--text-light); margin-top: 2px;">
+                        {{ js.gender|title }} • {{ age }} years
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                  "
+                >
+                  <div>
+                    <div style="margin-bottom: 6px;">
+                      <i class="fas fa-envelope me-2" style="color: var(--primary-blue); font-size: 12px;"></i>
+                      <a
+                        href="mailto:{{ js.emailaddress }}"
+                        style="color: var(--primary-blue); text-decoration: none; font-size: 14px;"
+                      >
+                        {{ js.emailaddress }}
+                      </a>
+                    </div>
+                    <div>
+                      <i class="fas fa-phone me-2" style="color: var(--success); font-size: 12px;"></i>
+                      <a
+                        href="tel:{{ js.contactno }}"
+                        style="color: var(--text-dark); text-decoration: none; font-size: 14px;"
+                      >
+                        {{ js.contactno }}
+                      </a>
+                    </div>
+                  </div>
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                  "
+                >
+                  <div style="display: flex; flex-direction: column;">
+                    {% if js.address %}
+                    <span
+                      style="
+                        background: var(--bg-light);
+                        padding: 4px 8px;
+                        border-radius: 6px;
+                        font-size: 13px;
+                        margin-bottom: 4px;
+                        display: inline-block;
+                      "
+                    >
+                      <i class="fas fa-home me-1" style="font-size: 10px;"></i>
+                      {{ js.address|truncatechars:25 }}
+                    </span>
+                    {% endif %}
+                    {% if js.city %}
+                    <span style="font-size: 12px; color: var(--text-light);">
+                      {{ js.city }}{% if js.state %}, {{ js.state }}{% endif %}
+                    </span>
+                    {% endif %}
+                  </div>
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                  "
+                >
+                  {% if js.experience %}
+                  <div>
+                    <div style="font-weight: 600; color: var(--success); margin-bottom: 4px;">
+                      {{ js.experience }} Years
+                    </div>
+                    {% if js.skills %}
+                    <div style="font-size: 11px; color: var(--text-light);">
+                      Skills: {{ js.skills|truncatechars:20 }}
+                    </div>
+                    {% endif %}
+                  </div>
+                  {% else %}
+                  <span
+                    style="
+                      background: var(--warning);
+                      color: white;
+                      padding: 4px 8px;
+                      border-radius: 6px;
+                      font-size: 11px;
+                      font-weight: 500;
+                    "
+                  >
+                    Fresher
+                  </span>
+                  {% endif %}
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                  "
+                >
+                  <div>
+                    {% if js.qualification %}
+                    <div style="font-weight: 500; margin-bottom: 4px;">
+                      {{ js.qualification }}
+                    </div>
+                    {% endif %}
+                    {% if js.specialization %}
+                    <div style="font-size: 12px; color: var(--text-light);">
+                      {{ js.specialization|truncatechars:20 }}
+                    </div>
+                    {% endif %}
+                  </div>
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-light);
+                    font-size: 14px;
+                  "
+                >
+                  <div style="display: flex; flex-direction: column; align-items: center;">
+                    <span
+                      style="
+                        background: var(--primary-blue);
+                        color: white;
+                        padding: 4px 8px;
+                        border-radius: 6px;
+                        font-size: 12px;
+                        text-align: center;
+                        margin-bottom: 4px;
+                      "
+                    >
+                      {{ js.dateofregistration|date:"M d, Y" }}
+                    </span>
+                    <span style="font-size: 11px; text-align: center;">
+                      {{ js.dateofregistration|timesince }} ago
+                    </span>
+                  </div>
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                  "
+                >
+                  {% if js.status == 'Active' %}
+                  <span
+                    style="
+                      background: var(--success);
+                      color: white;
+                      padding: 6px 12px;
+                      border-radius: 20px;
+                      font-size: 12px;
+                      font-weight: 500;
+                      display: inline-flex;
+                      align-items: center;
+                    "
+                  >
+                    <i class="fas fa-check-circle me-1" style="font-size: 10px;"></i>
+                    Active
+                  </span>
+                  {% else %}
+                  <span
+                    style="
+                      background: var(--text-light);
+                      color: white;
+                      padding: 6px 12px;
+                      border-radius: 20px;
+                      font-size: 12px;
+                      font-weight: 500;
+                      display: inline-flex;
+                      align-items: center;
+                    "
+                  >
+                    <i class="fas fa-user-clock me-1" style="font-size: 10px;"></i>
+                    Inactive
+                  </span>
+                  {% endif %}
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                  "
+                >
+                  <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                    <button
+                      class="action-btn-small"
+                      style="
+                        padding: 6px 10px;
+                        background: var(--info);
+                        color: white;
+                        border: none;
+                        border-radius: 6px;
+                        font-size: 12px;
+                        transition: var(--transition);
+                        cursor: pointer;
+                      "
+                      title="View Profile"
+                      onclick="viewProfile({{ js.id }})"
+                    >
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button
+                      class="action-btn-small"
+                      style="
+                        padding: 6px 10px;
+                        background: var(--success);
+                        color: white;
+                        border: none;
+                        border-radius: 6px;
+                        font-size: 12px;
+                        transition: var(--transition);
+                        cursor: pointer;
+                      "
+                      title="Send Message"
+                      onclick="sendMessage({{ js.id }})"
+                    >
+                      <i class="fas fa-envelope"></i>
+                    </button>
+                    <button
+                      class="action-btn-small"
+                      style="
+                        padding: 6px 10px;
+                        background: var(--warning);
+                        color: white;
+                        border: none;
+                        border-radius: 6px;
+                        font-size: 12px;
+                        transition: var(--transition);
+                        cursor: pointer;
+                      "
+                      title="Edit Profile"
+                      onclick="editProfile({{ js.id }})"
+                    >
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <div class="dropdown" style="display: inline-block;">
+                      <button
+                        class="action-btn-small dropdown-toggle"
+                        style="
+                          padding: 6px 10px;
+                          background: var(--text-light);
+                          color: white;
+                          border: none;
+                          border-radius: 6px;
+                          font-size: 12px;
+                          transition: var(--transition);
+                          cursor: pointer;
+                        "
+                        data-bs-toggle="dropdown"
+                        title="More Actions"
+                      >
+                        <i class="fas fa-ellipsis-v"></i>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-ban me-2"></i>Suspend</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-download me-2"></i>Download Resume</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash me-2"></i>Delete</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div style="
+          display: flex;
+          justify-content: between;
+          align-items: center;
+          margin-top: 20px;
+          padding: 16px;
+          background: white;
+          border-radius: var(--border-radius);
+          box-shadow: var(--shadow-light);
+        ">
+          <div style="color: var(--text-light);">
+            Showing {{ jobseek|length }} job seekers
+          </div>
+          <div>
+            <button class="btn btn-sm btn-outline-primary me-2">Previous</button>
+            <button class="btn btn-sm btn-primary me-2">1</button>
+            <button class="btn btn-sm btn-outline-primary me-2">2</button>
+            <button class="btn btn-sm btn-outline-primary">Next</button>
+          </div>
+        </div>
+
+        {% else %}
+        <!-- No Job Seekers State -->
+        <div
+          style="
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
+          "
+        >
+          <div
+            style="
+              width: 80px;
+              height: 80px;
+              background: var(--bg-light);
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin: 0 auto 20px;
+            "
+          >
+            <i
+              class="fas fa-users"
+              style="font-size: 32px; color: var(--primary-blue)"
+            ></i>
+          </div>
+          <h4 style="color: var(--text-dark); margin-bottom: 12px">
+            No Job Seekers Found
+          </h4>
+          <p style="color: var(--text-light); font-size: 16px">
+            There are currently no registered job seekers. New profiles will appear here once users register.
+          </p>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Quick Actions Footer -->
+      <div class="recent-activity animate-fade-in">
+        <h3>
+          <i class="fas fa-tools me-2"></i>
+          Management Tools
+        </h3>
+        <div
+          class="action-grid"
+          style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))"
+        >
+          <a href="#" class="action-btn">
+            <div class="action-icon">
+              <i class="fas fa-user-plus"></i>
+            </div>
+            <div class="action-content">
+              <h4>Add Job Seeker</h4>
+              <p>Manually register new profile</p>
+            </div>
+          </a>
+
+          <a href="#" class="action-btn">
+            <div class="action-icon">
+              <i class="fas fa-download"></i>
+            </div>
+            <div class="action-content">
+              <h4>Export Database</h4>
+              <p>Download complete list</p>
+            </div>
+          </a>
+
+          <a href="#" class="action-btn">
+            <div class="action-icon">
+              <i class="fas fa-chart-pie"></i>
+            </div>
+            <div class="action-content">
+              <h4>Analytics</h4>
+              <p>View detailed insights</p>
+            </div>
+          </a>
+
+          <a href="#" class="action-btn">
+            <div class="action-icon">
+              <i class="fas fa-envelope-bulk"></i>
+            </div>
+            <div class="action-content">
+              <h4>Mass Communication</h4>
+              <p>Send bulk notifications</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-{% endblock body %}
+
+<style>
+  .search-filter-bar input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(3, 3, 114, 0.1);
+  }
+
+  .table-responsive {
+    background: white;
+  }
+
+  .table tbody tr:hover {
+    background-color: var(--bg-light) !important;
+    transform: scale(1.005);
+    box-shadow: var(--shadow-light);
+  }
+
+  .table tbody tr {
+    border: none;
+  }
+
+  .table thead th {
+    border: none;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-6px);
+  }
+
+  .action-btn-small:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .jobseeker-row:hover .action-btn-small {
+    opacity: 1;
+  }
+
+  /* Custom scrollbar for table */
+  .table-responsive::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .table-responsive::-webkit-scrollbar-track {
+    background: var(--bg-light);
+    border-radius: 3px;
+  }
+
+  .table-responsive::-webkit-scrollbar-thumb {
+    background: var(--primary-blue);
+    border-radius: 3px;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .table-responsive {
+      font-size: 12px;
+    }
+
+    .table th,
+    .table td {
+      padding: 10px 8px !important;
+    }
+
+    .page-title {
+      font-size: 28px;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    /* Hide some columns on mobile */
+    .table th:nth-child(4),
+    .table td:nth-child(4),
+    .table th:nth-child(5),
+    .table td:nth-child(5) {
+      display: none;
+    }
+
+    .search-filter-bar .row {
+      flex-direction: column;
+      gap: 16px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .table th:nth-child(3),
+    .table td:nth-child(3),
+    .table th:nth-child(6),
+    .table td:nth-child(6) {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+// Search functionality
+document.getElementById('searchInput').addEventListener('keyup', function() {
+  const searchTerm = this.value.toLowerCase();
+  const rows = document.querySelectorAll('.jobseeker-row');
+  
+  rows.forEach(row => {
+    const text = row.textContent.toLowerCase();
+    row.style.display = text.includes(searchTerm) ? '' : 'none';
+  });
+});
+
+// Select all functionality
+document.getElementById('selectAll').addEventListener('change', function() {
+  const checkboxes = document.querySelectorAll('.row-checkbox');
+  checkboxes.forEach(checkbox => {
+    checkbox.checked = this.checked;
+  });
+});
+
+// Action functions
+function viewProfile(id) {
+  window.location.href = `/admin/jobseeker/${id}/view/`;
+}
+
+function sendMessage(id) {
+  // Implement message functionality
+  alert(`Sending message to job seeker ID: ${id}`);
+}
+
+function editProfile(id) {
+  window.location.href = `/admin/jobseeker/${id}/edit/`;
+}
+
+// Add loading states and smooth interactions
+document.addEventListener('DOMContentLoaded', function() {
+  // Add hover effects to action buttons
+  const actionButtons = document.querySelectorAll('.action-btn-small');
+  actionButtons.forEach(btn => {
+    btn.addEventListener('mouseenter', function() {
+      this.style.transform = 'scale(1.1)';
+      this.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+    });
+    
+    btn.addEventListener('mouseleave', function() {
+      this.style.transform = 'scale(1)';
+      this.style.boxShadow = 'none';
+    });
+  });
+
+  // Animate statistics cards
+  const statCards = document.querySelectorAll('.stat-card');
+  statCards.forEach((card, index) => {
+    card.style.animationDelay = `${index * 0.1}s`;
+    card.classList.add('animate-fade-in');
+  });
+});
+</script>
+{% endblock %}

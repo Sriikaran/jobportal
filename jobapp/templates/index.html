@@ -1,28 +1,46 @@
-{% extends 'parent.html' %}
-{% load static %}
+{% extends 'parent.html' %} {% load static %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<!-- <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"> -->
+{% block head %}
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap"
+  rel="stylesheet"
+/>
 
 <style>
   :root {
-    --primary-blue: #0080ff;
-    --secondary-blue: #56a8fa;
-    --dark-blue: #093f75;
-    --light-blue: #7ecce6;
-    --accent-cyan: #00f5ff;
-    --accent-purple: #8b5cf6;
-    --accent-pink: #ec4899;
-    --accent-orange: #f97316;
-    --gradient-1: linear-gradient(135deg, #0080ff 0%, #56a8fa 50%, #7ecce6 100%);
-    --gradient-2: linear-gradient(135deg, #093f75 0%, #0080ff 50%, #56a8fa 100%);
-    --gradient-3: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #f97316 100%);
-    --gradient-4: linear-gradient(135deg, #00f5ff 0%, #0080ff 100%);
+    --primary-blue: #093f75;
+    --secondary-blue: #0c3056;
+    --accent-blue: #56a8fa;
+    --light-blue: #1c5aa6;
+    --text-dark: #2c3e50;
+    --text-light: #6c757d;
+    --bg-light: #f8fafc;
+    --shadow-light: 0 4px 20px rgba(9, 63, 117, 0.08);
+    --shadow-medium: 0 8px 32px rgba(9, 63, 117, 0.12);
+    --gradient-primary: linear-gradient(
+      135deg,
+      #0c3056 0%,
+      #1c5aa6 50%,
+      #56a8fa 100%
+    );
+    --gradient-accent: linear-gradient(45deg, #56a8fa, #a1d0ff);
+    --gradient-hero: linear-gradient(
+      135deg,
+      #093f75 0%,
+      #1c5aa6 50%,
+      #56a8fa 100%
+    );
   }
 
+  /* Reset and Base Styles */
   * {
     margin: 0;
     padding: 0;
@@ -30,83 +48,127 @@
   }
 
   body {
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
     background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
     overflow-x: hidden;
     position: relative;
+    min-height: 100vh;
   }
 
   body::before {
-    content: '';
+    content: "";
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: -1;
-    background: 
-      radial-gradient(circle at 20% 80%, rgba(0, 128, 255, 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 40% 40%, rgba(236, 72, 153, 0.08) 0%, transparent 50%);
+    background: radial-gradient(
+        circle at 20% 80%,
+        rgba(9, 63, 117, 0.1) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 80% 20%,
+        rgba(86, 168, 250, 0.1) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 40% 40%,
+        rgba(28, 90, 166, 0.08) 0%,
+        transparent 50%
+      );
     animation: float 20s ease-in-out infinite;
   }
 
   @keyframes float {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    33% { transform: translateY(-20px) rotate(1deg); }
-    66% { transform: translateY(10px) rotate(-1deg); }
+    0%,
+    100% {
+      transform: translateY(0px) rotate(0deg);
+    }
+    33% {
+      transform: translateY(-20px) rotate(1deg);
+    }
+    66% {
+      transform: translateY(10px) rotate(-1deg);
+    }
   }
 
+  /* Fix dropdown z-index issue */
+  .navbar .dropdown-menu {
+    z-index: 9999 !important;
+    position: absolute !important;
+  }
+
+  .navbar .dropdown {
+    position: relative;
+    z-index: 1000;
+  }
+
+  /* Ensure dropdown appears above other content */
   .hero-section {
-    background: var(--gradient-1);
-    border-radius: 0 0 50px 50px;
+    position: relative;
+    z-index: 1; /* Lower than navbar */
+  }
+
+  .jobs-section {
+    position: relative;
+    z-index: 1; /* Lower than navbar */
+  }
+
+  /* Hero Section Styles */
+  .hero-section {
+    background: var(--gradient-hero);
     position: relative;
     overflow: hidden;
     padding: 4rem 0;
+    margin-top: 0;
   }
 
   .hero-section::before {
-    content: '';
+    content: "";
     position: absolute;
     top: -50%;
     right: -10%;
     width: 100%;
     height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 70%
+    );
     animation: rotate 30s linear infinite;
   }
 
   @keyframes rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   .hero-content h1 {
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
     font-weight: 800;
     font-size: clamp(2.5rem, 5vw, 4rem);
-    background: linear-gradient(135deg, #ffffff 0%, #e0f2fe 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 4px 20px rgba(0, 128, 255, 0.3);
+    color: white !important;
+    text-shadow: 0 4px 20px rgba(9, 63, 117, 0.3);
     margin-bottom: 1rem;
   }
 
   .hero-content p {
     font-size: 1.2rem;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.9) !important;
     margin-bottom: 2rem;
     font-weight: 400;
-  }
-
-  .hero-image {
-    position: relative;
   }
 
   .hero-image img {
     border-radius: 30px;
     border: 5px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 20px 60px rgba(0, 128, 255, 0.3);
+    box-shadow: 0 20px 60px rgba(9, 63, 117, 0.3);
     transition: transform 0.3s ease;
   }
 
@@ -119,7 +181,7 @@
     backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 1rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-medium);
     border: 1px solid rgba(255, 255, 255, 0.2);
   }
 
@@ -136,11 +198,11 @@
   }
 
   .search-btn {
-    background: var(--gradient-2);
-    border: none;
+    background: var(--gradient-primary) !important;
+    border: none !important;
     border-radius: 15px;
     padding: 0.8rem 2rem;
-    color: white;
+    color: white !important;
     font-weight: 600;
     transition: all 0.3s ease;
     box-shadow: 0 5px 15px rgba(9, 63, 117, 0.3);
@@ -149,622 +211,870 @@
   .search-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(9, 63, 117, 0.4);
+    color: white !important;
   }
 
+  /* Jobs Section Styles */
   .jobs-section {
-    background: linear-gradient(135deg, #7ecce6 0%, #56a8fa 100%);
+    padding: 80px 0;
+    background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
     position: relative;
-    padding: 4rem 0;
-    overflow: hidden;
   }
 
   .jobs-section::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: 
-      radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+    background: radial-gradient(
+      ellipse at top,
+      rgba(86, 168, 250, 0.03) 0%,
+      transparent 70%
+    );
     z-index: 1;
   }
 
-  .jobs-content {
+  .jobs-section .container {
     position: relative;
     z-index: 2;
   }
 
   .jobs-section h1 {
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
+    font-size: 3rem;
     font-weight: 700;
-    font-size: clamp(2rem, 4vw, 3.5rem);
-    color: white;
-    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    color: #0ef;
     margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+    text-align: center;
+    position: relative;
   }
 
-  .jobs-section p {
+  .jobs-section h1::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #0ef, #56a8fa);
+    border-radius: 2px;
+  }
+
+  .jobs-section > .container > p {
     font-size: 1.2rem;
-    color: rgba(255, 255, 255, 0.9);
-    margin-bottom: 3rem;
+    color: #64748b;
+    line-height: 1.7;
+    max-width: 700px;
+    margin: 0 auto 4rem;
+    text-align: center;
+    font-weight: 400;
   }
 
-  .col {
-    display: flex;
-    flex-direction: column;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    border-radius: 25px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-    transition: all 0.4s ease;
+  .job-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .job-card {
+    background: #ffffff;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
-    margin-bottom: 2rem;
+    height: auto;
     min-height: 320px;
+    display: flex;
+    flex-direction: column;
   }
 
-  .col::before {
-    content: '';
+  .job-card::before {
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    background: var(--gradient-3);
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    z-index: 1;
+    height: 4px;
+    background: linear-gradient(90deg, #0ef, #56a8fa);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
   }
 
-  .col:hover::before {
-    opacity: 0.05;
+  .job-card:hover::before {
+    transform: scaleX(1);
   }
 
-  .col:hover {
-    transform: translateY(-15px) scale(1.02);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+  .job-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 238, 255, 0.1);
+    border-color: rgba(0, 238, 255, 0.2);
   }
 
-  .col:nth-child(odd) {
-    animation: slideInLeft 0.6s ease forwards;
-  }
-
-  .col:nth-child(even) {
-    animation: slideInRight 0.6s ease forwards;
-  }
-
-  @keyframes slideInLeft {
-    from { transform: translateX(-100px); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-  }
-
-  @keyframes slideInRight {
-    from { transform: translateX(100px); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-  }
-
-  .job-card {
-    height: 100%;
-    position: relative;
-    z-index: 2;
-  }
-
-  .card-body {
-    padding: 2rem;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  .card-title {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 700;
+  .job-card h5 {
+    font-family: "Poppins", sans-serif;
     font-size: 1.4rem;
-    color: var(--dark-blue);
-    margin-bottom: 1rem;
-    position: relative;
-  }
-
-  .card-title::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 50px;
-    height: 3px;
-    background: var(--gradient-4);
-    border-radius: 2px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 1.5rem;
+    line-height: 1.3;
   }
 
   .job-meta {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f1f5f9;
   }
 
   .job-meta p {
-    margin: 0;
-    font-size: 0.9rem;
-    color: #64748b;
+    margin-bottom: 0.75rem;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 12px;
+    font-size: 0.95rem;
+    color: #64748b;
+    font-weight: 500;
   }
 
   .job-meta i {
-    color: var(--primary-blue);
-    width: 16px;
+    color: #0ef;
+    width: 18px;
+    font-size: 1rem;
+    text-align: center;
   }
 
   .job-skills {
     list-style: none;
     padding: 0;
-    margin: 1rem 0;
+    margin-bottom: 2rem;
+    flex-grow: 1;
   }
 
   .job-skills li {
-    padding: 0.5rem 0;
+    margin-bottom: 0.75rem;
     font-size: 0.95rem;
     color: #475569;
+    line-height: 1.5;
     position: relative;
-    padding-left: 20px;
+    padding-left: 1rem;
   }
 
   .job-skills li::before {
-    content: '▶';
+    content: "•";
+    color: #0ef;
     position: absolute;
     left: 0;
-    color: var(--accent-cyan);
-    font-size: 0.8rem;
+    font-weight: bold;
+  }
+
+  .job-skills li strong {
+    color: #334155;
+    font-weight: 600;
   }
 
   .apply-btn {
-    background: var(--gradient-2);
-    border: none;
-    border-radius: 15px;
-    padding: 0.8rem 2rem;
-    color: white;
+    background: linear-gradient(135deg, #0ef, #56a8fa);
+    color: #fff;
+    padding: 0.875rem 2rem;
     font-weight: 600;
+    border-radius: 12px;
     text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-block;
     text-align: center;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(9, 63, 117, 0.3);
+    font-size: 0.95rem;
+    letter-spacing: 0.025em;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    box-shadow: 0 4px 12px rgba(0, 238, 255, 0.25);
+  }
+
+  .apply-btn:hover {
+    background: linear-gradient(135deg, #00d4e6, #4a96e8);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 238, 255, 0.4);
+    text-decoration: none;
+  }
+
+  /* ATS Section */
+  .ats-section {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    position: relative;
+  }
+
+  .ats-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+      ellipse at bottom,
+      rgba(9, 63, 117, 0.03) 0%,
+      transparent 70%
+    );
+    z-index: 1;
+  }
+
+  .ats-section .container {
+    position: relative;
+    z-index: 2;
+  }
+
+  .ats-section h2 {
+    font-family: "Poppins", sans-serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: #0ef;
+    margin-bottom: 1rem;
+    text-align: center;
+    letter-spacing: -0.02em;
+    position: relative;
+  }
+
+  .ats-section h2::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #0ef, #56a8fa);
+    border-radius: 2px;
+  }
+
+  .ats-section > .container > p {
+    font-size: 1.2rem;
+    color: #64748b;
+    text-align: center;
+    margin-bottom: 3rem;
+    font-weight: 400;
+    line-height: 1.6;
+  }
+
+  .upload-container {
+    text-align: center;
+    margin-bottom: 4rem;
+    padding: 3rem 2rem;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(9, 63, 117, 0.08);
+  }
+
+  .upload-btn {
+    background: linear-gradient(135deg, #0ef, #56a8fa);
+    color: #fff;
+    padding: 1rem 3rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 238, 255, 0.3);
+  }
+
+  .upload-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+  }
+
+  .upload-btn:hover::before {
+    left: 100%;
+  }
+
+  .upload-btn:hover {
+    background: linear-gradient(135deg, #00d4e6, #4a96e8);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(0, 238, 255, 0.4);
+  }
+
+  .ats-benefits {
+    background: #ffffff;
+    padding: 3rem;
+    border-radius: 24px;
+    box-shadow: 0 8px 32px rgba(9, 63, 117, 0.08);
+    border: 1px solid rgba(226, 232, 240, 0.5);
     position: relative;
     overflow: hidden;
   }
 
-  .apply-btn::before {
-    content: '';
+  .ats-benefits::before {
+    content: "";
     position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    transition: all 0.3s ease;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, #0ef, #56a8fa);
   }
 
-  .apply-btn:hover::before {
-    width: 300px;
-    height: 300px;
-  }
-
-  .apply-btn:hover {
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(9, 63, 117, 0.4);
-  }
-
-  .ats-section {
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-    padding: 4rem 0;
-    position: relative;
-  }
-
-  .ats-section h2 {
-    font-family: 'Poppins', sans-serif;
+  .ats-benefits h2 {
+    font-family: "Poppins", sans-serif;
     font-weight: 700;
-    background: var(--gradient-2);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-size: 2.5rem;
+    color: #05284a;
     margin-bottom: 1rem;
+    text-align: center;
+    letter-spacing: -0.01em;
   }
 
-  .ats-section p {
-    font-size: 1.1rem;
-    color: #64748b;
+  .ats-benefits h3 {
+    font-size: 1.4rem;
+    color: #475569;
     margin-bottom: 2rem;
+    text-align: center;
+    font-weight: 500;
+    line-height: 1.4;
   }
 
-  .upload-btn {
-    background: var(--gradient-3);
-    border: none;
-    border-radius: 20px;
-    padding: 1rem 3rem;
-    color: white;
-    font-weight: 600;
+  .ats-benefits > p {
     font-size: 1.1rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
-  }
-
-  .upload-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 40px rgba(139, 92, 246, 0.4);
-  }
-
-  .ats-benefits {
-    background: white;
-    border-radius: 20px;
-    padding: 2rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    margin: 2rem 0;
+    color: #05488b;
+    max-width: 900px;
+    margin: 0 auto 2.5rem;
+    text-align: center;
+    line-height: 1.7;
+    font-weight: 400;
   }
 
   .ats-benefits ul {
     list-style: none;
     padding: 0;
+    max-width: 900px;
+    margin: 0 auto 3rem;
+    display: grid;
+    gap: 1.5rem;
   }
 
   .ats-benefits li {
-    padding: 1rem 0;
-    font-size: 1.1rem;
-    color: #334155;
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 16px;
+    border-left: 4px solid #0ef;
     position: relative;
-    padding-left: 40px;
-    border-bottom: 1px solid #f1f5f9;
+    transition: all 0.3s ease;
   }
 
-  .ats-benefits li:last-child {
-    border-bottom: none;
+  .ats-benefits li:hover {
+    background: #f1f5f9;
+    transform: translateX(8px);
+  }
+
+  .ats-benefits li strong {
+    color: #1e293b;
+    font-weight: 600;
+    font-size: 1.05rem;
   }
 
   .ats-benefits li::before {
-    content: '✓';
+    content: "";
     position: absolute;
-    left: 0;
-    top: 1rem;
-    width: 30px;
-    height: 30px;
-    background: var(--gradient-4);
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
+    left: -4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 0;
+    background: #56a8fa;
+    transition: height 0.3s ease;
   }
 
+  .ats-benefits li:hover::before {
+    height: 100%;
+  }
+
+  .ats-benefits .text-center a {
+    display: inline-block;
+    background: linear-gradient(135deg, #0ef, #56a8fa);
+    color: #fff;
+    padding: 1rem 2.5rem;
+    font-weight: 600;
+    border-radius: 16px;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 1.05rem;
+    box-shadow: 0 8px 25px rgba(0, 238, 255, 0.25);
+  }
+
+  .ats-benefits .text-center a:hover {
+    background: linear-gradient(135deg, #00d4e6, #4a96e8);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(0, 238, 255, 0.4);
+    text-decoration: none;
+    color: #fff;
+  }
+
+  /* Testimonials Section */
   .testimonials-section {
-    background: var(--gradient-1);
-    padding: 4rem 0;
-    position: relative;
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+  }
+
+  .testimonials-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
   }
 
   .testimonials-section h3 {
-    font-family: 'Poppins', sans-serif;
+    font-size: 2rem;
     font-weight: 700;
-    color: white;
-    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    color: #05284a;
     margin-bottom: 1rem;
   }
 
   .testimonials-section p {
-    color: rgba(255, 255, 255, 0.9);
     font-size: 1.1rem;
+    color: #444;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .testimonial-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-top: 2rem;
+    justify-content: center;
   }
 
   .testimonial-card {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    border-radius: 20px;
+    flex: 1 1 calc(33.33% - 24px);
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     padding: 2rem;
-    margin: 1rem 0;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    text-align: center;
+    min-width: 300px;
     transition: transform 0.3s ease;
-    height: 100%;
   }
 
   .testimonial-card:hover {
-    transform: translateY(-10px);
+    transform: translateY(-5px);
   }
 
-  .testimonial-avatar {
+  .testimonial-card img {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    border: 4px solid var(--primary-blue);
-    box-shadow: 0 5px 15px rgba(0, 128, 255, 0.3);
+    object-fit: cover;
+    margin-bottom: 1.2rem;
   }
 
-  .stars {
-    color: #fbbf24;
+  .testimonial-card h5 {
     font-size: 1.2rem;
-    margin-top: 1rem;
+    font-weight: 600;
+    color: #05284a;
+    margin-bottom: 0.5rem;
   }
 
-  .loading-spinner {
-    display: none;
-    border: 4px solid rgba(255, 255, 255, 0.3);
-    border-top: 4px solid var(--primary-blue);
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    animation: spin 1s linear infinite;
-    margin: 0 auto;
+  .testimonial-card h6 {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #0ef;
+    margin-bottom: 1rem;
   }
 
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+  .testimonial-card p {
+    font-size: 0.95rem;
+    color: #64748b;
+    font-style: italic;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    text-align: left;
+  }
+
+  .testimonial-card .stars {
+    color: #facc15;
+    font-size: 1.1rem;
+  }
+
+  /* Pulse Animation */
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(0, 238, 255, 0.7);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(0, 238, 255, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(0, 238, 255, 0);
+    }
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1200px) {
+    .job-cards-container {
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 1.5rem;
+    }
+  }
+
+  @media (max-width: 992px) {
+    .jobs-section h1 {
+      font-size: 2.5rem;
+    }
+    
+    .ats-section h2 {
+      font-size: 2.5rem;
+    }
+    
+    .job-cards-container {
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    }
+
+    .testimonial-card {
+      flex: 1 1 calc(50% - 24px);
+    }
   }
 
   @media (max-width: 768px) {
     .hero-section {
       padding: 2rem 0;
     }
-    
+
     .jobs-section {
-      padding: 2rem 0;
+      padding: 60px 0;
     }
-    
-    .col {
-      margin-bottom: 1.5rem;
+
+    .ats-section {
+      padding: 60px 0;
     }
-    
+
+    .jobs-section h1 {
+      font-size: 2.2rem;
+    }
+
+    .ats-section h2 {
+      font-size: 2.2rem;
+    }
+
+    .job-cards-container {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .testimonial-card {
+      flex: 1 1 100%;
+    }
+
     .search-container {
       flex-direction: column;
       gap: 1rem;
     }
-    
+
     .search-btn {
       width: 100%;
     }
+
+    .job-card {
+      min-height: 300px;
+    }
+
+    .ats-benefits {
+      padding: 2rem 1.5rem;
+    }
+
+    .upload-container {
+      padding: 2rem 1rem;
+    }
   }
 
-  @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(0, 128, 255, 0.7); }
-    70% { box-shadow: 0 0 0 10px rgba(0, 128, 255, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(0, 128, 255, 0); }
-  }
+  @media (max-width: 576px) {
+    .jobs-section h1 {
+      font-size: 1.8rem;
+    }
 
-  .btn-pulse {
-    animation: pulse 2s infinite;
-  }
+    .ats-section h2 {
+      font-size: 1.8rem;
+    }
 
-  .fade-in {
-    animation: fadeIn 1s ease-in;
-  }
+    .ats-benefits h2 {
+      font-size: 2rem;
+    }
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    .testimonials-section h3 {
+      font-size: 1.8rem;
+    }
+
+    .job-card {
+      padding: 1.5rem;
+    }
   }
 </style>
 {% endblock %}
+
 
 <script>
   function login() {
     alert("Please login to continue");
   }
+  function apply() {
+    alert("Please login to apply for the job");
+  }
 </script>
-<!-- <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script> -->
-<!-- <script>
-  AOS.init({
-    duration: 800,
-    easing: 'ease-in-out',
-    once: true
-  });
-</script> -->
 
 {% block body %}
 <section class="hero-section py-5">
   <div class="container px-3">
-
     <div class="row px-lg-5 d-flex flex-column flex-md-row align-items-center">
-      
       <!-- Hero Image -->
-      <div class="order-1 order-md-2 col-md-6 d-flex align-items-center justify-content-center mb-4 mb-md-0 hero-image" data-aos="fade-left" data-aos-duration="800">
-        <img src="{% static 'images/right3.jpg' %}" class="img-fluid rounded-4 shadow" alt="Hero Image">
+      <div
+        class="order-1 order-md-2 col-md-6 d-flex align-items-center justify-content-center mb-4 mb-md-0 hero-image"
+      >
+        <img
+          src="{% static 'images/right3.jpg' %}"
+          class="img-fluid rounded-4 shadow"
+          alt="Hero Image"
+        />
       </div>
-      
-      <!-- Hero Content -->
-      <div class="order-2 order-md-1 col-md-6 px-4 px-md-5 pt-3 pt-md-5 hero-content" data-aos="fade-right" data-aos-duration="800">
-        <h1 class="fw-bold mb-3" style="color: #093f75; font-size: 2.5rem;">
-          Get The Right Job You Deserve
-        </h1>
-        <p class="mb-4 text-secondary" style="font-size: 1rem; line-height: 1.6;">
-          Each month, more than 3 million job seekers turn to our website in their search for work,
-          making over 140,000 applications every single day.
-        </p>
-        
-        <!-- Search Form -->
-        <form class="d-flex w-100 flex-wrap gap-2 search-container" role="search">
-          <input class="form-control flex-grow-1 rounded-pill px-4 py-2" type="search" id="search-input" placeholder="Search jobs here..." aria-label="Search">
-          <button class="btn rounded-pill fw-semibold px-4" style="background-color: #093f75; color: #fff;" id="search-button">Search</button>
 
+      <!-- Hero Content -->
+      <div
+        class="order-2 order-md-1 col-md-6 px-4 px-md-5 pt-3 pt-md-5 hero-content"
+      >
+        <h1 class="fw-bold mb-3">Get The Right Job You Deserve</h1>
+        <p class="mb-4">
+          Each month, more than 3 million job seekers turn to our website in
+          their search for work, making over 140,000 applications every single
+          day.
+        </p>
+
+        <!-- Search Form -->
+        <form
+          class="d-flex w-100 flex-wrap gap-2 search-container"
+          role="search"
+        >
+          <input
+            class="form-control flex-grow-1 rounded-pill px-4 py-2"
+            type="search"
+            id="search-input"
+            placeholder="Search jobs here..."
+            aria-label="Search"
+          />
+          <button
+            class="btn search-btn rounded-pill fw-semibold px-4"
+            id="search-button"
+          >
+            Search
+          </button>
         </form>
       </div>
     </div>
   </div>
 </section>
 
-
-
-<section style="padding: 60px 0; background: #f9f9f9;">
-  <div style="max-width: 1200px; margin: 0 auto; padding: 0 15px;">
-    <div style="text-align: center; margin-bottom: 3rem;">
-      <h1 style="font-size: 2.5rem; font-weight: 700; color: #093f75; margin-bottom: 0.5rem; letter-spacing: 0.5px;">
-        Latest Jobs Post
-      </h1>
-      <p style="font-size: 1.1rem; color: #888; line-height: 1.6; max-width: 600px; margin: 0 auto;">
-        Explore the different types of available jobs to apply and discover which is right for you.
+<section class="jobs-section">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h1>Latest Jobs Post</h1>
+      <p>
+        Explore the different types of available jobs to apply and discover
+        which is right for you.
       </p>
     </div>
 
-    <div style="display: flex; flex-wrap: wrap; gap: 24px;">
-
+    <div class="job-cards-container">
       <!-- React Native Web Developer -->
-      <div style="flex: 1 1 calc(25% - 24px); background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 1.5rem;">
-        <h5 style="font-size: 1.3rem; font-weight: 600; color: #222; margin-bottom: 1rem;">React Native Web Developer</h5>
-        <div style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
-          <p><i class="fa-solid fa-location-dot" style="color: #093f75; margin-right: 6px;"></i>Mumbai, Maharashtra</p>
-          <p><i class="fa-regular fa-clock" style="color: #093f75; margin-right: 6px;"></i>10 Minutes ago</p>
+      <div class="job-card">
+        <h5>React Native Web Developer</h5>
+        <div class="job-meta">
+          <p><i class="fa-solid fa-location-dot"></i>Mumbai, Maharashtra</p>
+          <p><i class="fa-regular fa-clock"></i>10 Minutes ago</p>
         </div>
-        <ul style="list-style: none; padding: 0; color: #444; font-size: 0.95rem; margin-bottom: 1.2rem;">
-          <li>Remote - Full time / Part Time</li>
-          <li>Experience: 5+ Years</li>
-          <li>Salary: 4 LPA</li>
-          <li>Skills: HTML, CSS, JSX, React</li>
+        <ul class="job-skills">
+          <li><strong>Type:</strong> Remote - Full time / Part Time</li>
+          <li><strong>Experience:</strong> 5+ Years</li>
+          <li><strong>Salary:</strong> 4 LPA</li>
+          <li><strong>Skills:</strong> HTML, CSS, JSX, React</li>
         </ul>
-        <div style="text-align: center;">
-          <a href="{% url 'jobapp:login' %}" onclick="login()" class="btn fw-semibold px-4 py-2 rounded-pill" style="background: #093f75; color: #fff; padding: 0.5rem 1.5rem; font-weight: 600; border-radius: 6px; text-decoration: none;">Apply Now</a>
+        <div class="text-center">
+          <a href="{% url 'jobapp:apply' %}" onclick="login()" class="apply-btn"
+            >Apply Now</a
+          >
         </div>
       </div>
 
       <!-- Digital Marketing Manager -->
-      <div style="flex: 1 1 calc(25% - 24px); background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 1.5rem;">
-        <h5 style="font-size: 1.3rem; font-weight: 600; color: #222; margin-bottom: 1rem;">Digital Marketing Manager</h5>
-        <div style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
-          <p><i class="fa-solid fa-location-dot" style="color: #093f75; margin-right: 6px;"></i>Chicago, US</p>
-          <p><i class="fa-regular fa-clock" style="color: #093f75; margin-right: 6px;"></i>6 Minutes ago</p>
-          <p><i class="fa-solid fa-briefcase" style="color: #093f75; margin-right: 6px;"></i>Full-Time</p>
+      <div class="job-card">
+        <h5>Digital Marketing Manager</h5>
+        <div class="job-meta">
+          <p><i class="fa-solid fa-location-dot"></i>Chicago, US</p>
+          <p><i class="fa-regular fa-clock"></i>6 Minutes ago</p>
+          <p><i class="fa-solid fa-briefcase"></i>Full-Time</p>
         </div>
-        <ul style="list-style: none; padding: 0; color: #444; font-size: 0.95rem; margin-bottom: 1.2rem;">
-          <li>In-depth knowledge of current digital trends</li>
-          <li>Experience in digital marketing</li>
+        <ul class="job-skills">
+          <li><strong>Requirements:</strong> In-depth knowledge of current digital trends</li>
+          <li><strong>Experience:</strong> Experience in digital marketing</li>
         </ul>
-        <div style="text-align: center;">
-          <a href="{% url 'jobapp:login' %}" onclick="login()" class="btn fw-semibold px-4 py-2 rounded-pill" style="background: #093f75; color: #fff; padding: 0.5rem 1.5rem; font-weight: 600; border-radius: 6px; text-decoration: none;">Apply Now</a>
+        <div class="text-center">
+          <a href="{% url 'jobapp:apply' %}" onclick="login()" class="apply-btn"
+            >Apply Now</a
+          >
         </div>
       </div>
 
       <!-- IIB Developer -->
-      <div style="flex: 1 1 calc(25% - 24px); background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 1.5rem;">
-        <h5 style="font-size: 1.3rem; font-weight: 600; color: #222; margin-bottom: 1rem;">IIB Developer</h5>
-        <div style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
-          <p><i class="fa-solid fa-location-dot" style="color: #093f75; margin-right: 6px;"></i>Bangalore</p>
-          <p><i class="fa-regular fa-clock" style="color: #093f75; margin-right: 6px;"></i>28 Minutes ago</p>
-          <p><i class="fa-solid fa-briefcase" style="color: #093f75; margin-right: 6px;"></i>Remote</p>
+      <div class="job-card">
+        <h5>IIB Developer</h5>
+        <div class="job-meta">
+          <p><i class="fa-solid fa-location-dot"></i>Bangalore</p>
+          <p><i class="fa-regular fa-clock"></i>28 Minutes ago</p>
+          <p><i class="fa-solid fa-briefcase"></i>Remote</p>
         </div>
-        <ul style="list-style: none; padding: 0; color: #444; font-size: 0.95rem; margin-bottom: 1.2rem;">
-          <li>Role: Database Administrator</li>
-          <li>Department: Engineering</li>
-          <li>Role Category: DBA / Data warehousing</li>
+        <ul class="job-skills">
+          <li><strong>Role:</strong> Database Administrator</li>
+          <li><strong>Department:</strong> Engineering</li>
+          <li><strong>Category:</strong> DBA / Data warehousing</li>
         </ul>
-        <div style="text-align: center;">
-          <a href="{% url 'jobapp:login' %}" onclick="login()" class="btn fw-semibold px-4 py-2 rounded-pill" style="background: #093f75; color: #fff; padding: 0.5rem 1.5rem; font-weight: 600; border-radius: 6px; text-decoration: none;">Apply Now</a>
+        <div class="text-center">
+          <a href="{% url 'jobapp:apply' %}" onclick="login()" class="apply-btn"
+            >Apply Now</a
+          >
         </div>
       </div>
 
       <!-- Full Stack Developer -->
-      <div style="flex: 1 1 calc(25% - 24px); background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 1.5rem;">
-        <h5 style="font-size: 1.3rem; font-weight: 600; color: #222; margin-bottom: 1rem;">Full Stack Developer</h5>
-        <div style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
-          <p><i class="fa-solid fa-location-dot" style="color: #093f75; margin-right: 6px;"></i>Lucknow, Pradesh</p>
-          <p><i class="fa-regular fa-clock" style="color: #093f75; margin-right: 6px;"></i>2 Hours ago</p>
+      <div class="job-card">
+        <h5>Full Stack Developer</h5>
+        <div class="job-meta">
+          <p><i class="fa-solid fa-location-dot"></i>Lucknow, Pradesh</p>
+          <p><i class="fa-regular fa-clock"></i>2 Hours ago</p>
         </div>
-        <ul style="list-style: none; padding: 0; color: #444; font-size: 0.95rem; margin-bottom: 1.2rem;">
-          <li>Full Time</li>
-          <li>Skills: HTML, CSS, JS, ReactJS, NodeJS</li>
-          <li>Freshers/Experienced</li>
-          <li>Salary: Based On Skill Set</li>
+        <ul class="job-skills">
+          <li><strong>Type:</strong> Full Time</li>
+          <li><strong>Skills:</strong> HTML, CSS, JS, ReactJS, NodeJS</li>
+          <li><strong>Experience:</strong> Freshers/Experienced</li>
+          <li><strong>Salary:</strong> Based On Skill Set</li>
         </ul>
-        <div style="text-align: center;">
-          <a href="{% url 'jobapp:login' %}" onclick="login()" class="btn fw-semibold px-4 py-2 rounded-pill" style="background: #093f75; color: #fff; padding: 0.5rem 1.5rem; font-weight: 600; border-radius: 6px; text-decoration: none;">Apply Now</a>
+        <div class="text-center">
+          <a href="{% url 'jobapp:apply' %}" onclick="apply()" class="apply-btn"
+            >Apply Now</a
+          >
         </div>
       </div>
 
-      <!-- UX/UI Designer -->
-         <div style="flex: 1 1 calc(25% - 24px); background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 1.5rem;">
-        <h5 style="font-size: 1.3rem; font-weight: 600; color: #222; margin-bottom: 1rem;">UI/UX Designer</h5>
-        <div style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
-          <p><i class="fa-solid fa-location-dot" style="color: #093f75; margin-right: 6px;"></i>Lucknow, Pradesh</p>
-          <p><i class="fa-regular fa-clock" style="color: #093f75; margin-right: 6px;"></i>10 Hours ago</p>
+      <!-- UI/UX Designer -->
+      <div class="job-card">
+        <h5>UI/UX Designer</h5>
+        <div class="job-meta">
+          <p><i class="fa-solid fa-location-dot"></i>Lucknow, Pradesh</p>
+          <p><i class="fa-regular fa-clock"></i>10 Hours ago</p>
         </div>
-        <ul style="list-style: none; padding: 0; color: #444; font-size: 0.95rem; margin-bottom: 1.2rem;">
-          <li>Up-to-date knowledge of design softwares</li>
-          <li>BSc in Design, Computer Science or relevant field</li>
-          <li>Good time-management skills</li>
-          <li>Salary: Based On Skill Set</li>
+        <ul class="job-skills">
+          <li><strong>Requirements:</strong> Up-to-date knowledge of design softwares</li>
+          <li><strong>Education:</strong> BSc in Design, Computer Science or relevant field</li>
+          <li><strong>Skills:</strong> Good time-management skills</li>
+          <li><strong>Salary:</strong> Based On Skill Set</li>
         </ul>
-        <div style="text-align: center;">
-          <a href="{% url 'jobapp:login' %}" onclick="login()" class="btn fw-semibold px-4 py-2 rounded-pill" style="background: #093f75; color: #fff; padding: 0.5rem 1.5rem; font-weight: 600; border-radius: 6px; text-decoration: none;">Apply Now</a>
+        <div class="text-center">
+          <a href="{% url 'jobapp:apply' %}" onclick="login()" class="apply-btn"
+            >Apply Now</a
+          >
         </div>
       </div>
-
 
       <!-- Data Scientist -->
-<div style="flex: 1 1 calc(25% - 24px); background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 1.5rem;">
-  <h5 style="font-size: 1.3rem; font-weight: 600; color: #222; margin-bottom: 1rem;">Data Scientist</h5>
-  <div style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
-    <p><i class="fa-solid fa-location-dot" style="color: #093f75; margin-right: 6px;"></i>Lucknow, Pradesh</p>
-    <p><i class="fa-regular fa-clock" style="color: #093f75; margin-right: 6px;"></i>2 Hours ago</p>
-  </div>
-  <ul style="list-style: none; padding: 0; color: #444; font-size: 0.95rem; margin-bottom: 1.2rem;">
-    <li><strong>Job Type:</strong> Full Time</li>
-    <li><strong>Skills:</strong> R, SQL, Python, Java, C++</li>
-    <li><strong>Qualifications:</strong> BSc/BA in Computer Science, Engineering</li>
-    <li>Salary: Based On Skill Set</li>
-  </ul>
-  <div style="text-align: center;">
-    <a href="{% url 'jobapp:login' %}" onclick="login()" class="btn fw-semibold px-4 py-2 rounded-pill" style="background: #093f75; color: #fff; padding: 0.5rem 1.5rem; font-weight: 600; border-radius: 6px; text-decoration: none;">Apply Now</a>
-  </div>
-</div>
+      <div class="job-card">
+        <h5>Data Scientist</h5>
+        <div class="job-meta">
+          <p><i class="fa-solid fa-location-dot"></i>Lucknow, Pradesh</p>
+          <p><i class="fa-regular fa-clock"></i>2 Hours ago</p>
+        </div>
+        <ul class="job-skills">
+          <li><strong>Job Type:</strong> Full Time</li>
+          <li><strong>Skills:</strong> R, SQL, Python, Java, C++</li>
+          <li><strong>Qualifications:</strong> BSc/BA in Computer Science, Engineering</li>
+          <li><strong>Salary:</strong> Based On Skill Set</li>
+        </ul>
+        <div class="text-center">
+          <a href="{% url 'jobapp:apply' %}" onclick="login()" class="apply-btn"
+            >Apply Now</a
+          >
+        </div>
+      </div>
 
-<!-- Nestle Nutrition Officer -->
-<div style="flex: 1 1 calc(25% - 24px); background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 1.5rem;">
-  <h5 style="font-size: 1.3rem; font-weight: 600; color: #222; margin-bottom: 1rem;">Nestle Nutrition Officer</h5>
-  <div style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
-    <p><i class="fa-solid fa-location-dot" style="color: #093f75; margin-right: 6px;"></i>Lucknow, Pradesh</p>
-    <p><i class="fa-regular fa-clock" style="color: #093f75; margin-right: 6px;"></i>2 Hours ago</p>
-    <p><i class="fa-solid fa-briefcase" style="color: #093f75; margin-right: 6px;"></i>Full-Time</p>
-  </div>
-  <ul style="list-style: none; padding: 0; color: #444; font-size: 0.95rem; margin-bottom: 1.2rem;">
-    <li><strong>Company:</strong> Nestle</li>
-    <li><strong>Qualifications:</strong> BSc, BPharm, BTech Graduates can apply</li>
-    <li><strong>Skills:</strong> Communication, Teamwork</li>
-    <li><strong>Salary:</strong> 6 LPA</li>
-  </ul>
-  <div style="text-align: center;">
-    <a href="{% url 'jobapp:login' %}" onclick="login()" class="btn fw-semibold px-4 py-2 rounded-pill" style="background: #093f75; color: #fff; padding: 0.5rem 1.5rem; font-weight: 600; border-radius: 6px; text-decoration: none;">Apply Now</a>
-  </div>
-</div>
-
+      <!-- Nestle Nutrition Officer -->
+      <div class="job-card">
+        <h5>Nestle Nutrition Officer</h5>
+        <div class="job-meta">
+          <p><i class="fa-solid fa-location-dot"></i>Lucknow, Pradesh</p>
+          <p><i class="fa-regular fa-clock"></i>2 Hours ago</p>
+          <p><i class="fa-solid fa-briefcase"></i>Full-Time</p>
+        </div>
+        <ul class="job-skills">
+          <li><strong>Company:</strong> Nestle</li>
+          <li><strong>Qualifications:</strong> BSc, BPharm, BTech Graduates can apply</li>
+          <li><strong>Skills:</strong> Communication, Teamwork</li>
+          <li><strong>Salary:</strong> 6 LPA</li>
+        </ul>
+        <div class="text-center">
+          <a href="{% url 'jobapp:apply' %}" onclick="login()" class="apply-btn"
+            >Apply Now</a
+          >
+        </div>
+      </div>
 
       <!-- Dynamic Job Cards Loop -->
-    <div style="display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between;">
-  {% for j in job %}
-  <div style="flex: 1 1 calc(25% - 24px); background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 1.5rem;">
-    <h5 style="font-size: 1.3rem; font-weight: 600; color: #222; margin-bottom: 1rem;">{{ j.post }}</h5>
-    <div style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
-      <p><i class="fa-solid fa-location-dot" style="color: #093f75; margin-right: 6px;"></i>{{ j.location }}</p>
-      <p><i class="fa-regular fa-clock" style="color: #093f75; margin-right: 6px;"></i>{{ j.posteddate }}</p>
-      <p><i class="fa-solid fa-briefcase" style="color: #093f75; margin-right: 6px;"></i>{{ j.jobtitle }}</p>
-    </div>
-    <ul style="list-style: none; padding: 0; color: #444; font-size: 0.95rem; margin-bottom: 1.2rem;">
-      <li><strong>Company:</strong> {{ j.firmname }}</li>
-      <li><strong>Qualifications:</strong> {{ j.qualification }}</li>
-      <li><strong>Skills:</strong> {{ j.jobdesc }}</li>
-      <li><strong>Salary:</strong> {{ j.salarypa }} LPA</li>
-      <li><strong>Email:</strong> <a href="mailto:{{ j.emailaddress }}" style="color: #7db9f6;">{{ j.emailaddress }}</a></li>
-    </ul>
-    <div style="text-align: center;">
-      <a href="{% url 'jobapp:login' %}" onclick="login()" class="btn fw-semibold px-4 py-2 rounded-pill" style="background: #093f75; color: #fff; padding: 0.5rem 1.5rem; font-weight: 600; border-radius: 6px; text-decoration: none;">Apply Now</a>
-
+      {% for j in job %}
+      <div class="job-card">
+        <h5>{{ j.post }}</h5>
+        <div class="job-meta">
+          <p><i class="fa-solid fa-location-dot"></i>{{ j.location }}</p>
+          <p><i class="fa-regular fa-clock"></i>{{ j.posteddate }}</p>
+          <p><i class="fa-solid fa-briefcase"></i>{{ j.jobtitle }}</p>
+        </div>
+        <ul class="job-skills">
+          <li><strong>Company:</strong> {{ j.firmname }}</li>
+          <li><strong>Qualifications:</strong> {{ j.qualification }}</li>
+          <li><strong>Skills:</strong> {{ j.jobdesc }}</li>
+          <li><strong>Salary:</strong> {{ j.salarypa }} LPA</li>
+          <li>
+            <strong>Email:</strong>
+            <a href="mailto:{{ j.emailaddress }}" style="color: #0ef"
+              >{{ j.emailaddress }}</a
+            >
+          </li>
+        </ul>
+        <div class="text-center">
+          <a href="{% url 'jobapp:apply' %}" onclick="login()" class="apply-btn"
+            >Apply Now</a
+          >
+        </div>
+      </div>
+      {% endfor %}
     </div>
   </div>
-  {% endfor %}
-</div>
-
 </section>
 
 
@@ -843,146 +1153,106 @@
   </div>
 </section>
 
-
-    
-<div style="flex: 1 1 calc(33.33% - 24px); background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 2rem; margin-bottom: 2rem; text-align: center;">
-  <div style="display: flex; justify-content: center; margin-bottom: 1.2rem;">
-    <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(1).webp" alt="Maria Smantha" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">
-  </div>
-  <h5 style="font-size: 1.2rem; font-weight: 600; color: #05284a; margin-bottom: 0.5rem;">Maria Smantha</h5>
-  <h6 style="font-size: 1rem; font-weight: 500; color: #093f75; margin-bottom: 1rem;">Web Developer</h6>
-  <p style="font-size: 0.95rem; color: #64748b; font-style: italic; line-height: 1.5; margin-bottom: 1rem;">
-    <i class="fas fa-quote-left" style="color: #093f75; margin-right: 6px;"></i>
-    I've used several job portals in the past, but this one stands out for its simplicity and ease of use. The interface is intuitive, and I was able to set up my profile and start applying for jobs within minutes. Highly recommended!
-  </p>
-  <div style="color: #facc15; font-size: 1.1rem;">
-    <i class="fas fa-star"></i>
-    <i class="fas fa-star"></i>
-    <i class="fas fa-star"></i>
-    <i class="fas fa-star"></i>
-    <i class="fas fa-star-half-alt"></i>
-  </div>
-</div>
-
-      
-      <div style="flex: 1 1 calc(33.33% - 24px); background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 2rem; margin-bottom: 2rem; text-align: center;">
-  <div style="display: flex; justify-content: center; margin-bottom: 1.2rem;">
-    <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(2).webp" alt="Lisa Cudrow" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">
-  </div>
-  <h5 style="font-size: 1.2rem; font-weight: 600; color: #05284a; margin-bottom: 0.5rem;">Lisa Cudrow</h5>
-  <h6 style="font-size: 1rem; font-weight: 500; color: #093f75; margin-bottom: 1rem;">Graphic Designer</h6>
-  <p style="font-size: 0.95rem; color: #64748b; font-style: italic; line-height: 1.5; margin-bottom: 1rem;">
-    <i class="fas fa-quote-left" style="color: #093f75; margin-right: 6px;"></i>
-    What really impressed me about this job portal is the exceptional customer support. Whenever I had a question or ran into an issue, the support team was quick to respond and incredibly helpful. It's clear they care about their users' success.
-  </p>
-  <div style="color: #facc15; font-size: 1.1rem;">
-    <i class="fas fa-star"></i>
-    <i class="fas fa-star"></i>
-    <i class="fas fa-star"></i>
-    <i class="fas fa-star"></i>
-    <i class="fas fa-star"></i>
-  </div>
-</div>
-
-      
-      <div style="flex: 1 1 calc(33.33% - 24px); background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 2rem; margin-bottom: 2rem; text-align: center;">
-  <div style="display: flex; justify-content: center; margin-bottom: 1.2rem;">
-    <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(9).webp" alt="John Smith" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">
-  </div>
-  <h5 style="font-size: 1.2rem; font-weight: 600; color: #05284a; margin-bottom: 0.5rem;">John Smith</h5>
-  <h6 style="font-size: 1rem; font-weight: 500; color: #093f75; margin-bottom: 1rem;">Marketing Specialist</h6>
-  <p style="font-size: 0.95rem; color: #64748b; font-style: italic; line-height: 1.5; margin-bottom: 1rem;">
-    <i class="fas fa-quote-left" style="color: #093f75; margin-right: 6px;"></i>
-    This platform offers a wide range of job listings across various industries. I was able to find opportunities that matched my skills and interests perfectly. It's the best resource for job seekers I've come across.
-  </p>
-  <div style="color: #facc15; font-size: 1.1rem;">
-    <i class="fas fa-star"></i>
-    <i class="fas fa-star"></i>
-    <i class="fas fa-star"></i>
-    <i class="fas fa-star"></i>
-    <i class="far fa-star"></i>
-  </div>
-</div>
-
-
 <section class="testimonials-section">
-  <div class="container">
-    <div class="row d-flex justify-content-center">
-      <div class="col-md-10 col-xl-8 text-center">
-        <h3 class="mb-5">Our Clients Say !!</h3>
-        <p class="mb-4 pb-2 mb-md-5 pb-md-0">
-          The experiences of our clients with us are truly commendable. DreamJobs helped them to get their<br> 
-          <span style="color: #ffffff; font-style:italic; font-weight: 800; font-size: 1.3rem;">Dream job.</span>
+  <div class="testimonials-container">
+    <h3>Our Clients Say !!</h3>
+    <p>
+      The experiences of our clients with us are truly commendable. DreamJobs
+      helped them to get their<br />
+      <span
+        style="
+          color: #0ef;
+          font-style: italic;
+          font-weight: 800;
+          font-size: 1.3rem;
+        "
+        >Dream job.</span
+      >
+    </p>
+
+    <div class="testimonial-cards">
+      <div class="testimonial-card">
+        <div style="display: flex; justify-content: center">
+          <img
+            src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(1).webp"
+            alt="Maria Smantha"
+          />
+        </div>
+        <h5>Maria Smantha</h5>
+        <h6>Web Developer</h6>
+        <p>
+          <i
+            class="fas fa-quote-left"
+            style="color: #0ef; margin-right: 6px"
+          ></i>
+          I've used several job portals in the past, but this one stands out for
+          its simplicity and ease of use. The interface is intuitive, and I was
+          able to set up my profile and start applying for jobs within minutes.
+          Highly recommended!
         </p>
-      </div>
-    </div>
-    
-    <div class="row text-center">
-      <div class="col-md-4 mb-5 mb-md-0">
-        <div class="testimonial-card">
-          <div class="d-flex justify-content-center mb-4">
-            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(1).webp" class="testimonial-avatar" />
-          </div>
-          <h5 class="mb-3" style="color: var(--dark-blue); font-weight: 600;">Maria Smantha</h5>
-          <h6 class="text-primary mb-3" style="color: var(--primary-blue);">Web Developer</h6>
-          <p class="px-xl-3" style="color: #64748b; font-style: italic;">
-            <i class="fas fa-quote-left pe-2" style="color: var(--accent-cyan);"></i>I've used several job portals in the past, but this one stands out for
-            its simplicity and ease of use. The interface is intuitive, and I was able to set up my profile and start
-            applying for jobs within minutes. Highly recommended!
-          </p>
-          <div class="stars d-flex justify-content-center">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star-half-alt"></i>
-          </div>
+        <div class="stars">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star-half-alt"></i>
         </div>
       </div>
-      
-      <div class="col-md-4 mb-5 mb-md-0">
-        <div class="testimonial-card">
-          <div class="d-flex justify-content-center mb-4">
-            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(2).webp" class="testimonial-avatar" />
-          </div>
-          <h5 class="mb-3" style="color: var(--dark-blue); font-weight: 600;">Lisa Cudrow</h5>
-          <h6 class="text-primary mb-3" style="color: var(--primary-blue);">Graphic Designer</h6>
-          <p class="px-xl-3" style="color: #64748b; font-style: italic;">
-            <i class="fas fa-quote-left pe-2" style="color: var(--accent-cyan);"></i>What really impressed me about this job portal is the exceptional
-            customer support. Whenever I had a question or ran into an issue, the support team was quick to respond and
-            incredibly helpful. It's clear they care about their users' success.
-          </p>
-          <div class="stars d-flex justify-content-center">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-          </div>
+
+      <div class="testimonial-card">
+        <div style="display: flex; justify-content: center">
+          <img
+            src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(2).webp"
+            alt="Lisa Cudrow"
+          />
+        </div>
+        <h5>Lisa Cudrow</h5>
+        <h6>Graphic Designer</h6>
+        <p>
+          <i
+            class="fas fa-quote-left"
+            style="color: #0ef; margin-right: 6px"
+          ></i>
+          What really impressed me about this job portal is the exceptional
+          customer support. Whenever I had a question or ran into an issue, the
+          support team was quick to respond and incredibly helpful. It's clear
+          they care about their users' success.
+        </p>
+        <div class="stars">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
         </div>
       </div>
-      
-      <div class="col-md-4 mb-0">
-        <div class="testimonial-card">
-          <div class="d-flex justify-content-center mb-4">
-            <img src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(9).webp" class="testimonial-avatar" />
-          </div>
-          <h5 class="mb-3" style="color: var(--dark-blue); font-weight: 600;">John Smith</h5>
-          <h6 class="text-primary mb-3" style="color: var(--primary-blue);">Marketing Specialist</h6>
-          <p class="px-xl-3" style="color: #64748b; font-style: italic;">
-            <i class="fas fa-quote-left pe-2" style="color: var(--accent-cyan);"></i>This platform offers a wide range of job listings across various
-            industries. I was able to find opportunities that matched my skills and interests perfectly. It's the best
-            resource for job seekers I've come across.
-          </p>
-          <div class="stars d-flex justify-content-center">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="far fa-star"></i>
-          </div>
+
+      <div class="testimonial-card">
+        <div style="display: flex; justify-content: center">
+          <img
+            src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(9).webp"
+            alt="John Smith"
+          />
         </div>
- master
+        <h5>John Smith</h5>
+        <h6>Marketing Specialist</h6>
+        <p>
+          <i
+            class="fas fa-quote-left"
+            style="color: #0ef; margin-right: 6px"
+          ></i>
+          This platform offers a wide range of job listings across various
+          industries. I was able to find opportunities that matched my skills
+          and interests perfectly. It's the best resource for job seekers I've
+          come across.
+        </p>
+        <div class="stars">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="far fa-star"></i>
+        </div>
       </div>
     </div>
   </div>
@@ -1057,7 +1327,7 @@
                           <li><strong>Email:</strong> <a href="mailto:${job.emailaddress}" style="color: #7db9f6;">${job.emailaddress}</a></li>
                         </ul>
                         <div class="d-flex justify-content-center">
-                          <a href="{% url 'jobapp:login' %}" class="apply-btn" onclick="login()">Apply Now</a>
+                          <a href="{% url 'jobapp:apply' %}" class="apply-btn" onclick="apply()">Apply Now</a>
                         </div>
                       </div>
                     </div>

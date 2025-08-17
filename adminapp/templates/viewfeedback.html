@@ -1,26 +1,1127 @@
-{% extends 'adminparent.html' %}
+{% extends "adminparent.html" %}
+{% block title %}View Feedbacks - Admin Dashboard{% endblock %}
+{% block nav_feedbacks %}active{% endblock %}
 {% block body %}
-<div class="row" style="color: black;">
-    <h1 style="text-align: center;">View Feedbacks</h1>
-    <table class="table table-bordered ">
-        <tr>
-            <th>Name</th>
-            <th>Contactno</th>
-            <th>Email Address</th>
-            <th>Subject</th>
-            <th>Responsetext</th>
-            <th>Posted Date</th>
-        </tr>
-        {% for f in feed %}
-        <tr>
-            <td>{{f.name}}</td>
-            <td>{{f.contactno}}</td>
-            <td>{{f.emailaddress}}</td>
-            <td>{{f.subject}}</td>
-            <td>{{f.responsetext}}</td>
-            <td>{{f.posteddate}}</td>
-        </tr>
-        {% endfor %}
-    </table>
+<div class="admin-home-container">
+  <div class="row">
+    <div class="col-12">
+      <!-- Enhanced Page Header -->
+      <div class="page-header animate-fade-in">
+        <div class="page-header-content">
+          <h1 class="page-title">View All Feedbacks</h1>
+          <p class="page-subtitle">
+            Monitor and analyze user feedback to improve service quality
+          </p>
+        </div>
+      </div>
+
+      <!-- Statistics Cards -->
+      <div
+        class="stats-grid animate-fade-in"
+        style="
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          margin-bottom: 24px;
+        "
+      >
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon info">
+              <i class="fas fa-comments"></i>
+            </div>
+          </div>
+          <div class="stat-number">{{ feed|length }}</div>
+          <div class="stat-label">Total Feedbacks</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon success">
+              <i class="fas fa-thumbs-up"></i>
+            </div>
+          </div>
+          <div class="stat-number">{{ feed|length }}</div>
+          <div class="stat-label">Positive Reviews</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon warning">
+              <i class="fas fa-star"></i>
+            </div>
+          </div>
+          <div class="stat-number">4.8</div>
+          <div class="stat-label">Avg Rating</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon primary">
+              <i class="fas fa-calendar-day"></i>
+            </div>
+          </div>
+          <div class="stat-number">24</div>
+          <div class="stat-label">This Week</div>
+        </div>
+      </div>
+
+      <!-- Search and Filter Section -->
+      <div
+        class="quick-actions animate-fade-in"
+        style="padding: 20px; margin-bottom: 24px"
+      >
+        <div
+          class="d-flex justify-content-between align-items-center flex-wrap gap-3"
+        >
+          <h3 style="margin: 0">
+            <i class="fas fa-search me-2"></i>
+            Search & Filter
+          </h3>
+          <div class="d-flex gap-2 flex-wrap">
+            <div class="input-group" style="width: 300px">
+              <span
+                class="input-group-text"
+                style="
+                  background: var(--bg-light);
+                  border: 2px solid var(--bg-light);
+                "
+              >
+                <i class="fas fa-search" style="color: var(--text-light)"></i>
+              </span>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Search by name, email, or subject..."
+                style="border: 2px solid var(--bg-light); border-left: none"
+                id="feedbackSearch"
+              />
+            </div>
+            <select
+              class="form-select"
+              style="width: 150px; border: 2px solid var(--bg-light)"
+              id="subjectFilter"
+            >
+              <option value="">All Subjects</option>
+              <option value="general">General</option>
+              <option value="complaint">Complaint</option>
+              <option value="suggestion">Suggestion</option>
+              <option value="compliment">Compliment</option>
+            </select>
+            <button
+              class="btn btn-custom"
+              style="
+                background: var(--primary-blue);
+                color: white;
+                padding: 8px 16px;
+              "
+            >
+              <i class="fas fa-filter me-1"></i> Filter
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feedback Table -->
+      <div class="quick-actions animate-fade-in">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 style="margin: 0">
+            <i class="fas fa-comment-dots me-2"></i>
+            Feedback Management
+          </h3>
+          <div class="d-flex gap-2">
+            <button
+              class="btn btn-custom"
+              style="
+                background: var(--success);
+                color: white;
+                padding: 8px 16px;
+              "
+            >
+              <i class="fas fa-check-double me-1"></i> Mark All Reviewed
+            </button>
+            <button
+              class="btn btn-custom"
+              style="background: var(--info); color: white; padding: 8px 16px"
+            >
+              <i class="fas fa-download me-1"></i> Export Report
+            </button>
+          </div>
+        </div>
+
+        {% if feed %}
+        <div
+          class="table-responsive"
+          style="
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-light);
+          "
+        >
+          <table
+            class="table table-hover mb-0"
+            style="background: white"
+            id="feedbackTable"
+          >
+            <thead
+              style="
+                background: linear-gradient(
+                  135deg,
+                  var(--primary-blue),
+                  var(--light-blue)
+                );
+                color: white;
+              "
+            >
+              <tr>
+                <th
+                  style="
+                    padding: 16px;
+                    font-weight: 600;
+                    border: none;
+                    width: 50px;
+                  "
+                >
+                  <i class="fas fa-hashtag me-2"></i>#
+                </th>
+                <th
+                  style="
+                    padding: 16px;
+                    font-weight: 600;
+                    border: none;
+                    cursor: pointer;
+                  "
+                  onclick="sortTable(1)"
+                >
+                  <i class="fas fa-user me-2"></i>Name
+                  <i
+                    class="fas fa-sort ms-2"
+                    style="font-size: 12px; opacity: 0.7"
+                  ></i>
+                </th>
+                <th style="padding: 16px; font-weight: 600; border: none">
+                  <i class="fas fa-phone me-2"></i>Contact
+                </th>
+                <th style="padding: 16px; font-weight: 600; border: none">
+                  <i class="fas fa-envelope me-2"></i>Email
+                </th>
+                <th style="padding: 16px; font-weight: 600; border: none">
+                  <i class="fas fa-tag me-2"></i>Subject
+                </th>
+                <th style="padding: 16px; font-weight: 600; border: none">
+                  <i class="fas fa-comment me-2"></i>Feedback
+                </th>
+                <th
+                  style="
+                    padding: 16px;
+                    font-weight: 600;
+                    border: none;
+                    cursor: pointer;
+                  "
+                  onclick="sortTable(6)"
+                >
+                  <i class="fas fa-calendar me-2"></i>Date
+                  <i
+                    class="fas fa-sort ms-2"
+                    style="font-size: 12px; opacity: 0.7"
+                  ></i>
+                </th>
+                <th
+                  style="
+                    padding: 16px;
+                    font-weight: 600;
+                    border: none;
+                    width: 120px;
+                  "
+                >
+                  <i class="fas fa-cogs me-2"></i>Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for f in feed %}
+              <tr style="transition: var(--transition)" class="feedback-row">
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-light);
+                    font-weight: 500;
+                  "
+                >
+                  {{ forloop.counter }}
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                    font-weight: 600;
+                  "
+                >
+                  <div class="d-flex align-items-center">
+                    <div
+                      class="user-avatar me-3"
+                      style="
+                        width: 36px;
+                        height: 36px;
+                        background: linear-gradient(
+                          135deg,
+                          var(--success),
+                          var(--accent-blue)
+                        );
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: white;
+                        font-weight: 700;
+                        font-size: 14px;
+                      "
+                    >
+                      {{ f.name|first|upper }}
+                    </div>
+                    <div>
+                      <div style="font-weight: 600; color: var(--text-dark)">
+                        {{ f.name }}
+                      </div>
+                      <div style="font-size: 12px; color: var(--text-light)">
+                        Customer
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                  "
+                >
+                  <a
+                    href="tel:{{ f.contactno }}"
+                    style="
+                      color: var(--success);
+                      text-decoration: none;
+                      display: flex;
+                      align-items: center;
+                    "
+                  >
+                    <i class="fas fa-phone me-2" style="font-size: 12px"></i>
+                    {{ f.contactno }}
+                  </a>
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                  "
+                >
+                  <a
+                    href="mailto:{{ f.emailaddress }}"
+                    style="
+                      color: var(--primary-blue);
+                      text-decoration: none;
+                      display: flex;
+                      align-items: center;
+                    "
+                  >
+                    <i class="fas fa-envelope me-2" style="font-size: 12px"></i>
+                    <span
+                      style="
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        max-width: 120px;
+                      "
+                      title="{{ f.emailaddress }}"
+                    >
+                      {{ f.emailaddress }}
+                    </span>
+                  </a>
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                  "
+                >
+                  <span
+                    class="badge"
+                    style="
+                      background: linear-gradient(135deg, var(--info), var(--primary-blue));
+                      color: white;
+                      padding: 6px 12px;
+                      border-radius: 20px;
+                      font-size: 11px;
+                      font-weight: 500;
+                    "
+                  >
+                    <i class="fas fa-tag me-1"></i>{{ f.subject|capfirst }}
+                  </span>
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-dark);
+                    max-width: 250px;
+                  "
+                >
+                  <div
+                    style="
+                      max-height: 60px;
+                      overflow-y: auto;
+                      font-size: 14px;
+                      line-height: 1.4;
+                      padding: 8px;
+                      background: var(--bg-light);
+                      border-radius: 8px;
+                    "
+                    title="{{ f.responsetext }}"
+                  >
+                    {{ f.responsetext|truncatewords:20 }}
+                  </div>
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                    color: var(--text-light);
+                    font-size: 13px;
+                  "
+                >
+                  <span
+                    style="
+                      background: var(--bg-light);
+                      color: var(--text-dark);
+                      padding: 4px 8px;
+                      border-radius: 6px;
+                      font-size: 11px;
+                      font-weight: 500;
+                    "
+                  >
+                    {{ f.posteddate|date:"M d, Y" }}
+                  </span>
+                  <div
+                    style="
+                      font-size: 10px;
+                      color: var(--text-light);
+                      margin-top: 2px;
+                    "
+                  >
+                    {{ f.posteddate|date:"H:i" }}
+                  </div>
+                </td>
+                <td
+                  style="
+                    padding: 16px;
+                    border-bottom: 1px solid var(--bg-light);
+                  "
+                >
+                  <div class="d-flex gap-1">
+                    <button
+                      class="btn btn-sm"
+                      style="
+                        background: var(--info);
+                        color: white;
+                        padding: 6px 8px;
+                        border-radius: 6px;
+                        border: none;
+                      "
+                      title="Reply"
+                      onclick="replyToFeedback('{{ f.emailaddress }}', '{{ f.name }}')"
+                    >
+                      <i class="fas fa-reply"></i>
+                    </button>
+                    <button
+                      class="btn btn-sm"
+                      style="
+                        background: var(--success);
+                        color: white;
+                        padding: 6px 8px;
+                        border-radius: 6px;
+                        border: none;
+                      "
+                      title="Mark as Reviewed"
+                      onclick="markReviewed(this)"
+                    >
+                      <i class="fas fa-check"></i>
+                    </button>
+                    <button
+                      class="btn btn-sm"
+                      style="
+                        background: var(--warning);
+                        color: white;
+                        padding: 6px 8px;
+                        border-radius: 6px;
+                        border: none;
+                      "
+                      title="View Full Feedback"
+                      onclick="viewFullFeedback('{{ f.name }}', '{{ f.subject }}', '{{ f.responsetext|escapejs }}', '{{ f.posteddate|date:"M d, Y H:i" }}')"
+                    >
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="d-flex justify-content-between align-items-center mt-3">
+          <div style="color: var(--text-light); font-size: 14px">
+            Showing {{ feed|length }} of {{ feed|length }} feedbacks
+          </div>
+          <nav>
+            <ul class="pagination mb-0" style="gap: 5px">
+              <li class="page-item">
+                <a
+                  class="page-link"
+                  href="#"
+                  style="
+                    border: 1px solid var(--bg-light);
+                    color: var(--primary-blue);
+                    padding: 8px 12px;
+                    border-radius: 6px;
+                  "
+                  >Previous</a
+                >
+              </li>
+              <li class="page-item active">
+                <a
+                  class="page-link"
+                  href="#"
+                  style="
+                    background: var(--primary-blue);
+                    border: 1px solid var(--primary-blue);
+                    color: white;
+                    padding: 8px 12px;
+                    border-radius: 6px;
+                  "
+                  >1</a
+                >
+              </li>
+              <li class="page-item">
+                <a
+                  class="page-link"
+                  href="#"
+                  style="
+                    border: 1px solid var(--bg-light);
+                    color: var(--primary-blue);
+                    padding: 8px 12px;
+                    border-radius: 6px;
+                  "
+                  >Next</a
+                >
+              </li>
+            </ul>
+          </nav>
+        </div>
+
+        {% else %}
+        <!-- No Feedbacks State -->
+        <div
+          style="
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
+          "
+        >
+          <div
+            style="
+              width: 80px;
+              height: 80px;
+              background: var(--bg-light);
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin: 0 auto 20px;
+            "
+          >
+            <i
+              class="fas fa-comment-slash"
+              style="font-size: 32px; color: var(--info)"
+            ></i>
+          </div>
+          <h4 style="color: var(--text-dark); margin-bottom: 12px">
+            No Feedbacks Found
+          </h4>
+          <p style="color: var(--text-light); font-size: 16px">
+            No user feedback has been submitted yet. Check back later for new
+            feedback from your users.
+          </p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
 </div>
-{% endblock body %}
+
+<!-- Reply Modal -->
+<div class="modal fade" id="replyModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div
+      class="modal-content"
+      style="
+        border-radius: var(--border-radius);
+        border: none;
+        box-shadow: var(--shadow-heavy);
+      "
+    >
+      <div
+        class="modal-header"
+        style="
+          background: linear-gradient(
+            135deg,
+            var(--primary-blue),
+            var(--light-blue)
+          );
+          color: white;
+          border: none;
+        "
+      >
+        <h5 class="modal-title">
+          <i class="fas fa-reply me-2"></i>Reply to Feedback
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+      <div class="modal-body" style="padding: 30px">
+        <form id="replyForm">
+          <div class="mb-3">
+            <label class="form-label" style="font-weight: 600">To:</label>
+            <input
+              type="email"
+              class="form-control"
+              id="replyTo"
+              readonly
+              style="background: var(--bg-light)"
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label" style="font-weight: 600">Subject:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="replySubject"
+              value="Re: Thank you for your feedback"
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label" style="font-weight: 600">Message:</label>
+            <textarea
+              class="form-control"
+              id="replyMessage"
+              rows="6"
+              placeholder="Type your response here..."
+            ></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer" style="border: none; padding: 20px 30px">
+        <button
+          type="button"
+          class="btn btn-custom"
+          style="background: var(--text-light); color: white"
+          data-bs-dismiss="modal"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-custom"
+          style="background: var(--primary-blue); color: white"
+        >
+          <i class="fas fa-paper-plane me-2"></i>Send Reply
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- View Feedback Modal -->
+<div class="modal fade" id="viewFeedbackModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div
+      class="modal-content"
+      style="
+        border-radius: var(--border-radius);
+        border: none;
+        box-shadow: var(--shadow-heavy);
+      "
+    >
+      <div
+        class="modal-header"
+        style="
+          background: linear-gradient(
+            135deg,
+            var(--success),
+            var(--info)
+          );
+          color: white;
+          border: none;
+        "
+      >
+        <h5 class="modal-title">
+          <i class="fas fa-comment-dots me-2"></i>Feedback Details
+        </h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+      <div class="modal-body" style="padding: 30px">
+        <div class="row">
+          <div class="col-md-6">
+            <h6 style="color: var(--text-dark); margin-bottom: 8px">Customer Name:</h6>
+            <p id="modalCustomerName" style="color: var(--text-light); margin-bottom: 20px"></p>
+          </div>
+          <div class="col-md-6">
+            <h6 style="color: var(--text-dark); margin-bottom: 8px">Date Submitted:</h6>
+            <p id="modalDate" style="color: var(--text-light); margin-bottom: 20px"></p>
+          </div>
+        </div>
+        <div class="mb-3">
+          <h6 style="color: var(--text-dark); margin-bottom: 8px">Subject:</h6>
+          <p id="modalSubject" style="color: var(--text-light); margin-bottom: 20px"></p>
+        </div>
+        <div class="mb-3">
+          <h6 style="color: var(--text-dark); margin-bottom: 8px">Full Feedback:</h6>
+          <div 
+            id="modalFeedbackText" 
+            style="
+              background: var(--bg-light); 
+              padding: 20px; 
+              border-radius: 8px; 
+              color: var(--text-dark);
+              line-height: 1.6;
+              max-height: 300px;
+              overflow-y: auto;
+            "
+          ></div>
+        </div>
+      </div>
+      <div class="modal-footer" style="border: none; padding: 20px 30px">
+        <button
+          type="button"
+          class="btn btn-custom"
+          style="background: var(--text-light); color: white"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-custom"
+          style="background: var(--success); color: white"
+          onclick="markAsReviewed()"
+        >
+          <i class="fas fa-check me-2"></i>Mark as Reviewed
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .table-responsive {
+    background: white;
+  }
+
+  .table tbody tr:hover {
+    background-color: var(--bg-light) !important;
+    transform: scale(1.005);
+    box-shadow: var(--shadow-light);
+  }
+
+  .table tbody tr {
+    border: none;
+  }
+
+  .table thead th {
+    border: none;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+  }
+
+  .table thead th:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .stat-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .btn-sm:hover {
+    transform: scale(1.1);
+  }
+
+  .page-link:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-light);
+  }
+
+  .user-avatar {
+    transition: var(--transition);
+  }
+
+  .feedback-row:hover .user-avatar {
+    transform: scale(1.1);
+  }
+
+  .form-control:focus,
+  .form-select:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 0.2rem rgba(3, 3, 114, 0.25);
+  }
+
+  /* Custom scrollbar for feedback text */
+  .table td div::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  .table td div::-webkit-scrollbar-track {
+    background: var(--bg-light);
+    border-radius: 2px;
+  }
+
+  .table td div::-webkit-scrollbar-thumb {
+    background: var(--text-light);
+    border-radius: 2px;
+  }
+
+  .badge {
+    transition: var(--transition);
+  }
+
+  .badge:hover {
+    transform: scale(1.05);
+  }
+
+  @media (max-width: 768px) {
+    .table-responsive {
+      font-size: 12px;
+    }
+
+    .table th,
+    .table td {
+      padding: 8px 6px !important;
+    }
+
+    .page-title {
+      font-size: 28px;
+    }
+
+    .user-avatar {
+      width: 28px !important;
+      height: 28px !important;
+      font-size: 12px !important;
+    }
+
+    .d-flex.gap-3,
+    .d-flex.gap-2 {
+      flex-direction: column;
+      gap: 10px !important;
+    }
+
+    .input-group,
+    .form-select {
+      width: 100% !important;
+    }
+
+    .badge {
+      font-size: 9px !important;
+      padding: 2px 6px !important;
+    }
+  }
+</style>
+
+<script>
+  // Search functionality
+  document
+    .getElementById("feedbackSearch")
+    .addEventListener("keyup", function () {
+      const searchValue = this.value.toLowerCase();
+      const rows = document.querySelectorAll(".feedback-row");
+
+      rows.forEach((row) => {
+        const name = row.cells[1].textContent.toLowerCase();
+        const email = row.cells[3].textContent.toLowerCase();
+        const subject = row.cells[4].textContent.toLowerCase();
+        const feedback = row.cells[5].textContent.toLowerCase();
+
+        if (
+          name.includes(searchValue) ||
+          email.includes(searchValue) ||
+          subject.includes(searchValue) ||
+          feedback.includes(searchValue)
+        ) {
+          row.style.display = "";
+        } else {
+          row.style.display = "none";
+        }
+      });
+    });
+
+  // Subject filter functionality
+  document
+    .getElementById("subjectFilter")
+    .addEventListener("change", function () {
+      const filterValue = this.value.toLowerCase();
+      const rows = document.querySelectorAll(".feedback-row");
+
+      rows.forEach((row) => {
+        const subject = row.cells[4].textContent.toLowerCase();
+
+        if (!filterValue || subject.includes(filterValue)) {
+          row.style.display = "";
+        } else {
+          row.style.display = "none";
+        }
+      });
+    });
+
+  // Sort table functionality
+  function sortTable(columnIndex) {
+    const table = document.getElementById("feedbackTable");
+    const tbody = table.getElementsByTagName("tbody")[0];
+    const rows = Array.from(tbody.getElementsByTagName("tr"));
+
+    rows.sort((a, b) => {
+      const aValue = a.cells[columnIndex].textContent.trim();
+      const bValue = b.cells[columnIndex].textContent.trim();
+      return aValue.localeCompare(bValue);
+    });
+
+    tbody.innerHTML = "";
+    rows.forEach((row) => tbody.appendChild(row));
+  }
+
+  // Reply to feedback functionality
+  function replyToFeedback(email, name) {
+    document.getElementById("replyTo").value = email;
+    document.getElementById(
+      "replySubject"
+    ).value = `Re: Thank you for your feedback - DreamJobs`;
+    document.getElementById(
+      "replyMessage"
+    ).value = `Dear ${name},\n\nThank you for taking the time to provide your valuable feedback. We truly appreciate your input and will use it to improve our services.\n\nBest regards,\nDreamJobs Admin Team`;
+
+    const modal = new bootstrap.Modal(document.getElementById("replyModal"));
+    modal.show();
+  }
+
+  // View full feedback functionality
+  function viewFullFeedback(name, subject, feedback, date) {
+    document.getElementById("modalCustomerName").textContent = name;
+    document.getElementById("modalSubject").textContent = subject;
+    document.getElementById("modalFeedbackText").textContent = feedback;
+    document.getElementById("modalDate").textContent = date;
+
+    const modal = new bootstrap.Modal(document.getElementById("viewFeedbackModal"));
+    modal.show();
+  }
+
+  // Mark as reviewed functionality
+  function markReviewed(button) {
+    button.innerHTML = '<i class="fas fa-check-double"></i>';
+    button.style.background = 'var(--success)';
+    button.title = 'Reviewed';
+    button.disabled = true;
+    
+    // Add visual feedback
+    const row = button.closest('tr');
+    row.style.opacity = '0.7';
+    row.style.background = 'rgba(16, 185, 129, 0.1)';
+    
+    // Show success message
+    showNotification('Feedback marked as reviewed!', 'success');
+  }
+
+  // Mark as reviewed from modal
+  function markAsReviewed() {
+    showNotification('Feedback marked as reviewed!', 'success');
+    const modal = bootstrap.Modal.getInstance(document.getElementById("viewFeedbackModal"));
+    if (modal) {
+      modal.hide();
+    }
+  }
+
+  // Notification system
+  function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `alert alert-${type} position-fixed`;
+    notification.style.cssText = `
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+      min-width: 300px;
+      box-shadow: var(--shadow-medium);
+      border-radius: var(--border-radius);
+      animation: slideInRight 0.3s ease-out;
+    `;
+    
+    const icon = type === 'success' ? 'check-circle' : 
+                 type === 'warning' ? 'exclamation-triangle' : 
+                 type === 'danger' ? 'times-circle' : 'info-circle';
+    
+    notification.innerHTML = `
+      <div class="d-flex align-items-center">
+        <i class="fas fa-${icon} me-2"></i>
+        <span>${message}</span>
+        <button type="button" class="btn-close ms-auto" onclick="this.parentElement.parentElement.remove()"></button>
+      </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Auto remove after 3 seconds
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.style.animation = 'slideOutRight 0.3s ease-in';
+        setTimeout(() => notification.remove(), 300);
+      }
+    }, 3000);
+  }
+
+  // Add hover effects
+  document.querySelectorAll(".btn-sm").forEach((btn) => {
+    btn.addEventListener("mouseenter", function () {
+      this.style.transform = "scale(1.1)";
+    });
+
+    btn.addEventListener("mouseleave", function () {
+      this.style.transform = "scale(1)";
+    });
+  });
+
+  // Add animation keyframes
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes slideInRight {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    @keyframes slideOutRight {
+      from {
+        transform: translateX(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+    }
+    
+    .feedback-row:hover {
+      background: var(--bg-light) !important;
+    }
+    
+    .reviewed-row {
+      opacity: 0.7;
+      background: rgba(16, 185, 129, 0.05) !important;
+    }
+    
+    .stat-card {
+      cursor: pointer;
+    }
+    
+    .stat-card:hover .stat-icon {
+      transform: scale(1.1) rotate(5deg);
+    }
+    
+    .badge:hover {
+      transform: scale(1.05);
+      cursor: default;
+    }
+    
+    .table thead th:hover {
+      background: rgba(255, 255, 255, 0.1) !important;
+      cursor: pointer;
+    }
+    
+    .quick-actions {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .quick-actions::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(3, 3, 114, 0.05), transparent);
+      transition: left 0.5s ease;
+    }
+    
+    .quick-actions:hover::before {
+      left: 100%;
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Initialize tooltips for better UX
+  document.addEventListener('DOMContentLoaded', function() {
+    // Add loading states
+    const actionButtons = document.querySelectorAll('.btn-sm');
+    actionButtons.forEach(button => {
+      button.addEventListener('click', function(e) {
+        if (this.classList.contains('loading')) return;
+        
+        const originalHTML = this.innerHTML;
+        this.classList.add('loading');
+        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        this.disabled = true;
+        
+        // Simulate processing time
+        setTimeout(() => {
+          this.innerHTML = originalHTML;
+          this.classList.remove('loading');
+          this.disabled = false;
+        }, 1000);
+      });
+    });
+    
+    // Add smooth scroll to top functionality
+    const pageHeader = document.querySelector('.page-header');
+    if (pageHeader) {
+      pageHeader.style.cursor = 'pointer';
+      pageHeader.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+    
+    // Add real-time search counter
+    const searchInput = document.getElementById('feedbackSearch');
+    const searchCounter = document.createElement('small');
+    searchCounter.className = 'text-muted ms-2';
+    searchInput.parentNode.appendChild(searchCounter);
+    
+    searchInput.addEventListener('input', function() {
+      const visibleRows = document.querySelectorAll('.feedback-row:not([style*="display: none"])').length;
+      const totalRows = document.querySelectorAll('.feedback-row').length;
+      searchCounter.textContent = `Showing ${visibleRows} of ${totalRows} results`;
+    });
+  });
+</script>
+{% endblock %}

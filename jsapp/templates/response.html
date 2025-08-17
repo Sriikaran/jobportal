@@ -1,40 +1,1684 @@
 {% extends "jsparent.html" %}
+{% load static %}
+
+{% block title %}Question Responses - JobSeeker Dashboard{% endblock %}
+
 {% block body %}
-<div class="row">
-    <div class="col-sm-12 w-75 mx auto">
-        <h1 class="text-center">Response</h1>
-        {% if msg %}
-         <div class="alert alert-dark" role="alert">{{msg}}</div>
-        {% endif %}
-      <div class="w-75 mx auto">
-        <form method="post" class="'form-group">
-            {% csrf_token %}
-        <table class="table text-dark">
-            <tr>
-                <td>Enter Select Response Type</td>
-                <td>
-                    <select name="responsetype" class="form-select">
-                    <option selected>--Select Response Type--</option>
-                    <option value="feedback">Feedback</option>
-                    <option value="complaint">Complaint</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>Enter Subject</td>
-                <td><input type="text" name="subject" class="form-control" placeholder="ex. about portal" style="background-color: transparent;"></td>
-            </tr>
-            <tr>
-                <td>Enter Message</td>
-                <td><textarea name="responsetext" class="form-control" placeholder="Ex. What can we improve" rows="5" style="background-color: transparent;"></textarea></td>
-            </tr>
-            <tr>
-                <td>
-                </td>
-                <td><button type="submit" class="btn btn-success">Send</button></td></tr>
-        </table>
-        </form>
+
+<style>
+    /* Enhanced Responses Page Styles - Using Parent Variables */
+    .responses-hero {
+        background: var(--gradient-primary);
+        position: relative;
+        overflow: hidden;
+        margin: -32px -32px 32px -32px;
+        border-radius: 0 0 var(--border-radius-xl) var(--border-radius-xl);
+        box-shadow: var(--shadow-xl);
+    }
+
+    .responses-hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: 
+            radial-gradient(circle at 30% 40%, rgba(255,255,255,0.1) 0%, transparent 50%),
+            radial-gradient(circle at 70% 60%, rgba(255,255,255,0.08) 0%, transparent 50%);
+        pointer-events: none;
+    }
+
+    .responses-hero::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        padding: 64px 32px;
+        text-align: center;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 24px;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        line-height: 1.1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+
+    .hero-title i {
+        font-size: 3rem;
+        opacity: 0.9;
+        animation: pulse 2s ease-in-out infinite;
+    }
+
+    .hero-subtitle {
+        font-size: 1.25rem;
+        color: rgba(255,255,255,0.9);
+        font-weight: 400;
+        margin-bottom: 40px;
+        line-height: 1.6;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 24px;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .hero-stat {
+        background: rgba(255,255,255,0.1);
+        padding: 20px;
+        border-radius: var(--border-radius-lg);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.2);
+        transition: var(--transition-medium);
+        text-align: center;
+    }
+
+    .hero-stat:hover {
+        background: rgba(255,255,255,0.15);
+        transform: translateY(-2px);
+    }
+
+    .hero-stat-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .hero-stat-label {
+        color: rgba(255,255,255,0.9);
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    /* Filter and Search Section */
+    .filters-section {
+        background: var(--bg-primary);
+        border-radius: var(--border-radius-xl);
+        box-shadow: var(--shadow-lg);
+        border: 1px solid var(--border-light);
+        padding: 32px;
+        margin-bottom: 32px;
+        position: relative;
+    }
+
+    .filters-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--gradient-primary);
+        border-radius: var(--border-radius-xl) var(--border-radius-xl) 0 0;
+    }
+
+    .filters-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .filters-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .filters-controls {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .search-input {
+        padding: 12px 16px 12px 40px;
+        border: 2px solid var(--border-light);
+        border-radius: var(--border-radius-lg);
+        font-size: 0.9375rem;
+        width: 300px;
+        background: var(--bg-tertiary);
+        color: var(--text-dark);
+        transition: var(--transition-medium);
+        position: relative;
+    }
+
+    .search-input:focus {
+        outline: none;
+        border-color: var(--primary-blue);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        background: var(--bg-primary);
+    }
+
+    .search-container {
+        position: relative;
+    }
+
+    .search-container i {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-light);
+        font-size: 1rem;
+    }
+
+    .filter-dropdown {
+        padding: 12px 16px;
+        border: 2px solid var(--border-light);
+        border-radius: var(--border-radius-lg);
+        font-size: 0.9375rem;
+        background: var(--bg-tertiary);
+        color: var(--text-dark);
+        cursor: pointer;
+        transition: var(--transition-medium);
+        min-width: 140px;
+    }
+
+    .filter-dropdown:focus {
+        outline: none;
+        border-color: var(--primary-blue);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        background: var(--bg-primary);
+    }
+
+    /* Response Items */
+    .responses-container {
+        display: grid;
+        gap: 24px;
+    }
+
+    .response-item {
+        background: var(--bg-primary);
+        border-radius: var(--border-radius-xl);
+        box-shadow: var(--shadow-lg);
+        border: 1px solid var(--border-light);
+        overflow: hidden;
+        transition: var(--transition-medium);
+        position: relative;
+    }
+
+    .response-item:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-xl);
+    }
+
+    .response-header {
+        background: var(--bg-tertiary);
+        padding: 24px;
+        border-bottom: 1px solid var(--border-light);
+        position: relative;
+    }
+
+    .response-status {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .response-status.answered {
+        background: rgba(5, 150, 105, 0.1);
+        color: #047857;
+        border: 1px solid rgba(5, 150, 105, 0.2);
+    }
+
+    .response-status.pending {
+        background: rgba(245, 158, 11, 0.1);
+        color: #d97706;
+        border: 1px solid rgba(245, 158, 11, 0.2);
+    }
+
+    .response-status.processing {
+        background: rgba(37, 99, 235, 0.1);
+        color: #2563eb;
+        border: 1px solid rgba(37, 99, 235, 0.2);
+    }
+
+    .response-meta {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+    }
+
+    .response-category {
+        background: var(--light-blue);
+        color: var(--primary-blue);
+        padding: 4px 12px;
+        border-radius: 16px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .response-priority {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.875rem;
+        color: var(--text-medium);
+    }
+
+    .priority-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+    }
+
+    .priority-dot.low {
+        background: #10b981;
+    }
+
+    .priority-dot.medium {
+        background: #f59e0b;
+    }
+
+    .priority-dot.high {
+        background: #ef4444;
+    }
+
+    .response-date {
+        font-size: 0.875rem;
+        color: var(--text-light);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .response-question {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        line-height: 1.5;
+        margin-bottom: 12px;
+    }
+
+    .response-preview {
+        color: var(--text-medium);
+        font-size: 0.9375rem;
+        line-height: 1.6;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .response-body {
+        padding: 24px;
+    }
+
+    .response-answer {
+        background: var(--gradient-bg);
+        padding: 24px;
+        border-radius: var(--border-radius-lg);
+        margin-bottom: 20px;
+        border: 1px solid var(--border-light);
+    }
+
+    .response-answer-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .expert-avatar {
+        width: 40px;
+        height: 40px;
+        background: var(--gradient-primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+        font-size: 1.125rem;
+    }
+
+    .expert-info h4 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin: 0;
+    }
+
+    .expert-info .expert-title {
+        font-size: 0.8125rem;
+        color: var(--text-medium);
+        margin: 0;
+    }
+
+    .response-answer-content {
+        color: var(--text-dark);
+        font-size: 0.9375rem;
+        line-height: 1.7;
+    }
+
+    .response-actions {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 16px;
+        border-top: 1px solid var(--border-light);
+        flex-wrap: wrap;
+    }
+
+    .response-actions-left {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+    }
+
+    .response-actions-right {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .action-btn {
+        padding: 8px 16px;
+        border-radius: var(--border-radius-md);
+        font-size: 0.8125rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: var(--transition-medium);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 2px solid transparent;
+        cursor: pointer;
+    }
+
+    .action-btn.primary {
+        background: var(--gradient-primary);
+        color: white;
+    }
+
+    .action-btn.primary:hover {
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+        color: white;
+        text-decoration: none;
+    }
+
+    .action-btn.secondary {
+        background: var(--bg-tertiary);
+        color: var(--text-medium);
+        border-color: var(--border-light);
+    }
+
+    .action-btn.secondary:hover {
+        background: var(--bg-primary);
+        color: var(--primary-blue);
+        border-color: var(--primary-blue);
+        text-decoration: none;
+    }
+
+    .action-btn.success {
+        background: rgba(5, 150, 105, 0.1);
+        color: #047857;
+        border-color: rgba(5, 150, 105, 0.2);
+    }
+
+    .action-btn.success:hover {
+        background: rgba(5, 150, 105, 0.15);
+        transform: translateY(-1px);
+        text-decoration: none;
+        color: #047857;
+    }
+
+    /* Rating System */
+    .rating-section {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.875rem;
+        color: var(--text-medium);
+    }
+
+    .star-rating {
+        display: flex;
+        gap: 2px;
+    }
+
+    .star-rating i {
+        color: #fbbf24;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: var(--transition-fast);
+    }
+
+    .star-rating i.far {
+        color: var(--border-light);
+    }
+
+    .star-rating i:hover {
+        transform: scale(1.1);
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 80px 32px;
+        background: var(--bg-primary);
+        border-radius: var(--border-radius-xl);
+        box-shadow: var(--shadow-lg);
+        border: 1px solid var(--border-light);
+    }
+
+    .empty-state-icon {
+        font-size: 4rem;
+        color: var(--text-light);
+        margin-bottom: 24px;
+        opacity: 0.5;
+    }
+
+    .empty-state-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--text-medium);
+        margin-bottom: 16px;
+    }
+
+    .empty-state-text {
+        color: var(--text-light);
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 32px;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .empty-state-btn {
+        background: var(--gradient-primary);
+        color: white;
+        padding: 16px 32px;
+        border-radius: var(--border-radius-lg);
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: var(--transition-medium);
+        box-shadow: var(--shadow-md);
+    }
+
+    .empty-state-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+        color: white;
+        text-decoration: none;
+    }
+
+    /* Quick Actions Bar */
+    .quick-actions {
+        background: var(--bg-primary);
+        border-radius: var(--border-radius-xl);
+        padding: 24px;
+        margin-bottom: 32px;
+        box-shadow: var(--shadow-lg);
+        border: 1px solid var(--border-light);
+    }
+
+    .quick-actions-title {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .quick-actions-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+    }
+
+    .quick-action-btn {
+        background: var(--bg-tertiary);
+        border: 2px solid var(--border-light);
+        padding: 20px;
+        border-radius: var(--border-radius-lg);
+        text-align: center;
+        text-decoration: none;
+        color: var(--text-dark);
+        transition: var(--transition-medium);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .quick-action-btn:hover {
+        background: var(--light-blue);
+        border-color: var(--primary-blue);
+        color: var(--primary-blue);
+        transform: translateY(-2px);
+        text-decoration: none;
+    }
+
+    .quick-action-icon {
+        font-size: 1.5rem;
+        color: var(--primary-blue);
+    }
+
+    .quick-action-text {
+        font-weight: 600;
+        font-size: 0.9375rem;
+    }
+
+    /* Pagination */
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        margin-top: 40px;
+        padding: 24px;
+    }
+
+    .pagination-btn {
+        padding: 8px 11px;
+        border: 2px solid var(--border-light);
+        background: var(--bg-primary);
+        color: var(--text-medium);
+        border-radius: var(--border-radius-md);
+        text-decoration: none;
+        font-weight: 600;
+        transition: var(--transition-medium);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.9rem;
+    }
+
+    .pagination-btn:hover {
+        background: var(--light-blue);
+        border-color: var(--primary-blue);
+        color: var(--primary-blue);
+        text-decoration: none;
+    }
+
+    .pagination-btn.active {
+        background: var(--primary-blue);
+        border-color: var(--primary-blue);
+        color: white;
+    }
+
+    .pagination-btn.disabled {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.5rem;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .hero-stats {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        
+        .filters-header {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .filters-controls {
+            flex-direction: column;
+        }
+        
+        .search-input {
+            width: 100%;
+        }
+        
+        .response-meta {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        
+        .response-actions {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 16px;
+        }
+        
+        .response-actions-left,
+        .response-actions-right {
+            justify-content: center;
+        }
+        
+        .quick-actions-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .pagination {
+            flex-wrap: wrap;
+        }
+        
+        .responses-hero {
+            margin: -16px -16px 16px -16px;
+        }
+        
+        .hero-content {
+            padding: 48px 16px;
+        }
+        
+        .filters-section,
+        .quick-actions {
+            padding: 20px;
+        }
+        
+        .response-header,
+        .response-body {
+            padding: 20px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .hero-title {
+            font-size: 2rem;
+        }
+        
+        .hero-stats {
+            grid-template-columns: 1fr;
+        }
+        
+        .response-actions-left,
+        .response-actions-right {
+            flex-direction: column;
+            width: 100%;
+        }
+        
+        .action-btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+    /* Animations */
+    @keyframes pulse {
+        0%, 100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.05);
+            opacity: 0.8;
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .fade-in {
+        animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    .response-item {
+        animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    .response-item:nth-child(1) { animation-delay: 0.1s; }
+    .response-item:nth-child(2) { animation-delay: 0.2s; }
+    .response-item:nth-child(3) { animation-delay: 0.3s; }
+    .response-item:nth-child(4) { animation-delay: 0.4s; }
+    .response-item:nth-child(5) { animation-delay: 0.5s; }
+
+    /* Loading States */
+    .loading {
+        opacity: 0.7;
+        pointer-events: none;
+    }
+
+    .skeleton {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+    }
+
+    @keyframes loading {
+        0% {
+            background-position: 200% 0;
+        }
+        100% {
+            background-position: -200% 0;
+        }
+    }
+
+    /* Accessibility */
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+
+    /* Focus indicators */
+    .action-btn:focus,
+    .search-input:focus,
+    .filter-dropdown:focus {
+        outline: 2px solid var(--primary-blue);
+        outline-offset: 2px;
+    }
+</style>
+
+<!-- Hero Section -->
+<div class="responses-hero">
+    <div class="hero-content">
+        <h1 class="hero-title">
+            <i class="fas fa-comments"></i>
+            Your Responses
+        </h1>
+        <p class="hero-subtitle">
+            Track and manage all your question responses in one place. Get expert insights to boost your career journey.
+        </p>
+        
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <span class="hero-stat-number">12</span>
+                <div class="hero-stat-label">Total Questions</div>
+            </div>
+            <div class="hero-stat">
+                <span class="hero-stat-number">8</span>
+                <div class="hero-stat-label">Answered</div>
+            </div>
+            <div class="hero-stat">
+                <span class="hero-stat-number">3</span>
+                <div class="hero-stat-label">Pending</div>
+            </div>
+            <div class="hero-stat">
+                <span class="hero-stat-number">4.8</span>
+                <div class="hero-stat-label">Avg Rating</div>
+            </div>
+        </div>
     </div>
 </div>
+
+<!-- Quick Actions -->
+<div class="quick-actions fade-in">
+    <h3 class="quick-actions-title">
+        <i class="fas fa-bolt"></i>
+        Quick Actions
+    </h3>
+    <div class="quick-actions-grid">
+        <a href="discussion.html" class="quick-action-btn">
+            <i class="fas fa-plus-circle quick-action-icon"></i>
+            <span class="quick-action-text">Ask New Question</span>
+        </a>
+        <a href="#" class="quick-action-btn">
+            <i class="fas fa-calendar-alt quick-action-icon"></i>
+            <span class="quick-action-text">Schedule Consultation</span>
+        </a>
+        <a href="#" class="quick-action-btn">
+            <i class="fas fa-star quick-action-icon"></i>
+            <span class="quick-action-text">Rate Responses</span>
+        </a>
+        <a href="#" class="quick-action-btn">
+            <i class="fas fa-download quick-action-icon"></i>
+            <span class="quick-action-text">Export Responses</span>
+        </a>
+    </div>
 </div>
+
+<!-- Filters Section -->
+<div class="filters-section fade-in">
+    <div class="filters-header">
+        <h3 class="filters-title">
+            <i class="fas fa-filter"></i>
+            Filter & Search
+        </h3>
+        <div class="filters-controls">
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" class="search-input" placeholder="Search questions..." id="searchInput">
+            </div>
+            <select class="filter-dropdown" id="statusFilter">
+                <option value="">All Status</option>
+                <option value="answered">Answered</option>
+                <option value="pending">Pending</option>
+                <option value="processing">Processing</option>
+            </select>
+            <select class="filter-dropdown" id="categoryFilter">
+                <option value="">All Categories</option>
+                <option value="job-search">Job Search</option>
+                <option value="career-advice">Career Advice</option>
+                <option value="interview">Interview</option>
+                <option value="resume">Resume</option>
+                <option value="salary">Salary</option>
+                <option value="general">General</option>
+            </select>
+            <select class="filter-dropdown" id="sortFilter">
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="priority">Priority</option>
+                <option value="rating">Rating</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<!-- Responses Container -->
+<div class="responses-container" id="responsesContainer">
+    
+    <!-- Sample Response Item 1 - Answered -->
+    <div class="response-item" data-status="answered" data-category="interview" data-priority="high">
+        <div class="response-header">
+            <div class="response-status answered">Answered</div>
+            <div class="response-meta">
+                <div class="response-category">
+                    <i class="fas fa-comments"></i>
+                    Interview
+                </div>
+                <div class="response-priority">
+                    <div class="priority-dot high"></div>
+                    High Priority
+                </div>
+                <div class="response-date">
+                    <i class="fas fa-clock"></i>
+                    2 days ago
+                </div>
+            </div>
+            <h3 class="response-question">
+                How should I prepare for a technical interview at a tech startup?
+            </h3>
+            <p class="response-preview">
+                I have an interview coming up next week for a software engineer position at a growing tech startup...
+            </p>
+        </div>
+        
+        <div class="response-body">
+            <div class="response-answer">
+                <div class="response-answer-header">
+                    <div class="expert-avatar">JS</div>
+                    <div class="expert-info">
+                        <h4>Sarah Johnson</h4>
+                        <p class="expert-title">Senior Tech Recruiter</p>
+                    </div>
+                </div>
+                <div class="response-answer-content">
+                    <p>Great question! Technical interviews at startups require a mix of technical skills and cultural fit demonstration. Here's my comprehensive approach:</p>
+                    
+                    <p><strong>Technical Preparation:</strong><br>
+                    • Review fundamental algorithms and data structures<br>
+                    • Practice coding problems on platforms like LeetCode<br>
+                    • Understand system design basics<br>
+                    • Research their tech stack specifically</p>
+                    
+                    <p><strong>Startup Culture Fit:</strong><br>
+                    • Show adaptability and willingness to wear multiple hats<br>
+                    • Demonstrate problem-solving with limited resources<br>
+                    • Express genuine interest in their mission and product</p>
+                </div>
+            </div>
+            
+            <div class="response-actions">
+                <div class="response-actions-left">
+                    <div class="rating-section">
+                        <span>Rate this response:</span>
+                        <div class="star-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="response-actions-right">
+                    <a href="#" class="action-btn success">
+                        <i class="fas fa-heart"></i>
+                        Helpful
+                    </a>
+                    <a href="#" class="action-btn secondary">
+                        <i class="fas fa-reply"></i>
+                        Follow Up
+                    </a>
+                    <a href="#" class="action-btn secondary">
+                        <i class="fas fa-share"></i>
+                        Share
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sample Response Item 2 - Pending -->
+    <div class="response-item" data-status="pending" data-category="salary" data-priority="medium">
+        <div class="response-header">
+            <div class="response-status pending">Pending</div>
+            <div class="response-meta">
+                <div class="response-category">
+                    <i class="fas fa-dollar-sign"></i>
+                    Salary
+                </div>
+                <div class="response-priority">
+                    <div class="priority-dot medium"></div>
+                    Medium Priority
+                </div>
+                <div class="response-date">
+                    <i class="fas fa-clock"></i>
+                    1 day ago
+                </div>
+            </div>
+            <h3 class="response-question">
+                What's the best strategy for negotiating salary in my first job?
+            </h3>
+            <p class="response-preview">
+                I'm a recent graduate and just received a job offer. How should I approach salary negotiation without seeming ungrateful...
+            </p>
+        </div>
+        
+        <div class="response-body">
+            <div style="background: var(--gradient-bg); padding: 24px; border-radius: var(--border-radius-lg); text-align: center; color: var(--text-medium);">
+                <i class="fas fa-hourglass-half" style="font-size: 2rem; margin-bottom: 16px; color: #f59e0b;"></i>
+                <p style="margin: 0; font-weight: 600;">Your question is being reviewed by our experts</p>
+                <p style="margin: 8px 0 0 0; font-size: 0.875rem;">Expected response time: 24-48 hours</p>
+            </div>
+            
+            <div class="response-actions" style="border-top: none; padding-top: 24px;">
+                <div class="response-actions-left">
+                    <span style="color: var(--text-light); font-size: 0.875rem;">
+                        <i class="fas fa-info-circle"></i>
+                        You'll be notified when an expert responds
+                    </span>
+                </div>
+                <div class="response-actions-right">
+                    <a href="#" class="action-btn secondary">
+                        <i class="fas fa-edit"></i>
+                        Edit Question
+                    </a>
+                    <a href="#" class="action-btn secondary">
+                        <i class="fas fa-flag"></i>
+                        Mark Urgent
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sample Response Item 3 - Processing -->
+    <div class="response-item" data-status="processing" data-category="resume" data-priority="low">
+        <div class="response-header">
+            <div class="response-status processing">Processing</div>
+            <div class="response-meta">
+                <div class="response-category">
+                    <i class="fas fa-file-alt"></i>
+                    Resume
+                </div>
+                <div class="response-priority">
+                    <div class="priority-dot low"></div>
+                    Low Priority
+                </div>
+                <div class="response-date">
+                    <i class="fas fa-clock"></i>
+                    3 hours ago
+                </div>
+            </div>
+            <h3 class="response-question">
+                Should I include my GPA on my resume if it's below 3.5?
+            </h3>
+            <p class="response-preview">
+                My GPA is 3.2 and I'm wondering if I should include it on my resume or leave it off completely...
+            </p>
+        </div>
+        
+        <div class="response-body">
+            <div style="background: var(--light-blue); padding: 24px; border-radius: var(--border-radius-lg); text-align: center; color: var(--primary-blue);">
+                <i class="fas fa-cog fa-spin" style="font-size: 2rem; margin-bottom: 16px;"></i>
+                <p style="margin: 0; font-weight: 600;">An expert is currently working on your response</p>
+                <p style="margin: 8px 0 0 0; font-size: 0.875rem;">This usually takes 2-6 hours</p>
+            </div>
+            
+            <div class="response-actions" style="border-top: none; padding-top: 24px;">
+                <div class="response-actions-left">
+                    <span style="color: var(--text-light); font-size: 0.875rem;">
+                        <i class="fas fa-user-tie"></i>
+                        Assigned to Resume Specialist
+                    </span>
+                </div>
+                <div class="response-actions-right">
+                    <a href="#" class="action-btn secondary">
+                        <i class="fas fa-plus"></i>
+                        Add Details
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sample Response Item 4 - Answered with Different Expert -->
+    <div class="response-item" data-status="answered" data-category="career-advice" data-priority="medium">
+        <div class="response-header">
+            <div class="response-status answered">Answered</div>
+            <div class="response-meta">
+                <div class="response-category">
+                    <i class="fas fa-chart-line"></i>
+                    Career Advice
+                </div>
+                <div class="response-priority">
+                    <div class="priority-dot medium"></div>
+                    Medium Priority
+                </div>
+                <div class="response-date">
+                    <i class="fas fa-clock"></i>
+                    1 week ago
+                </div>
+            </div>
+            <h3 class="response-question">
+                How do I transition from marketing to product management?
+            </h3>
+            <p class="response-preview">
+                I've been in marketing for 3 years and want to move into product management. What steps should I take...
+            </p>
+        </div>
+        
+        <div class="response-body">
+            <div class="response-answer">
+                <div class="response-answer-header">
+                    <div class="expert-avatar">MR</div>
+                    <div class="expert-info">
+                        <h4>Michael Rodriguez</h4>
+                        <p class="expert-title">Product Management Director</p>
+                    </div>
+                </div>
+                <div class="response-answer-content">
+                    <p>Excellent career move! Your marketing background actually gives you a strong foundation for PM. Here's a strategic transition plan:</p>
+                    
+                    <p><strong>Leverage Your Marketing Skills:</strong><br>
+                    • Customer research and user insights<br>
+                    • Market analysis and competitive intelligence<br>
+                    • Go-to-market strategy experience<br>
+                    • Cross-functional collaboration</p>
+                    
+                    <p><strong>Build PM-Specific Skills:</strong><br>
+                    • Learn product analytics tools (Mixpanel, Amplitude)<br>
+                    • Understand basic technical concepts<br>
+                    • Study product frameworks (Jobs-to-be-Done, OKRs)<br>
+                    • Get familiar with roadmapping tools</p>
+                    
+                    <p><strong>Transition Strategy:</strong><br>
+                    • Look for "Product Marketing Manager" roles as a bridge<br>
+                    • Volunteer for product-related projects in current role<br>
+                    • Take PM courses (Google, Stanford, etc.)<br>
+                    • Network with PMs in your industry</p>
+                </div>
+            </div>
+            
+            <div class="response-actions">
+                <div class="response-actions-left">
+                    <div class="rating-section">
+                        <span>Rate this response:</span>
+                        <div class="star-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="response-actions-right">
+                    <a href="#" class="action-btn success">
+                        <i class="fas fa-heart"></i>
+                        Helpful
+                    </a>
+                    <a href="#" class="action-btn secondary">
+                        <i class="fas fa-reply"></i>
+                        Follow Up
+                    </a>
+                    <a href="#" class="action-btn secondary">
+                        <i class="fas fa-bookmark"></i>
+                        Save
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Pagination -->
+<div class="pagination">
+    <a href="#" class="pagination-btn disabled">
+        <i class="fas fa-chevron-left"></i>
+        Previous
+    </a>
+    <a href="#" class="pagination-btn active">1</a>
+    <a href="#" class="pagination-btn">2</a>
+    <a href="#" class="pagination-btn">3</a>
+    <span class="pagination-btn" style="border: none; background: none;">...</span>
+    <a href="#" class="pagination-btn">8</a>
+    <a href="#" class="pagination-btn">
+        Next
+        <i class="fas fa-chevron-right"></i>
+    </a>
+</div>
+
+<!-- Empty State (Hidden by default, shown when no results) -->
+<div class="empty-state" id="emptyState" style="display: none;">
+    <div class="empty-state-icon">
+        <i class="fas fa-search"></i>
+    </div>
+    <h3 class="empty-state-title">No responses found</h3>
+    <p class="empty-state-text">
+        We couldn't find any responses matching your search criteria. 
+        Try adjusting your filters or ask a new question to get started.
+    </p>
+    <a href="discussion.html" class="empty-state-btn">
+        <i class="fas fa-plus-circle"></i>
+        Ask Your First Question
+    </a>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Search and Filter functionality
+    const searchInput = document.getElementById('searchInput');
+    const statusFilter = document.getElementById('statusFilter');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const sortFilter = document.getElementById('sortFilter');
+    const responsesContainer = document.getElementById('responsesContainer');
+    const emptyState = document.getElementById('emptyState');
+    
+    let responses = Array.from(document.querySelectorAll('.response-item'));
+
+    // Search functionality
+    function performSearch() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const statusValue = statusFilter.value;
+        const categoryValue = categoryFilter.value;
+        
+        let visibleCount = 0;
+        
+        responses.forEach(response => {
+            const question = response.querySelector('.response-question').textContent.toLowerCase();
+            const preview = response.querySelector('.response-preview').textContent.toLowerCase();
+            const status = response.getAttribute('data-status');
+            const category = response.getAttribute('data-category');
+            
+            const matchesSearch = searchTerm === '' || 
+                                question.includes(searchTerm) || 
+                                preview.includes(searchTerm);
+            const matchesStatus = statusValue === '' || status === statusValue;
+            const matchesCategory = categoryValue === '' || category === categoryValue;
+            
+            if (matchesSearch && matchesStatus && matchesCategory) {
+                response.style.display = 'block';
+                visibleCount++;
+            } else {
+                response.style.display = 'none';
+            }
+        });
+        
+        // Show/hide empty state
+        if (visibleCount === 0) {
+            responsesContainer.style.display = 'none';
+            emptyState.style.display = 'block';
+        } else {
+            responsesContainer.style.display = 'grid';
+            emptyState.style.display = 'none';
+        }
+    }
+
+    // Sort functionality
+    function sortResponses() {
+        const sortValue = sortFilter.value;
+        const container = responsesContainer;
+        
+        responses.sort((a, b) => {
+            switch(sortValue) {
+                case 'oldest':
+                    return new Date(getResponseDate(a)) - new Date(getResponseDate(b));
+                case 'priority':
+                    const priorityOrder = { 'high': 3, 'medium': 2, 'low': 1 };
+                    return priorityOrder[b.getAttribute('data-priority')] - priorityOrder[a.getAttribute('data-priority')];
+                case 'rating':
+                    return getRating(b) - getRating(a);
+                case 'newest':
+                default:
+                    return new Date(getResponseDate(b)) - new Date(getResponseDate(a));
+            }
+        });
+        
+        // Re-append sorted elements
+        responses.forEach(response => {
+            container.appendChild(response);
+        });
+        
+        // Re-apply stagger animation
+        responses.forEach((response, index) => {
+            response.style.animationDelay = `${(index + 1) * 0.1}s`;
+        });
+    }
+
+    function getResponseDate(element) {
+        const dateText = element.querySelector('.response-date').textContent;
+        // Simple date parsing - in real app, use proper date handling
+        const now = new Date();
+        if (dateText.includes('hour')) {
+            return new Date(now.getTime() - parseInt(dateText) * 60 * 60 * 1000);
+        } else if (dateText.includes('day')) {
+            return new Date(now.getTime() - parseInt(dateText) * 24 * 60 * 60 * 1000);
+        } else if (dateText.includes('week')) {
+            return new Date(now.getTime() - parseInt(dateText) * 7 * 24 * 60 * 60 * 1000);
+        }
+        return now;
+    }
+
+    function getRating(element) {
+        const stars = element.querySelectorAll('.star-rating .fas.fa-star');
+        return stars.length;
+    }
+
+    // Event listeners
+    searchInput.addEventListener('input', performSearch);
+    statusFilter.addEventListener('change', performSearch);
+    categoryFilter.addEventListener('change', performSearch);
+    sortFilter.addEventListener('change', sortResponses);
+
+    // Star rating functionality
+    document.querySelectorAll('.star-rating').forEach(rating => {
+        const stars = rating.querySelectorAll('i');
+        
+        stars.forEach((star, index) => {
+            star.addEventListener('click', function() {
+                // Update rating
+                stars.forEach((s, i) => {
+                    if (i <= index) {
+                        s.className = 'fas fa-star';
+                    } else {
+                        s.className = 'far fa-star';
+                    }
+                });
+                
+                // Show success message
+                showToast(`Rating submitted: ${index + 1} star${index + 1 > 1 ? 's' : ''}`, 'success');
+            });
+            
+            star.addEventListener('mouseenter', function() {
+                stars.forEach((s, i) => {
+                    if (i <= index) {
+                        s.style.color = '#fbbf24';
+                    } else {
+                        s.style.color = '#e5e7eb';
+                    }
+                });
+            });
+        });
+        
+        rating.addEventListener('mouseleave', function() {
+            // Reset to current rating
+            stars.forEach(star => {
+                if (star.classList.contains('fas')) {
+                    star.style.color = '#fbbf24';
+                } else {
+                    star.style.color = '#e5e7eb';
+                }
+            });
+        });
+    });
+
+    // Action buttons functionality
+    document.querySelectorAll('.action-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const action = this.textContent.trim().toLowerCase();
+            const icon = this.querySelector('i');
+            const originalText = this.innerHTML;
+            
+            // Add loading state
+            this.classList.add('loading');
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            
+            // Simulate API call
+            setTimeout(() => {
+                this.classList.remove('loading');
+                this.innerHTML = originalText;
+                
+                // Show appropriate message
+                switch(action) {
+                    case 'helpful':
+                        showToast('Thank you for your feedback!', 'success');
+                        break;
+                    case 'follow up':
+                        showToast('Follow-up question form opened', 'info');
+                        break;
+                    case 'share':
+                        showToast('Response link copied to clipboard', 'success');
+                        break;
+                    case 'save':
+                        showToast('Response saved to your favorites', 'success');
+                        break;
+                    case 'edit question':
+                        showToast('Question editing form opened', 'info');
+                        break;
+                    case 'mark urgent':
+                        showToast('Question marked as urgent', 'warning');
+                        break;
+                    default:
+                        showToast('Action completed successfully', 'success');
+                }
+            }, 1000);
+        });
+    });
+
+    // Toast notification function
+    function showToast(message, type = 'info') {
+        const toast = document.createElement('div');
+        toast.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            background: ${type === 'success' ? '#059669' : type === 'warning' ? '#f59e0b' : '#2563eb'};
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            font-weight: 600;
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        `;
+        toast.textContent = message;
+        
+        document.body.appendChild(toast);
+        
+        // Animate in
+        setTimeout(() => {
+            toast.style.transform = 'translateX(0)';
+        }, 100);
+        
+        // Animate out and remove
+        setTimeout(() => {
+            toast.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+                document.body.removeChild(toast);
+            }, 300);
+        }, 3000);
+    }
+
+    // Pagination functionality
+    document.querySelectorAll('.pagination-btn:not(.disabled)').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.pagination-btn').forEach(b => b.classList.remove('active'));
+            
+            // Add active class to clicked button (if it's a number)
+            if (!isNaN(this.textContent)) {
+                this.classList.add('active');
+            }
+            
+            // Scroll to top smoothly
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+            
+            showToast(`Loading page ${this.textContent || 'next'}...`, 'info');
+        });
+    });
+
+    // Auto-refresh pending responses (simulate real-time updates)
+    setInterval(() => {
+        const pendingResponses = document.querySelectorAll('[data-status="pending"], [data-status="processing"]');
+        if (pendingResponses.length > 0 && Math.random() > 0.7) {
+            // Simulate occasional status updates
+            const randomResponse = pendingResponses[Math.floor(Math.random() * pendingResponses.length)];
+            
+            // Add a subtle pulse to indicate update
+            randomResponse.style.boxShadow = '0 0 20px rgba(37, 99, 235, 0.3)';
+            setTimeout(() => {
+                randomResponse.style.boxShadow = '';
+            }, 2000);
+        }
+    }, 10000); // Check every 10 seconds
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        // Ctrl+F or Cmd+F to focus search
+        if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+            e.preventDefault();
+            searchInput.focus();
+        }
+        
+        // Escape to clear search
+        if (e.key === 'Escape') {
+            searchInput.value = '';
+            statusFilter.value = '';
+            categoryFilter.value = '';
+            performSearch();
+        }
+    });
+
+    // Intersection Observer for animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    // Observe response items for scroll animations
+    responses.forEach(response => {
+        response.style.opacity = '0';
+        response.style.transform = 'translateY(30px)';
+        response.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+        observer.observe(response);
+    });
+
+    // Initialize tooltips for action buttons (simple implementation)
+    document.querySelectorAll('[title]').forEach(element => {
+        element.addEventListener('mouseenter', function() {
+            const tooltip = document.createElement('div');
+            tooltip.textContent = this.getAttribute('title');
+            tooltip.style.cssText = `
+                position: absolute;
+                background: #1f2937;
+                color: white;
+                padding: 8px 12px;
+                border-radius: 6px;
+                font-size: 0.875rem;
+                white-space: nowrap;
+                z-index: 1000;
+                pointer-events: none;
+                transform: translateX(-50%);
+                opacity: 0;
+                transition: opacity 0.2s;
+            `;
+            
+            document.body.appendChild(tooltip);
+            
+            const rect = this.getBoundingClientRect();
+            tooltip.style.left = rect.left + rect.width / 2 + 'px';
+            tooltip.style.top = rect.top - tooltip.offsetHeight - 8 + 'px';
+            
+            setTimeout(() => tooltip.style.opacity = '1', 10);
+            
+            this._tooltip = tooltip;
+        });
+        
+        element.addEventListener('mouseleave', function() {
+            if (this._tooltip) {
+                document.body.removeChild(this._tooltip);
+                this._tooltip = null;
+            }
+        });
+    });
+
+    console.log('✨ Enhanced Responses page ready!');
+});
+</script>
+
 {% endblock body %}
+
+{% block extra_scripts %}
+<script>
+// Additional page-specific scripts
+document.addEventListener('DOMContentLoaded', function() {
+    // Advanced filtering with URL parameters
+    function updateURLParams() {
+        const url = new URL(window.location);
+        url.searchParams.set('search', document.getElementById('searchInput').value);
+        url.searchParams.set('status', document.getElementById('statusFilter').value);
+        url.searchParams.set('category', document.getElementById('categoryFilter').value);
+        url.searchParams.set('sort', document.getElementById('sortFilter').value);
+        window.history.replaceState({}, '', url);
+    }
+
+    // Load filters from URL parameters
+    function loadFiltersFromURL() {
+        const url = new URL(window.location);
+        document.getElementById('searchInput').value = url.searchParams.get('search') || '';
+        document.getElementById('statusFilter').value = url.searchParams.get('status') || '';
+        document.getElementById('categoryFilter').value = url.searchParams.get('category') || '';
+        document.getElementById('sortFilter').value = url.searchParams.get('sort') || 'newest';
+    }
+
+    // Auto-save filter preferences
+    function saveFilterPreferences() {
+        const preferences = {
+            defaultSort: document.getElementById('sortFilter').value,
+            defaultCategory: document.getElementById('categoryFilter').value
+        };
+        localStorage.setItem('responseFilters', JSON.stringify(preferences));
+    }
+
+    // Load filter preferences
+    function loadFilterPreferences() {
+        const saved = localStorage.getItem('responseFilters');
+        if (saved) {
+            const preferences = JSON.parse(saved);
+            document.getElementById('sortFilter').value = preferences.defaultSort || 'newest';
+            document.getElementById('categoryFilter').value = preferences.defaultCategory || '';
+        }
+    }
+
+    // Export functionality
+    function exportResponses() {
+        const responses = Array.from(document.querySelectorAll('.response-item:not([style*="display: none"])'));
+        const exportData = responses.map(response => ({
+            question: response.querySelector('.response-question').textContent.trim(),
+            category: response.getAttribute('data-category'),
+            priority: response.getAttribute('data-priority'),
+            status: response.getAttribute('data-status'),
+            date: response.querySelector('.response-date').textContent.trim(),
+            answer: response.querySelector('.response-answer-content')?.textContent.trim() || 'No answer yet'
+        }));
+
+        // Convert to CSV
+        const csv = [
+            ['Question', 'Category', 'Priority', 'Status', 'Date', 'Answer'],
+            ...exportData.map(item => [
+                `"${item.question.replace(/"/g, '""')}"`,
+                item.category,
+                item.priority,
+                item.status,
+                item.date,
+                `"${item.answer.replace(/"/g, '""')}"`
+            ])
+        ].map(row => row.join(',')).join('\n');
+
+        // Download CSV
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `responses-${new Date().toISOString().split('T')[0]}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+    }
+
+    // Add export button functionality
+    const exportBtn = document.querySelector('[href="#"]:has(.fas.fa-download)');
+    if (exportBtn) {
+        exportBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            exportResponses();
+        });
+    }
+
+    // Initialize
+    loadFilterPreferences();
+    loadFiltersFromURL();
+
+    // Save preferences when filters change
+    document.getElementById('sortFilter').addEventListener('change', saveFilterPreferences);
+    document.getElementById('categoryFilter').addEventListener('change', saveFilterPreferences);
+
+    console.log('📊 Advanced response management features loaded!');
+});
+</script>
+{% endblock %}
