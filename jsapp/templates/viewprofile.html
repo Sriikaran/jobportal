@@ -3,97 +3,231 @@
 {%load static%}
 {% block body %}
 
-    <div class="row w-75 text-center mx-auto">
-        <div class="col-sm-12 text-center">
-            <h1 style="text-align:center;">View Your Profile</h1>
-             {% if messages %}
-                {% for message in messages %}
-                <div class="alert alert-warning">{{ message }}</div>
-                {% endfor %}
-                {% endif %}
 
-            <form method="post" enctype = "multipart/form-data" class="form-group bg-light text-dark text-center mx-auto" style="
-            border-radius: 40px;">
-                {% csrf_token %}
-                <div class="mb-4 text-center d-flex flex-column align-items-center justify-content-center">
-                {% if jobseek.profilepic %}
-                <img src="{{ jobseek.profilepic.url }}" id="profile-preview" alt="profilepic" height="200" width="200" style="margin-top: 20px;border-radius:50%;">
-                {% else %}
-                <img src="{% static 'default-profile.png' %}" id="profile-preview" alt="profilepic" height="200" width="200" style="border-radius:50%;">
-                {% endif %}
-                
-          
-
-                <label for="profilepic" style="color: navy;  padding: 5px 15px; border-radius: 20px; cursor: pointer; font-size: 14px;">Change Profile Picture</label>
-
-                <input type="file" name="profilepic" id="profilepic" value = "Change Profile picture" accept="image/*" style="display: none;">
+<div class="container-fluid py-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8">
+                <!-- Header Section -->
+                <div class="text-center mb-5">
+                    <h1 class="display-4 text-white fw-bold mb-3">
+                        <i class="fas fa-user-circle me-3"></i>Profile Settings
+                    </h1>
+                    <p class="lead text-white-50">Update your professional information</p>
                 </div>
-               
-                <table class="table text-dark bg-light mx-auto" style="width:60%; margin:auto; border:transparent">
-                
-                    <tr>
-                    <td>Name</td>
-                    <td>
-                        <input type="text" name="name" value="{{jobseek.name}}" class="form-control bg-light text-dark"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Gender</td>
-                    <td>
-                        <input type="text" name="gender" value="{{jobseek.gender}}" class="form-control bg-light text-dark"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Address</td>
-                    <td><textarea name="address" class="form-control bg-light text-dark">{{jobseek.address}}</textarea></td>
-                </tr>
-                <tr>
-                    <td>Contact No</td>
-                    <td>
-                    <input type="text" name="contactno" value="{{jobseek.contactno}}" class="form-control bg-light text-dark"/>  
-                    </td>
-                </tr>
-                <tr>
-                    <td>Email Address</td>
-                    <td>
-                    <input type="email" name="emailaddress" value="{{jobseek.emailaddress}}" class="form-control bg-light text-dark" readonly/>  
-                    </td>
-                </tr>
-                <tr>
-                    <td>Qualification</td>
-                    <td>
-                    <input type="text" name="qualification" value="{{jobseek.qualification}}" class="form-control bg-light text-dark" />  
-                    </td>
-                </tr>
-                <tr>
-                    <td>dob</td>
-                    <td>
-                    <input type="date" name="dob" value="{{jobseek.dob|date:'Y-m-d'}}" class="form-control bg-light text-dark"/>  
-                    </td>
-                </tr>
-                <tr>
-                    <td>experience</td>
-                    <td>
-                    <input type="text" name="experience" value="{{jobseek.experience}}" class="form-control bg-light text-dark" />  
-                    </td>
-                </tr>
-                <tr>
-                    <td>Key Skills</td>
-                    <td><textarea name="keyskills" class="form-control bg-light text-dark">{{jobseek.keyskills}}</textarea></td>
-                </tr>
-                </table>
-                <input type = "submit" value = "Save" class = "btn m-3" style = "background-color: navy">
 
-            </form>
+                <!-- Profile Form Card -->
+                <div class="card shadow-lg border-0" style="border-radius: 20px; backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.95);">
+                    <div class="card-body p-5">
+                        <form method="post" class="needs-validation" novalidate>
+                            {% csrf_token %}
+                            
+                            <div class="row g-4">
+                                <!-- Personal Information Section -->
+                                <div class="col-12">
+                                    <h4 class="text-primary mb-4 border-bottom pb-2">
+                                        <i class="fas fa-user me-2"></i>Personal Information
+                                    </h4>
+                                </div>
+
+                                <!-- Name Field -->
+                                <div class="col-md-6">
+                                    <label for="name" class="form-label fw-semibold text-dark">
+                                        <i class="fas fa-signature me-2 text-primary"></i>Full Name
+                                    </label>
+                                    <input type="text" 
+                                           name="name" 
+                                           id="name"
+                                           value="{{jobseek.name}}" 
+                                           class="form-control form-control-lg"
+                                           style="border-radius: 10px; border: 2px solid #e9ecef;"
+                                           required />
+                                    <div class="invalid-feedback">Please provide a valid name.</div>
+                                </div>
+
+                                <!-- Gender Field -->
+                                <div class="col-md-6">
+                                    <label for="gender" class="form-label fw-semibold text-dark">
+                                        <i class="fas fa-venus-mars me-2 text-primary"></i>Gender
+                                    </label>
+                                    <select name="gender" 
+                                            id="gender" 
+                                            class="form-select form-select-lg"
+                                            style="border-radius: 10px; border: 2px solid #e9ecef;"
+                                            required>
+                                        <option value="">Choose...</option>
+                                        <option value="Male" {% if jobseek.gender == "Male" %}selected{% endif %}>Male</option>
+                                        <option value="Female" {% if jobseek.gender == "Female" %}selected{% endif %}>Female</option>
+                                        <option value="Other" {% if jobseek.gender == "Other" %}selected{% endif %}>Other</option>
+                                    </select>
+                                </div>
+
+                                <!-- Date of Birth -->
+                                <div class="col-md-6">
+                                    <label for="dob" class="form-label fw-semibold text-dark">
+                                        <i class="fas fa-calendar-alt me-2 text-primary"></i>Date of Birth
+                                    </label>
+                                    <input type="date" 
+                                           name="dob" 
+                                           id="dob"
+                                           value="{{jobseek.dob|date:'Y-m-d'}}" 
+                                           class="form-control form-control-lg"
+                                           style="border-radius: 10px; border: 2px solid #e9ecef;"
+                                           required />
+                                </div>
+
+                                <!-- Contact Number -->
+                                <div class="col-md-6">
+                                    <label for="contactno" class="form-label fw-semibold text-dark">
+                                        <i class="fas fa-phone me-2 text-primary"></i>Contact Number
+                                    </label>
+                                    <input type="tel" 
+                                           name="contactno" 
+                                           id="contactno"
+                                           value="{{jobseek.contactno}}" 
+                                           class="form-control form-control-lg"
+                                           style="border-radius: 10px; border: 2px solid #e9ecef;"
+                                           pattern="[0-9]{10}"
+                                           required />
+                                    <div class="invalid-feedback">Please provide a valid contact number.</div>
+                                </div>
+
+                                <!-- Email Address -->
+                                <div class="col-12">
+                                    <label for="emailaddress" class="form-label fw-semibold text-dark">
+                                        <i class="fas fa-envelope me-2 text-primary"></i>Email Address
+                                    </label>
+                                    <input type="email" 
+                                           name="emailaddress" 
+                                           id="emailaddress"
+                                           value="{{jobseek.emailaddress}}" 
+                                           class="form-control form-control-lg"
+                                           style="border-radius: 10px; border: 2px solid #e9ecef; background-color: #f8f9fa;"
+                                           readonly />
+                                    <small class="text-muted">Email address cannot be changed</small>
+                                </div>
+
+                                <!-- Address -->
+                                <div class="col-12">
+                                    <label for="address" class="form-label fw-semibold text-dark">
+                                        <i class="fas fa-map-marker-alt me-2 text-primary"></i>Address
+                                    </label>
+                                    <textarea name="address" 
+                                              id="address"
+                                              class="form-control"
+                                              style="border-radius: 10px; border: 2px solid #e9ecef; min-height: 100px;"
+                                              rows="4"
+                                              required>{{jobseek.address}}</textarea>
+                                </div>
+
+                                <!-- Professional Information Section -->
+                                <div class="col-12 mt-5">
+                                    <h4 class="text-primary mb-4 border-bottom pb-2">
+                                        <i class="fas fa-briefcase me-2"></i>Professional Information
+                                    </h4>
+                                </div>
+
+                                <!-- Qualification -->
+                                <div class="col-md-6">
+                                    <label for="qualification" class="form-label fw-semibold text-dark">
+                                        <i class="fas fa-graduation-cap me-2 text-primary"></i>Qualification
+                                    </label>
+                                    <input type="text" 
+                                           name="qualification" 
+                                           id="qualification"
+                                           value="{{jobseek.qualification}}" 
+                                           class="form-control form-control-lg"
+                                           style="border-radius: 10px; border: 2px solid #e9ecef;"
+                                           required />
+                                </div>
+
+                                <!-- Experience -->
+                                <div class="col-md-6">
+                                    <label for="experience" class="form-label fw-semibold text-dark">
+                                        <i class="fas fa-chart-line me-2 text-primary"></i>Experience
+                                    </label>
+                                    <input type="text" 
+                                           name="experience" 
+                                           id="experience"
+                                           value="{{jobseek.experience}}" 
+                                           class="form-control form-control-lg"
+                                           style="border-radius: 10px; border: 2px solid #e9ecef;"
+                                           placeholder="e.g., 2 years"
+                                           required />
+                                </div>
+
+                                <!-- Key Skills -->
+                                <div class="col-12">
+                                    <label for="keyskills" class="form-label fw-semibold text-dark">
+                                        <i class="fas fa-tools me-2 text-primary"></i>Key Skills
+                                    </label>
+                                    <textarea name="keyskills" 
+                                              id="keyskills"
+                                              class="form-control"
+                                              style="border-radius: 10px; border: 2px solid #e9ecef; min-height: 120px;"
+                                              rows="5"
+                                              placeholder="List your key skills separated by commas"
+                                              required>{{jobseek.keyskills}}</textarea>
+                                    <small class="text-muted">Separate skills with commas (e.g., Python, Django, JavaScript)</small>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <div class="col-12 text-center mt-5">
+                                    <button type="submit" 
+                                            class="btn btn-lg px-5 py-3"
+                                            style="background: linear-gradient(45deg, #667eea, #764ba2); border: none; border-radius: 25px; color: white; font-weight: 600; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                                        <i class="fas fa-save me-2"></i>Save Changes
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+</div>
 
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<!-- Form validation script -->
 <script>
-document.getElementById("profilepic").onchange = function (event) {
-    const [file] = event.target.files;
-    if (file) {
-        document.getElementById("profile-preview").src = URL.createObjectURL(file);
-    }
-};
+(function() {
+    'use strict';
+    window.addEventListener('load', function() {
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    }, false);
+})();
 </script>
+
+<style>
+.form-control:focus, .form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.card {
+    transition: transform 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3) !important;
+}
+
+.border-bottom {
+    border-color: #e9ecef !important;
+}
+</style>
+
 {% endblock body %}

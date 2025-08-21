@@ -1,0 +1,731 @@
+{% extends 'parent.html' %}
+{% load static %}
+
+{% block head %}
+<style>
+    :root {
+        --primary-blue: #093f75;
+        --secondary-blue: #0c3056;
+        --accent-blue: #56a8fa;
+        --light-blue: #1c5aa6;
+        --text-dark: #2c3e50;
+        --text-light: #6c757d;
+        --bg-light: #f8fafc;
+        --shadow-light: 0 4px 20px rgba(9, 63, 117, 0.08);
+        --shadow-medium: 0 8px 32px rgba(9, 63, 117, 0.12);
+        --gradient-primary: linear-gradient(135deg, #0c3056 0%, #1c5aa6 50%, #56a8fa 100%);
+        --gradient-accent: linear-gradient(45deg, #56a8fa, #a1d0ff);
+        --success-color: #10b981;
+        --warning-color: #f59e0b;
+        --error-color: #ef4444;
+    }
+
+    .hero-section {
+        background: var(--gradient-primary);
+        padding: 80px 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="rgba(255,255,255,0.1)"><path d="M0,0v46.29c47.79,22.4,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1047.17,5.21,1100,19.58V0Z" opacity=".25"/></svg>') repeat-x;
+        background-size: 1000px 100px;
+        animation: wave 20s linear infinite;
+    }
+
+    @keyframes wave {
+        0% { background-position-x: 0; }
+        100% { background-position-x: 1000px; }
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        color: white;
+        text-align: center;
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .hero-subtitle {
+        font-size: 1.3rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto 2rem;
+        line-height: 1.6;
+    }
+
+    .ats-checker-section {
+        padding: 80px 0;
+        background: var(--bg-light);
+        position: relative;
+    }
+
+    .checker-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 24px;
+        box-shadow: var(--shadow-medium);
+        overflow: hidden;
+        position: relative;
+    }
+
+    .checker-header {
+        background: var(--gradient-primary);
+        color: white;
+        padding: 40px;
+        text-align: center;
+        position: relative;
+    }
+
+    .checker-header::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--gradient-accent);
+    }
+
+    .checker-body {
+        padding: 60px 40px;
+    }
+
+    .upload-zone {
+        border: 3px dashed var(--accent-blue);
+        border-radius: 20px;
+        padding: 60px 40px;
+        text-align: center;
+        background: rgba(86, 168, 250, 0.03);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .upload-zone.dragover {
+        border-color: var(--primary-blue);
+        background: rgba(86, 168, 250, 0.1);
+        transform: scale(1.02);
+        box-shadow: var(--shadow-light);
+    }
+
+    .upload-zone:hover {
+        border-color: var(--primary-blue);
+        background: rgba(86, 168, 250, 0.05);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-light);
+    }
+
+    .upload-icon {
+        width: 80px;
+        height: 80px;
+        background: var(--gradient-accent);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 2rem;
+        color: white;
+        box-shadow: var(--shadow-light);
+        transition: all 0.3s ease;
+    }
+
+    .upload-zone:hover .upload-icon {
+        transform: scale(1.1) rotate(5deg);
+    }
+
+    .upload-text h3 {
+        color: var(--primary-blue);
+        font-weight: 700;
+        margin-bottom: 10px;
+        font-size: 1.8rem;
+    }
+
+    .upload-text p {
+        color: var(--text-light);
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+    }
+
+    .supported-formats {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+
+    .format-tag {
+        background: var(--gradient-accent);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        box-shadow: var(--shadow-light);
+    }
+
+    .upload-btn {
+        background: var(--gradient-primary);
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        border-radius: 25px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .upload-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(9, 63, 117, 0.3);
+    }
+
+    .upload-btn:active {
+        transform: translateY(-1px);
+    }
+
+    .results-section {
+        margin-top: 40px;
+        display: none;
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    .results-header {
+        background: var(--gradient-primary);
+        color: white;
+        padding: 20px 30px;
+        border-radius: 16px 16px 0 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .score-circle {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: white;
+        position: relative;
+    }
+
+    .score-excellent {
+        background: linear-gradient(45deg, #10b981, #34d399);
+    }
+
+    .score-good {
+        background: linear-gradient(45deg, #f59e0b, #fbbf24);
+    }
+
+    .score-needs-improvement {
+        background: linear-gradient(45deg, #ef4444, #f87171);
+    }
+
+    .results-body {
+        background: white;
+        border: 2px solid var(--accent-blue);
+        border-top: none;
+        border-radius: 0 0 16px 16px;
+        padding: 30px;
+    }
+
+    .issues-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .issues-list li {
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(86, 168, 250, 0.1);
+        display: flex;
+        align-items: center;
+        color: var(--text-dark);
+    }
+
+    .issues-list li:last-child {
+        border-bottom: none;
+    }
+
+    .issues-list li::before {
+        content: '⚠️';
+        margin-right: 12px;
+        font-size: 1.2rem;
+    }
+
+    .no-issues {
+        text-align: center;
+        color: var(--success-color);
+        font-weight: 600;
+        padding: 20px;
+    }
+
+    .no-issues::before {
+        content: '✅';
+        margin-right: 10px;
+        font-size: 1.5rem;
+    }
+
+    .loading-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.95);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+        border-radius: 20px;
+    }
+
+    .loading-spinner {
+        width: 60px;
+        height: 60px;
+        border: 4px solid rgba(86, 168, 250, 0.3);
+        border-top: 4px solid var(--accent-blue);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .features-section {
+        padding: 80px 0;
+        background: white;
+    }
+
+    .feature-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px 30px;
+        text-align: center;
+        box-shadow: var(--shadow-light);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 2px solid transparent;
+        height: 100%;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-medium);
+        border-color: var(--accent-blue);
+    }
+
+    .feature-icon {
+        width: 70px;
+        height: 70px;
+        background: var(--gradient-accent);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 1.8rem;
+        color: white;
+        box-shadow: var(--shadow-light);
+    }
+
+    .feature-title {
+        color: var(--primary-blue);
+        font-weight: 700;
+        margin-bottom: 15px;
+        font-size: 1.3rem;
+    }
+
+    .feature-description {
+        color: var(--text-light);
+        line-height: 1.6;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .error-message {
+        background: linear-gradient(45deg, #ef4444, #f87171);
+        color: white;
+        padding: 15px 20px;
+        border-radius: 12px;
+        margin-top: 20px;
+        display: none;
+        animation: shake 0.5s ease-in-out;
+    }
+
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+    }
+
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+        
+        .checker-body {
+            padding: 40px 20px;
+        }
+        
+        .upload-zone {
+            padding: 40px 20px;
+        }
+        
+        .supported-formats {
+            justify-content: center;
+        }
+        
+        .results-header {
+            flex-direction: column;
+            text-align: center;
+            gap: 15px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="hero-title">ATS Resume Checker</h1>
+            <p class="hero-subtitle">
+                Optimize your resume for Applicant Tracking Systems and increase your chances of landing your dream job. 
+                Get instant feedback on formatting, keywords, and ATS compatibility.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ATS Checker Section -->
+<section class="ats-checker-section">
+    <div class="container">
+        <div class="checker-container">
+            <div class="checker-header">
+                <h2 class="mb-3" style="font-size: 2rem; font-weight: 700;">Upload Your Resume</h2>
+                <p class="mb-0" style="font-size: 1.1rem; opacity: 0.9;">
+                    Get detailed analysis and recommendations to make your resume ATS-friendly
+                </p>
+            </div>
+            
+            <div class="checker-body">
+                <form id="atsForm" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="upload-zone" id="uploadZone">
+                        <div class="loading-overlay" id="loadingOverlay">
+                            <div class="loading-spinner"></div>
+                        </div>
+                        
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        
+                        <div class="upload-text">
+                            <h3>Drag and drop your resume here</h3>
+                            <p>or click to browse and select your file</p>
+                            
+                            <button type="button" class="upload-btn" onclick="document.getElementById('resumeFile').click()">
+                                Choose File
+                            </button>
+                            
+                            <input type="file" id="resumeFile" name="resume" accept=".pdf,.docx,.txt" style="display: none;">
+                            
+                            <div class="supported-formats">
+                                <span class="format-tag">PDF</span>
+                                <span class="format-tag">DOCX</span>
+                                <span class="format-tag">TXT</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="error-message" id="errorMessage"></div>
+                </form>
+                
+                <!-- Results Section -->
+                <div class="results-section" id="resultsSection">
+                    <div class="results-header">
+                        <div>
+                            <h3 class="mb-1" style="font-size: 1.5rem; font-weight: 700;">Analysis Results</h3>
+                            <p class="mb-0" id="fileName" style="opacity: 0.9;"></p>
+                        </div>
+                        <div class="score-circle" id="scoreCircle">
+                            <span id="scoreValue">0%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="results-body">
+                        <h4 class="mb-3" style="color: var(--primary-blue); font-weight: 700;">
+                            <i class="fas fa-exclamation-triangle" style="color: var(--accent-blue); margin-right: 10px;"></i>
+                            Issues Found
+                        </h4>
+                        <ul class="issues-list" id="issuesList"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="mb-3" style="color: var(--primary-blue); font-weight: 700; font-size: 2.5rem;">
+                    Why Use Our ATS Checker?
+                </h2>
+                <p style="color: var(--text-light); font-size: 1.2rem; max-width: 600px; margin: 0 auto;">
+                    Our advanced algorithm analyzes your resume against industry standards and ATS requirements
+                </p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="feature-title">ATS Compatibility</h3>
+                    <p class="feature-description">
+                        Ensure your resume can be read and parsed correctly by Applicant Tracking Systems used by employers worldwide.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 class="feature-title">Keyword Analysis</h3>
+                    <p class="feature-description">
+                        Identify missing keywords and optimize your resume content to match job descriptions and industry standards.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="feature-title">Instant Scoring</h3>
+                    <p class="feature-description">
+                        Get immediate feedback with a comprehensive score and detailed recommendations for improvement.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const uploadZone = document.getElementById('uploadZone');
+    const fileInput = document.getElementById('resumeFile');
+    const form = document.getElementById('atsForm');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const resultsSection = document.getElementById('resultsSection');
+    const errorMessage = document.getElementById('errorMessage');
+
+    // Drag and drop functionality
+    uploadZone.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        uploadZone.classList.add('dragover');
+    });
+
+    uploadZone.addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        uploadZone.classList.remove('dragover');
+    });
+
+    uploadZone.addEventListener('drop', function(e) {
+        e.preventDefault();
+        uploadZone.classList.remove('dragover');
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            fileInput.files = files;
+            handleFileUpload(files[0]);
+        }
+    });
+
+    // File input change
+    fileInput.addEventListener('change', function() {
+        if (this.files.length > 0) {
+            handleFileUpload(this.files[0]);
+        }
+    });
+
+    // Click to upload
+    uploadZone.addEventListener('click', function() {
+        fileInput.click();
+    });
+
+    function handleFileUpload(file) {
+        // Validate file type
+        const allowedTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'];
+        if (!allowedTypes.includes(file.type)) {
+            showError('Please upload a PDF, DOCX, or TXT file only.');
+            return;
+        }
+
+        // Validate file size (5MB limit)
+        if (file.size > 5 * 1024 * 1024) {
+            showError('File size must be less than 5MB.');
+            return;
+        }
+
+        // Show loading
+        showLoading();
+        hideError();
+
+        // Create FormData
+        const formData = new FormData();
+        formData.append('resume', file);
+        formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+
+        // Send AJAX request
+        fetch('{% url "jobapp:resumeats" %}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            hideLoading();
+            if (data.error) {
+                showError(data.error);
+            } else {
+                showResults(data);
+            }
+        })
+        .catch(error => {
+            hideLoading();
+            console.error('Error:', error);
+            showError('An error occurred while processing your file. Please try again.');
+        });
+    }
+
+    function showLoading() {
+        loadingOverlay.style.display = 'flex';
+    }
+
+    function hideLoading() {
+        loadingOverlay.style.display = 'none';
+    }
+
+    function showError(message) {
+        errorMessage.textContent = message;
+        errorMessage.style.display = 'block';
+        setTimeout(() => {
+            errorMessage.style.display = 'none';
+        }, 5000);
+    }
+
+    function hideError() {
+        errorMessage.style.display = 'none';
+    }
+
+    function showResults(data) {
+        // Update file name
+        document.getElementById('fileName').textContent = data.file_name;
+        
+        // Update score
+        const score = data.ats_score;
+        const scoreElement = document.getElementById('scoreValue');
+        const scoreCircle = document.getElementById('scoreCircle');
+        
+        scoreElement.textContent = score + '%';
+        
+        // Set score color
+        scoreCircle.className = 'score-circle';
+        if (score >= 80) {
+            scoreCircle.classList.add('score-excellent');
+        } else if (score >= 60) {
+            scoreCircle.classList.add('score-good');
+        } else {
+            scoreCircle.classList.add('score-needs-improvement');
+        }
+        
+        // Update issues list
+        const issuesList = document.getElementById('issuesList');
+        issuesList.innerHTML = '';
+        
+        if (data.issues.length === 0) {
+            issuesList.innerHTML = '<li class="no-issues">Great! No major issues found with your resume.</li>';
+        } else {
+            data.issues.forEach(issue => {
+                const li = document.createElement('li');
+                li.textContent = issue;
+                issuesList.appendChild(li);
+            });
+        }
+        
+        // Show results section
+        resultsSection.style.display = 'block';
+        
+        // Scroll to results
+        resultsSection.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center' 
+        });
+    }
+
+    // Animate score when results are shown
+    function animateScore(targetScore) {
+        const scoreElement = document.getElementById('scoreValue');
+        let currentScore = 0;
+        const increment = targetScore / 50; // Animation duration
+        
+        const timer = setInterval(() => {
+            currentScore += increment;
+            if (currentScore >= targetScore) {
+                scoreElement.textContent = targetScore + '%';
+                clearInterval(timer);
+            } else {
+                scoreElement.textContent = Math.round(currentScore) + '%';
+            }
+        }, 20);
+    }
+});
+</script>
+{% endblock %}

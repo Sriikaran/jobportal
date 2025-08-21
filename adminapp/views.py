@@ -4,17 +4,28 @@ from jobapp.models import JobSeeker,Enquiry,Login
 from employer.models import Jobs
 from jsapp.models import Response
 from . models import News
-import datetime
+from datetime import date, datetime
+
+def calculate_age(born):
+    today = date.today()
+    return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
+
+def my_view(request):
+    js = JobSeeker.objects.get(...)  # or your queryset
+    age = calculate_age(js.dateofbirth)
+    return render(request, "template.html", {"js": js, "age": age})
+
+
+def test_template(request):
+    return render(request, "viewnews.html")
+
 # Create your views here.
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
 def adminhome(request):
-    try:
-        if request.session["adminid"]!=None:
-            adminid=request.session["adminid"]
-            msg="Welcome Admin"
-            return render(request,"adminhome.html",locals())
-    except KeyError:
-        return redirect("jobapp:login")
+    if 'username' not in request.session or request.session.get('usertype') != 'administrator':
+        return redirect('jobapp:login')
+    return render(request, 'adminapp/adminhome.html')
+
 def logout(request):
     try:
         del request.session["adminid"]
@@ -36,6 +47,15 @@ def viewnews(request):
             adminid=request.session["adminid"]
             new=News.objects.all()
             return render(request,"viewnews.html",locals())
+    except KeyError:
+        return redirect("jobapp:login")
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+def viewjobs(request):
+    try:
+        if request.session["adminid"]!=None:
+            adminid=request.session["adminid"]
+            new=News.objects.all()
+            return render(request,"viewjobs.html",locals())
     except KeyError:
         return redirect("jobapp:login")
 def delnews(request,newsdate):

@@ -1,27 +1,785 @@
-{% extends "employerparent.html" %}
+{% extends "employerparent.html" %} 
 {% block body %}
-<h1>Add Post</h1>
+
+<style>
+  :root {
+    --primary-blue: #093f75;
+    --secondary-blue: #0c3056;
+    --accent-blue: #56a8fa;
+    --light-blue: #1c5aa6;
+    --text-dark: #2c3e50;
+    --text-light: #6c757d;
+    --bg-light: #f8fafc;
+    --shadow-light: 0 4px 20px rgba(9, 63, 117, 0.08);
+    --shadow-medium: 0 8px 32px rgba(9, 63, 117, 0.12);
+    --gradient-primary: linear-gradient(
+      135deg,
+      var(--secondary-blue) 0%,
+      var(--light-blue) 50%,
+      var(--accent-blue) 100%
+    );
+    --gradient-accent: linear-gradient(45deg, var(--accent-blue), #a1d0ff);
+  }
+
+  /* Main Container Styling */
+  .add-post-container {
+    background: linear-gradient(135deg, #f8fafc 0%, #e3f2fd 100%);
+    min-height: 100vh;
+  }
+
+  /* Header Section */
+  .page-header {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 3rem 0;
+    margin-bottom: 3rem;
+    border-radius: 0 0 50px 50px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-medium);
+  }
   
-    <div class="row">
-        {% if msg %}
-        <p style="text-align: center;">{{msg}}</p>
-        {% endif %}
-          <form class="form-group" method="post" enctype="multipart/form-data">
-            {%csrf_token %}
-          <div class="mb-3 bg-light">
-            <label for="caption" class="form-label">Posted By</label>
-            <textarea class="form-control bg-light text-dark" name="cpname" rows="3" value="{{empreg.cpname}}" placeholder="enter company name"></textarea>
-          </div>
-          <div class="mb-3 bg-light">
-            <label for="caption" class="form-label">Add Content</label>
-            <textarea class="form-control bg-light text-dark" name="caption" rows="3" placeholder="Add Content"></textarea>
-          </div>
-          <div class="mb-3">
-            <label for="media" class="form-label">Add media</label>
-            <input type="file" name="media" class="form-control bg-light text-dark">
-        </div>
-          <div class="mb-3">
-            <button type="submit"  class="btn btn-success">Post</button>        </div>
-        </form>
+  .content-wrapper{
+    background: linear-gradient(135deg, #f8fafc 0%, #e3f2fd 100%);;
+  }
+
+  .page-header::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.1) 1px,
+      transparent 1px
+    );
+    background-size: 50px 50px;
+    animation: movePattern 20s linear infinite;
+  }
+
+  @keyframes movePattern {
+    0% {
+      transform: rotate(0deg) translate(0, 0);
+    }
+    100% {
+      transform: rotate(360deg) translate(50px, 50px);
+    }
+  }
+
+  .page-title {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    text-align: center;
+    margin: 0;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 2;
+    animation: slideInDown 1s ease-out;
+  }
+
+  .page-subtitle {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    opacity: 0.9;
+    font-weight: 300;
+    position: relative;
+    z-index: 2;
+    animation: slideInDown 1s ease-out 0.3s both;
+  }
+
+  /* Form Container */
+  .form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 25px;
+    padding: 3rem;
+    box-shadow: var(--shadow-medium);
+    position: relative;
+    overflow: hidden;
+    animation: slideInUp 1s ease-out 0.6s both;
+  }
+
+  .form-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: var(--gradient-primary);
+    border-radius: 25px 25px 0 0;
+  }
+
+  /* Success/Error Messages */
+  .message-container {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    color: #155724;
+    padding: 1.5rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    border-left: 5px solid #28a745;
+    position: relative;
+    animation: slideInRight 0.8s ease-out;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.2);
+  }
+
+  .message-container::before {
+    content: "✓";
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #28a745;
+  }
+
+  .message-container p {
+    margin: 0;
+    padding-left: 2rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+
+  /* Form Group Styling */
+  .form-group-enhanced {
+    margin-bottom: 2.5rem;
+    position: relative;
+  }
+
+  .form-label-enhanced {
+    display: block;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .form-label-enhanced::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: var(--gradient-accent);
+    transition: width 0.3s ease;
+    border-radius: 3px;
+  }
+
+  .form-label-enhanced.active::after {
+    width: 50px;
+  }
+
+  /* Input Styling */
+  .form-control-enhanced {
+    width: 100%;
+    padding: 1.2rem 1.5rem;
+    border: 2px solid #e9ecef;
+    border-radius: 15px;
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--bg-light);
+    color: var(--text-dark);
+    position: relative;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  .form-control-enhanced:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 4px rgba(86, 168, 250, 0.1),
+      0 4px 20px rgba(86, 168, 250, 0.2);
+    background: white;
+    transform: translateY(-2px);
+  }
+
+  .form-control-enhanced::placeholder {
+    color: var(--text-light);
+    transition: all 0.3s ease;
+  }
+
+  .form-control-enhanced:focus::placeholder {
+    opacity: 0.7;
+    transform: translateX(10px);
+  }
+
+  /* Textarea Specific */
+  .textarea-enhanced {
+    min-height: 120px;
+    resize: vertical;
+    font-family: inherit;
+    line-height: 1.6;
+  }
+
+  /* File Input Styling */
+  .file-input-container {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+    width: 100%;
+  }
+
+  .file-input-enhanced {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+  }
+
+  .file-input-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    border: 2px dashed var(--accent-blue);
+    border-radius: 15px;
+    background: linear-gradient(135deg, #f8fafc 0%, #e3f2fd 100%);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: var(--text-dark);
+    font-weight: 600;
+    min-height: 100px;
+    position: relative;
+    overflow: hidden;
+    margin-top: 10px;
+  }
+
+  .file-input-label::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(
+      circle,
+      rgba(86, 168, 250, 0.1) 0%,
+      transparent 70%
+    );
+    transition: all 0.4s ease;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+  }
+
+  .file-input-label:hover::before {
+    width: 300px;
+    height: 300px;
+  }
+
+  .file-input-label:hover {
+    border-color: var(--primary-blue);
+    background: linear-gradient(135deg, #ffffff 0%, #e3f2fd 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(86, 168, 250, 0.2);
+  }
+
+  .file-input-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .file-upload-icon {
+    font-size: 2.5rem;
+    color: var(--accent-blue);
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .file-input-label:hover .file-upload-icon {
+    transform: scale(1.1);
+    color: var(--primary-blue);
+  }
+
+  .file-input-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-dark);
+  }
+
+  .file-input-subtext {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-top: 0.25rem;
+  }
+
+  /* Submit Button */
+  .submit-button-container {
+    text-align: center;
+    margin-top: 3rem;
+  }
+
+  .btn-submit-enhanced {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    padding: 1.2rem 3rem;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 8px 25px rgba(9, 63, 117, 0.3);
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    min-width: 200px;
+  }
+
+  .btn-submit-enhanced::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: left 0.5s;
+  }
+
+  .btn-submit-enhanced:hover::before {
+    left: 100%;
+  }
+
+  .btn-submit-enhanced:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 40px rgba(9, 63, 117, 0.4);
+  }
+
+  .btn-submit-enhanced:active {
+    transform: translateY(-2px) scale(1.02);
+  }
+
+  .submit-icon {
+    margin-right: 0.5rem;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+  }
+
+  .btn-submit-enhanced:hover .submit-icon {
+    transform: rotate(360deg);
+  }
+
+  /* Animation Classes */
+  @keyframes slideInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-60px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInUp {
+    from {
+      opacity: 0;
+      transform: translateY(60px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(60px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* Form Validation Styles */
+  .form-control-enhanced.is-invalid {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.1);
+  }
+
+  .form-control-enhanced.is-valid {
+    border-color: #28a745;
+    box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.1);
+  }
+
+  .invalid-feedback {
+    color: #dc3545;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    font-weight: 500;
+  }
+
+  .valid-feedback {
+    color: #28a745;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    font-weight: 500;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .form-container {
+      margin: 1rem;
+      padding: 2rem 1.5rem;
+      border-radius: 20px;
+    }
+
+    .page-header {
+      padding: 2rem 0;
+      margin-bottom: 2rem;
+    }
+
+    .page-title {
+      font-size: 2.5rem;
+    }
+
+    .form-control-enhanced {
+      padding: 1rem;
+    }
+
+    .btn-submit-enhanced {
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+    }
+  }
+
+  /* Loading State */
+  .btn-submit-enhanced.loading {
+    pointer-events: none;
+    opacity: 0.7;
+  }
+
+  .btn-submit-enhanced.loading .submit-icon {
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>
+
+<div class="add-post-container">
+  <!-- Enhanced Header -->
+  <div class="page-header">
+    <div class="container">
+      <h1 class="page-title">Create New Post</h1>
+      <p class="page-subtitle">
+        Share updates and engage with your professional network
+      </p>
     </div>
+  </div>
+
+  <div class="container">
+    <!-- Enhanced Form Container -->
+    <div class="form-container">
+      <!-- Success/Error Message -->
+      {% if msg %}
+      <div class="message-container">
+        <p>{{ msg }}</p>
+      </div>
+      {% endif %}
+
+      <!-- Enhanced Form -->
+      <form
+        class="form-enhanced"
+        method="post"
+        enctype="multipart/form-data"
+        id="addPostForm"
+      >
+        {% csrf_token %}
+
+        <!-- Company Name Field -->
+        <div class="form-group-enhanced">
+          <label for="cpname" class="form-label-enhanced">
+            <i class="mdi mdi-domain me-2"></i>Posted By
+          </label>
+          <textarea
+            class="form-control-enhanced textarea-enhanced"
+            name="cpname"
+            id="cpname"
+            rows="2"
+            placeholder="Enter your company name"
+            required
+          >
+{{ empreg.cpname }}</textarea
+          >
+          <div class="invalid-feedback">Please enter a valid company name.</div>
+        </div>
+
+        <!-- Content Field -->
+        <div class="form-group-enhanced">
+          <label for="caption" class="form-label-enhanced">
+            <i class="mdi mdi-text me-2"></i>Post Content
+          </label>
+          <textarea
+            class="form-control-enhanced textarea-enhanced"
+            name="caption"
+            id="caption"
+            rows="5"
+            placeholder="What would you like to share? Write about job openings, company updates, industry insights..."
+            required
+          ></textarea>
+          <div class="invalid-feedback">
+            Please add some content to your post.
+          </div>
+          <div class="character-count">
+            <span id="charCount">0</span>/500 characters
+          </div>
+        </div>
+
+        <!-- Media Upload Field -->
+        <div class="form-group-enhanced">
+          <label class="form-label-enhanced">
+            <i class="mdi mdi-image me-2"></i>Add Media (Optional)
+          </label>
+          <div class="file-input-container">
+            <input
+              type="file"
+              name="media"
+              id="media"
+              class="file-input-enhanced"
+              accept="image/*,video/*"
+            />
+            <label for="media" class="file-input-label">
+              <div class="file-input-content">
+                <i class="mdi mdi-cloud-upload file-upload-icon"></i>
+                <span class="file-input-text"
+                  >Click to upload or drag and drop</span
+                >
+                <span class="file-input-subtext"
+                  >PNG, JPG, GIF, MP4 up to 10MB</span
+                >
+              </div>
+            </label>
+          </div>
+          <div class="file-preview" id="filePreview" style="display: none">
+            <div class="preview-content">
+              <img
+                id="imagePreview"
+                style="
+                  max-width: 200px;
+                  max-height: 200px;
+                  border-radius: 10px;
+                  margin-top: 1rem;
+                "
+              />
+              <div class="preview-info">
+                <span class="file-name" id="fileName"></span>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-danger"
+                  onclick="removeFile()"
+                >
+                  <i class="mdi mdi-close"></i> Remove
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="submit-button-container">
+          <button type="submit" class="btn-submit-enhanced" id="submitBtn">
+            <i class="mdi mdi-send submit-icon"></i>
+            Publish Post
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Form elements
+    const form = document.getElementById("addPostForm");
+    const submitBtn = document.getElementById("submitBtn");
+    const cpnameField = document.getElementById("cpname");
+    const captionField = document.getElementById("caption");
+    const mediaField = document.getElementById("media");
+    const charCount = document.getElementById("charCount");
+    const filePreview = document.getElementById("filePreview");
+    const imagePreview = document.getElementById("imagePreview");
+    const fileName = document.getElementById("fileName");
+
+    // Form labels for animation
+    const labels = document.querySelectorAll(".form-label-enhanced");
+
+    // Character counter
+    captionField.addEventListener("input", function () {
+      const length = this.value.length;
+      charCount.textContent = length;
+
+      if (length > 500) {
+        charCount.style.color = "#dc3545";
+        this.classList.add("is-invalid");
+      } else if (length > 400) {
+        charCount.style.color = "#ffc107";
+        this.classList.remove("is-invalid");
+      } else {
+        charCount.style.color = "#28a745";
+        this.classList.remove("is-invalid");
+      }
+    });
+
+    // File upload preview
+    mediaField.addEventListener("change", function (e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          if (file.type.startsWith("image/")) {
+            imagePreview.src = e.target.result;
+            imagePreview.style.display = "block";
+          } else {
+            imagePreview.style.display = "none";
+          }
+          fileName.textContent = file.name;
+          filePreview.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Form field focus animations
+    document.querySelectorAll(".form-control-enhanced").forEach((field) => {
+      field.addEventListener("focus", function () {
+        this.previousElementSibling.classList.add("active");
+      });
+
+      field.addEventListener("blur", function () {
+        if (this.value === "") {
+          this.previousElementSibling.classList.remove("active");
+        }
+      });
+
+      // Validate on blur
+      field.addEventListener("blur", function () {
+        if (this.hasAttribute("required") && this.value.trim() === "") {
+          this.classList.add("is-invalid");
+        } else {
+          this.classList.remove("is-invalid");
+          this.classList.add("is-valid");
+        }
+      });
+    });
+
+    // Form submission
+    form.addEventListener("submit", function (e) {
+      let isValid = true;
+
+      // Validate required fields
+      const requiredFields = [cpnameField, captionField];
+      requiredFields.forEach((field) => {
+        if (field.value.trim() === "") {
+          field.classList.add("is-invalid");
+          isValid = false;
+        } else {
+          field.classList.remove("is-invalid");
+          field.classList.add("is-valid");
+        }
+      });
+
+      if (!isValid) {
+        e.preventDefault();
+        return;
+      }
+
+      // Show loading state
+      submitBtn.classList.add("loading");
+      submitBtn.innerHTML =
+        '<i class="mdi mdi-loading submit-icon"></i> Publishing...';
+    });
+
+    // Drag and drop functionality
+    const fileLabel = document.querySelector(".file-input-label");
+
+    ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+      fileLabel.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    ["dragenter", "dragover"].forEach((eventName) => {
+      fileLabel.addEventListener(eventName, highlight, false);
+    });
+
+    ["dragleave", "drop"].forEach((eventName) => {
+      fileLabel.addEventListener(eventName, unhighlight, false);
+    });
+
+    function highlight(e) {
+      fileLabel.style.borderColor = "var(--primary-blue)";
+      fileLabel.style.backgroundColor = "rgba(86, 168, 250, 0.1)";
+    }
+
+    function unhighlight(e) {
+      fileLabel.style.borderColor = "var(--accent-blue)";
+      fileLabel.style.backgroundColor = "";
+    }
+
+    fileLabel.addEventListener("drop", handleDrop, false);
+
+    function handleDrop(e) {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      mediaField.files = files;
+
+      // Trigger change event
+      const changeEvent = new Event("change", { bubbles: true });
+      mediaField.dispatchEvent(changeEvent);
+    }
+
+    // Auto-fill company name if empty
+    if (cpnameField.value.trim()) {
+      cpnameField.previousElementSibling.classList.add("active");
+      cpnameField.classList.add("is-valid");
+    }
+  });
+
+  // Remove file function
+  function removeFile() {
+    const mediaField = document.getElementById("media");
+    const filePreview = document.getElementById("filePreview");
+    const imagePreview = document.getElementById("imagePreview");
+
+    mediaField.value = "";
+    filePreview.style.display = "none";
+    imagePreview.src = "";
+  }
+
+  // Character limit enforcement
+  document.getElementById("caption").addEventListener("input", function () {
+    if (this.value.length > 500) {
+      this.value = this.value.substring(0, 500);
+    }
+  });
+</script>
+
 {% endblock body %}

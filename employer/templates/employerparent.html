@@ -1,216 +1,977 @@
 <!DOCTYPE html>
 <html lang="en">
-    {% load static %}
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employer Page</title>
-    <link rel="stylesheet" href="{% static 'assets/vendors/mdi/css/materialdesignicons.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/vendors/css/vendor.bundle.base.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/vendors/jvectormap/jquery-jvectormap.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/vendors/flag-icon-css/css/flag-icon.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/vendors/owl-carousel-2/owl.carousel.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/vendors/owl-carousel-2/owl.theme.default.min.css' %}">
-    
-    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
-    
-    <link rel="shortcut icon" href="{% static 'images/img2.png' %}" />
-</head>
-<body>
-        <div class="container-scroller bg-light">
-      <nav class="sidebar sidebar-offcanvas text-light" id="sidebar" style="background-color:  rgb(3, 3, 114);">
-          <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top" style="background-color: white;">
-            <span style="color: rgb(8, 8, 151); font-size: 30px; font-weight: 600;">DreamJobs</span>
-          </div>
-          <ul class="nav">
-            <li class="nav-item profile">
-              <div class="profile-desc">
-                <div class="profile-pic">
-                  <div class="count-indicator">
-                    {% if empreg.empprofilepic %}
-                        <img class="img-xs rounded-circle" src="{{ empreg.empprofilepic.url }}" alt="">
-                    {% else %}
-                        <img class="img-xs rounded-circle" src="{% static 'default-avatar.png' %}" alt="">
-                    {% endif %}
-                    <span class="count bg-success"></span>
-                  </div>
-                  <div class="profile-name">
-                    <h5 class="mb-0 font-weight-normal">{{empreg.cpname}}</h5>                    
-                  </div>
-                </div>
-                <a href="#" id="profile-dropdown" data-bs-toggle="dropdown"><i class="mdi mdi-dots-vertical" style="color: white;"></i></a>
-                <div class="dropdown-menu dropdown-menu-right sidebar-dropdown preview-list" aria-labelledby="profile-dropdown">
-                  <a href="{% url 'employer:viewmyprofile'%}" class="dropdown-item preview-item">
-                    <div class="preview-thumbnail">
-                      <div class="preview-icon bg-dark rounded-circle">
-                        <i class="mdi mdi-settings text-primary"></i>
-                      </div>
-                    </div>
-                    <div class="preview-item-content">
-                      <p class="preview-subject ellipsis mb-1 text-small">Profile Management</p>
-                    </div>
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a href="#" class="dropdown-item preview-item">
-                    <div class="preview-thumbnail">
-                      <div class="preview-icon bg-dark rounded-circle">
-                        <i class="mdi mdi-onepassword  text-info"></i>
-                      </div>
-                    </div>
-                    <div class="preview-item-content">
-                      <p class="preview-subject ellipsis mb-1 text-small">Change Password</p>
-                    </div>
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a href="{% url 'employer:logout' %}" class="dropdown-item preview-item">
-                    <div class="preview-thumbnail">
-                      <div class="preview-icon bg-dark rounded-circle">
-                        <i class="mdi mdi-calendar-today text-success"></i>
-                      </div>
-                    </div>
-                    <div class="preview-item-content">
-                      <p class="preview-subject ellipsis mb-1 text-small">Logout</p>
-                    </div>
-                  </a>
-                </div>
-              </div>
-            </li>            
-            <li class="nav-item menu-items">
-              <a class="nav-link" href="{% url 'employer:employerhome' %}">
-                <span class="menu-icon" style="background-color: white;">
-                  <i class="mdi mdi-home"></i>
-                </span>
-                <span class="menu-title text-light">Home</span>
-              </a>
-            </li>
-            <li class="nav-item menu-items">
-              <a class="nav-link" href="{% url 'employer:addpost' %}">
-                <span class="menu-icon" style="background-color: white;">
-                  <i class="mdi mdi-speedometer"></i>
-                </span>
-                <span class="menu-title text-light">Add Posts</span>
-              </a>
-            </li>
-            <li class="nav-item menu-items">
-              <a class="nav-link" href="{% url 'employer:jobs' %}">
-                <span class="menu-icon" style="background-color: white;">
-                  <i class="mdi mdi-speedometer"></i>
-                </span>
-                <span class="menu-title text-light">Post Jobs</span>
-              </a>
-            </li>
-           <li class="nav-item menu-items">
-              <a class="nav-link" href="{% url 'employer:viewapplicants' %}">
-                <span class="menu-icon" style="background-color: white;">
-                  <i class="mdi mdi-playlist-play"></i>
-                </span>
-                <span class="menu-title text-light">View Applicants</span>
-              </a>
-            </li>    
-            <li class="nav-item menu-items">
-              <a class="nav-link" href="{% url 'employer:postedjobs' %}">
-                <span class="menu-icon" style="background-color: white;">
-                  <i class="mdi mdi-playlist-play"></i>
-                </span>
-                <span class="menu-title text-light">Posted Jobs</span>
-              </a>
-            </li>            
-            <li class="nav-item menu-items">
-              <a class="nav-link" href="{% url 'employer:viewmyprofile'%}">
-                <span class="menu-icon" style="background-color: white;">
-                  <i class="mdi mdi-playlist-play"></i>
-                </span>
-                <span class="menu-title text-light">View Profile</span>
-              </a>
-            </li>       
-          </ul>
-        </nav>
-        
-        <div class="container-fluid page-body-wrapper">
-        
-          <nav class="navbar p-0 fixed-top d-flex flex-row" style="background-color: white; color: black;">
-            <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center" style="background-color: white;">
-              <a class="navbar-brand brand-logo-mini" href="#"><img src="{% static 'images/img2.png' %}" style="background-color: white;" alt="logo" /></a>
-            </div>
-            <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
-              <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
-                <span class="mdi mdi-menu"></span>
-              </button>
-              <ul class="navbar-nav navbar-nav-right">
-                <li class="nav-item dropdown">
-                  <a class="nav-link" id="profileDropdown" href="#" data-bs-toggle="dropdown">
-                    <div class="navbar-profile">
-                      <img class="img-xs rounded-circle" src="{% if empreg.empprofilepic %}{{ empreg.empprofilepic.url }}{% else %}{% static 'default-avatar.png' %}{% endif %}" alt="">
-                      <p class="mb-0 d-none d-sm-block navbar-profile-name text-dark">{{empreg.cpname}}</p>
-                      <i class="mdi mdi-menu-down d-none d-sm-block"></i>
-                    </div>
-                  </a>
-                  <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="profileDropdown">
-                    <h6 class="p-3 mb-0">Profile</h6>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item preview-item">
-                      <div class="preview-thumbnail">
-                        <div class="preview-icon bg-dark rounded-circle">
-                          <i class="mdi mdi-settings text-success"></i>
-                        </div>
-                      </div>
-                      <div class="preview-item-content">
-                        <p class="preview-subject mb-1">Settings</p>
-                      </div>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="{% url 'employer:logout' %}" class="dropdown-item preview-item">
-                      <div class="preview-thumbnail">
-                        <div class="preview-icon bg-dark rounded-circle">
-                          <i class="mdi mdi-logout text-danger"></i>
-                        </div>
-                      </div>
-                      <div class="preview-item-content">
-                        <p class="preview-subject mb-1">Log out</p>
-                      </div>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <p class="p-3 mb-0 text-center">Advanced settings</p>
-                  </div>
-                </li>
-              </ul>
-              <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
-                <span class="mdi mdi-format-line-spacing"></span>
-              </button>
-            </div>
-          </nav>
-          
-          <div class="main-panel">
-            <div class="content-wrapper" style="background-color: white; color: black;">
-              {% block body %}              
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employer Dashboard - DreamJobs</title>
+    <link
+      rel="stylesheet"
+      href="{% static 'assets/vendors/mdi/css/materialdesignicons.min.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'assets/vendors/css/vendor.bundle.base.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'assets/vendors/jvectormap/jquery-jvectormap.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'assets/vendors/flag-icon-css/css/flag-icon.min.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'assets/vendors/owl-carousel-2/owl.carousel.min.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'assets/vendors/owl-carousel-2/owl.theme.default.min.css' %}"
+    />
 
-              {% endblock body %}
-            </div>
-          
-            <footer class="footer" style="background-color: white; color: black;">
-              <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © dreamjobs</span>              
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
+
+    <link rel="shortcut icon" href="{% static 'images/img2.png' %}" />
+
+    <style>
+      :root {
+        --primary-blue: #093f75;
+        --secondary-blue: #0c3056;
+        --accent-blue: #56a8fa;
+        --light-blue: #1c5aa6;
+        --text-dark: #2c3e50;
+        --text-light: #6c757d;
+        --bg-light: #f8fafc;
+        --shadow-light: 0 4px 20px rgba(9, 63, 117, 0.08);
+        --shadow-medium: 0 8px 32px rgba(9, 63, 117, 0.12);
+        --gradient-primary: linear-gradient(
+          135deg,
+          #0c3056 0%,
+          #1c5aa6 50%,
+          #56a8fa 100%
+        );
+        --gradient-accent: linear-gradient(45deg, #56a8fa, #a1d0ff);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        height: 100%;
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: var(--text-dark);
+        overflow-x: hidden;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .main-content {
+        flex: 1;
+      }
+
+      .img-xs {
+        width: 40px; /* or match your design's size */
+        height: 40px;
+        object-fit: cover; /* ensures the image fills without distortion */
+      }
+
+      .rounded-circle {
+        border-radius: 50%;
+      }
+
+      .avatar-img {
+        display: block;
+        max-width: 100%;
+        max-height: 100%;
+      }
+
+      .sidebar {
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        background: var(--gradient-primary) !important;
+        transition: all 0.3s ease;
+      }
+
+      .sidebar-brand-wrapper {
+        padding: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+      }
+
+      .brand-logo {
+        max-height: 60px; 
+        width: auto; 
+        object-fit: contain; 
+      }
+
+      .sidebar .nav .nav-item .nav-link{
+        padding: 0.8rem 10px 0.8rem 2.188rem;
+      }
+
+      .menu-icon{
+        margin-right: 1rem;
+      }
+
+      .brand-text {
+        background: var(--gradient-accent);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+      }
+
+      .nav-item.menu-items {
+        margin-bottom: 0.5rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+
+      .nav-item.menu-items:hover {
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateX(5px);
+      }
+
+      .nav-link {
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .sidebar 
+      .nav {
+        padding-top: 80px;
+      }
+
+      .navbar .navbar-menu-wrapper {
+        height: 80px;
+      }
+
+      .sidebar .sidebar-brand-wrapper {
+        height: 80px;
+      }
+
+      .nav-link::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: left 0.5s;
+      }
+
+      .nav-link:hover::before {
+        left: 100%;
+      }
+
+      .menu-icon {
+        background: white !important;
+        border-radius: 8px;
+        padding: 0.5rem;
+        margin-right: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: var(--shadow-light);
+        transition: all 0.3s ease;
+      }
+
+      .nav-link:hover .menu-icon {
+        transform: scale(1.1);
+        box-shadow: var(--shadow-medium);
+      }
+
+      .menu-icon i {
+        color: var(--secondary-blue) !important;
+        font-size: 1.2rem;
+      }
+
+      .profile {
+        padding: 1.5rem;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        margin: 1rem;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .profile-pic img {
+        border: 3px solid white;
+        box-shadow: var(--shadow-medium);
+        transition: all 0.3s ease;
+      }
+
+      .profile-pic:hover img {
+        transform: scale(1.1);
+      }
+
+      .count-indicator .count {
+        width: 12px;
+        height: 12px;
+        border: 2px solid white;
+      }
+
+      .profile-name h5 {
+        color: white;
+        font-weight: 600;
+        margin-top: 0.5rem;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      }
+
+      .navbar {
+        box-shadow: var(--shadow-light);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      }
+
+      .navbar-profile {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+
+      .navbar-profile:hover {
+        background: rgba(0, 0, 0, 0.05);
+      }
+
+      .navbar-profile img {
+        border: 2px solid var(--bg-light);
+        box-shadow: var(--shadow-light);
+      }
+
+      .navbar-profile-name {
+        margin: 0 0.5rem;
+        font-weight: 600;
+        color: var(--text-dark);
+      }
+
+      .dropdown-menu {
+        border: none;
+        box-shadow: var(--shadow-medium);
+        border-radius: 12px;
+        padding: 0.5rem 0;
+        backdrop-filter: blur(10px);
+      }
+
+      .dropdown-item {
+        padding: 0.75rem 1.25rem;
+        transition: all 0.3s ease;
+        border-radius: 8px;
+        margin: 0 0.5rem;
+      }
+
+      .dropdown-item:hover {
+        background: rgba(9, 63, 117, 0.1);
+        transform: translateX(5px);
+      }
+
+      .preview-icon {
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+      }
+
+      .main-panel {
+        background: var(--bg-light);
+        min-height: 100vh;
+      }
+
+      .content-wrapper {
+        padding: 2rem;
+        background: linear-gradient(135deg, var(--bg-light) 0%, #e9ecef 100%);
+        min-height: calc(100vh - 140px);
+      }
+
+      .footer {
+        background: white !important;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        padding: 1rem 2rem;
+        margin-top: auto;
+        font-size: medium;
+      }
+
+      .navbar-toggler {
+        border: none;
+        padding: 0.5rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+
+      .navbar-toggler:hover {
+        background: rgba(0, 0, 0, 0.1);
+      }
+
+      .navbar-toggler span {
+        font-size: 1.5rem;
+        color: var(--secondary-blue);
+      }
+
+      @media (max-width: 1024px) {
+        :root {
+          --sidebar-width: 260px;
+        }
+        
+        .sidebar {
+          width: var(--sidebar-width);
+        }
+        
+        .main-panel {
+          width: calc(100% - var(--sidebar-width));
+          margin-left: var(--sidebar-width);
+        }
+      }
+
+      /* Tablet and Mobile Landscape */
+      @media (max-width: 992px) {
+        :root {
+          --sidebar-width: 280px;
+        }
+
+        .sidebar {
+          transform: translateX(-100%);
+          position: fixed;
+          z-index: 1040;
+          height: 100vh;
+          width: var(--sidebar-width);
+          left: 0;
+        }
+
+        .sidebar.active {
+          transform: translateX(0);
+        }
+
+        .sidebar-overlay {
+          display: block;
+        }
+
+        .main-panel {
+          margin-left: 0;
+          width: 100%;
+        }
+
+        .content-wrapper {
+          padding: 0;
+        }
+
+        .profile {
+          margin: 0.75rem;
+          padding: 1.25rem;
+        }
+
+        .navbar-profile-name {
+          display: none;
+        }
+
+        .navbar .navbar-menu-wrapper {
+          padding-left: 1rem;
+          margin-left: 0;
+        }
+      }
+
+            @media (max-width: 768px) {
+        .content-wrapper {
+          padding: 0;
+        }
+
+        .dropdown-menu {
+          min-width: 240px;
+          right: 0.5rem !important;
+        }
+
+        .profile {
+          margin: 0.5rem;
+          padding: 1rem;
+        }
+
+        .profile-name h5 {
+          font-size: 1rem;
+        }
+
+        .navbar-toggler {
+          min-width: 44px;
+          min-height: 44px;
+        }
+
+        .nav-link {
+          font-size: 0.85rem;
+        }
+
+        .menu-icon {
+          margin-right: 0.75rem;
+          width: 18px;
+          height: 18px;
+        }
+
+        .menu-icon i {
+          font-size: 1rem;
+        }
+
+        /* Stack footer content on mobile */
+        .footer .d-sm-flex {
+          flex-direction: column !important;
+          text-align: center;
+          gap: 0.5rem;
+        }
+      }
+
+      /* Small Mobile Devices */
+      @media (max-width: 576px) {
+        :root {
+          --sidebar-width: 100vw;
+          --navbar-height: 70px;
+        }
+
+        .sidebar {
+          width: 100vw;
+        }
+
+        .sidebar.active {
+          width: 100vw;
+        }
+
+        .content-wrapper {
+          padding: 0;
+          margin-top: 70px;
+        }
+
+        .navbar .navbar-menu-wrapper {
+          height: 70px;
+        }
+
+        .sidebar .sidebar-brand-wrapper {
+          height: 70px;
+          padding: 1rem;
+        }
+
+        .brand-logo {
+          max-height: 45px;
+        }
+
+        .dropdown-menu {
+          min-width: calc(100vw - 2rem);
+          right: 1rem !important;
+          left: 1rem !important;
+          max-width: none;
+        }
+
+        .profile {
+          margin: 0.25rem;
+          padding: 0.75rem;
+        }
+
+        .img-xs {
+          width: 36px;
+          height: 36px;
+        }
+
+        .navbar-profile {
+          padding: 0.25rem 0.5rem;
+          min-height: 44px;
+        }
+
+        .dropdown-item {
+          padding: 0.75rem 1rem;
+          min-height: 44px;
+        }
+
+        .preview-icon {
+          width: 36px;
+          height: 36px;
+          margin-right: 0.75rem;
+        }
+
+        /* Adjust navigation padding for very small screens */
+        .sidebar .nav {
+          padding-top: 4.5rem;
+        }
+
+        .nav-link {
+          padding: 0.75rem 1rem;
+          margin: 0.125rem 0.5rem;
+          min-height: 44px;
+        }
+
+        /* Single column layout for footer */
+        .footer {
+          padding: 1rem;
+          font-size: 0.8rem;
+        }
+      }
+
+      /* Very Small Mobile Devices (iPhone SE, etc.) */
+      @media (max-width: 375px) {
+        .content-wrapper {
+          padding: 0;
+        }
+
+        .profile {
+          margin: 0.125rem;
+          padding: 0.5rem;
+        }
+
+        .dropdown-item {
+          font-size: 0.8rem;
+          padding: 0.625rem 0.75rem;
+        }
+
+        .nav-link {
+          font-size: 0.8rem;
+          padding: 0.625rem 0.75rem;
+        }
+      }
+
+      /* Landscape orientation optimizations */
+      @media (max-height: 500px) and (orientation: landscape) {
+        .sidebar .nav {
+          padding-top: 2rem;
+          padding-bottom: 1rem;
+        }
+
+        .profile {
+          padding: 0.75rem;
+          margin: 0.5rem;
+        }
+
+        .content-wrapper {
+          padding: 1rem;
+        }
+      }
+
+      /* Animations */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .nav-item {
+        animation: fadeInUp 0.6s ease forwards;
+      }
+
+      .nav-item:nth-child(1) {
+        animation-delay: 0.1s;
+      }
+      .nav-item:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .nav-item:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+      .nav-item:nth-child(4) {
+        animation-delay: 0.4s;
+      }
+      .nav-item:nth-child(5) {
+        animation-delay: 0.5s;
+      }
+      .nav-item:nth-child(6) {
+        animation-delay: 0.6s;
+      }
+      .nav-item:nth-child(7) {
+        animation-delay: 0.7s;
+      }
+
+      /* Loading shimmer */
+      .loading {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .loading::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.4),
+          transparent
+        );
+        animation: loading 1.5s infinite;
+      }
+
+      @keyframes loading {
+        0% {
+          left: -100%;
+        }
+        100% {
+          left: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-scroller bg-light">
+      <!-- Enhanced Sidebar -->
+      <nav class="sidebar sidebar-offcanvas text-light" id="sidebar">
+        <div
+          class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top"
+          style="background-color: white"
+        >
+          <img
+            src="{% static 'images/logo.png' %}"
+            alt="DreamJobs Logo"
+            class="brand-logo"
+          />
+        </div>
+
+        <ul class="nav">
+          <!-- Enhanced Profile Section -->
+          <li class="nav-item profile">
+            <div class="profile-desc">
+              <div class="profile-pic">
+                <div class="count-indicator">
+                  {% if empreg.empprofilepic %}
+                  <img
+                    class="img-xs rounded-circle"
+                    src="{{ empreg.empprofilepic.url }}"
+                    alt="Profile Picture"
+                  />
+                  {% else %}
+                  <img
+                    class="img-xs rounded-circle"
+                    src="{% static 'images/default-avatar.png' %}"
+                    alt="Default Avatar"
+                  />
+                  {% endif %}
+                  <span class="count bg-success"></span>
+                </div>
+                <div class="profile-name">
+                  <h5 class="mb-0 font-weight-normal">{{empreg.cpname}}</h5>
+                </div>
               </div>
-            </footer>
-          
+              <a
+                href="#"
+                id="profile-dropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="mdi mdi-dots-vertical" style="color: white"></i>
+              </a>
+              <div
+                class="dropdown-menu dropdown-menu-right sidebar-dropdown preview-list"
+                aria-labelledby="profile-dropdown"
+              >
+                <a href="viewmyprofile.html" class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <div class="preview-icon bg-primary rounded-circle">
+                      <i class="mdi mdi-account-settings text-white"></i>
+                    </div>
+                  </div>
+                  <div class="preview-item-content">
+                    <p class="preview-subject ellipsis mb-1 text-small">
+                      Profile Management
+                    </p>
+                    <p class="text-muted mb-0">Update your profile settings</p>
+                  </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="/jobapp/templates/reset_password.html" class="dropdown-item preview-item">
+                  <div class="preview-thumbnail">
+                    <div class="preview-icon bg-warning rounded-circle">
+                      <i class="mdi mdi-lock text-white"></i>
+                    </div>
+                  </div>
+                  <div class="preview-item-content">
+                    <p class="preview-subject ellipsis mb-1 text-small">
+                      Change Password
+                    </p>
+                    <p class="text-muted mb-0">
+                      Update your security credentials
+                    </p>
+                  </div>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a
+                  href="#"
+                  class="dropdown-item preview-item"
+                >
+                  <div class="preview-thumbnail">
+                    <div class="preview-icon bg-danger rounded-circle">
+                      <i class="mdi mdi-logout text-white"></i>
+                    </div>
+                  </div>
+                  <div class="preview-item-content">
+                    <p class="preview-subject ellipsis mb-1 text-small">
+                      Logout
+                    </p>
+                    <p class="text-muted mb-0">Sign out of your account</p>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </li>
+
+          <!-- Enhanced Navigation Items -->
+          <li class="nav-item menu-items">
+            <a class="nav-link" href="{% url 'employer:employerhome' %}">
+              <span class="menu-icon">
+                <i class="mdi mdi-home"></i>
+              </span>
+              <span class="menu-title text-light">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item menu-items">
+            <a class="nav-link" href="{% url 'employer:addpost' %}">
+              <span class="menu-icon">
+                <i class="mdi mdi-plus-circle"></i>
+              </span>
+              <span class="menu-title text-light">Add Posts</span>
+            </a>
+          </li>
+          <li class="nav-item menu-items">
+            <a class="nav-link" href="{% url 'employer:jobs' %}">
+              <span class="menu-icon">
+                <i class="mdi mdi-briefcase"></i>
+              </span>
+              <span class="menu-title text-light">Post Jobs</span>
+            </a>
+          </li>
+          <li class="nav-item menu-items">
+            <a class="nav-link" href="{% url 'employer:viewapplicants' %}">
+              <span class="menu-icon">
+                <i class="mdi mdi-account-multiple"></i>
+              </span>
+              <span class="menu-title text-light">View Applicants</span>
+            </a>
+          </li>
+          <li class="nav-item menu-items">
+            <a class="nav-link" href="{% url 'employer:postedjobs' %}">
+              <span class="menu-icon">
+                <i class="mdi mdi-clipboard-text"></i>
+              </span>
+              <span class="menu-title text-light">Posted Jobs</span>
+            </a>
+          </li>
+          <li class="nav-item menu-items">
+            <a class="nav-link" href="{% url 'employer:viewmyprofile'%}">
+              <span class="menu-icon">
+                <i class="mdi mdi-account-circle"></i>
+              </span>
+              <span class="menu-title text-light">My Profile</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="container-fluid page-body-wrapper">
+        <!-- Enhanced Top Navigation -->
+        <nav
+          class="navbar p-0 fixed-top d-flex flex-row"
+          style="background-color: white; color: black"
+        >
+          <div
+            class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center"
+            style="background-color: white"
+          >
+            <a class="navbar-brand brand-logo-mini" href="#">
+              <img
+                src="{% static 'images/img2.png' %}"
+                style="background-color: white"
+                alt="logo"
+              />
+            </a>
           </div>
+          <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
+            <button
+              class="navbar-toggler navbar-toggler align-self-center"
+              type="button"
+              data-toggle="minimize"
+            >
+              <span class="mdi mdi-menu"></span>
+            </button>
+
+            <ul class="navbar-nav navbar-nav-right">
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link"
+                  id="profileDropdown"
+                  href="#"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <div class="navbar-profile">
+                    <img
+                      class="img-xs rounded-circle"
+                      src="{% if empreg.empprofilepic %}{{ empreg.empprofilepic.url }}{% else %}{% static 'images/default-avatar.png' %}{% endif %}"
+                      alt="Profile"
+                    />
+                    <p
+                      class="mb-0 d-none d-sm-block navbar-profile-name text-dark"
+                    >
+                      {{empreg.cpname}}
+                    </p>
+                    <i class="mdi mdi-chevron-down d-none d-sm-block"></i>
+                  </div>
+                </a>
+                <div
+                  class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+                  aria-labelledby="profileDropdown"
+                >
+                  <h6 class="p-3 mb-0 font-weight-bold">Profile Menu</h6>
+                  <div class="dropdown-divider"></div>
+                  <a
+                    class="dropdown-item preview-item"
+                    href="{% url 'employer:viewmyprofile'%}"
+                  >
+                    <div class="preview-thumbnail">
+                      <div class="preview-icon bg-info rounded-circle">
+                        <i class="mdi mdi-account text-white"></i>
+                      </div>
+                    </div>
+                    <div class="preview-item-content">
+                      <p class="preview-subject mb-1">View Profile</p>
+                      <p class="text-muted mb-0">Check your profile details</p>
+                    </div>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item preview-item">
+                    <div class="preview-thumbnail">
+                      <div class="preview-icon bg-success rounded-circle">
+                        <i class="mdi mdi-settings text-white"></i>
+                      </div>
+                    </div>
+                    <div class="preview-item-content">
+                      <p class="preview-subject mb-1">Settings</p>
+                      <p class="text-muted mb-0">Configure your preferences</p>
+                    </div>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a
+                    href="{% url 'employer:logout' %}"
+                    class="dropdown-item preview-item"
+                  >
+                    <div class="preview-thumbnail">
+                      <div class="preview-icon bg-danger rounded-circle">
+                        <i class="mdi mdi-logout text-white"></i>
+                      </div>
+                    </div>
+                    <div class="preview-item-content">
+                      <p class="preview-subject mb-1">Log out</p>
+                      <p class="text-muted mb-0">Sign out safely</p>
+                    </div>
+                  </a>
+                </div>
+              </li>
+            </ul>
+            <button
+              class="navbar-toggler navbar-toggler-right d-lg-none align-self-center"
+              type="button"
+              data-toggle="offcanvas"
+            >
+              <span class="mdi mdi-format-line-spacing"></span>
+            </button>
+          </div>
+        </nav>
+
+        <!-- Enhanced Main Content -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+            {% block body %}
+            <!-- Your content goes here -->
+            {% endblock body %}
+          </div>
+
+          <!-- Enhanced Footer -->
+          <footer class="footer">
+            <div
+              class="d-sm-flex justify-content-center justify-content-sm-between align-items-center"
+            >
+              <span
+                class="text-muted d-block text-center text-sm-left d-sm-inline-block"
+              >
+                Copyright ©
+                <script>
+                  document.write(new Date().getFullYear());
+                </script>
+                DreamJobs. All rights reserved.
+              </span>
+              <span class="text-muted d-none d-sm-block">
+                Crafted with <i class="mdi mdi-heart text-danger"></i>
+              </span>
+            </div>
+          </footer>
         </div>
       </div>
-      <script src="{% static 'assets/vendors/js/vendor.bundle.base.js' %}"></script>
-    
+    </div>
+
+    <!-- Scripts -->
+    <script>
+      // Enhanced interactions
+      document.addEventListener("DOMContentLoaded", function () {
+        // Add smooth transitions for navigation items
+        const navItems = document.querySelectorAll(".nav-item.menu-items");
+        navItems.forEach((item, index) => {
+          item.style.animationDelay = `${(index + 1) * 0.1}s`;
+        });
+
+        // Add active state management
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll(".nav-link");
+        navLinks.forEach((link) => {
+          if (link.getAttribute("href") === currentPath) {
+            link.closest(".nav-item").classList.add("active");
+          }
+        });
+
+        // Enhanced sidebar toggle for mobile
+        const sidebarToggle = document.querySelector(".navbar-toggler-right");
+        const sidebar = document.querySelector(".sidebar");
+
+        if (sidebarToggle && sidebar) {
+          sidebarToggle.addEventListener("click", function () {
+            sidebar.classList.toggle("active");
+          });
+        }
+      });
+    </script>
+    <script src="{% static 'assets/vendors/js/vendor.bundle.base.js' %}"></script>
     <script src="{% static 'assets/vendors/chart.js/Chart.min.js' %}"></script>
     <script src="{% static 'assets/vendors/progressbar.js/progressbar.min.js' %}"></script>
     <script src="{% static 'assets/vendors/jvectormap/jquery-jvectormap.min.js' %}"></script>
     <script src="{% static 'assets/vendors/jvectormap/jquery-jvectormap-world-mill-en.js' %}"></script>
     <script src="{% static 'assets/vendors/owl-carousel-2/owl.carousel.min.js' %}"></script>
-    <script src="{% static 'assets/js/jquery.cookie.js' %}" type="text/javascript"></script>
-    
+    <script
+      src="{% static 'assets/js/jquery.cookie.js' %}"
+      type="text/javascript"
+    ></script>
     <script src="{% static 'assets/js/off-canvas.js' %}"></script>
     <script src="{% static 'assets/js/hoverable-collapse.js' %}"></script>
     <script src="{% static 'assets/js/misc.js' %}"></script>
     <script src="{% static 'assets/js/settings.js' %}"></script>
     <script src="{% static 'assets/js/todolist.js' %}"></script>
-    
     <script src="{% static 'assets/js/dashboard.js'%}"></script>
-</body>
+  </body>
 </html>

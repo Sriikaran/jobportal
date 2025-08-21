@@ -24,6 +24,8 @@ urlpatterns = [
     path('jsapp/',include(("jsapp.jsappurls","jsapp"),namespace="jsapp")),
     path('adminapp/',include(("adminapp.adminappurls","adminapp"),namespace="adminapp")),
     path('employer/',include(("employer.employerurls","employer"),namespace="employer")),
+    #path('accounts/', include('accounts.urls')),
 ]
-urlpatterns+=static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
 
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

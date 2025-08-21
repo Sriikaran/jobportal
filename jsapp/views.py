@@ -7,6 +7,9 @@ from .models import AppliedJobs
 import datetime
 from django.shortcuts import get_object_or_404
 
+def test_template(request):
+    return render(request, "response.html")  # Ensure you have a test_template.html in your templates directory
+
 def index(request):
     return render(request, "index.html")
 
@@ -35,11 +38,11 @@ def employer(request):
         Employer(companyname=companyname, emailaddress=emailaddress, password=password).save()
         messages.success(request, "Employer account created successfully.")
         return redirect('login')
-    return render(request, "employer.html")
+    return render(request, "employerhome.html")
 
 def appliedjobs(request):
     if "username" not in request.session:
-        return redirect("login")
+        return redirect("jobapp:login")
 
     seeker_email = request.session["username"]
     jobseeker = JobSeeker.objects.get(emailaddress = seeker_email)
@@ -49,7 +52,7 @@ def appliedjobs(request):
 
 def viewprofile(request):
     if "username" not in request.session:
-        return redirect("login")
+        return redirect("jobapp:login")
 
 
     seeker_email = request.session["username"]
@@ -101,7 +104,7 @@ def jobseeker(request):
         Response(name=name, emailaddress=emailaddress, password=password).save()
         messages.success(request, "Job Seeker account created successfully.")
         return redirect('login')
-    return render(request, "jobseeker.html")
+    return render(request, "jsparent.html")
 
 def apply(request, jobid):
     if "username" not in request.session:
@@ -126,7 +129,9 @@ def parent(request):
 
 def admin_dashboard(request):
     jobs = Jobs.objects.all()
-    return render(request, "admin.html", {"jobs": jobs})
+    return render(request, "adminhome.html", {"jobs": jobs, #"profile_completion": profile_completion
+                                          })
+
 
 def applyjob(request, jobid):
     if "username" not in request.session:

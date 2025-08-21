@@ -1,50 +1,633 @@
-{% extends "employerparent.html" %}
-{% block body %}
-    <div class="row">
-        <div class="col-sm-12">
-            <h1 style="text-align:center;">View Applicants</h1>    
-            <div class="table-responsive">
-                <table class="table table-bordered text-dark" style="margin: auto;">
-                    <tr>
-                    <td>Job Title</td>
-                    <td>Post</td>  
-                    <td>Name</td>
-                    <td>Gender</td>
-                    <td>Address</td>
-                    <td>Contact No.</td>
-                    <td>Email Address</td>
-                    <td>DOB</td>
-                    <td>Qualification</td>
-                    <td>Experience</td>
-                    <td>Key Skills</td>
-                    <td>Applied Date</td>
-                    <td>Accept</td>
-                    <td>Reject</td>
-                </tr>
-                    {% for p in post %}
-                    <tr>
-                        <td>{{p.jobtitle}}</td>
-                        <td>{{p.post}}</td>
-                        <td>{{p.name}}</td>
-                        <td>{{p.gender}}</td>
-                        <td>{{p.address}}</td>
-                        <td>{{p.contactno}}</td>
-                        <td>{{p.emailaddress}}</td>
-                        <td>{{p.dob}}</td>
-                        <td>{{p.qualification}}</td>
-                        <td>{{p.experience}}</td>
-                        <td>{{p.keyskills}}</td>
-                        <td>{{p.applieddate}}</td>
-                        <td>
-                            <a class="btn btn-success">Accept</a>
-                        </td>
-                        <td><a href="{% url 'employer:reject' emailaddress=p.emailaddress %}">
-                            <button type="button" class="btn btn-danger">Reject</button>
-                        </a></td>
-                        </tr>
-                    {% endfor %}
-                </table> 
-            </div>
-        </div>
+{% extends "employerparent.html" %} {% block body %}
+
+<style>
+  :root {
+    --primary-blue: #093f75;
+    --secondary-blue: #0c3056;
+    --accent-blue: #56a8fa;
+    --light-blue: #1c5aa6;
+    --text-dark: #2c3e50;
+    --text-light: #6c757d;
+    --bg-light: #f8fafc;
+    --success-green: #10b981;
+    --danger-red: #ef4444;
+    --warning-orange: #f59e0b;
+    --shadow-light: 0 4px 20px rgba(9, 63, 117, 0.08);
+    --shadow-medium: 0 8px 32px rgba(9, 63, 117, 0.12);
+    --gradient-primary: linear-gradient(
+      135deg,
+      #0c3056 0%,
+      #1c5aa6 50%,
+      #56a8fa 100%
+    );
+    --border-radius: 12px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .applicants-container {
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .page-header h1 {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .page-subtitle {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    font-weight: 400;
+  }
+
+  .filters-section {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(86, 168, 250, 0.1);
+  }
+
+  .filters-row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .filter-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-dark);
+  }
+
+  .filter-input {
+    padding: 0.5rem 0.75rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    min-width: 150px;
+    transition: var(--transition);
+  }
+
+  .filter-input:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 3px rgba(86, 168, 250, 0.1);
+  }
+
+  .applicants-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  }
+
+  .applicant-card {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+    border: 1px solid rgba(86, 168, 250, 0.1);
+    overflow: hidden;
+    transition: var(--transition);
+  }
+
+  .applicant-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-medium);
+  }
+
+  .card-header {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 1.25rem;
+    position: relative;
+  }
+
+  .job-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    line-height: 1.3;
+  }
+
+  .job-post {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    font-weight: 500;
+  }
+
+  .status-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+  }
+
+  .card-body {
+    padding: 1.5rem;
+  }
+
+  .applicant-info {
+    margin-bottom: 1.5rem;
+  }
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .info-row:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+
+  .info-label {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 0.875rem;
+    min-width: 100px;
+    display: flex;
+    align-items: center;
+  }
+
+  .info-label::before {
+    content: "";
+    width: 4px;
+    height: 12px;
+    background: var(--accent-blue);
+    border-radius: 2px;
+    margin-right: 0.5rem;
+  }
+
+  .info-value {
+    color: var(--text-light);
+    font-size: 0.875rem;
+    text-align: right;
+    flex: 1;
+    margin-left: 1rem;
+    word-break: break-word;
+  }
+
+  .skills-section {
+    margin: 1rem 0;
+  }
+
+  .skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .skill-tag {
+    background: linear-gradient(45deg, var(--accent-blue), #a1d0ff);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .actions-section {
+    display: flex;
+    gap: 0.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid #f1f5f9;
+  }
+
+  .btn-enhanced {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .btn-success-enhanced {
+    background: var(--success-green);
+    color: white;
+  }
+
+  .btn-success-enhanced:hover {
+    background: #059669;
+    transform: translateY(-1px);
+    color: white;
+    text-decoration: none;
+  }
+
+  .btn-danger-enhanced {
+    background: var(--danger-red);
+    color: white;
+  }
+
+  .btn-danger-enhanced:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
+    color: white;
+    text-decoration: none;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-light);
+  }
+
+  .empty-state-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+
+  .stats-bar {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .stat-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+    border: 1px solid rgba(86, 168, 250, 0.1);
+    flex: 1;
+    min-width: 150px;
+    text-align: center;
+  }
+
+  .stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+    margin-bottom: 0.25rem;
+  }
+
+  .stat-label {
+    font-size: 0.875rem;
+    color: var(--text-light);
+    font-weight: 500;
+  }
+
+  @media (max-width: 768px) {
+    .applicants-container {
+      margin: 1rem auto;
+      padding: 0 0.5rem;
+    }
+
+    .page-header h1 {
+      font-size: 2rem;
+    }
+
+    .applicants-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .filters-row {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .filter-input {
+      min-width: auto;
+    }
+
+    .stats-bar {
+      flex-direction: column;
+    }
+
+    .actions-section {
+      flex-direction: column;
+    }
+  }
+
+  .fade-in {
+    animation: fadeIn 0.6s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .loading-shimmer {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+</style>
+
+<div class="applicants-container fade-in">
+  <div class="page-header">
+    <h1>Job Applicants</h1>
+    <p class="page-subtitle">Review and manage job applications</p>
+  </div>
+
+  <!-- Stats Overview -->
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-number" id="total-applicants">{{ post|length }}</div>
+      <div class="stat-label">Total Applicants</div>
     </div>
+    <div class="stat-card">
+      <div class="stat-number">{{ post|length }}</div>
+      <div class="stat-label">Pending Review</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">0</div>
+      <div class="stat-label">Accepted</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">0</div>
+      <div class="stat-label">Rejected</div>
+    </div>
+  </div>
+
+  <!-- Filters Section -->
+  <div class="filters-section">
+    <div class="filters-row">
+      <div class="filter-group">
+        <label class="filter-label">Search Name</label>
+        <input
+          type="text"
+          class="filter-input"
+          placeholder="Search by name..."
+          id="name-filter"
+        />
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">Job Title</label>
+        <select class="filter-input" id="job-filter">
+          <option value="">All Jobs</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">Experience</label>
+        <select class="filter-input" id="exp-filter">
+          <option value="">All Experience</option>
+          <option value="0-1">0-1 years</option>
+          <option value="1-3">1-3 years</option>
+          <option value="3-5">3-5 years</option>
+          <option value="5+">5+ years</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Applicants Grid -->
+  <div class="applicants-grid" id="applicants-container">
+    {% for p in post %}
+    <div
+      class="applicant-card"
+      data-name="{{ p.name|lower }}"
+      data-job="{{ p.jobtitle|lower }}"
+      data-exp="{{ p.experience }}"
+    >
+      <div class="card-header">
+        <div class="job-title">{{ p.jobtitle }}</div>
+        <div class="job-post">{{ p.post }}</div>
+        <div class="status-badge">New Application</div>
+      </div>
+
+      <div class="card-body">
+        <div class="applicant-info">
+          <div class="info-row">
+            <span class="info-label">Name</span>
+            <span class="info-value">{{ p.name }}</span>
+          </div>
+
+          <div class="info-row">
+            <span class="info-label">Gender</span>
+            <span class="info-value">{{ p.gender }}</span>
+          </div>
+
+          <div class="info-row">
+            <span class="info-label">Email</span>
+            <span class="info-value">{{ p.emailaddress }}</span>
+          </div>
+
+          <div class="info-row">
+            <span class="info-label">Contact</span>
+            <span class="info-value">{{ p.contactno }}</span>
+          </div>
+
+          <div class="info-row">
+            <span class="info-label">DOB</span>
+            <span class="info-value">{{ p.dob }}</span>
+          </div>
+
+          <div class="info-row">
+            <span class="info-label">Address</span>
+            <span class="info-value">{{ p.address }}</span>
+          </div>
+
+          <div class="info-row">
+            <span class="info-label">Qualification</span>
+            <span class="info-value">{{ p.qualification }}</span>
+          </div>
+
+          <div class="info-row">
+            <span class="info-label">Experience</span>
+            <span class="info-value">{{ p.experience }}</span>
+          </div>
+
+          <div class="info-row">
+            <span class="info-label">Applied Date</span>
+            <span class="info-value">{{ p.applieddate }}</span>
+          </div>
+        </div>
+
+        {% if keyskills %}
+        <div class="skills-section">
+          <div class="info-label" style="margin-bottom: 0.5rem">Key Skills</div>
+          <div class="skills-container">
+            {% for skill in keyskills %}
+            <span class="skill-tag">{{ skill }}</span>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+        <div class="actions-section">
+          <a href="#" class="btn-enhanced btn-success-enhanced">
+            <span>✓</span>
+            Accept
+          </a>
+          <a
+            href="{% url 'employer:reject' emailaddress=p.emailaddress %}"
+            class="btn-enhanced btn-danger-enhanced"
+          >
+            <span>✕</span>
+            Reject
+          </a>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <div class="empty-state">
+      <h3>No Applications Yet</h3>
+      <p>When candidates apply for your jobs, they'll appear here.</p>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Extract unique job titles for filter
+    const jobTitles = [
+      ...new Set(
+        Array.from(document.querySelectorAll(".applicant-card")).map((card) =>
+          card.querySelector(".job-title").textContent.trim()
+        )
+      ),
+    ];
+
+    const jobFilter = document.getElementById("job-filter");
+    jobTitles.forEach((title) => {
+      const option = document.createElement("option");
+      option.value = title.toLowerCase();
+      option.textContent = title;
+      jobFilter.appendChild(option);
+    });
+
+    // Filter functionality
+    const nameFilter = document.getElementById("name-filter");
+    const expFilter = document.getElementById("exp-filter");
+    const applicantCards = document.querySelectorAll(".applicant-card");
+
+    function filterApplicants() {
+      const nameValue = nameFilter.value.toLowerCase();
+      const jobValue = jobFilter.value.toLowerCase();
+      const expValue = expFilter.value;
+
+      applicantCards.forEach((card) => {
+        const name = card.dataset.name;
+        const job = card.dataset.job;
+        const exp = card.dataset.exp;
+
+        let showCard = true;
+
+        if (nameValue && !name.includes(nameValue)) {
+          showCard = false;
+        }
+
+        if (jobValue && !job.includes(jobValue)) {
+          showCard = false;
+        }
+
+        if (expValue && !matchesExperienceFilter(exp, expValue)) {
+          showCard = false;
+        }
+
+        card.style.display = showCard ? "block" : "none";
+      });
+
+      updateStats();
+    }
+
+    function matchesExperienceFilter(experience, filter) {
+      const expNum = parseInt(experience) || 0;
+      switch (filter) {
+        case "0-1":
+          return expNum <= 1;
+        case "1-3":
+          return expNum >= 1 && expNum <= 3;
+        case "3-5":
+          return expNum >= 3 && expNum <= 5;
+        case "5+":
+          return expNum >= 5;
+        default:
+          return true;
+      }
+    }
+
+    function updateStats() {
+      const visibleCards = document.querySelectorAll(
+        '.applicant-card[style="display: block"], .applicant-card:not([style])'
+      );
+      document.getElementById("total-applicants").textContent =
+        visibleCards.length;
+    }
+
+    nameFilter.addEventListener("input", filterApplicants);
+    jobFilter.addEventListener("change", filterApplicants);
+    expFilter.addEventListener("change", filterApplicants);
+
+    // Action button confirmations
+    document.querySelectorAll(".btn-danger-enhanced").forEach((btn) => {
+      btn.addEventListener("click", function (e) {
+        if (!confirm("Are you sure you want to reject this application?")) {
+          e.preventDefault();
+        }
+      });
+    });
+
+    document.querySelectorAll(".btn-success-enhanced").forEach((btn) => {
+      btn.addEventListener("click", function (e) {
+        if (!confirm("Are you sure you want to accept this application?")) {
+          e.preventDefault();
+        }
+      });
+    });
+  });
+
+  // Add split filter for Django template
+  if (typeof String.prototype.split === "undefined") {
+    // This is handled by Django template filters
+  }
+</script>
+
 {% endblock body %}

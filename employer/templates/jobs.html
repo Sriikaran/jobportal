@@ -1,61 +1,1144 @@
-{% extends "employerparent.html" %}
+{% extends "employerparent.html" %} 
 {% block body %}
-    <div class="row">
-        <div class="col-sm-12">
-            <h1 style="text-align:center; cursor: pointer;">Post Jobs</h1>  
-            {% if msg %}
-            <p style="text-align: center;">{{msg}}</p>
-            {% endif %}
-              <form class="form-group" method="post" enctype="multipart/form-data">
-                {%csrf_token %}
-                <table class="table text-dark" style="width: 60%; margin:auto; border: transparent;">
-                <tr>
-                    <td>Enter Firm Name</td>
-                    <td><input type="text" name="firmname" class="form-control text-dark bg-light" value="{{empreg.cpname}}" readonly/></td>
-                </tr>
-                <tr>
-                    <td>Enter relevant skills or keywords</td>
-                    <td><input type="text" name="tagname" class="form-control text-dark bg-light" value="" placeholder="add tags"/></td>
-                </tr>
 
-                <tr>
-                    <td>Enter Job Title</td>
-                    <td><input type="text" name="jobtitle" class="form-control text-dark bg-light" placeholder="Remote / On-Site "/></td>
-                </tr>
-                <tr>
-                    <td>Enter Post</td>
-                    <td><input type="text" name="post" class="form-control text-dark bg-light" placeholder="Ex: Software Developer"/></td>
-                </tr>
-                <tr>
-                    <td>Enter Job Description</td>
-                    <td><input type="text" name="jobdesc" class="form-control text-dark bg-light" placeholder="Ex: Excellent Commands in Any One Language Java Or Python" required/></td>
-                </tr> 
-                <tr>
-                    <td>Qualification</td>
-                    <td><textarea name="qualification" class="form-control text-dark bg-light" placeholder="Ex: Graduate/Post-Graduate"></textarea></td>
-                </tr>
-                <tr>
-                  <td>Enter Experience</td>
-                  <td><input type="text" name="experience" class="form-control text-dark bg-light" placeholder="Ex: 0-5 Years " required/></td>
-              </tr>
-              <tr>
-                <td>Enter Location</td>
-                <td><input type="text" name="location" class="form-control text-dark bg-light" placeholder="Ex: Delhi" required/></td>
-            </tr>
-            <tr>
-              <td>Enter Salary Per Annum</td>
-              <td><input type="number" name="salarypa" class="form-control text-dark bg-light" placeholder="3" required/></td>
-          </tr>
-          <tr>
-            <td>Enter Email Address</td>
-            <td><input type="email" name="emailaddress" value="{{empreg.cpemailaddress}}" class="form-control text-dark" readonly/></td>
-        </tr>
-                <tr>
-                    <td></td>
-                    <td><button type="submit"  class="btn btn-success">Post Job</td>
-                </tr>
-                </table>
-              </form>
-        </div>
+<style>
+  :root {
+    --primary-blue: #093f75;
+    --secondary-blue: #0c3056;
+    --accent-blue: #56a8fa;
+    --light-blue: #1c5aa6;
+    --text-dark: #2c3e50;
+    --text-light: #6c757d;
+    --bg-light: #f8fafc;
+    --shadow-light: 0 4px 20px rgba(9, 63, 117, 0.08);
+    --shadow-medium: 0 8px 32px rgba(9, 63, 117, 0.12);
+    --gradient-primary: linear-gradient(
+      135deg,
+      var(--secondary-blue) 0%,
+      var(--light-blue) 50%,
+      var(--accent-blue) 100%
+    );
+    --gradient-accent: linear-gradient(45deg, var(--accent-blue), #a1d0ff);
+    --success-color: #28a745;
+    --success-light: #d4edda;
+  }
+
+  /* Main Container */
+  .post-jobs-container {
+    background: linear-gradient(135deg, #f8fafc 0%, #e3f2fd 100%);
+    min-height: 100vh;
+  }
+
+  /* Enhanced Header */
+  .jobs-header {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 4rem 0;
+    margin-bottom: 4rem;
+    border-radius: 0 0 50px 50px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-medium);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .jobs-header:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(9, 63, 117, 0.2);
+  }
+
+  .jobs-header::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.1) 1px,
+      transparent 1px
+    );
+    background-size: 60px 60px;
+    animation: movePattern 25s linear infinite;
+  }
+
+  @keyframes movePattern {
+    0% {
+      transform: rotate(0deg) translate(0, 0);
+    }
+    100% {
+      transform: rotate(360deg) translate(60px, 60px);
+    }
+  }
+
+  .jobs-title {
+    font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: 900;
+    text-align: center;
+    margin: 0;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 2;
+    animation: slideInDown 1s ease-out;
+    letter-spacing: -2px;
+  }
+
+  .jobs-subtitle {
+    text-align: center;
+    font-size: 1.3rem;
+    margin-top: 1rem;
+    opacity: 0.9;
+    font-weight: 300;
+    position: relative;
+    z-index: 2;
+    animation: slideInDown 1s ease-out 0.3s both;
+  }
+
+  /* Form Container */
+  .form-container-enhanced {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 30px;
+    padding: 4rem;
+    box-shadow: var(--shadow-medium);
+    position: relative;
+    overflow: hidden;
+    animation: slideInUp 1s ease-out 0.6s both;
+  }
+
+  .form-container-enhanced::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: var(--gradient-primary);
+    border-radius: 30px 30px 0 0;
+  }
+
+  .form-container-enhanced::after {
+    content: "";
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, var(--accent-blue), transparent);
+    border-radius: 50%;
+    opacity: 0.1;
+  }
+
+  /* Success/Error Messages */
+  .message-container-enhanced {
+    background: linear-gradient(135deg, var(--success-light) 0%, #c3e6cb 100%);
+    color: #155724;
+    padding: 2rem;
+    border-radius: 20px;
+    margin-bottom: 3rem;
+    border-left: 6px solid var(--success-color);
+    position: relative;
+    animation: slideInRight 0.8s ease-out;
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.2);
+  }
+
+  .message-container-enhanced::before {
+    content: "✓";
+    position: absolute;
+    left: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--success-color);
+    background: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .message-container-enhanced p {
+    margin: 0;
+    padding-left: 3rem;
+    font-weight: 600;
+    font-size: 1.2rem;
+  }
+
+  /* Form Grid Layout */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .form-grid.full-width {
+    grid-template-columns: 1fr;
+  }
+
+  /* Form Group Styling */
+  .form-group-modern {
+    position: relative;
+    margin-bottom: 0;
+  }
+
+  .form-label-modern {
+    display: block;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .form-label-modern::before {
+    content: "";
+    position: absolute;
+    left: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 0;
+    background: var(--gradient-accent);
+    transition: height 0.3s ease;
+    border-radius: 2px;
+  }
+
+  .form-label-modern.active::before {
+    height: 20px;
+  }
+
+  .form-label-modern i {
+    color: var(--accent-blue);
+    margin-right: 0.5rem;
+    font-size: 1.2rem;
+  }
+
+  /* Enhanced Input Styling */
+  .form-control-modern {
+    width: 100%;
+    padding: 1.3rem 1.8rem;
+    border: 2px solid #e9ecef;
+    border-radius: 18px;
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--bg-light);
+    color: var(--text-dark);
+    position: relative;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    font-weight: 500;
+  }
+
+  .content-wrapper{
+    background: linear-gradient(135deg, #f8fafc 0%, #e3f2fd 100%);;
+  }
+
+  .form-control-modern:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 4px rgba(86, 168, 250, 0.1),
+      0 6px 25px rgba(86, 168, 250, 0.2);
+    background: white;
+    transform: translateY(-2px);
+  }
+
+  .form-control-modern::placeholder {
+    color: var(--text-light);
+    transition: all 0.3s ease;
+    font-weight: 400;
+  }
+
+  .form-control-modern:focus::placeholder {
+    opacity: 0.7;
+    transform: translateX(10px);
+  }
+
+  /* Readonly Field Styling */
+  .form-control-modern[readonly] {
+    background: linear-gradient(135deg, #f1f3f4 0%, #e8eaed 100%);
+    border-color: #dadce0;
+    cursor: not-allowed;
+    position: relative;
+  }
+
+  .form-control-modern[readonly]::after {
+    content: "🔒";
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.5;
+  }
+
+  /* Textarea Specific */
+  .textarea-modern {
+    min-height: 120px;
+    resize: vertical;
+    font-family: inherit;
+    line-height: 1.6;
+  }
+
+  /* Special Input Types */
+  .salary-input {
+    position: relative;
+  }
+
+  .salary-input::before {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent-blue);
+    font-size: 1.2rem;
+    font-weight: bold;
+    z-index: 2;
+  }
+
+  .salary-input input {
+    padding-left: 3rem;
+  }
+
+  .location-input {
+    position: relative;
+  }
+
+  .location-input::before {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.1rem;
+    z-index: 2;
+  }
+
+  .location-input input {
+    padding-left: 3rem;
+  }
+
+  /* Submit Button */
+  .submit-container-modern {
+    text-align: center;
+    margin-top: 4rem;
+    position: relative;
+  }
+
+  .btn-submit-modern {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 60px;
+    font-size: 1.15rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 10px 30px rgba(9, 63, 117, 0.3);
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    min-width: 200px;
+  }
+
+  .btn-submit-modern::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
+    transition: left 0.6s;
+  }
+
+  .btn-submit-modern:hover::before {
+    left: 100%;
+  }
+
+  .btn-submit-modern:hover {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 20px 50px rgba(9, 63, 117, 0.4);
+  }
+
+  .btn-submit-modern:active {
+    transform: translateY(-3px) scale(1.02);
+  }
+
+  .submit-icon {
+    margin-right: 0.8rem;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+  }
+
+  .btn-submit-modern:hover .submit-icon {
+    transform: rotate(360deg);
+  }
+
+  /* Form Sections */
+  .form-section {
+    margin-bottom: 3rem;
+    position: relative;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+    margin-bottom: 2rem;
+    text-align: center;
+    position: relative;
+    padding-bottom: 1rem;
+  }
+
+  .section-title::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: var(--gradient-accent);
+    border-radius: 2px;
+  }
+
+  /* Validation Styles */
+  .form-control-modern.is-invalid {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.1);
+    animation: shake 0.5s ease-in-out;
+  }
+
+  .form-control-modern.is-valid {
+    border-color: var(--success-color);
+    box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.1);
+  }
+
+  @keyframes shake {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(-5px);
+    }
+    75% {
+      transform: translateX(5px);
+    }
+  }
+
+  .invalid-feedback {
+    color: #f53c4f65;
+    font-size: 0.9rem;
+    margin-top: 0.8rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+  }
+
+  .invalid-feedback::before {
+    content: "⚠️";
+    margin-right: 0.5rem;
+  }
+
+  .valid-feedback {
+    color: var(--success-color);
+    font-size: 0.9rem;
+    margin-top: 0.8rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+  }
+
+  .valid-feedback::before {
+    content: "✅";
+    margin-right: 0.5rem;
+  }
+
+  /* Animations */
+  @keyframes slideInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-60px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInUp {
+    from {
+      opacity: 0;
+      transform: translateY(60px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(60px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* Responsive Design */
+  @media (max-width: 968px) {
+    .form-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .form-container-enhanced {
+      margin: 1rem;
+      padding: 2.5rem;
+      border-radius: 25px;
+    }
+
+    .jobs-header {
+      padding: 3rem 0;
+      margin-bottom: 2rem;
+    }
+
+    .jobs-title {
+      font-size: 3rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .form-container-enhanced {
+      padding: 2rem 1.5rem;
+    }
+
+    .btn-submit-modern {
+      padding: 1.2rem 2.5rem;
+      font-size: 1.1rem;
+    }
+
+    .form-control-modern {
+      padding: 1.1rem 1.5rem;
+    }
+  }
+
+  /* Loading State */
+  .btn-submit-modern.loading {
+    pointer-events: none;
+    opacity: 0.7;
+  }
+
+  .btn-submit-modern.loading .submit-icon {
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Progress Indicator */
+  .form-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 4px;
+    background: var(--gradient-primary);
+    transition: width 0.3s ease;
+    z-index: 1000;
+  }
+</style>
+
+<div class="post-jobs-container">
+  <!-- Progress Indicator -->
+  <div class="form-progress" id="formProgress"></div>
+
+  <!-- Enhanced Header -->
+  <div class="jobs-header" onclick="animateHeader()">
+    <div class="container">
+      <h1 class="jobs-title">Post Jobs</h1>
+      <p class="jobs-subtitle">
+        Find the perfect candidates for your open positions
+      </p>
     </div>
+  </div>
+
+  <div class="container">
+    <!-- Enhanced Form Container -->
+    <div class="form-container-enhanced">
+      <!-- Success/Error Message -->
+      {% if msg %}
+      <div class="message-container-enhanced">
+        <p>{{ msg }}</p>
+      </div>
+      {% endif %}
+
+      <!-- Enhanced Form -->
+      <form
+        class="form-enhanced"
+        method="post"
+        enctype="multipart/form-data"
+        id="postJobForm"
+      >
+        {% csrf_token %}
+
+        <!-- Company Information Section -->
+        <div class="form-section">
+          <h3 class="section-title">Company Information</h3>
+          <div class="form-grid">
+            <div class="form-group-modern">
+              <label for="firmname" class="form-label-modern">
+                <i class="mdi mdi-domain"></i>Company Name
+              </label>
+              <input
+                type="text"
+                name="firmname"
+                id="firmname"
+                class="form-control-modern"
+                value="{{ empreg.cpname }}"
+                readonly
+              />
+            </div>
+
+            <div class="form-group-modern">
+              <label for="emailaddress" class="form-label-modern">
+                <i class="mdi mdi-email"></i>Contact Email
+              </label>
+              <input
+                type="email"
+                name="emailaddress"
+                id="emailaddress"
+                value="{{ empreg.cpemailaddress }}"
+                class="form-control-modern"
+                readonly
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Job Details Section -->
+        <div class="form-section">
+          <h3 class="section-title">Job Details</h3>
+          <div class="form-grid">
+            <div class="form-group-modern">
+              <label for="post" class="form-label-modern">
+                <i class="mdi mdi-briefcase"></i>Job Position
+              </label>
+              <input
+                type="text"
+                name="post"
+                id="post"
+                class="form-control-modern"
+                placeholder="e.g., Software Developer, Marketing Manager"
+                required
+              />
+              <div class="invalid-feedback">Please enter a job position.</div>
+            </div>
+
+            <div class="form-group-modern">
+              <label for="jobtitle" class="form-label-modern">
+                <i class="mdi mdi-map-marker"></i>Work Type
+              </label>
+              <select
+                name="jobtitle"
+                id="jobtitle"
+                class="form-control-modern"
+                required
+              >
+                <option value="">Select work type</option>
+                <option value="Remote">Remote</option>
+                <option value="On-Site">On-Site</option>
+                <option value="Hybrid">Hybrid</option>
+              </select>
+              <div class="invalid-feedback">Please select a work type.</div>
+            </div>
+
+            <div class="form-group-modern">
+              <label for="tagname" class="form-label-modern">
+                <i class="mdi mdi-tag-multiple"></i>Skills & Keywords
+              </label>
+              <input
+                type="text"
+                name="tagname"
+                id="tagname"
+                class="form-control-modern"
+                placeholder="e.g., Python, React, Digital Marketing"
+              />
+            </div>
+
+            <div class="form-group-modern">
+              <label for="experience" class="form-label-modern">
+                <i class="mdi mdi-clock"></i>Experience Required
+              </label>
+              <input
+                type="text"
+                name="experience"
+                id="experience"
+                class="form-control-modern"
+                placeholder="e.g., 0-2 Years, 3-5 Years"
+                required
+              />
+              <div class="invalid-feedback">
+                Please specify experience requirements.
+              </div>
+            </div>
+
+            <div class="form-group-modern location-input">
+              <label for="location" class="form-label-modern">
+                <i class="mdi mdi-map-marker"></i>Job Location
+              </label>
+              <input
+                type="text"
+                name="location"
+                id="location"
+                class="form-control-modern"
+                placeholder="e.g., Delhi, Mumbai, Bangalore"
+                required
+              />
+              <div class="invalid-feedback">Please enter job location.</div>
+            </div>
+
+            <div class="form-group-modern salary-input">
+              <label for="salarypa" class="form-label-modern">
+                <i class="mdi mdi-currency-inr"></i>Salary Per Annum (Lakhs)
+              </label>
+              <input
+                type="number"
+                name="salarypa"
+                id="salarypa"
+                class="form-control-modern"
+                placeholder="e.g., 5, 12, 25"
+                min="0"
+                step="0.1"
+                required
+              />
+              <div class="invalid-feedback">Please enter salary range.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Job Description Section -->
+        <div class="form-section">
+          <h3 class="section-title">Job Requirements</h3>
+          <div class="form-grid full-width">
+            <div class="form-group-modern">
+              <label for="jobdesc" class="form-label-modern">
+                <i class="mdi mdi-file-document"></i>Job Description
+              </label>
+              <textarea
+                name="jobdesc"
+                id="jobdesc"
+                class="form-control-modern textarea-modern"
+                placeholder="Describe the role, responsibilities, and what you're looking for in a candidate..."
+                rows="4"
+                required
+              ></textarea>
+              <div class="invalid-feedback">
+                Please provide a job description.
+              </div>
+            </div>
+
+            <div class="form-group-modern">
+              <label for="qualification" class="form-label-modern">
+                <i class="mdi mdi-school"></i>Qualifications Required
+              </label>
+              <textarea
+                name="qualification"
+                id="qualification"
+                class="form-control-modern textarea-modern"
+                placeholder="e.g., Bachelor's/Master's degree in Computer Science, Engineering, or related field"
+                rows="3"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="submit-container-modern">
+          <button type="submit" class="btn-submit-modern" id="submitBtn">
+            <i class="mdi mdi-rocket submit-icon"></i>
+            Post Job
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Form elements
+    const form = document.getElementById("postJobForm");
+    const submitBtn = document.getElementById("submitBtn");
+    const formProgress = document.getElementById("formProgress");
+
+    // Form labels for animation
+    const labels = document.querySelectorAll(".form-label-modern");
+
+    // Required fields for validation
+    const requiredFields = [
+      "post",
+      "jobtitle",
+      "experience",
+      "location",
+      "salarypa",
+      "jobdesc",
+    ];
+
+    // Form field interactions
+    document.querySelectorAll(".form-control-modern").forEach((field) => {
+      field.addEventListener("focus", function () {
+        this.previousElementSibling.classList.add("active");
+        updateProgress();
+      });
+
+      field.addEventListener("blur", function () {
+        if (this.value === "" && !this.hasAttribute("readonly")) {
+          this.previousElementSibling.classList.remove("active");
+        }
+        validateField(this);
+        updateProgress();
+      });
+
+      field.addEventListener("input", function () {
+        if (this.classList.contains("is-invalid")) {
+          validateField(this);
+        }
+        updateProgress();
+      });
+    });
+
+    // Field validation
+    function validateField(field) {
+      const isRequired = requiredFields.includes(field.id);
+      const isEmpty = field.value.trim() === "";
+
+      if (isRequired && isEmpty) {
+        field.classList.add("is-invalid");
+        field.classList.remove("is-valid");
+        return false;
+      } else if (
+        field.type === "email" &&
+        field.value &&
+        !isValidEmail(field.value)
+      ) {
+        field.classList.add("is-invalid");
+        field.classList.remove("is-valid");
+        return false;
+      } else if (
+        field.type === "number" &&
+        field.value &&
+        (field.value < 0 || field.value > 100)
+      ) {
+        field.classList.add("is-invalid");
+        field.classList.remove("is-valid");
+        return false;
+      } else if (!isEmpty) {
+        field.classList.remove("is-invalid");
+        field.classList.add("is-valid");
+        return true;
+      }
+      return true;
+    }
+
+    function isValidEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    // Progress tracking
+    function updateProgress() {
+      const totalFields = requiredFields.length;
+      let filledFields = 0;
+
+      requiredFields.forEach((fieldId) => {
+        const field = document.getElementById(fieldId);
+        if (field && field.value.trim() !== "") {
+          filledFields++;
+        }
+      });
+
+      const progress = (filledFields / totalFields) * 100;
+      formProgress.style.width = progress + "%";
+    }
+
+    // Form submission
+    form.addEventListener("submit", function (e) {
+      let isValid = true;
+
+      // Validate all required fields
+      requiredFields.forEach((fieldId) => {
+        const field = document.getElementById(fieldId);
+        if (!validateField(field)) {
+          isValid = false;
+        }
+      });
+
+      if (!isValid) {
+        e.preventDefault();
+
+        // Scroll to first invalid field
+        const firstInvalid = document.querySelector(
+          ".form-control-modern.is-invalid"
+        );
+        if (firstInvalid) {
+          firstInvalid.scrollIntoView({ behavior: "smooth", block: "center" });
+          firstInvalid.focus();
+        }
+        return;
+      }
+
+      // Show loading state
+      submitBtn.classList.add("loading");
+      submitBtn.innerHTML =
+        '<i class="mdi mdi-loading submit-icon"></i> Posting Job...';
+      formProgress.style.width = "100%";
+    });
+
+    // Header animation
+    window.animateHeader = function () {
+      const header = document.querySelector(".jobs-header");
+      header.style.transform = "scale(0.98)";
+      setTimeout(() => {
+        header.style.transform = "scale(1)";
+      }, 200);
+    };
+
+    // Auto-fill readonly fields and mark as active
+    document
+      .querySelectorAll(".form-control-modern[readonly]")
+      .forEach((field) => {
+        if (field.value.trim()) {
+          field.previousElementSibling.classList.add("active");
+        }
+      });
+
+    // Smart suggestions for common fields
+    const experienceSuggestions = [
+      "0-1 Years",
+      "1-3 Years",
+      "3-5 Years",
+      "5-8 Years",
+      "8+ Years",
+    ];
+    const locationSuggestions = [
+      "Delhi",
+      "Mumbai",
+      "Bangalore",
+      "Hyderabad",
+      "Chennai",
+      "Pune",
+      "Kolkata",
+    ];
+    const skillsSuggestions = [
+      "Python",
+      "Java",
+      "JavaScript",
+      "React",
+      "Node.js",
+      "Angular",
+      "Machine Learning",
+      "Data Science",
+    ];
+
+    // Add datalist for better UX (if supported)
+    function addDatalist(fieldId, suggestions, listId) {
+      const field = document.getElementById(fieldId);
+      if (field) {
+        field.setAttribute("list", listId);
+        const datalist = document.createElement("datalist");
+        datalist.id = listId;
+        suggestions.forEach((suggestion) => {
+          const option = document.createElement("option");
+          option.value = suggestion;
+          datalist.appendChild(option);
+        });
+        field.parentNode.appendChild(datalist);
+      }
+    }
+
+    addDatalist("experience", experienceSuggestions, "experience-list");
+    addDatalist("location", locationSuggestions, "location-list");
+    addDatalist("tagname", skillsSuggestions, "skills-list");
+
+    // Initialize progress
+    updateProgress();
+  });
+
+  // Character counter for textareas
+  document
+    .querySelectorAll("textarea.form-control-modern")
+    .forEach((textarea) => {
+      const maxLength = 500;
+      const counter = document.createElement("div");
+      counter.style.cssText =
+        "font-size: 0.9rem; color: #6c757d; text-align: right; margin-top: 0.5rem;";
+
+      function updateCounter() {
+        const length = textarea.value.length;
+        counter.textContent = `${length}/${maxLength} characters`;
+
+        if (length > maxLength) {
+          counter.style.color = "#dc3545";
+          textarea.value = textarea.value.substring(0, maxLength);
+        } else if (length > maxLength * 0.8) {
+          counter.style.color = "#ffc107";
+        } else {
+          counter.style.color = "#6c757d";
+        }
+      }
+
+      textarea.addEventListener("input", updateCounter);
+      textarea.parentNode.appendChild(counter);
+      updateCounter();
+    });
+
+  // Salary formatting
+  document.getElementById("salarypa").addEventListener("input", function () {
+    const value = parseFloat(this.value);
+    if (value && value > 0) {
+      const formatted =
+        value >= 10
+          ? `${value} Lakhs per annum`
+          : `${value} Lakh${value !== 1 ? "s" : ""} per annum`;
+
+      // Add temporary tooltip
+      if (
+        !this.nextElementSibling ||
+        !this.nextElementSibling.classList.contains("salary-tooltip")
+      ) {
+        const tooltip = document.createElement("div");
+        tooltip.className = "salary-tooltip";
+        tooltip.style.cssText = `
+                font-size: 0.9rem; 
+                color: #28a745; 
+                margin-top: 0.5rem; 
+                font-weight: 500;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            `;
+        tooltip.textContent = formatted;
+        this.parentNode.appendChild(tooltip);
+
+        setTimeout(() => {
+          tooltip.style.opacity = "1";
+        }, 100);
+      } else {
+        this.nextElementSibling.textContent = formatted;
+      }
+    } else {
+      const tooltip = this.nextElementSibling;
+      if (tooltip && tooltip.classList.contains("salary-tooltip")) {
+        tooltip.style.opacity = "0";
+        setTimeout(() => {
+          tooltip.remove();
+        }, 300);
+      }
+    }
+  });
+
+  document.getElementById("post").addEventListener("blur", function () {
+    const jobTitle = this.value.trim();
+    const jobDescField = document.getElementById("jobdesc");
+
+    if (jobTitle && !jobDescField.value.trim()) {
+      const template = jobDescriptionTemplates[jobTitle];
+      if (template) {
+        // Add suggestion with animation
+        const suggestion = document.createElement("div");
+        suggestion.style.cssText = `
+                background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+                border: 1px solid #2196f3;
+                border-radius: 12px;
+                padding: 1rem;
+                margin-top: 0.5rem;
+                font-size: 0.9rem;
+                color: #1976d2;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                opacity: 0;
+                transform: translateY(10px);
+            `;
+        suggestion.innerHTML = `
+                <strong>💡 Suggestion:</strong> Click to use this template<br>
+                <em>"${template.substring(0, 100)}..."</em>
+            `;
+
+        suggestion.addEventListener("click", function () {
+          jobDescField.value = template;
+          jobDescField.classList.add("is-valid");
+          jobDescField.focus();
+          this.remove();
+        });
+
+        this.parentNode.appendChild(suggestion);
+
+        setTimeout(() => {
+          suggestion.style.opacity = "1";
+          suggestion.style.transform = "translateY(0)";
+        }, 100);
+
+        // Remove suggestion after 10 seconds
+        setTimeout(() => {
+          if (suggestion.parentNode) {
+            suggestion.style.opacity = "0";
+            setTimeout(() => {
+              suggestion.remove();
+            }, 300);
+          }
+        }, 10000);
+      }
+    }
+  });
+
+  // Enhanced form animations
+  function addFloatingLabels() {
+    document.querySelectorAll(".form-control-modern").forEach((input) => {
+      const label = input.previousElementSibling;
+
+      function updateLabel() {
+        if (input.value.trim() !== "" || input === document.activeElement) {
+          label.style.transform = "translateY(-25px) scale(0.85)";
+          label.style.color = "var(--accent-blue)";
+        } else {
+          label.style.transform = "translateY(0) scale(1)";
+          label.style.color = "var(--text-dark)";
+        }
+      }
+
+      input.addEventListener("focus", updateLabel);
+      input.addEventListener("blur", updateLabel);
+      input.addEventListener("input", updateLabel);
+
+      // Initial state
+      if (input.value.trim() !== "") {
+        updateLabel();
+      }
+    });
+  }
+
+</script>
+
 {% endblock body %}

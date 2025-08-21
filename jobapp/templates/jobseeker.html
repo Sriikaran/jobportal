@@ -1,411 +1,995 @@
 {% extends "index.html" %}
 {% load static %}
 
-{% block body %}
-    <style>
-        :root {
-            --primary-blue: #093f75;
-            --accent-blue: #0b447e;
-            --light-bg: #e8f2ff;
-            --light-bg-alt: #f8fbff;
-            --text-color: #666;
-            --shadow-color: rgba(9, 63, 117, 0.12);
-        }
+<style>
+    :root {
+        --primary-blue: #093f75;
+        --secondary-blue: #0c3056;
+        --accent-blue: #56a8fa;
+        --light-blue: #1c5aa6;
+        --text-dark: #2c3e50;
+        --text-light: #6c757d;
+        --bg-light: #f8fafc;
+        --shadow-light: 0 4px 20px rgba(9, 63, 117, 0.08);
+        --shadow-medium: 0 8px 32px rgba(9, 63, 117, 0.12);
+        --gradient-primary: linear-gradient(135deg, #0c3056 0%, #1c5aa6 50%, #56a8fa 100%);
+        --gradient-accent: linear-gradient(45deg, #56a8fa, #a1d0ff);
+        --success-color: #28a745;
+        --error-color: #dc3545;
+        --warning-color: #ffc107;
+    }
 
-        /* Override parent styles for this specific page */
-        body {
-            background: linear-gradient(135deg, #f6fafd 0%, var(--light-bg) 100%);
-        }
+    /* Enhanced Registration Section */
+    .registration-section {
+        background: var(--gradient-primary);
+        padding: 4rem 0;
+        position: relative;
+        overflow: hidden;
+        min-height: 100vh;
+    }
 
-        .registration-container {
-            width: 100%;
-            max-width: 700px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
+    .registration-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><defs><pattern id="hexagons" width="50" height="43.4" patternUnits="userSpaceOnUse"><polygon fill="rgba(255,255,255,0.05)" points="25,0 50,14.43 50,36.6 25,50 0,36.6 0,14.43"/></pattern></defs><rect width="200" height="200" fill="url(%23hexagons)"/></svg>');
+        opacity: 0.3;
+    }
 
-        .registration-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            padding: 2.5rem 2rem 2rem 2rem;
-            box-shadow: 0 8px 32px var(--shadow-color);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            position: relative;
-        }
+    .registration-container {
+        position: relative;
+        z-index: 2;
+    }
 
-        .registration-header {
-            text-align: center;
-            margin-bottom: 2rem;
+    .registration-header {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: white;
+    }
+
+    .registration-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        background: linear-gradient(45deg, #ffffff, #a1d0ff);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .registration-subtitle {
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 500;
+        letter-spacing: 0.5px;
+    }
+
+    /* Enhanced Form Card */
+    .registration-card {
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        padding: 2.5rem;
+        box-shadow: var(--shadow-medium);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        position: relative;
+        overflow: hidden;
+        margin: 0 auto;
+        max-width: 800px;
+        transform: translateY(0);
+        transition: all 0.3s ease;
+    }
+
+    .registration-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: var(--gradient-primary);
+        z-index: 1;
+    }
+
+    .registration-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 16px 48px rgba(9, 63, 117, 0.2);
+    }
+
+    /* Enhanced Form Elements */
+    .enhanced-form-group {
+        margin-bottom: 2rem;
+        position: relative;
+    }
+
+    .enhanced-form-label {
+        display: block;
+        font-weight: 600;
+        color: var(--primary-blue);
+        margin-bottom: 0.75rem;
+        font-size: 1rem;
+        letter-spacing: 0.3px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .required-asterisk {
+        color: var(--error-color);
+        font-weight: 700;
+        font-size: 1.2rem;
+    }
+
+    .enhanced-form-control {
+        width: 100%;
+        padding: 16px 20px;
+        border: 2px solid rgba(9, 63, 117, 0.15);
+        border-radius: 12px;
+        background: rgba(248, 250, 252, 0.8);
+        font-size: 1rem;
+        font-family: inherit;
+        color: var(--text-dark);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        backdrop-filter: blur(10px);
+        resize: vertical;
+    }
+
+    .enhanced-form-control:focus {
+        outline: none;
+        border-color: var(--accent-blue);
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 4px 20px rgba(86, 168, 250, 0.2);
+        transform: translateY(-2px);
+    }
+
+    .enhanced-form-control:valid {
+        border-color: var(--success-color);
+    }
+
+    .enhanced-form-control:invalid:not(:placeholder-shown) {
+        border-color: var(--error-color);
+    }
+
+    /* Enhanced Select Dropdown */
+    .enhanced-select {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 16px center;
+        background-repeat: no-repeat;
+        background-size: 16px;
+        appearance: none;
+        cursor: pointer;
+    }
+
+    /* Enhanced Radio Buttons */
+    .gender-group {
+        background: rgba(248, 250, 252, 0.8);
+        border: 2px solid rgba(9, 63, 117, 0.15);
+        border-radius: 12px;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .gender-group:hover {
+        border-color: var(--accent-blue);
+        box-shadow: 0 2px 12px rgba(86, 168, 250, 0.15);
+    }
+
+    .gender-title {
+        font-weight: 600;
+        color: var(--primary-blue);
+        margin-bottom: 1rem;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .radio-group {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .radio-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        padding: 8px 12px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.5);
+        border: 2px solid transparent;
+    }
+
+    .radio-item:hover {
+        background: rgba(86, 168, 250, 0.1);
+        border-color: var(--accent-blue);
+    }
+
+    .radio-item input[type="radio"] {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--accent-blue);
+        cursor: pointer;
+    }
+
+    .radio-item label {
+        font-weight: 500;
+        color: var(--text-dark);
+        cursor: pointer;
+        margin: 0;
+    }
+
+    /* File Upload Enhancement */
+    .file-upload-wrapper {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .file-input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .file-upload-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        padding: 16px 24px;
+        border: 2px dashed var(--accent-blue);
+        border-radius: 12px;
+        background: rgba(86, 168, 250, 0.05);
+        color: var(--primary-blue);
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+
+    .file-upload-button:hover {
+        background: rgba(86, 168, 250, 0.1);
+        border-color: var(--primary-blue);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(86, 168, 250, 0.2);
+    }
+
+    .file-upload-button i {
+        font-size: 1.2rem;
+    }
+
+    .file-info {
+        font-size: 0.9rem;
+        color: var(--text-light);
+        text-align: center;
+    }
+
+    .file-selected {
+        background: rgba(40, 167, 69, 0.1);
+        border-color: var(--success-color);
+        color: var(--success-color);
+    }
+
+    /* Enhanced Checkbox */
+    .checkbox-group {
+        background: rgba(248, 250, 252, 0.8);
+        border: 2px solid rgba(9, 63, 117, 0.15);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .checkbox-group:hover {
+        border-color: var(--accent-blue);
+        box-shadow: 0 2px 12px rgba(86, 168, 250, 0.15);
+    }
+
+    .checkbox-group input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        accent-color: var(--accent-blue);
+        cursor: pointer;
+        margin-top: 2px;
+    }
+
+    .checkbox-group label {
+        color: var(--text-dark);
+        font-weight: 500;
+        cursor: pointer;
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    .checkbox-group a {
+        color: var(--primary-blue);
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .checkbox-group a:hover {
+        color: var(--accent-blue);
+        text-decoration: underline;
+    }
+
+    /* Enhanced Submit Button */
+    .submit-button {
+        width: 100%;
+        padding: 18px 32px;
+        background: var(--gradient-primary);
+        color: white;
+        border: none;
+        border-radius: 16px;
+        font-size: 1.1rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        box-shadow: var(--shadow-light);
+        margin-top: 2rem;
+    }
+
+    .submit-button::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .submit-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 32px rgba(9, 63, 117, 0.3);
+    }
+
+    .submit-button:hover::before {
+        left: 100%;
+    }
+
+    .submit-button:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none !important;
+    }
+
+    /* Enhanced Error Messages */
+    .error-message {
+        color: var(--error-color);
+        font-size: 0.9rem;
+        margin-top: 8px;
+        display: none;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 12px;
+        background: rgba(220, 53, 69, 0.1);
+        border-radius: 6px;
+        border-left: 3px solid var(--error-color);
+    }
+
+    .error-message.show {
+        display: flex;
+    }
+
+    .success-message {
+        color: var(--success-color);
+        font-size: 0.9rem;
+        margin-top: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 12px;
+        background: rgba(40, 167, 69, 0.1);
+        border-radius: 6px;
+        border-left: 3px solid var(--success-color);
+    }
+
+    /* Alert Enhancement */
+    .alert-message {
+        background: rgba(255, 243, 205, 0.9);
+        border: none;
+        border-left: 4px solid var(--warning-color);
+        border-radius: 12px;
+        padding: 16px 20px;
+        margin-bottom: 2rem;
+        color: #856404;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        backdrop-filter: blur(10px);
+    }
+
+    /* Multi-column Layout for Desktop */
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .form-row.single {
+        grid-template-columns: 1fr;
+    }
+
+    /* Enhanced Modal */
+    .modal-content {
+        border: none;
+        border-radius: 20px;
+        box-shadow: var(--shadow-medium);
+        backdrop-filter: blur(20px);
+    }
+
+    .modal-header {
+        background: var(--gradient-primary);
+        color: white;
+        border-radius: 20px 20px 0 0;
+        padding: 1.5rem 2rem;
+        border-bottom: none;
+    }
+
+    .modal-title {
+        font-weight: 700;
+        font-size: 1.3rem;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .modal-body {
+        padding: 2rem;
+        font-size: 1.1rem;
+        color: var(--text-dark);
+        text-align: center;
+        line-height: 1.6;
+    }
+
+    .modal-footer {
+        border-top: none;
+        padding: 1.5rem 2rem 2rem;
+    }
+
+    .modal-footer .btn {
+        padding: 12px 32px;
+        border-radius: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        background: var(--gradient-primary);
+        border: none;
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+    .modal-footer .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(9, 63, 117, 0.3);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .registration-section {
+            padding: 2rem 0;
         }
 
         .registration-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary-blue);
-            margin-bottom: 0.5rem;
+            font-size: 2rem;
         }
 
-        .registration-subtitle {
-            color: var(--text-color);
-            font-weight: 500;
+        .registration-card {
+            padding: 1.5rem;
+            margin: 1rem;
+            border-radius: 20px;
         }
 
-        .form-group {
-            margin-bottom: 1.5rem;
+        .form-row {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
         }
 
-        .form-label {
-            display: block;
-            font-weight: 600;
-            color: var(--primary-blue);
-            margin-bottom: 0.5rem;
-            font-size: 0.95rem;
-        }
-        
-        .required-asterisk {
-            color: red;
+        .radio-group {
+            flex-direction: column;
+            gap: 1rem;
         }
 
-        .form-input, .form-select, .form-control {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid var(--light-bg);
-            border-radius: 12px;
-            background: var(--light-bg-alt);
-            font-size: 0.95rem;
-            transition: box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            font-family: 'Inter', sans-serif;
+        .radio-item {
+            justify-content: center;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .registration-title {
+            font-size: 1.75rem;
         }
 
-        .form-input:focus, .form-select:focus, .form-control:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-            background: #ffffff;
-            box-shadow: 0 4px 16px rgba(9, 63, 117, 0.10);
+        .registration-card {
+            padding: 1.25rem;
         }
 
-        textarea.form-control {
-            padding: 12px 16px;
+        .enhanced-form-control {
+            padding: 14px 16px;
         }
 
-        .form-check {
-            display: flex;
-            align-items: center;
-        }
-
-        .form-check-label {
-            color: var(--text-color);
-            font-size: 0.95rem;
-        }
-
-        .form-check-input {
-            accent-color: var(--primary-blue);
-        }
-
-        .btn-primary {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 12px;
-            font-weight: 600;
+        .submit-button {
+            padding: 16px 24px;
             font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--accent-blue) 100%);
-            color: white;
-            box-shadow: 0 4px 16px rgba(9, 63, 117, 0.3);
         }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(9, 63, 117, 0.4);
-        }
-
-        .error-message {
-            color: red;
-            display: none;
-            font-size: 0.875rem;
-            margin-top: 0.25rem;
-        }
-        
-        .alert {
-            padding: 12px 16px;
-            border-radius: 10px;
-            margin-bottom: 1.5rem;
-            font-size: 0.9rem;
-            font-weight: 500;
-            text-align: center;
-        }
-
-        .alert-info {
-            background: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
-        }
-
-        .modal-content {
-            border-radius: 12px;
-        }
-
-        .modal-footer .btn-primary {
-            width: auto;
-            min-width: 150px;
-        }
-
-        @media (max-width: 768px) {
-            .registration-container {
-                margin: 1rem auto;
-            }
-            .registration-card {
-                padding: 1.5rem;
-            }
-        }
-      @keyframes modalIn {
-    from {
-        transform: translateY(-40px);
-        opacity: 0;
     }
-    to {
-        transform: translateY(0);
-        opacity: 1;
+
+    /* Progress Indicator */
+    .form-progress {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+        padding: 0 1rem;
     }
-}
 
-.animate-modal {
-    animation: modalIn 0.3s ease-out;
-}
+    .progress-step {
+        flex: 1;
+        text-align: center;
+        position: relative;
+        color: var(--text-light);
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
 
-.modal-close {
-    position: absolute;
-    top: 12px;
-    right: 18px;
-    background: none;
-    border: none;
-    font-size: 1.3rem;
-    color: #093f75;
-    cursor: pointer;
-}
+    .progress-step.active {
+        color: var(--accent-blue);
+        font-weight: 600;
+    }
 
-.modal-title {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #093f75;
-    margin-bottom: 0.7rem;
-    text-align: center;
-}
+    .progress-step.completed {
+        color: var(--success-color);
+    }
 
-.modal-content {
-    font-size: 0.98rem;
-    color: #333;
-    line-height: 1.6;
-    max-height: 320px;
-    overflow-y: auto;
-}
-#termsOfServiceModal .modal-dialog {
-    max-width: 70vw; /* 70% of viewport width */
-}
+    .progress-step::before {
+        content: "";
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--text-light);
+    }
 
-#termsOfServiceModal .modal-content {
-    height: 60vh;        /* 60% of viewport height */
-    overflow-y: auto;    /* Scroll if content exceeds height */
-}
-    </style>
+    .progress-step.active::before {
+        background: var(--accent-blue);
+        box-shadow: 0 0 0 4px rgba(86, 168, 250, 0.2);
+    }
 
-    <div class="registration-container">
-        <div class="registration-card">
-            <div class="registration-header">
-                <h1 class="registration-title">Register as Job Seeker</h1>
-                <p class="registration-subtitle">Create your career profile with us!</p>
-            </div>
-            
-            {% if msg %}
-            <div class="alert alert-info">{{ msg }}</div>
-            {% endif %}
-            
-            <form class="form-group" method="post" enctype="multipart/form-data" id="jobseeker-form" onsubmit="return validateForm()">
-                {% csrf_token %}
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Name<span class="required-asterisk">*</span></label>
-                            <input type="text" name="name" class="form-input" id="name" placeholder="Enter Your Full Name" required>
-                            <span class="error-message">Enter a valid name (e.g., John Doe).</span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="dob" class="form-label">Date of Birth<span class="required-asterisk">*</span></label>
-                            <input type="date" name="dob" class="form-input" id="dob" required>
-                            <span class="error-message">Date of Birth is required.</span>
-                        </div>
-                    </div>
+    .progress-step.completed::before {
+        background: var(--success-color);
+    }
+
+    .progress-step:not(:last-child)::after {
+        content: "";
+        position: absolute;
+        top: -14px;
+        left: 60%;
+        width: calc(100% - 20%);
+        height: 2px;
+        background: var(--text-light);
+    }
+
+    .progress-step.completed:not(:last-child)::after {
+        background: var(--success-color);
+    }
+
+    /* Animation Classes */
+    .fade-in {
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .slide-in-left {
+        animation: slideInLeft 0.5s ease-out;
+    }
+
+    @keyframes slideInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+</style>
+
+<div class="registration-section">
+    <div class="container registration-container">
+        <!-- Enhanced Header -->
+        <div class="registration-header fade-in">
+            <h1 class="registration-title">
+                Join Dream Jobs Today
+            </h1>
+            <p class="registration-subtitle">Create your professional profile and unlock amazing career opportunities</p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <!-- Alert Message -->
+                {% if msg %}
+                <div class="alert-message slide-in-left">
+                    <i class="fas fa-info-circle"></i>
+                    <span>{{ msg }}</span>
                 </div>
+                {% endif %}
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email address<span class="required-asterisk">*</span></label>
-                            <input type="email" name="emailaddress" class="form-input" id="email" placeholder="Enter Email" required>
-                            <span class="error-message">Please enter a valid email address.</span>
-                        </div>
+                <!-- Enhanced Registration Card -->
+                <div class="registration-card fade-in">
+                    <!-- Form Progress Indicator -->
+                    <div class="form-progress">
+                        <div class="progress-step active">Personal Info</div>
+                        <div class="progress-step">Professional Details</div>
+                        <div class="progress-step">Documents</div>
+                        <div class="progress-step">Complete</div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password<span class="required-asterisk">*</span></label>
-                            <input type="password" name="password" class="form-input" id="password" placeholder="Enter Password" minlength="6" pattern="(?=.*[A-Za-z])(?=.*[\d@#$%^+\-*])[A-Za-z\d@#$%^+\-*]{6,}"
-                            title="Password must be at least 6 characters and include both letters and numbers." required>
-                            <span class="error-message">Password is required.</span>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="phone" class="form-label">Phone Number<span class="required-asterisk">*</span></label>
-                            <input type="text" name="contactno" class="form-input" pattern="^[6-9]{1}[0-9]{9}" id="phoneno" title="Plase Enter valid 10 digit mobile number." placeholder="Enter Phone No." required>
+                    <form class="enhanced-form" method="post" id="registrationForm" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <!-- Profile Picture Upload -->
+                        <div class="enhanced-form-group">
+                            <label class="enhanced-form-label">
+                                <i class="fas fa-camera"></i>
+                                Profile Picture
+                                <small style="color: var(--text-light); font-weight: 400;">(Optional)</small>
+                            </label>
+                            <div class="file-upload-wrapper">
+                                <input type="file" name="profilepic" id="profilepic" class="file-input" accept="image/*">
+                                <label for="profilepic" class="file-upload-button" id="profilePicLabel">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Choose Profile Picture</span>
+                                </label>
+                                <div class="file-info">Recommended: Square image, max 5MB (JPG, PNG)</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="qualification" class="form-label">Highest Qualification<span class="required-asterisk">*</span></label>
-                            <select name="qualification" id="qualification" class="form-select" required>
-                                <option value="" disabled selected>--Select Qualification--</option>
-                            
-                                <!-- Undergraduate -->
-                                <option value="BSc">BSc</option>
-                                <option value="BCA">BCA</option>
-                                <option value="BBA">BBA</option>
-                                <option value="BTech">BTech</option>
-                                <option value="BE">BE</option>
-                                <option value="Diploma">Diploma</option>
-                                <option value="BA">BA</option>
-                                <option value="BCom">BCom</option>
-                            
-                                <!-- Postgraduate -->
-                                <option value="MA">MA</option>
-                                <option value="MCom">MCom</option>
-                                <option value="MSc">MSc</option>
-                                <option value="MCA">MCA</option>
-                                <option value="MBA">MBA</option>
-                                <option value="ME">ME</option>
-                                <option value="MPhil">MPhil</option>
-                            
-                                <!-- Professional -->
-                                <option value="CA">CA</option>
-                                <option value="CS">CS</option>
-                            
-                                <!-- Other -->
-                                <option value="Other">Other</option>
-                            </select>
-                            <span class="error-message">Qualification is required.</span>
+
+                        <!-- Personal Information Row -->
+                        <div class="form-row">
+                            <!-- Full Name -->
+                            <div class="enhanced-form-group">
+                                <label for="name" class="enhanced-form-label">
+                                    <i class="fas fa-user"></i>
+                                    Full Name
+                                    <span class="required-asterisk">*</span>
+                                </label>
+                                <input 
+                                    type="text" 
+                                    name="name" 
+                                    class="enhanced-form-control" 
+                                    id="name" 
+                                    placeholder="Enter your full name (e.g., John Smith)"
+                                    pattern="^[A-Za-z]{2,}(?:\s+[A-Za-z]{2,})+$"
+                                    title="Enter your full name with at least first and last name"
+                                    required
+                                >
+                                <div class="error-message" id="nameError">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    <span>Please enter your full name (e.g., John Smith)</span>
+                                </div>
+                            </div>
+
+                            <!-- Email Address -->
+                            <div class="enhanced-form-group">
+                                <label for="email" class="enhanced-form-label">
+                                    <i class="fas fa-envelope"></i>
+                                    Email Address
+                                    <span class="required-asterisk">*</span>
+                                </label>
+                                <input 
+                                    type="email" 
+                                    name="emailaddress" 
+                                    class="enhanced-form-control" 
+                                    id="email" 
+                                    placeholder="Enter your email address"
+                                    required
+                                >
+                                <div class="error-message" id="emailError">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    <span>Please enter a valid email address</span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="experience" class="form-label">Work Experience<span class="required-asterisk">*</span></label>
-                            <select name="experience" id="experience" class="form-select" required>
-                                <option value="" disabled selected>--Select Work Experience--</option>
-                                <option value="1-2 Years">1-2 Years</option>
-                                <option value="3-4 Years">3-4 Years</option>
-                                <option value="5+Years">5+Years</option>
-                                <option value="No Experience">No Experience</option>
-                            </select>
-                            <span class="error-message">Work experience is required.</span>
+
+                        <!-- Gender Selection -->
+                        <div class="enhanced-form-group">
+                            <div class="gender-group">
+                                <div class="gender-title">
+                                    <i class="fas fa-venus-mars"></i>
+                                    Gender
+                                    <span class="required-asterisk">*</span>
+                                </div>
+                                <div class="radio-group">
+                                    <div class="radio-item">
+                                        <input class="form-check-input" type="radio" name="gender" id="femaleGender" value="female" checked>
+                                        <label class="form-check-label" for="femaleGender">
+                                            <i class="fas fa-venus"></i> Female
+                                        </label>
+                                    </div>
+                                    <div class="radio-item">
+                                        <input class="form-check-input" type="radio" name="gender" id="maleGender" value="male">
+                                        <label class="form-check-label" for="maleGender">
+                                            <i class="fas fa-mars"></i> Male
+                                        </label>
+                                    </div>
+                                    <div class="radio-item">
+                                        <input class="form-check-input" type="radio" name="gender" id="otherGender" value="other">
+                                        <label class="form-check-label" for="otherGender">
+                                            <i class="fas fa-genderless"></i> Other
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="skills" class="form-label">Key Skills<span class="required-asterisk">*</span></label>
-                            <select name="skills" id="skills" class="form-select" required>
-                                <option value="" disabled selected>--Select Skills--</option>
-                                <option value="IT">IT</option>
-                                <option value="Management">Management</option>
+
+                        <!-- Contact Information Row -->
+                        <div class="form-row">
+                            <!-- Phone Number -->
+                            <div class="enhanced-form-group">
+                                <label for="phoneno" class="enhanced-form-label">
+                                    <i class="fas fa-phone"></i>
+                                    Phone Number
+                                    <span class="required-asterisk">*</span>
+                                </label>
+                                <input 
+                                    type="tel" 
+                                    name="contactno" 
+                                    class="enhanced-form-control" 
+                                    id="phoneno" 
+                                    placeholder="Enter 10-digit mobile number"
+                                    pattern="^[6-9]{1}[0-9]{9}$"
+                                    maxlength="10"
+                                    title="Enter a valid 10-digit Indian mobile number"
+                                    required
+                                >
+                                <div class="error-message" id="phoneError">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    <span>Enter a valid 10-digit Indian mobile number</span>
+                                </div>
+                            </div>
+
+                            <!-- Date of Birth -->
+                            <div class="enhanced-form-group">
+                                <label for="dob" class="enhanced-form-label">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    Date of Birth
+                                    <span class="required-asterisk">*</span>
+                                </label>
+                                <input 
+                                    type="date" 
+                                    name="dob" 
+                                    class="enhanced-form-control" 
+                                    id="dob" 
+                                    max="" 
+                                    required
+                                >
+                                <div class="error-message" id="dobError">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    <span>Please enter your date of birth</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="enhanced-form-group">
+                            <label for="address" class="enhanced-form-label">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Address
+                                <span class="required-asterisk">*</span>
+                            </label>
+                            <textarea 
+                                name="address" 
+                                class="enhanced-form-control" 
+                                id="address" 
+                                rows="3" 
+                                placeholder="Enter your complete address"
+                                required
+                            ></textarea>
+                            <div class="error-message" id="addressError">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span>Please enter your address</span>
+                            </div>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="enhanced-form-group">
+                            <label for="password" class="enhanced-form-label">
+                                <i class="fas fa-lock"></i>
+                                Password
+                                <span class="required-asterisk">*</span>
+                            </label>
+                            <input 
+                                type="password" 
+                                name="password" 
+                                class="enhanced-form-control" 
+                                id="password" 
+                                placeholder="Create a strong password (min 8 characters)"
+                                minlength="8"
+                                required
+                            >
+                            <div class="error-message" id="passwordError">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span>Password must be at least 8 characters long</span>
+                            </div>
+                        </div>
+
+                        <!-- Professional Details Row -->
+                        <div class="form-row">
+                            <!-- Highest Qualification -->
+                            <div class="enhanced-form-group">
+                                <label for="qualification" class="enhanced-form-label">
+                                    <i class="fas fa-graduation-cap"></i>
+                                    Highest Qualification
+                                    <span class="required-asterisk">*</span>
+                                </label>
+                                <select name="qualification" id="qualification" class="enhanced-form-control enhanced-select" required>
+                                    <option value="">--Select Your Qualification--</option>
+                                    <option value="BCA">Bachelor of Computer Applications (BCA)</option>
+                                    <option value="BBA">Bachelor of Business Administration (BBA)</option>
+                                    <option value="Btech">Bachelor of Technology (B.Tech)</option>
+                                    <option value="Bsc">Bachelor of Science (B.Sc)</option>
+                                    <option value="MCA">Master of Computer Applications (MCA)</option>
+                                    <option value="MBA">Master of Business Administration (MBA)</option>
+                                    <option value="Mtech">Master of Technology (M.Tech)</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <div class="error-message" id="qualificationError">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    <span>Please select your qualification</span>
+                                </div>
+                            </div>
+
+                            <!-- Work Experience -->
+                            <div class="enhanced-form-group">
+                                <label for="experience" class="enhanced-form-label">
+                                    <i class="fas fa-briefcase"></i>
+                                    Work Experience
+                                    <span class="required-asterisk">*</span>
+                                </label>
+                                <select name="experience" id="experience" class="enhanced-form-control enhanced-select" required>
+                                    <option value="">--Select Experience Level--</option>
+                                    <option value="No Experience">Fresh Graduate / No Experience</option>
+                                    <option value="1-2 Years">1-2 Years</option>
+                                    <option value="3-4 Years">3-4 Years</option>
+                                    <option value="5-7 Years">5-7 Years</option>
+                                    <option value="8-10 Years">8-10 Years</option>
+                                    <option value="10+ Years">10+ Years</option>
+                                </select>
+                                <div class="error-message" id="experienceError">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    <span>Please select your work experience</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Key Skills -->
+                        <div class="enhanced-form-group">
+                            <label for="skills" class="enhanced-form-label">
+                                <i class="fas fa-tools"></i>
+                                Key Skills
+                                <span class="required-asterisk">*</span>
+                            </label>
+                            <select name="skills" id="skills" class="enhanced-form-control enhanced-select" required>
+                                <option value="">--Select Your Primary Skill--</option>
+                                <option value="IT">Information Technology</option>
+                                <option value="Management">Management & Leadership</option>
                                 <option value="Customer Services">Customer Service</option>
                                 <option value="Accounting & Finance">Accounting & Finance</option>
                                 <option value="Digital Marketing">Digital Marketing</option>
+                                <option value="Sales & Business Development">Sales & Business Development</option>
+                                <option value="Human Resources">Human Resources</option>
+                                <option value="Operations">Operations & Supply Chain</option>
                                 <option value="Other">Other</option>
                             </select>
-                            <span class="error-message">Key skills are required.</span>
+                            <div class="error-message" id="skillsError">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span>Please select your key skills</span>
+                            </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="mb-3">
-                    <label for="address" class="form-label">Address<span class="required-asterisk">*</span></label>
-                    <textarea class="form-control" name="address" rows="3" placeholder="Enter Address" required></textarea>
-                    <span class="error-message">Address is required.</span>
-                </div>
-                
-                <div class="mb-3">
-                    <h6 class="form-label">Gender<span class="required-asterisk">*</span></h6>
-                    <div class="d-flex gap-4">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gender" id="femaleGender" value="female" checked />
-                            <label class="form-check-label" for="femaleGender">Female</label>
+                        <!-- Resume Upload -->
+                        <div class="enhanced-form-group">
+                            <label class="enhanced-form-label">
+                                <i class="fas fa-file-alt"></i>
+                                Upload Resume
+                                <span class="required-asterisk">*</span>
+                            </label>
+                            <div class="file-upload-wrapper">
+                                <input type="file" name="resume" id="resume" class="file-input" accept=".pdf,.doc,.docx" required>
+                                <label for="resume" class="file-upload-button" id="resumeLabel">
+                                    <i class="fas fa-upload"></i>
+                                    <span>Choose Resume File</span>
+                                </label>
+                                <div class="file-info">Required: PDF, DOC, or DOCX format (max 10MB)</div>
+                            </div>
+                            <div class="error-message" id="resumeError">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span>Please upload your resume</span>
+                            </div>
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gender" id="maleGender" value="male" />
-                            <label class="form-check-label" for="maleGender">Male</label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="gender" id="otherGender" value="other" />
-                            <label class="form-check-label" for="otherGender">Other</label>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="profilepic" class="form-label">Upload Profile Pic</label>
-                            <input type="file" name="profilepic" id="profilepic" class="form-control">
+                        <!-- Terms and Conditions -->
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="terms" name="checkbox" required>
+                            <label for="terms">
+                                I have read and agree to the 
+                                <a href="#" id="show-terms-link">Terms of Service</a> 
+                                and 
+                                <a href="#" id="show-privacy-link">Privacy Policy</a>
+                                <span class="required-asterisk">*</span>
+                            </label>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="resume" class="form-label">Upload Resume<span class="required-asterisk">*</span></label>
-                            <input type="file" name="resume" accept=".pdf, .doc, .docx" id="resume" class="form-control" required>
-                            <span class="error-message ms-3">File type must be pdf, doc, or docx.</span>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="mb-3 form-check d-flex align-items-center">
-                    <input class="form-check-input me-2" type="checkbox" value="agreed" name="checkbox" id="terms-checkbox" required />
-                    <label class="form-check-label" for="terms-checkbox">
-                        I agree all statements in 
-<a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">
-  Terms of Service<span class="required-asterisk">*</span>
-</a>
-                    </label>
-                    <span class="error-message ms-3">You must agree to the terms.</span>
-                </div>
-                
-                <button type="submit" class="btn btn-primary mt-4">Submit</button>
-            </form>
-        </div>
-    </div>
-
-    <div class="modal fade" id="registerSuccessModal" tabindex="-1" aria-labelledby="registerSuccessModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content text-center">
-                <div class="modal-header">
-                    <h5 class="modal-title w-100" id="registerSuccessModalLabel">Registration Successful</h5>
-                </div>
-                <div class="modal-body">
-                    Your career profile has been registered successfully!
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <a href="{% url 'jobapp:login' %}" class="btn btn-primary">Login Now</a>
+                        <!-- Submit Button -->
+                        <button type="submit" class="submit-button" id="submitBtn">
+                            <i class="fas fa-user-plus"></i>
+                            Create My Dream Jobs Account
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+<!-- Enhanced Bootstrap Modal -->
+<div class="modal fade" id="registerSuccessModal" tabindex="-1" aria-labelledby="registerSuccessModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="registerSuccessModalLabel">
+                    <i class="fas fa-check-circle"></i>
+                    Registration Successful!
+                </h5>
+            </div>
+            <div class="modal-body">
+                <div style="margin-bottom: 1rem;">
+                    <i class="fas fa-rocket" style="font-size: 3rem; color: var(--accent-blue);"></i>
+                </div>
+                <strong>Congratulations!</strong> Your career profile has been successfully created.<br>
+                You can now access thousands of job opportunities and connect with top employers.
+            </div>
+            <div class="modal-footer">
+                <a href="{% url 'jobapp:login' %}" class="btn">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login to Your Account
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 
     {% if show_modal %}
     <script>
@@ -444,93 +1028,256 @@
   </div>
 </div>
 
-    <script>
-        function validateForm() {
-            let valid = true;
-            
-            // Generic validation for all required fields
-            const requiredInputs = document.querySelectorAll('#jobseeker-form [required]');
-            requiredInputs.forEach(input => {
-                let errorElement = input.nextElementSibling;
-                if (input.type === 'radio' || input.type === 'checkbox') {
-                    // Handle radio and checkbox groups
-                    let group = document.querySelectorAll(`[name="${input.name}"]`);
-                    let groupValid = Array.from(group).some(i => i.checked);
-                    if (!groupValid) {
-                        valid = false;
-                        if (errorElement) {
-                             errorElement.style.display = 'block';
-                        }
-                    } else if (errorElement) {
-                        errorElement.style.display = 'none';
-                    }
-                } else if (input.value.trim() === '' || input.value === null || input.value === 'null') {
-                    valid = false;
-                    if (errorElement) {
-                        errorElement.style.display = 'block';
-                    }
-                } else {
-                    if (errorElement) {
-                        errorElement.style.display = 'none';
-                    }
+<script>
+    // Enhanced JavaScript for better UX
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set max date for DOB (18 years ago)
+        const dobInput = document.getElementById('dob');
+        const today = new Date();
+        const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+        dobInput.max = maxDate.toISOString().split('T')[0];
+
+        // File upload handlers with enhanced UX
+        setupFileUpload('profilepic', 'profilePicLabel', 'Profile Picture Selected');
+        setupFileUpload('resume', 'resumeLabel', 'Resume Selected');
+
+        // Enhanced form validation
+        const form = document.getElementById('registrationForm');
+        const inputs = form.querySelectorAll('input, select, textarea');
+        
+        inputs.forEach(input => {
+            input.addEventListener('blur', validateField);
+            input.addEventListener('input', clearError);
+        });
+
+        // Progress indicator update
+        updateProgressOnScroll();
+
+        // Real-time phone number formatting
+        const phoneInput = document.getElementById('phoneno');
+        phoneInput.addEventListener('input', function(e) {
+            this.value = this.value.replace(/\D/g, '');
+        });
+
+        // Password strength indicator
+        const passwordInput = document.getElementById('password');
+        passwordInput.addEventListener('input', showPasswordStrength);
+    });
+
+    // Enhanced file upload setup
+    function setupFileUpload(inputId, labelId, successText) {
+        const input = document.getElementById(inputId);
+        const label = document.getElementById(labelId);
+        
+        input.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const fileName = file.name;
+                const fileSize = (file.size / 1024 / 1024).toFixed(2);
+                
+                label.innerHTML = `
+                    <i class="fas fa-check-circle"></i>
+                    <span>${successText}: ${fileName} (${fileSize}MB)</span>
+                `;
+                label.classList.add('file-selected');
+            } else {
+                resetFileLabel(labelId, inputId === 'profilepic' ? 'Choose Profile Picture' : 'Choose Resume File');
+            }
+        });
+    }
+
+    function resetFileLabel(labelId, originalText) {
+        const label = document.getElementById(labelId);
+        label.innerHTML = `
+            <i class="fas fa-${labelId.includes('resume') ? 'upload' : 'cloud-upload-alt'}"></i>
+            <span>${originalText}</span>
+        `;
+        label.classList.remove('file-selected');
+    }
+
+    // Enhanced field validation
+    function validateField(event) {
+        const field = event.target;
+        const fieldId = field.id;
+        const value = field.value.trim();
+        
+        clearError(event);
+        
+        switch(fieldId) {
+            case 'name':
+                if (!value.match(/^[A-Za-z]{2,}(?:\s+[A-Za-z]{2,})+$/)) {
+                    showError(fieldId, 'Enter your full name (e.g., John Smith)');
+                    return false;
                 }
-            });
-
-            // Specific validations
-            const name = document.getElementById('name');
-            const namePattern = /^[A-Za-z]{2,}(?:\s+[A-Za-z]{2,})+$/;
-            if (!name.value.trim().match(namePattern)) {
-                name.nextElementSibling.textContent = "Enter a valid full name (e.g., John Doe).";
-                name.nextElementSibling.style.display = 'block';
-                valid = false;
-            }
-
-            const email = document.getElementById('email');
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!email.value.trim().match(emailPattern)) {
-                email.nextElementSibling.textContent = "Please enter a valid email address.";
-                email.nextElementSibling.style.display = 'block';
-                valid = false;
-            }
-
-            const password = document.getElementById('password');
-            if (password.value.trim().length < 6) {
-                password.nextElementSibling.textContent = "Password must be at least 6 characters.";
-                password.nextElementSibling.style.display = 'block';
-                valid = false;
-            } else {
-                password.nextElementSibling.style.display = 'none';
-            }
-
-            const termsCheckbox = document.getElementById('terms-checkbox');
-            if (!termsCheckbox.checked) {
-                document.querySelector('.form-check .error-message').style.display = 'block';
-                valid = false;
-            } else {
-                document.querySelector('.form-check .error-message').style.display = 'none';
-            }
-
-            const resume = document.getElementById('resume');
-            const allowedExtensions = ['pdf', 'doc', 'docx'];
-
-            if (resume.files.length > 0) {
-                const fileName = resume.files[0].name;
-                const fileExtension = fileName.split('.').pop().toLowerCase();
-
-                if (!allowedExtensions.includes(fileExtension)) {
-                    resume.nextElementSibling.textContent = "File type must be PDF, DOC, or DOCX.";
-                    resume.nextElementSibling.style.display = 'block';
-                    valid = false; // stop form submission
-                } else {
-                    resume.nextElementSibling.style.display = 'none';
+                break;
+                
+            case 'email':
+                if (!value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                    showError(fieldId, 'Please enter a valid email address');
+                    return false;
                 }
-            } else {
-                resume.nextElementSibling.textContent = "Please upload your resume.";
-                resume.nextElementSibling.style.display = 'block';
-                valid = false;
-            }
-
-            return valid;
+                break;
+                
+            case 'phoneno':
+                if (!value.match(/^[6-9]\d{9}$/)) {
+                    showError(fieldId, 'Enter a valid 10-digit Indian mobile number');
+                    return false;
+                }
+                break;
+                
+            case 'password':
+                if (value.length < 8) {
+                    showError(fieldId, 'Password must be at least 8 characters long');
+                    return false;
+                }
+                break;
+                
+            case 'qualification':
+            case 'experience':
+            case 'skills':
+                if (!value || value === '') {
+                    showError(fieldId, 'This field is required');
+                    return false;
+                }
+                break;
+                
+            case 'address':
+                if (value.length < 10) {
+                    showError(fieldId, 'Please enter a complete address');
+                    return false;
+                }
+                break;
+                
+            case 'dob':
+                if (!value) {
+                    showError(fieldId, 'Please enter your date of birth');
+                    return false;
+                }
+                break;
         }
-    </script>
+        
+        showSuccess(fieldId);
+        return true;
+    }
+
+    function showError(fieldId, message) {
+        const errorElement = document.getElementById(fieldId + 'Error');
+        const field = document.getElementById(fieldId);
+        
+        if (errorElement) {
+            errorElement.querySelector('span').textContent = message;
+            errorElement.classList.add('show');
+        }
+        
+        field.style.borderColor = 'var(--error-color)';
+        field.style.boxShadow = '0 0 0 0.2rem rgba(220, 53, 69, 0.25)';
+    }
+
+    function showSuccess(fieldId) {
+        const field = document.getElementById(fieldId);
+        field.style.borderColor = 'var(--success-color)';
+        field.style.boxShadow = '0 0 0 0.2rem rgba(40, 167, 69, 0.25)';
+    }
+
+    function clearError(event) {
+        const field = event.target;
+        const fieldId = field.id;
+        const errorElement = document.getElementById(fieldId + 'Error');
+        
+        if (errorElement) {
+            errorElement.classList.remove('show');
+        }
+        
+        field.style.borderColor = '';
+        field.style.boxShadow = '';
+    }
+
+    // Progress indicator updates
+    function updateProgressOnScroll() {
+        const steps = document.querySelectorAll('.progress-step');
+        const formSections = document.querySelectorAll('.enhanced-form-group');
+        
+        window.addEventListener('scroll', () => {
+            const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            
+            if (scrollPercent > 25) steps[1].classList.add('active');
+            if (scrollPercent > 50) steps[2].classList.add('active');
+            if (scrollPercent > 75) steps[3].classList.add('active');
+        });
+    }
+
+    // Password strength indicator
+    function showPasswordStrength(event) {
+        const password = event.target.value;
+        const strength = calculatePasswordStrength(password);
+        
+        // You can add a visual strength indicator here
+    }
+
+    function calculatePasswordStrength(password) {
+        let strength = 0;
+        if (password.length >= 8) strength++;
+        if (password.match(/[a-z]/)) strength++;
+        if (password.match(/[A-Z]/)) strength++;
+        if (password.match(/[0-9]/)) strength++;
+        if (password.match(/[^a-zA-Z0-9]/)) strength++;
+        return strength;
+    }
+
+    // Enhanced form submission
+    function validateForm() {
+        const form = document.getElementById('registrationForm');
+        const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
+        let isValid = true;
+        
+        inputs.forEach(input => {
+            const event = { target: input };
+            if (!validateField(event)) {
+                isValid = false;
+            }
+        });
+        
+        // Check file uploads
+        const resume = document.getElementById('resume');
+        if (!resume.files.length) {
+            showError('resume', 'Please upload your resume');
+            isValid = false;
+        }
+        
+        // Check terms checkbox
+        const terms = document.getElementById('terms');
+        if (!terms.checked) {
+            alert('Please accept the Terms of Service and Privacy Policy to continue');
+            isValid = false;
+        }
+        
+        if (isValid) {
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Your Account...';
+            submitBtn.disabled = true;
+            
+            // Update progress to completion
+            document.querySelectorAll('.progress-step').forEach(step => {
+                step.classList.add('completed');
+            });
+        }
+        
+        return isValid;
+    }
+
+    // Terms modal (if needed)
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.id === 'show-terms-link') {
+            e.preventDefault();
+            // Add terms modal logic here if needed
+            alert('Terms of Service modal would open here');
+        }
+        if (e.target && e.target.id === 'show-privacy-link') {
+            e.preventDefault();
+            // Add privacy modal logic here if needed
+            alert('Privacy Policy modal would open here');
+        }
+    });
+</script>
+
 {% endblock body %}
