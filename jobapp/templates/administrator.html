@@ -858,4 +858,109 @@
   });
 </script>
 {% endif %} 
+<!-- Form validation script -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.querySelector("form");
+  const inputs = form.querySelectorAll("input[required], select[required], textarea[required]");
+
+  const passwordInput = document.getElementById("password");
+  const confirmPasswordInput = document.getElementById("confirmPassword");
+  const emailInput = document.getElementById("email");
+
+  // Helper functions
+  const isStrongPassword = (password) => {
+    // Minimum 8 chars, at least 1 uppercase, 1 lowercase, 1 number, 1 special char
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?#&_])[A-Za-z\d@$!%*?#&_]{8,}$/;
+    return regex.test(password);
+  };
+
+  const isValidEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
+  const validateField = (input) => {
+    const errorDiv = input.parentElement.querySelector(".error-message");
+
+    if (input.type === "checkbox") {
+      errorDiv.style.display = input.checked ? "none" : "block";
+      return input.checked;
+    }
+
+    if (input.type === "file") {
+      if (!input.files || input.files.length === 0) {
+        errorDiv.textContent = "Profile picture is required.";
+        errorDiv.style.display = "block";
+        return false;
+      } else if (!input.files[0].type.startsWith("image/")) {
+        errorDiv.textContent = "Only image files are allowed.";
+        errorDiv.style.display = "block";
+        return false;
+      } else {
+        errorDiv.style.display = "none";
+        return true;
+      }
+    }
+
+    if (input.id === "password") {
+      if (!isStrongPassword(input.value)) {
+        errorDiv.textContent =
+          "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.";
+        errorDiv.style.display = "block";
+        return false;
+      } else {
+        errorDiv.style.display = "none";
+        return true;
+      }
+    }
+
+    if (input.id === "confirmPassword") {
+      if (input.value !== passwordInput.value) {
+        errorDiv.textContent = "Passwords do not match.";
+        errorDiv.style.display = "block";
+        return false;
+      } else {
+        errorDiv.style.display = "none";
+        return true;
+      }
+    }
+
+    if (input.id === "email") {
+      if (!isValidEmail(input.value)) {
+        errorDiv.textContent = "Enter a valid email address.";
+        errorDiv.style.display = "block";
+        return false;
+      } else {
+        errorDiv.style.display = "none";
+        return true;
+      }
+    }
+
+    // Required check
+    if (!input.value.trim()) {
+      errorDiv.style.display = "block";
+      return false;
+    } else {
+      errorDiv.style.display = "none";
+      return true;
+    }
+  };
+
+  inputs.forEach((input) => {
+    input.addEventListener("input", () => validateField(input));
+    input.addEventListener("change", () => validateField(input));
+  });
+
+  form.addEventListener("submit", (e) => {
+    let valid = true;
+    inputs.forEach((input) => {
+      if (!validateField(input)) valid = false;
+    });
+
+    if (!valid) e.preventDefault();
+  });
+});
+</script>
+  
 {% endblock body %}
