@@ -1075,6 +1075,26 @@
 
         field.focus();
       }
+
+      // Password visibility toggle
+      function togglePassword() {
+        const passwordInput = document.getElementById("password");
+        const eyeIcon = document.getElementById("eyeIcon");
+        if (!passwordInput || !eyeIcon) return;
+
+        const isHidden = passwordInput.getAttribute("type") === "password";
+        passwordInput.setAttribute("type", isHidden ? "text" : "password");
+
+        eyeIcon.classList.toggle("fa-eye", !isHidden);
+        eyeIcon.classList.toggle("fa-eye-slash", isHidden);
+
+        // Keep focus and caret at the end for better UX
+        const valueLength = passwordInput.value.length;
+        passwordInput.focus();
+        try {
+          passwordInput.setSelectionRange(valueLength, valueLength);
+        } catch (e) {}
+      }
     </script>
   </body>
 </html>
