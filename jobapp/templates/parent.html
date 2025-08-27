@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     {% load static %}
@@ -214,30 +215,80 @@
     </div>
     <button id="backToTopBtn" title="Back to Top">↑</button>
     <script>
-      document.addEventListener('DOMContentLoaded', function(){
+      // Initialize Bootstrap dropdowns present in the DOM (Navbar)
+      document.addEventListener('DOMContentLoaded', function () {
         if (window.bootstrap && bootstrap.Dropdown) {
-          document.querySelectorAll('[data-bs-toggle="dropdown"]').forEach(btn=>{ try { bootstrap.Dropdown.getOrCreateInstance(btn); } catch(e) { console.warn('Dropdown init error', e); } });
+          document.querySelectorAll('[data-bs-toggle="dropdown"]').forEach((btn) => {
+            try {
+              bootstrap.Dropdown.getOrCreateInstance(btn);
+            } catch (e) {
+              console.warn('Dropdown init error', e);
+            }
+          });
         }
       });
+
+      // Back-to-top button behavior
       const backToTopBtn = document.getElementById('backToTopBtn');
-      if(backToTopBtn){
-        window.addEventListener('scroll', () => { if (document.documentElement.scrollTop > 300) backToTopBtn.style.display = 'block'; else backToTopBtn.style.display = 'none'; });
-        backToTopBtn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+      if (backToTopBtn) {
+        window.addEventListener('scroll', () => {
+          if (document.documentElement.scrollTop > 300) backToTopBtn.style.display = 'block';
+          else backToTopBtn.style.display = 'none';
+        });
+        backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
       }
-      (function(){
-        const trigger = document.getElementById('registerDropdown');
-        const menu = trigger ? trigger.nextElementSibling : null;
-        if(!trigger || !menu) return;
-        function bootstrapActive(){ return !!(window.bootstrap && bootstrap.Dropdown && bootstrap.Dropdown.getInstance(trigger)); }
-        trigger.addEventListener('click', function(e){ if(bootstrapActive()) return; e.preventDefault(); menu.classList.toggle('show'); trigger.setAttribute('aria-expanded', menu.classList.contains('show')); });
-        document.addEventListener('click', function(e){ if(bootstrapActive()) return; if(menu.classList.contains('show') && !e.target.closest('#registerDropdownWrapper')) { menu.classList.remove('show'); trigger.setAttribute('aria-expanded','false'); } });
-        menu.addEventListener('keydown', function(e){ if(e.key==='Escape'){ menu.classList.remove('show'); trigger.focus(); trigger.setAttribute('aria-expanded','false'); }});
+
+      // Navbar: Register dropdown fallback when Bootstrap's JS instance isn't active
+      (function () {
+        const registerDropdownButton = document.getElementById('registerDropdown');
+        const registerDropdownMenu = registerDropdownButton ? registerDropdownButton.nextElementSibling : null;
+        if (!registerDropdownButton || !registerDropdownMenu) return;
+
+        function isBootstrapDropdownActive() {
+          return !!(
+            window.bootstrap &&
+            bootstrap.Dropdown &&
+            bootstrap.Dropdown.getInstance(registerDropdownButton)
+          );
+        }
+
+        registerDropdownButton.addEventListener('click', function (e) {
+          if (isBootstrapDropdownActive()) return;
+          e.preventDefault();
+          registerDropdownMenu.classList.toggle('show');
+          registerDropdownButton.setAttribute('aria-expanded', registerDropdownMenu.classList.contains('show'));
+        });
+
+        document.addEventListener('click', function (e) {
+          if (isBootstrapDropdownActive()) return;
+          const clickedOutside = !e.target.closest('#registerDropdownWrapper');
+          if (registerDropdownMenu.classList.contains('show') && clickedOutside) {
+            registerDropdownMenu.classList.remove('show');
+            registerDropdownButton.setAttribute('aria-expanded', 'false');
+          }
+        });
+
+        registerDropdownMenu.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') {
+            registerDropdownMenu.classList.remove('show');
+            registerDropdownButton.focus();
+            registerDropdownButton.setAttribute('aria-expanded', 'false');
+          }
+        });
       })();
-      (function(){
-        const current = location.pathname.replace(/\/$/, "");
-        document.querySelectorAll('.glass-nav .nav-link').forEach(a=>{ try { const path = new URL(a.href, location.origin).pathname.replace(/\/$/, ""); if(path === current) { a.classList.add('active'); } } catch(e){} });
+
+      // Navbar: Highlight active link based on current path
+      (function () {
+        const currentPath = location.pathname.replace(/\/$/, '');
+        document.querySelectorAll('.glass-nav .nav-link').forEach((link) => {
+          try {
+            const linkPath = new URL(link.href, location.origin).pathname.replace(/\/$/, '');
+            if (linkPath === currentPath) link.classList.add('active');
+          } catch (e) {
+            // ignore URL parsing errors
+          }
+        });
       })();
-      console.log('Bootstrap present:', !!window.bootstrap, 'Dropdown element:', document.getElementById('registerDropdown'));
     </script>
   </body>
 </html>
